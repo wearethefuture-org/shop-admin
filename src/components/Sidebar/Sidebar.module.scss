@@ -1,0 +1,32 @@
+%coloredLink {
+   background: #597FB0;
+   color: #ffffff;
+}
+
+.sidebar {
+   padding: 25px;
+   font-size: 18px;
+}
+
+.list {
+   list-style: none;
+   margin: 0;
+   padding: 0;
+
+   a {
+      padding: 10px 15px;
+      display: block;
+      font-weight: bold;
+      color: #333333;
+      transition: .3s;
+
+      &:hover {
+         text-decoration: none;
+         @extend %coloredLink;
+      }
+   }
+
+   .active {
+      @extend %coloredLink;
+   }
+}
