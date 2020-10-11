@@ -1,18 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import CategoriesTable from '../Tables/Categories/Categories-table';
 
-import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../../store/store';
-import { REQUEST_CATEGORIES } from '../../store/types';
+import UseCategories from '../../hooks/useCategories';
 
 const CategoriesContainer:React.FC = () => {
-  const data = useSelector((state: RootState) => state.categories.list);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-          dispatch({type: REQUEST_CATEGORIES});
-  }, []);
-
+  const data = UseCategories();
 
   return <CategoriesTable data={data} />
 }

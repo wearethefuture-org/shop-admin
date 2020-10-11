@@ -4,6 +4,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
 import { ICategoryItem } from '../../../../interfaces/category-Item';
+import DateMoment from '../../../Common/Date-moment';
 
 interface TableBodyProps {
    rows: ICategoryItem[],
@@ -12,9 +13,7 @@ interface TableBodyProps {
    emptyRows: number
 }
 
-const CategoryTableBody:React.FC<TableBodyProps> = (props) => {
-   const {rows, rowsPerPage, page, emptyRows} = props;
-
+const CategoryTableBody:React.FC<TableBodyProps> = ({rows, rowsPerPage, page, emptyRows}) => {
    return (
      <TableBody>
        {(rowsPerPage > 0
@@ -24,8 +23,8 @@ const CategoryTableBody:React.FC<TableBodyProps> = (props) => {
          <TableRow key={row.id}>
            <TableCell component="th" scope="row">{row.id}</TableCell>
            <TableCell align="right">{row.name}</TableCell>
-           <TableCell align="right">{row.createdAt}</TableCell>
-           <TableCell align="right">{row.updatedAt}</TableCell>
+           <TableCell align="right"><DateMoment date={row.createdAt}/></TableCell>
+           <TableCell align="right"><DateMoment date={row.updatedAt}/></TableCell>
            <TableCell align="right">{row.products}</TableCell>
          </TableRow>
        ))}

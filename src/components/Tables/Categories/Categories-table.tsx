@@ -11,34 +11,25 @@ import { CircularProgress } from '@material-ui/core';
 import { ICategoryItem } from '../../../interfaces/category-Item';
 
 
-
 interface CategoryDataProps {
   data: Array<ICategoryItem>,
 }
 
-const makeDate = (date: string): string => {
-  const regexp = /(?<date>\d+-\d+-\d+)T(?<time>\d+:\d+):/;
-  const dateGroups = date.match(regexp);
-  const newStr = `${dateGroups!.groups!.date}, ${dateGroups!.groups!.time}`;
-  return newStr;
-}
-
 function createData(id: number, createdAt: string, updatedAt: string, name: string, products: []) {
-   return { id, name, createdAt: makeDate(createdAt), updatedAt: makeDate(updatedAt), products };
+   return { id, name, createdAt, updatedAt, products };
  }
 
-const useStyles2 = makeStyles({
+const useTableStyles = makeStyles({
   table: {
     minWidth: 500,
   },
 });
 
-const CategoriesTable:React.FC<CategoryDataProps> = (props) => {
-  const classes = useStyles2();
+const CategoriesTable:React.FC<CategoryDataProps> = ({data}) => {
+  const classes = useTableStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const {data} = props;
 
   if (!data) return (
     <div>

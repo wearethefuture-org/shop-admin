@@ -7,7 +7,7 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 import { ICategoryItem } from '../../../../interfaces/category-Item';
 
@@ -26,17 +26,16 @@ interface TablePaginationActionsProps {
    onChangePage: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
  }
 
-const CategoryTableFooter:React.FC<CategoryTableFooterProps> = (props) => {
-  const { rows, rowsPerPage, page, setPage, setRowsPerPage } = props;
+ const useFooterStyles = makeStyles((theme: Theme) =>
+ createStyles({
+   root: {
+     flexShrink: 0,
+     marginLeft: theme.spacing(2.5),
+   },
+ })
+);
 
-  const useStyles1 = makeStyles((theme: Theme) =>
-    createStyles({
-      root: {
-        flexShrink: 0,
-        marginLeft: theme.spacing(2.5),
-      },
-    })
-  );
+const CategoryTableFooter:React.FC<CategoryTableFooterProps> = ({ rows, rowsPerPage, page, setPage, setRowsPerPage }) => {
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
@@ -47,24 +46,35 @@ const CategoryTableFooter:React.FC<CategoryTableFooterProps> = (props) => {
     setPage(0);
   };
 
-  function TablePaginationActions(props: TablePaginationActionsProps) {
-    const classes = useStyles1();
-    const theme = useTheme();
-    const { count, page, rowsPerPage, onChangePage } = props;
+  function TablePaginationActions({
+    count,
+    page,
+    rowsPerPage,
+    onChangePage,
+  }: TablePaginationActionsProps) {
+    const classes = useFooterStyles();
 
-    const handleFirstPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleFirstPageButtonClick = (
+      event: React.MouseEvent<HTMLButtonElement>
+    ) => {
       onChangePage(event, 0);
     };
 
-    const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleBackButtonClick = (
+      event: React.MouseEvent<HTMLButtonElement>
+    ) => {
       onChangePage(event, page - 1);
     };
 
-    const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleNextButtonClick = (
+      event: React.MouseEvent<HTMLButtonElement>
+    ) => {
       onChangePage(event, page + 1);
     };
 
-    const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleLastPageButtonClick = (
+      event: React.MouseEvent<HTMLButtonElement>
+    ) => {
       onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
     };
 
@@ -75,36 +85,28 @@ const CategoryTableFooter:React.FC<CategoryTableFooterProps> = (props) => {
           disabled={page === 0}
           aria-label="first page"
         >
-          {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
+          <FirstPageIcon />
         </IconButton>
         <IconButton
           onClick={handleBackButtonClick}
           disabled={page === 0}
           aria-label="previous page"
         >
-          {theme.direction === "rtl" ? (
-            <KeyboardArrowRight />
-          ) : (
-            <KeyboardArrowLeft />
-          )}
+          <KeyboardArrowLeft />
         </IconButton>
         <IconButton
           onClick={handleNextButtonClick}
           disabled={page >= Math.ceil(count / rowsPerPage) - 1}
           aria-label="next page"
         >
-          {theme.direction === "rtl" ? (
-            <KeyboardArrowLeft />
-          ) : (
-            <KeyboardArrowRight />
-          )}
+          <KeyboardArrowRight />
         </IconButton>
         <IconButton
           onClick={handleLastPageButtonClick}
           disabled={page >= Math.ceil(count / rowsPerPage) - 1}
           aria-label="last page"
         >
-          {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
+          <LastPageIcon />
         </IconButton>
       </div>
     );
