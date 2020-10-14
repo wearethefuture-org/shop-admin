@@ -1,13 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
-import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
-import TableHeader from './Header/Table-header';
-import CategoryTableBody from './Body/Table-body';
 import CategoryTableFooter from './Footer/Table-footer';
 import { CircularProgress } from '@material-ui/core';
+import TableContainer from '@material-ui/core/TableContainer';
 
+import TableHeader from './Header/Table-header';
+import CategoryTableBody from './Body/Table-body';
 import { ICategoryItem } from '../../../interfaces/category-Item';
 
 
@@ -31,7 +31,7 @@ const CategoriesTable:React.FC<CategoryDataProps> = ({data}) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
 
-  if (!data) return (
+  if (!data.length) return (
     <div>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="custom pagination table">
