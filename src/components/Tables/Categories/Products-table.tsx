@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
-import TableHeader from './Header/Categories-Table-header';
-import CategoryTableBody from './Body/Categories-Table-body';
-import CategoryTableFooter from './Footer/Categories-Table-footer';
+import ProductsTableHeader from './Header/Products-Table-header';
+import ProductsTableBody from './Body/Products-Table-body';
+import ProductsTableFooter from './Footer/Products-Table-footer';
 import { CircularProgress } from '@material-ui/core';
 
-import { ICategoryItem } from '../../../interfaces/category-Item';
+import { IProductItem } from '../../../interfaces/IProducts';
 
 
-interface CategoryDataProps {
-  data: Array<ICategoryItem>,
+interface ProductsDataProps {
+  data: Array<IProductItem>,
 }
 
-function createData(id: number, createdAt: string, updatedAt: string, name: string, products: []) {
-  return { id, name, createdAt, updatedAt, products };
+function createData(id: number, name: string, price: string, discount: string, category: string) {
+  return { id, name, price, discount, category };
 }
 
 const useTableStyles = makeStyles({
@@ -25,30 +25,30 @@ const useTableStyles = makeStyles({
   },
 });
 
-const CategoriesTable: React.FC<CategoryDataProps> = ({ data = [] }) => {
+const ProductsTable: React.FC<ProductsDataProps> = ({ data = [] }) => {
   const classes = useTableStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
 
   if (!data) return (
     <div>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="custom pagination table">
-          <TableHeader />
+          <ProductsTableHeader />
         </Table>
       </TableContainer>
       <CircularProgress />
     </div>
   );
 
-  const rows: Array<ICategoryItem> = data.map((category: any) =>
+  const rows: Array<IProductItem> = data.map((product: any) =>
     createData(
-      category.id,
-      category.createdAt,
-      category.updatedAt,
-      category.name,
-      category.products.length
+      product.id,
+      product.name,
+      product.price,
+      product.discount,
+      product.category
     )
   ).sort((a, b) => (a.id < b.id ? -1 : 1));
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -56,14 +56,14 @@ const CategoriesTable: React.FC<CategoryDataProps> = ({ data = [] }) => {
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">
-        <TableHeader />
-        <CategoryTableBody
+        <ProductsTableHeader />
+        <ProductsTableBody
           rows={rows}
           rowsPerPage={rowsPerPage}
           page={page}
           emptyRows={emptyRows}
         />
-        <CategoryTableFooter
+        <ProductsTableFooter
           rows={rows}
           rowsPerPage={rowsPerPage}
           page={page}
@@ -76,4 +76,4 @@ const CategoriesTable: React.FC<CategoryDataProps> = ({ data = [] }) => {
 }
 
 
-export default CategoriesTable;
+export default ProductsTable;

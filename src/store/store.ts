@@ -1,17 +1,19 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import categories from "./reduceres/categories.reducer";
+import products from "./reduceres/products.reducer";
 import createSagaMiddleware from 'redux-saga';
-import { sagaWatcher } from "./sagas/sagas";
+import { sagaCategoriesWatcher, sagaProductsWatcher } from "./sagas/sagas";
 
 const saga = createSagaMiddleware();
 
-const rootReducer = combineReducers({categories});
+const rootReducer = combineReducers({ categories, products });
 
 const store = createStore(rootReducer, compose(
    applyMiddleware(saga)
 ));
 
-saga.run(sagaWatcher);
+saga.run(sagaCategoriesWatcher);
+saga.run(sagaProductsWatcher);
 
 
 export type RootState = ReturnType<typeof rootReducer>
