@@ -1,9 +1,12 @@
 import React from 'react';
+import CategoriesContainer from '../../components/Containers/Categories-container';
 
 
-const Categories = () => {
+const Categories: React.FC = () => {
    return (
-     <div>Categories</div>
+     <div>
+       <CategoriesContainer/>
+     </div>
    )
 }
 
