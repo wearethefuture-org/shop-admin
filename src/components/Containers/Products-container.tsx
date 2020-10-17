@@ -6,7 +6,7 @@ import products from '../../mock/products'
 
 const ProductsContainer: React.FC = () => {
   let data = UseProducts();
-  if (typeof data !== Array.constructor.name) data = products.concat()
+  data = products.concat()
 
   return <ProductsTable data={data} />
 }

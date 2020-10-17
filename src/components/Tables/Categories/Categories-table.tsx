@@ -25,7 +25,7 @@ const useTableStyles = makeStyles({
   },
 });
 
-const CategoriesTable: React.FC<CategoryDataProps> = ({ data = [] }) => {
+const CategoriesTable: React.FC<CategoryDataProps> = ({ data }) => {
   const classes = useTableStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);

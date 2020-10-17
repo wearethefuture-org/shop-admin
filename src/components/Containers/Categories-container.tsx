@@ -5,7 +5,7 @@ import UseCategories from '../../hooks/useCategories';
 
 const CategoriesContainer: React.FC = () => {
   let data = UseCategories();
-  if (typeof data !== Array.constructor.name) data = []
+  if (!Array.isArray(data)) data = []
 
   return <CategoriesTable data={data} />
 }

@@ -25,7 +25,7 @@ const useTableStyles = makeStyles({
   },
 });
 
-const ProductsTable: React.FC<ProductsDataProps> = ({ data = [] }) => {
+const ProductsTable: React.FC<ProductsDataProps> = ({ data }) => {
   const classes = useTableStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
