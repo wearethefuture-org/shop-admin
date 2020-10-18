@@ -5,29 +5,23 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import AddIcon from '@material-ui/icons/Add';
-import CategoryForm from '../Forms/Category-form';
 import { Dispatch } from 'redux';
 
+import CategoryForm from '../Forms/Category-form';
+
 interface FormDialogProps {
-  isModalOpened: boolean,
-  toggleModalHandler: (state: boolean) => void,
   dispatch: Dispatch,
-  categoriesLength: number
+  categoriesLength: number,
+  modalData: any
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({
-  isModalOpened,
-  toggleModalHandler,
   dispatch,
   categoriesLength,
+  modalData
 }) => {
-  const handleClickOpen = () => {
-    toggleModalHandler(true);
-  };
 
-  const handleClose = () => {
-    toggleModalHandler(false);
-  };
+  const { handleClickOpen, handleClose, isOpened } = modalData;
 
   return (
     <div>
@@ -35,10 +29,10 @@ const FormDialog: React.FC<FormDialogProps> = ({
         <AddIcon /> New Category
       </Button>
       <Dialog
-        open={isModalOpened}
+        open={isOpened}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
-        fullWidth={true}
+        fullWidth
         maxWidth="xs"
       >
         <DialogTitle id="form-dialog-title">Add new category</DialogTitle>
