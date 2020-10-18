@@ -8,11 +8,12 @@ import AddIcon from '@material-ui/icons/Add';
 import { Dispatch } from 'redux';
 
 import CategoryForm from '../Forms/Category-form';
+import { ICategoriesModal } from '../../interfaces/modals';
 
 interface FormDialogProps {
   dispatch: Dispatch,
   categoriesLength: number,
-  modalData: any
+  modalData: ICategoriesModal
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({
