@@ -9,15 +9,16 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHeader from './Header/Table-header';
 import CategoryTableBody from './Body/Table-body';
 import { ICategoryItem } from '../../../interfaces/category-Item';
+import { CategoryTableData } from '../../../interfaces/categories-data';
 
 
 interface CategoryDataProps {
   data: Array<ICategoryItem>,
 }
 
-function createData(id: number, createdAt: string, updatedAt: string, name: string, products: []) {
-   return { id, name, createdAt, updatedAt, products };
- }
+function createData(id: number, createdAt: string, updatedAt: string, name: string, products: Array<ICategoryItem>) {
+  return { id, name, createdAt, updatedAt, products: products.length };
+}
 
 const useTableStyles = makeStyles({
   table: {
@@ -42,15 +43,19 @@ const CategoriesTable:React.FC<CategoryDataProps> = ({data}) => {
     </div>
   );
 
-  const rows: Array<ICategoryItem> = data.map((category: any) => 
-    createData(
+  const rows: Array<CategoryTableData> = data.map((category: ICategoryItem)  => {
+    if (!category.products) {
+      category.products = [];
+    }
+      return createData(
       category.id,
       category.createdAt,
       category.updatedAt,
       category.name,
-      category.products.length
+      category.products
     )
-  ).sort((a, b) => (a.id < b.id ? -1 : 1));
+  });
+  rows.sort((a, b) => (a.id < b.id ? -1 : 1));
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (

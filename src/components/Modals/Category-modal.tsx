@@ -18,7 +18,6 @@ interface FormDialogProps {
 
 const FormDialog: React.FC<FormDialogProps> = ({
   dispatch,
-  categoriesLength,
   modalData
 }) => {
 
@@ -41,7 +40,6 @@ const FormDialog: React.FC<FormDialogProps> = ({
           <DialogContentText>Choose name of category.</DialogContentText>
           <CategoryForm
             dispatch={dispatch}
-            categoriesLength={categoriesLength}
             handleClose={handleClose}
           />
         </DialogContent>

@@ -7,8 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import { makeStyles } from '@material-ui/core/styles';
 
 
-import { addCategory } from '../../store/actions';
-import { ICategoryItem } from '../../interfaces/category-Item';
+import { fetchAddCategories } from '../../store/actions';
 
 interface Values {
   name: string;
@@ -16,11 +15,10 @@ interface Values {
 
 interface CategoryFormProps {
   dispatch: Dispatch,
-  categoriesLength: number,
   handleClose: () => void
 }
 
-const CategoryForm:React.FC<CategoryFormProps> = ({dispatch, categoriesLength, handleClose}) => {
+const CategoryForm:React.FC<CategoryFormProps> = ({dispatch, handleClose}) => {
   const useStyles = makeStyles({
     customBtn: {
       marginTop: '15px'
@@ -29,13 +27,6 @@ const CategoryForm:React.FC<CategoryFormProps> = ({dispatch, categoriesLength, h
 
   const classes = useStyles();
 
-  const newCategory: ICategoryItem = {
-    id: categoriesLength + 1,
-    createdAt: '2020-10-14T16:10:05.018Z',
-    updatedAt: '2020-10-14T16:10:05.018Z',
-    name: '',
-    products: [],
-  };
    return (
      <Formik
        initialValues={{
@@ -53,8 +44,7 @@ const CategoryForm:React.FC<CategoryFormProps> = ({dispatch, categoriesLength, h
        onSubmit={(values, { setSubmitting }) => {
          setTimeout(() => {
            setSubmitting(false);
-           newCategory.name = values.name;
-           dispatch(addCategory(newCategory));
+           dispatch(fetchAddCategories(values.name))
            handleClose();
          }, 500);
        }}
