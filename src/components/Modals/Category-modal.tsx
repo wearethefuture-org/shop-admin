@@ -7,8 +7,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import AddIcon from '@material-ui/icons/Add';
 import { Dispatch } from 'redux';
 
-import CategoryForm from '../Forms/Category-form';
 import { ICategoriesModal } from '../../interfaces/modals';
+import CategoryForm from '../Forms/Category-form/Category-form';
 
 interface FormDialogProps {
   dispatch: Dispatch,

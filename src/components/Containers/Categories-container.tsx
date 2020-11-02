@@ -7,8 +7,7 @@ import useCategoriesModal from '../../hooks/useCategoriesModal';
 
 const CategoriesContainer:React.FC = () => {
   const {data, dispatch} = useCategories();
-  const categorisCreateModalData = useCategoriesModal();
-
+  const categoriesCreateModalData = useCategoriesModal();
 
   return (
     <>
@@ -16,7 +15,7 @@ const CategoriesContainer:React.FC = () => {
       <FormDialog
         dispatch={dispatch}
         categoriesLength={data.length}
-        modalData={categorisCreateModalData}
+        modalData={categoriesCreateModalData}
       />
     </>
   );
