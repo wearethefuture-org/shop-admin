@@ -9,10 +9,11 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-import { ICategoryItem } from '../../../../interfaces/category-Item';
+
+import { CategoryTableData } from '../../../../interfaces/categories-data';
 
 interface CategoryTableFooterProps {
-   rows: ICategoryItem[],
+   rows: CategoryTableData[],
    rowsPerPage: number,
    page: number,
    setPage(page:number):void,

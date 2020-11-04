@@ -4,14 +4,16 @@ import { fetchCategories } from '../store/actions';
 import {RootState} from '../store/store';
 
 
-const UseCategories = () => {
+const useCategories = () => {
    const dispatch = useDispatch();
 
    useEffect(() => {
            dispatch(fetchCategories());
    }, [dispatch]);
 
-   return useSelector((state: RootState) => state.categories.list);
+   const data = useSelector((state: RootState) => state.categories.list);
+
+   return { data, dispatch };
 }
 
-export default UseCategories;
+export default useCategories;
