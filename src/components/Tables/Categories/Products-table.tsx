@@ -15,10 +15,6 @@ interface ProductsDataProps {
   data: Array<IProductItem>,
 }
 
-function createData(id: number, name: string, price: string, discount: string, category: string) {
-  return { id, name, price, discount, category };
-}
-
 const useTableStyles = makeStyles({
   table: {
     minWidth: 500,
@@ -42,15 +38,15 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ data }) => {
     </div>
   );
 
-  const rows: Array<IProductItem> = data.map((product: any) =>
-    createData(
-      product.id,
-      product.name,
-      product.price,
-      product.discount,
-      product.category
-    )
-  ).sort((a, b) => (a.id < b.id ? -1 : 1));
+  const rows: Array<IProductItem> = data.map((product: any) => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    discount: product.discount,
+    category: product.category
+  }))
+    .sort((a, b) => (a.id - b.id));
+
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (

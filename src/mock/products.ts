@@ -1,13 +1,13 @@
 export default [
   {
-    "id": 40,
+    "id": 46,
     "name": "Страпон",
     "price": "20",
     "discount": "0",
     "category": "Пищевые"
   },
   {
-    "id": 41,
+    "id": 44,
     "name": "Гарпун",
     "price": "40,55",
     "discount": "0",
@@ -21,14 +21,14 @@ export default [
     "category": "Бытовые"
   },
   {
-    "id": 43,
+    "id": 47,
     "name": "Бэтмобиль",
     "price": "822,30",
     "discount": "11",
     "category": "Мебель"
   },
   {
-    "id": 44,
+    "id": 41,
     "name": "Меч Блэк Мамба",
     "price": "524,40",
     "discount": "0",
@@ -42,14 +42,14 @@ export default [
     "category": "Текстиль"
   },
   {
-    "id": 46,
+    "id": 40,
     "name": "Колпак Ку-клукс-клан",
     "price": "470,22",
     "discount": "8",
     "category": "Одежда"
   },
   {
-    "id": 47,
+    "id": 43,
     "name": "Дольче Ву",
     "price": "420,90",
     "discount": "4",
