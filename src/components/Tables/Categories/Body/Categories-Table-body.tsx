@@ -3,11 +3,12 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-import { ICategoryItem } from '../../../../interfaces/category-Item';
+
 import DateMoment from '../../../Common/Date-moment';
+import { CategoryTableData } from '../../../../interfaces/categories-data';
 
 interface TableBodyProps {
-   rows: ICategoryItem[],
+   rows: CategoryTableData[],
    rowsPerPage: number,
    page: number,
    emptyRows: number

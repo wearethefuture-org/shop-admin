@@ -7,7 +7,6 @@ import ProductsTableHeader from './Header/Products-Table-header';
 import ProductsTableBody from './Body/Products-Table-body';
 import ProductsTableFooter from './Footer/Products-Table-footer';
 import { CircularProgress } from '@material-ui/core';
-
 import { IProductItem } from '../../../interfaces/IProducts';
 
 

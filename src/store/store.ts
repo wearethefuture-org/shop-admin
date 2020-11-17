@@ -6,6 +6,7 @@ import theme from './reduceres/themeMode.reducer';
 import createSagaMiddleware from 'redux-saga';
 import { sagaCategoriesWatcher, sagaProductsWatcher } from "./sagas/sagas";
 
+
 const saga = createSagaMiddleware();
 
 const rootReducer = combineReducers({ categories, products, theme });

@@ -4,7 +4,7 @@ import { fetchProducts } from '../store/actions';
 import { RootState } from '../store/store';
 
 
-const UseProducts = () => {
+const useProducts = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -14,4 +14,4 @@ const UseProducts = () => {
   return useSelector((state: RootState) => state.products.list);
 }
 
-export default UseProducts;
+export default useProducts;

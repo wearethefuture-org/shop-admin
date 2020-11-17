@@ -1,18 +1,28 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { CircularProgress } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
-import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import TableHeader from './Header/Categories-Table-header';
 import CategoryTableBody from './Body/Categories-Table-body';
 import CategoryTableFooter from './Footer/Categories-Table-footer';
-import { CircularProgress } from '@material-ui/core';
-
+import TableContainer from '@material-ui/core/TableContainer';
 import { ICategoryItem } from '../../../interfaces/category-Item';
+import { CategoryTableData } from '../../../interfaces/categories-data';
 
 
 interface CategoryDataProps {
   data: Array<ICategoryItem>,
+}
+
+
+function createData(
+  id: number,
+  createdAt: string,
+  updatedAt: string,
+  name: string,
+  products: Array<ICategoryItem>) {
+  return { id, name, createdAt, updatedAt, products: products.length };
 }
 
 const useTableStyles = makeStyles({
@@ -28,27 +38,29 @@ const CategoriesTable: React.FC<CategoryDataProps> = ({ data }) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
 
-  if (!data) {
-    return (
-      <div>
-        <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="custom pagination table">
-            <TableHeader />
-          </Table>
-        </TableContainer>
-        <CircularProgress style={{ textAlign: 'center', verticalAlign: 'middle', lineHeight: '100%' }} />
-      </div>
-    )
-  };
+  if (!data.length) return (
+    <div>
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="custom pagination table">
+          <TableHeader />
+        </Table>
+      </TableContainer>
+      <CircularProgress />
+    </div>
+  );
 
-  const rows: Array<ICategoryItem> = data.map((category: any) => ({
-    id: category.id,
-    createdAt: category.createdAt,
-    updatedAt: category.updatedAt,
-    name: category.name,
-    products: category.products.length
-  }))
-    .sort((a, b) => (a.id - b.id));
+  const rows: Array<CategoryTableData> = data.map((category: ICategoryItem) => {
+    if (!category.products) category.products = [];
+
+    return createData(
+      category.id,
+      category.createdAt,
+      category.updatedAt,
+      category.name,
+      category.products
+    )
+  })
+  rows.sort((a, b) => (a.id - b.id));
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
