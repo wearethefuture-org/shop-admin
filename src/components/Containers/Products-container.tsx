@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductsTable from '../Tables/Categories/Products-table';
+import ProductsTable from '../Tables/Products/Products-table';
 
 import useProducts from '../../hooks/useProducts';
 import products from '../../mock/products'

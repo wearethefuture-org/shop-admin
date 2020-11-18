@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
-import ProductsTableHeader from './Header/Products-Table-header';
-import ProductsTableBody from './Body/Products-Table-body';
-import ProductsTableFooter from './Footer/Products-Table-footer';
+import ProductsTableHeader from './Header/Table-header';
+import ProductsTableBody from './Body/Table-body';
+import ProductsTableFooter from './Footer/Table-footer';
 import { CircularProgress } from '@material-ui/core';
 import { IProductItem } from '../../../interfaces/IProducts';
 
