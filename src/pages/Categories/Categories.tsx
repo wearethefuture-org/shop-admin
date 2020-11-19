@@ -3,11 +3,11 @@ import CategoriesContainer from '../../components/Containers/Categories-containe
 
 
 const Categories: React.FC = () => {
-   return (
-     <div>
-       <CategoriesContainer/>
-     </div>
-   )
+  return (
+    <div>
+      <CategoriesContainer />
+    </div>
+  )
 }
 
 export default Categories;
