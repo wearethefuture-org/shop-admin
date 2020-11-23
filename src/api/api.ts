@@ -16,5 +16,5 @@ export const api: ApiFetchedDataType = {
 	categories: {
       get: () => axios.get(`${root}/category`),
       add: (category) => axios.post(`${root}/category`, category)
-	},
+      },
 };

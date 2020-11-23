@@ -1,6 +1,6 @@
-import { FormikErrors, withFormik } from 'formik';
+import { withFormik } from 'formik';
 import { Dispatch } from 'redux';
-
+import * as Yup from 'yup';
 
 import { fetchAddCategories } from '../../../store/actions';
 import InnerForm from './Inner-form';
@@ -11,28 +11,25 @@ interface CategoryFormProps {
   dispatch: Dispatch;
   handleClose: () => void;
   initialName?: string;
+  initialDescription?: string;
 }
+
+const categoryValidationShema = Yup.object().shape({
+  name: Yup.string().min(2, 'Too short').max(50, 'Too long').required('Required'),
+  description: Yup.string().min(60, 'Too shot').max(360, 'Too long').required('Required')
+})
 
 const CategoryForm = withFormik<CategoryFormProps, IFormValues>({
   mapPropsToValues: props => {
     return {
-      name: props.initialName || ''
-    }
+      name: props.initialName || "",
+      description: props.initialDescription || "",
+    };
   },
-  validate: (values: IFormValues) => {
-    const errors: FormikErrors<IFormValues> = {};
-
-    if (!values.name) {
-      errors.name = "Required";
-    } else if (values.name.trim().length < 3) {
-      errors.name = "Category name must contain at least 3 characters";
-    }
-
-    return errors;
-  },
+  validationSchema: categoryValidationShema,
   handleSubmit: (values: IFormValues, { setSubmitting, props }) => {
     setSubmitting(false);
-    props.dispatch(fetchAddCategories(values.name));
+    props.dispatch(fetchAddCategories(values.name, values.description));
     props.handleClose();
   }
 })(InnerForm);

@@ -9,5 +9,6 @@ export interface CategoryTableData {
   createdAt: string;
   updatedAt: string;
   name: string;
+  description?: string;
   products: number;
 };

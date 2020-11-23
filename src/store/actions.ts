@@ -4,9 +4,9 @@ import { ADD_CATEGORY, LOAD_CATEGORIES, REQUEST_ADD_CATEGORIES, REQUEST_CATEGORI
 
 export const loadCategories = (categories: ICategoryItem[]): IActions => ({ type: LOAD_CATEGORIES, data: categories} );
 export const fetchCategories = (): IActions => ({ type: REQUEST_CATEGORIES });
-export const fetchAddCategories = (name: string): IActions => ({
+export const fetchAddCategories = (name: string, description: string): IActions => ({
   type: REQUEST_ADD_CATEGORIES,
-  data: { name },
+  data: { name, description },
 });
 export const addCategory = (category: ICategoryItem): IActions => ({
   type: ADD_CATEGORY,
