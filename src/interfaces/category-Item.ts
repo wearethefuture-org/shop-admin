@@ -3,5 +3,6 @@ export interface ICategoryItem {
    createdAt: string,
    updatedAt: string,
    name: string,
+   description: string;
    products: []
 }

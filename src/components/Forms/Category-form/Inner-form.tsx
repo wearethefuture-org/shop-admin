@@ -26,6 +26,15 @@ const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IFormValues>> = (
         label="Name"
         name="name"
       />
+      <Field
+        fullWidth
+        multiline
+        rowsMax={6}
+        component={TextField}
+        type="description"
+        label="Description"
+        name="description"
+      />
       {isSubmitting && <LinearProgress />}
       <DialogActions>
         <Button
