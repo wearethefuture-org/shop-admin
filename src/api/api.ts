@@ -7,14 +7,14 @@ type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
 type ApiFetchedDataType = {
 	categories: {
-      get: () => FetchedDataType<ICategoryItem>;
-      add: (category: IActions) => FetchedDataType<ICategoryItem>;
-   }
+		get: () => FetchedDataType<ICategoryItem>;
+		add: (category: IActions) => FetchedDataType<ICategoryItem>;
+	}
 };
 
 export const api: ApiFetchedDataType = {
 	categories: {
-      get: () => axios.get(`${root}/category`),
-      add: (category) => axios.post(`${root}/category`, category)
-      },
+    get: () => axios.get(`${root}/category`),
+		add: (category) => axios.post(`${root}/category`, category)
+	},
 };
