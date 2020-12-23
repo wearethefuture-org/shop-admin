@@ -13,7 +13,7 @@ const rootReducer = combineReducers({ categories, products, theme });
 
 const store = createStore(rootReducer, compose(
    applyMiddleware(saga),
-   composeWithDevTools()
+   // composeWithDevTools()
 ));
 
 saga.run(sagaCategoriesWatcher);
