@@ -11,6 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import HouseIcon from '@material-ui/icons/House';
 import CategoryIcon from '@material-ui/icons/Category';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import GroupIcon from '@material-ui/icons/Group';
 import ReceiptIcon from '@material-ui/icons/Receipt';
@@ -106,6 +107,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
 		{
 			pageURL: '/users',
 			itemIcon: <GroupIcon fontSize="small" className={classes.icon} />
+		},
+		{
+			pageURL: '/sliders',
+			itemIcon: <AmpStoriesIcon fontSize="small" className={classes.icon} />
 		},
 	];
 

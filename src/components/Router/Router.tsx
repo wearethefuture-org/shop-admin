@@ -9,6 +9,7 @@ import Users from "../../pages/Users/Users";
 import HeaderBar from '../HeaderBar/HeaderBar';
 import Content from '../Content/Content';
 import s from './Router.module.scss'
+import Sliders from "../../pages/Sliders/Sliders";
 
 
 const Router: React.FC = () => {
@@ -32,6 +33,7 @@ const Router: React.FC = () => {
 						<Route path="/products" render={() => <Products />} />
 						<Route path="/statistic" render={() => <Statistic />} />
 						<Route path="/users" render={() => <Users />} />
+						<Route path="/sliders" render={() => <Sliders />} />
 					</Content>
 				</div>
 			</div>
