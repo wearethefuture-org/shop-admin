@@ -8,10 +8,11 @@ const TableHeader: React.FC = () => {
     <TableHead>
       <TableRow>
         <TableCell>ID</TableCell>
-        <TableCell align="right">Name</TableCell>
-        <TableCell align="right">Price</TableCell>
-        <TableCell align="right">Discount</TableCell>
-        <TableCell align="right">Category</TableCell>
+        <TableCell align="right">Created at</TableCell>
+        <TableCell align="right">Updated at</TableCell>
+        <TableCell align="right">email</TableCell>
+        <TableCell align="right">Password</TableCell>
+        <TableCell align="right">Role</TableCell>
       </TableRow>
     </TableHead>
   );

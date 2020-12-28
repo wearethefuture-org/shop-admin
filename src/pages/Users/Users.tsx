@@ -1,9 +1,9 @@
 import React from 'react';
+import UsersContainer from '../../components/Containers/Users-container';
 
-
-const Users = () => {
+const Users: React.FC = () => {
    return (
-     <div>Users</div>
+     <div><UsersContainer /></div>
    )
 }
 
