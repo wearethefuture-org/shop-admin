@@ -9,7 +9,8 @@ export const REQUEST_PRODUCTS = 'REQUEST_PRODUCTS';
 
 export const LOAD_USERS = 'LOAD_USERS';
 export const REQUEST_USERS = 'REQUEST_USERS';
-export const ADD_USER = 'ADD_USER'
+export const ADD_USER = 'ADD_USER';
+export const DELETE_USER = 'DELETE_USER';
 
 export const SWITCH_DARK_MODE = 'SWITCH_MODE';
 

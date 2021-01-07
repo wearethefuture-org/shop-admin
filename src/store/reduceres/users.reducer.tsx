@@ -1,5 +1,5 @@
 import { IActions } from "../../interfaces/actions";
-import { ADD_CATEGORY, LOAD_CATEGORIES, LOAD_USERS, ADD_USER } from "../types";
+import { LOAD_USERS, ADD_USER, DELETE_USER } from "../types";
 import { IUsersData } from "../../interfaces/users-data";
 
 
@@ -13,6 +13,9 @@ const users = (state = data, action: IActions) => {
       return {...state, list: action.data}
     }
     case ADD_USER: {
+      return {...state, list: [...state.list, action.data]}
+    }
+    case DELETE_USER: {
       return {...state, list: [...state.list, action.data]}
     }
     default:
