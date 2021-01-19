@@ -66,7 +66,7 @@ const SlidersTable: React.FC<SliderDataProps> = ({data}) => {
             slider.updatedAt,
             slider.name,
             slider.text,
-            slider.image,
+            slider.image as string,
             slider.href,
             slider.isShown,
             slider.priority

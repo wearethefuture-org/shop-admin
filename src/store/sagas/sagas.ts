@@ -5,11 +5,12 @@ import {
    REQUEST_PRODUCTS,
    REQUEST_SLIDERS,
    REQUEST_ADD_SLIDERS,
-   REQUEST_DELETE_SLIDERS
+   REQUEST_DELETE_SLIDERS,
+   REQUEST_UPDATE_SLIDERS
 } from '../types';
 import { fetchCategoryWorker, addCategoryWorker } from './categories.saga';
 import productsWorker from '../sagas/products.saga';
-import {fetchSliderWorker, addSliderWorker, deleteSliderWorker} from './sliders.saga';
+import {fetchSliderWorker, addSliderWorker, deleteSliderWorker, updateSliderWorker} from './sliders.saga';
 import { SagaIterator } from 'redux-saga';
 
 
@@ -26,5 +27,6 @@ export function* sagaSlidersWatcher(): SagaIterator {
    yield takeEvery(REQUEST_SLIDERS, fetchSliderWorker);
    yield takeEvery(REQUEST_ADD_SLIDERS, addSliderWorker);
    yield takeEvery(REQUEST_DELETE_SLIDERS, deleteSliderWorker);
+   yield takeEvery(REQUEST_UPDATE_SLIDERS, updateSliderWorker);
 }
 

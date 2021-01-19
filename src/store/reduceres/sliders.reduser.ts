@@ -1,5 +1,5 @@
 import { IActions } from "../../interfaces/actions";
-import {ADD_SLIDER, DELETE_SLIDER, LOAD_SLIDERS} from "../types";
+import {ADD_SLIDER, DELETE_SLIDER, LOAD_SLIDERS, UPDATE_SLIDER} from "../types";
 import { ISlidersData } from '../../interfaces/sliders-data';
 import {act} from "react-dom/test-utils";
 
@@ -18,6 +18,9 @@ const sliders = (state = data, action: IActions) => {
         }
         case DELETE_SLIDER: {
             return {...state, list: [...state.list.filter(x => x.id !== action.data.id)]}
+        }
+        case UPDATE_SLIDER: {
+            return {...state, list: [...state.list.map(x => x.id === action.data.id?action.data:x)]}
         }
         default:
             return state;

@@ -11,10 +11,14 @@ import {
   REQUEST_PRODUCTS,
   ADD_SLIDER,
   DELETE_SLIDER,
+  UPDATE_SLIDER,
   LOAD_SLIDERS,
   REQUEST_SLIDERS,
   REQUEST_ADD_SLIDERS,
-  SWITCH_DARK_MODE, REQUEST_DELETE_SLIDERS
+  SWITCH_DARK_MODE,
+  REQUEST_DELETE_SLIDERS,
+  REQUEST_UPDATE_SLIDERS,
+  SWITCH_SHOW_MODE
 } from "./types";
 
 export const loadCategories = (categories: ICategoryItem[]): IActions => ({ type: LOAD_CATEGORIES, data: categories });
@@ -55,4 +59,16 @@ export const deleteSlider = (slider: ISliderItem): IActions => ({
   data: slider,
 });
 
+export const fetchUpdateSliders = (id: number, name: string, text: string, image: string, href: string, isShown: boolean, priority: number): IActions => ({
+  type: REQUEST_UPDATE_SLIDERS,
+  data: { id, name, text, image, href, isShown, priority },
+});
+
+export const updateSlider = (slider: ISliderItem): IActions => ({
+  type: UPDATE_SLIDER,
+  data: slider,
+});
+
+
 export const switchDarkMode = (): IActions => ({ type: SWITCH_DARK_MODE })
+export const switchShowMode = (): IActions => ({ type: SWITCH_SHOW_MODE })

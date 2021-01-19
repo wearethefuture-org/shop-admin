@@ -9,3 +9,9 @@ export interface ISlidersModal {
   handleClose: () => void;
   isOpened: boolean;
 }
+
+export interface ISlidersEditModal {
+  handleClickOpen: () => void;
+  handleClose: () => void;
+  isOpened: boolean;
+}

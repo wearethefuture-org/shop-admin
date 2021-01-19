@@ -3,7 +3,6 @@ import axios, { AxiosResponse } from 'axios';
 import { ICategoryItem } from '../interfaces/category-Item';
 import { ISliderItem } from '../interfaces/slider-item';
 import {IActions, IActionsImage} from '../interfaces/actions';
-import {strict} from "assert";
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -32,30 +31,39 @@ export const api: ApiFetchedDataType = {
 		get: () => axios.get(`${root}/slider`),
 		add: async (slider) => {
 
-			// Витягую картинку у форматі File
-			const image = slider.image
 
-			//присвоюю пусту строку для запису слайдера в базу
-			slider.image = ""
+			if(slider.image instanceof File){
+				const formData = new FormData()
+				formData.append("image", slider.image)
 
-			//Закидуємо слайдер у базу для отримання id, для подальшого завантаження картинки
-			const newSliderResponse = await axios.post(`${root}/slider`, slider)
-			const newSlider = newSliderResponse.data
+				//закидуємо картинку
+				const serverImage = await axios.post(`${root}/slider/images`, formData)
 
-			const formData = new FormData()
-			formData.append("image", image)
-			formData.append("sliderId", newSlider.id)
+				//Записуємо в поле image коректне посилання на картинку
+				slider.image = `${root}/slider/img/${serverImage.data.name}`
+			}
 
-			//закидуємо картинку для теперішнього слайдер ід ???????????
-			const serverImage = await axios.post(`${root}/slider/images`, formData)
 
-			//Записуємо в image коректне посилання на картинку
-			newSlider.image = `${root}/slider/img/${serverImage.data.name}`
-
-			//Оновлюємо обєкт слайдер у базі для коректоного запису посилання на image
-			return axios.patch(`${root}/slider/${newSlider.id}`, newSlider)
+			//Зберігаємо обєкт слайдер у базі
+			return axios.post(`${root}/slider`, slider)
 		},
-		update: (slider) => axios.patch(`${root}/slider/${slider.id}`, slider),
+		update: async (slider) => {
+
+			if(slider.image instanceof File){
+				const formData = new FormData()
+				formData.append("image", slider.image)
+
+				//закидуємо картинку
+				const serverImage = await axios.post(`${root}/slider/images`, formData)
+
+				//Записуємо в поле image коректне посилання на картинку
+				slider.image = `${root}/slider/img/${serverImage.data.name}`
+			}
+
+			//Зберігаємо обєкт слайдер у базі
+			return axios.patch(`${root}/slider/${slider.id}`, slider)
+
+		},
 
 		delete: (slider) => axios.delete(`${root}/slider/${slider.id}`),
 	}

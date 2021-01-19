@@ -8,7 +8,7 @@ import useSlidersModal from '../../hooks/useSlidersModal';
 
 const SlidersContainer: React.FC = () => {
     const { data, dispatch } = useSliders();
-     const slidersCreateModalData = useSlidersModal();
+    const slidersCreateModalData = useSlidersModal();
 
     return (
         <>
