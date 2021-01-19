@@ -9,7 +9,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-import { IUserItem } from '../../../../interfaces/IUsers';
+import { IUserItem } from '../../../../interfaces/Users';
 
 interface UserTableFooterProps {
   rows: IUserItem[],

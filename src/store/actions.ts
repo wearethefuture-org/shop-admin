@@ -1,7 +1,7 @@
 import { IActions } from '../interfaces/actions';
 import { ICategoryItem } from "../interfaces/category-Item";
 import { IProductItem } from "../interfaces/IProducts";
-import { IUserItem } from '../interfaces/IUsers';
+import { IUserItem } from '../interfaces/Users';
 import {
   ADD_CATEGORY,
   LOAD_CATEGORIES,

@@ -1,6 +1,6 @@
 import { IActions } from "../../interfaces/actions";
 import { LOAD_USERS, ADD_USER, DELETE_USER } from "../types";
-import { IUsersData } from "../../interfaces/users-data";
+import { IUsersData } from "../../interfaces/Users";
 
 
 const data: IUsersData = {

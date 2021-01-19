@@ -5,7 +5,7 @@ import TableRow from '@material-ui/core/TableRow';
 import AddIcon from '@material-ui/icons/Add';
 import { Box, Button } from '@material-ui/core';
 
-import { IUserItem } from '../../../../interfaces/IUsers';
+import { IUserItem } from '../../../../interfaces/Users';
 import DateMoment from '../../../Common/Date-moment';
 
 

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { IUserItem } from '../../../interfaces/IUsers';
-import UsersTableHeader from './Header/Table-header';
-import UsersTableBody from './Body/Table-body';
-import UsersTableFooter from './Footer/Table-footer';
 import Table from '@material-ui/core/Table';
 import { TableContainer } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { IUserItem } from '../../../interfaces/Users';
+import UsersTableHeader from './Header/Table-header';
+import UsersTableBody from './Body/Table-body';
+import UsersTableFooter from './Footer/Table-footer';
 
 interface UsersDataProps {
     data: Array<IUserItem>,
@@ -40,8 +41,7 @@ const UsersTable: React.FC<UsersDataProps> = ({ data }) => {
         email: user.email,
         password: user.password,
         role: user.role
-    }))
-        .sort((a, b) => (a.id - b.id));
+    })).sort((a, b) => (a.id - b.id));
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -50,17 +50,17 @@ const UsersTable: React.FC<UsersDataProps> = ({ data }) => {
         <Table className={classes.table} aria-label="custom pagination table">
             <UsersTableHeader />
             <UsersTableBody
-            rows={rows}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            emptyRows={emptyRows}
+                rows={rows}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                emptyRows={emptyRows}
             />
             <UsersTableFooter
-            rows={rows}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            setPage={setPage}
-            setRowsPerPage={setRowsPerPage}
+                rows={rows}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                setPage={setPage}
+                setRowsPerPage={setRowsPerPage}
             />
         </Table>
         </TableContainer>

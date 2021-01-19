@@ -6,8 +6,7 @@ import users from '../../mock/users';
 
 
 const UsersContainer: React.FC = () => {
-  let data = useUsers();
-  data = users.concat()
+  const [ data ] = [ users.concat(), useUsers()]
 
   return <UsersTable data={data} />
 }
