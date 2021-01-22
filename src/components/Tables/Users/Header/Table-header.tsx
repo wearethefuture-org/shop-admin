@@ -11,7 +11,6 @@ const TableHeader: React.FC = () => {
         <TableCell align="right">Created at</TableCell>
         <TableCell align="right">Updated at</TableCell>
         <TableCell align="right">email</TableCell>
-        <TableCell align="right">Password</TableCell>
         <TableCell align="right">Role</TableCell>
       </TableRow>
     </TableHead>

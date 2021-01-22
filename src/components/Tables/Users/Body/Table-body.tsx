@@ -28,7 +28,6 @@ const UsersTableBody: React.FC<TableBodyProps> = ({ rows, rowsPerPage, page, emp
           <TableCell align="right"><DateMoment date={row.createdAt} /></TableCell>
           <TableCell align="right"><DateMoment date={row.updatedAt} /></TableCell>
           <TableCell align="right">{row.email}</TableCell>
-          <TableCell align="right">{row.password}</TableCell>
           <TableCell align="right">{row.role}</TableCell>
           <TableCell align="right">
             <Box display="flex">
