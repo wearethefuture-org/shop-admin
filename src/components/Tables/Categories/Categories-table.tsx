@@ -10,19 +10,19 @@ import TableContainer from '@material-ui/core/TableContainer';
 import { ICategoryItem } from '../../../interfaces/category-Item';
 import { CategoryTableData } from '../../../interfaces/categories-data';
 
-
 interface CategoryDataProps {
-  data: Array<ICategoryItem>,
+  data: Array<ICategoryItem>;
 }
-
 
 function createData(
   id: number,
+  key: string,
   createdAt: string,
   updatedAt: string,
   name: string,
-  products: Array<ICategoryItem>) {
-  return { id, name, createdAt, updatedAt, products: products.length };
+  products: Array<ICategoryItem>
+) {
+  return { id, key, name, createdAt, updatedAt, products: products.length };
 }
 
 const useTableStyles = makeStyles({
@@ -31,36 +31,36 @@ const useTableStyles = makeStyles({
   },
 });
 
-
 const CategoriesTable: React.FC<CategoryDataProps> = ({ data }) => {
   const classes = useTableStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-
-  if (!data.length) return (
-    <div>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="custom pagination table">
-          <TableHeader />
-        </Table>
-      </TableContainer>
-      <CircularProgress />
-    </div>
-  );
+  if (!data.length)
+    return (
+      <div>
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="custom pagination table">
+            <TableHeader />
+          </Table>
+        </TableContainer>
+        <CircularProgress />
+      </div>
+    );
 
   const rows: Array<CategoryTableData> = data.map((category: ICategoryItem) => {
     if (!category.products) category.products = [];
 
     return createData(
       category.id,
+      category.key,
       category.createdAt,
       category.updatedAt,
       category.name,
       category.products
-    )
-  })
-  rows.sort((a, b) => (a.id - b.id));
+    );
+  });
+  rows.sort((a, b) => a.id - b.id);
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -84,7 +84,6 @@ const CategoriesTable: React.FC<CategoryDataProps> = ({ data }) => {
       </Table>
     </TableContainer>
   );
-}
-
+};
 
 export default CategoriesTable;

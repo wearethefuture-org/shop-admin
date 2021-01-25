@@ -4,12 +4,11 @@ import { fetchCategoryWorker, addCategoryWorker } from '../sagas/categories.saga
 import productsWorker from '../sagas/products.saga';
 import { SagaIterator } from 'redux-saga';
 
-
 export function* sagaCategoriesWatcher(): SagaIterator {
-   yield takeEvery(REQUEST_CATEGORIES, fetchCategoryWorker);
-   yield takeEvery(REQUEST_ADD_CATEGORIES, addCategoryWorker);
+  yield takeEvery(REQUEST_CATEGORIES, fetchCategoryWorker);
+  yield takeEvery(REQUEST_ADD_CATEGORIES, addCategoryWorker);
 }
 
 export function* sagaProductsWatcher(): SagaIterator {
-   yield takeEvery(REQUEST_PRODUCTS, productsWorker);
+  yield takeEvery(REQUEST_PRODUCTS, productsWorker);
 }
