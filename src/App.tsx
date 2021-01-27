@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { switchDarkMode } from './store/actions';
 
 
-export function App() {
+export function App(){
   const darkMode = useSelector((state: RootState) => state.theme.darkMode)
   const dispatch = useDispatch()
 

@@ -1,9 +1,8 @@
 export interface IFormValues {
-   name: string;
-   description: string;
- }
+  name: string;
+  description: string;
+}
 
- export interface InnerCategoryFormProps {
-   handleClose: () => void;
- }
- 
+export interface InnerCategoryFormProps {
+  handleClose: () => void;
+}
