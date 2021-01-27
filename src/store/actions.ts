@@ -1,6 +1,7 @@
 import { IActions } from '../interfaces/actions';
 import { ICategoryItem } from "../interfaces/category-Item";
 import { IProductItem, IProductFormData } from "../interfaces/IProducts";
+import { IUserItem } from '../interfaces/Users';
 import {
   ADD_CATEGORY,
   LOAD_CATEGORIES,
@@ -10,13 +11,15 @@ import {
   REQUEST_PRODUCTS,
   LOAD_PRODUCT_BY_ID,
   REQUEST_PRODUCT_BY_ID,
-  SWITCH_DARK_MODE,
   ADD_PRODUCT,
   REQUEST_ADD_PRODUCT,
   REQUEST_DELETE_PRODUCT,
   DELETE_PRODUCT,
   UPDATE_PRODUCT,
-  REQUEST_UPDATE_PRODUCT
+  REQUEST_UPDATE_PRODUCT,
+  LOAD_USERS,
+  REQUEST_USERS,
+  SWITCH_DARK_MODE
 } from "./types";
 
 export const loadCategories = (categories: ICategoryItem[]): IActions => ({ type: LOAD_CATEGORIES, data: categories });
@@ -51,5 +54,7 @@ export const fetchDeleteProduct = (id: number): IActions => ({ type: REQUEST_DEL
 
 export const updateProduct = (product: IProductItem[]): IActions => ({ type: UPDATE_PRODUCT, data: product });
 export const fetchUpdateProduct = (product: IProductFormData, id: number): IActions => ({ type: REQUEST_UPDATE_PRODUCT, data: { id, product } });
+export const loadUsers = (users: IUserItem[]): IActions => ({ type: LOAD_USERS, data: users });
+export const fetchUsers = (): IActions => ({ type: REQUEST_USERS });
 
 export const switchDarkMode = (): IActions => ({ type: SWITCH_DARK_MODE })

@@ -5,12 +5,13 @@ import products from "./reduceres/products.reducer";
 import getProductById from "./reduceres/getProductById.reducer";
 import theme from "./reduceres/themeMode.reducer";
 import createSagaMiddleware from "redux-saga";
+import users from "./reduceres/users.reducer";
 import { sagaCategoriesWatcher, sagaProductsWatcher } from "./sagas/sagas";
 
 
 const saga = createSagaMiddleware();
 
-const rootReducer = combineReducers({ categories, products, getProductById, theme });
+const rootReducer = combineReducers({ categories, products, getProductById, theme, users });
 
 const store = createStore(rootReducer, compose(
    applyMiddleware(saga),
