@@ -37,8 +37,8 @@ const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IFormValues>> = (
       />
       {status && status.key && !(touched.key && errors.key) && (
         <div className={classes.hint}>
-          Hint: This is a variant name for the URL. You can use Latin letters in the lower case and
-          hyphen
+          Підказка: це варіант імені для URL-адреси. Можна використовувати латинські літери в
+          нижньому регістрі та дефіс
         </div>
       )}
       <Field
