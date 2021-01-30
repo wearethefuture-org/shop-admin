@@ -1,5 +1,6 @@
 export interface IFormValues {
   name: string;
+  key: string;
   description: string;
 }
 
