@@ -75,9 +75,9 @@ export const updateProduct = (product: IProductItem[]): IActions => ({
   type: UPDATE_PRODUCT,
   data: product,
 });
-export const fetchUpdateProduct = (product: IProductFormData, id: number): IActions => ({
+export const fetchUpdateProduct = (product: IProductFormData, id: number, file:  Array<File>): IActions => ({
   type: REQUEST_UPDATE_PRODUCT,
-  data: { id, product },
+  data: { id, product, file },
 });
 export const loadUsers = (users: IUserItem[]): IActions => ({ type: LOAD_USERS, data: users });
 export const fetchUsers = (): IActions => ({ type: REQUEST_USERS });

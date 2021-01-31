@@ -23,6 +23,20 @@ export async function fetchedAddProduct(data: any) {
 
 export async function fetchedUpdateProduct(data: any) {
   const product = await api.products.update(data.id, data.product);
-  
+
   return product.data;
+}
+
+export async function fetchedUploadImage(data: any) {
+  console.log(data.file)
+  const formData = new FormData();
+  formData.append('files', {...data.file} );
+  formData.append('productId', data.id);
+
+
+
+
+  console.log(formData.getAll('files'))
+  const res = await api.products.updateImg(formData)
+  console.log(res)
 }

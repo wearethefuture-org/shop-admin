@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import Thumb from './Thumb';
 import { Button, DialogActions, LinearProgress } from '@material-ui/core';
 import { Field, Form, FormikProps } from 'formik';
 import { TextField } from 'formik-material-ui';
@@ -8,21 +9,24 @@ import { IProductFormData, ProductFormProps } from '../../../interfaces/IProduct
 
 
 const InnerForm: React.FC<ProductFormProps & FormikProps<IProductFormData>> = (
-  { submitForm, isSubmitting, handleClose, currencies, buttonName, id, categoryName }) => {
+  { submitForm, isSubmitting, handleClose, currencies, buttonName, file, ...props }) => {
   const useStyles = makeStyles({
     customBtn: {
       marginTop: "15px",
     },
   });
-  const uploadScreenshotFile = (event: any) => {
-    for (let size = 0; size < event.target.files.length; size++) {
-      console.log('Selected file:', event.target.files[size]);
-      let file = event.target.files[size];
-      console.log("uploading screenshot file...");
 
-      // Do necessary request to upload here.......
+  const [values, setValue] = React.useState<Array<any>>([]);
 
+  const uploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const countFiles = event.currentTarget.files!.length;
+    const filesArray = [];
+    for (let i = 0; i < countFiles; i++) {
+      const file = event.currentTarget.files![i]
+      props.values.file.push(file)
+      filesArray.push(file)
     }
+    setValue(filesArray);
   }
   const classes = useStyles();
   return (
@@ -67,9 +71,12 @@ const InnerForm: React.FC<ProductFormProps & FormikProps<IProductFormData>> = (
           </option>
         ))}
       </Field>
-      <input type="file" multiple
-        name="myImage" accept=".png, .jpeg" className="multiple-upload"
-        onChange={uploadScreenshotFile} />
+
+      <div className="form-group">
+        <label htmlFor="file">File upload</label>
+        <input id="file" multiple name="file" type="file" onChange={uploadImage} className="form-control" />
+        <Thumb files={values} />
+      </div>
 
       {isSubmitting && <LinearProgress />}
       <DialogActions>

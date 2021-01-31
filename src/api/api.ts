@@ -16,6 +16,7 @@ type ApiFetchedDataType = {
     getById: (id: number) => FetchedDataType<IProductItem>;
     add: (product: IActions) => FetchedDataType<IProductItem>;
     update: (id: number, product: any) => FetchedDataType<IProductItem>;
+    updateImg: (data: any) => FetchedDataType<JSON>;
     deleteProduct: (id: IActions) => FetchedDataType<JSON>;
   };
 };
@@ -30,6 +31,7 @@ export const api: ApiFetchedDataType = {
     add: (product) => axios.post(`${root}/product`, product),
     getById: (id) => axios.get(`${root}/product/${id}`),
     update: (id, product) => axios.patch(`${root}/product/${id}`, product),
+    updateImg: (data) => axios.post(`${root}/product/multipleImages`, data),
     deleteProduct: (id) => axios.delete(`${root}/product/${id}`),
   },
 };

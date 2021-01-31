@@ -48,7 +48,6 @@ const ComplexGrid: React.FC<IProductItem & RouteComponentProps<any>> = (props) =
     dispatch(fetchDeleteProduct(props.id));
     props.history.push('/products');
   }
-  console.log(props.id)
   const { id, name, price, description, category } = props;
   return (
     <div className={classes.root}>

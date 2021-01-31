@@ -5,7 +5,6 @@ import { LinearProgress } from '@material-ui/core';
 
 const ProductItem: React.FC = (props: any) => {
   const { data } = useProductById(props.id);
-
   if (!data.id) {
     return (
       <LinearProgress />

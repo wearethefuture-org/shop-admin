@@ -5,7 +5,8 @@ import {
   fetchedProductById,
   fetchedDeleteProduct,
   fetchedAddProduct,
-  fetchedUpdateProduct
+  fetchedUpdateProduct,
+  fetchedUploadImage
 } from './services/products.service';
 import {
   loadProducts,
@@ -57,10 +58,11 @@ export function* fetchAddProductWorker(product: IActions): SagaIterator {
 }
 
 export function* fetchUpdateProductWorker(product: IActions): SagaIterator {
-  console.log(product.data)
+  
   try {
     const productData = yield call(fetchedUpdateProduct, product.data);
     yield put(updateProduct(productData));
+    yield call(fetchedUploadImage,product.data)
     yield call(fetchedProductById, productData.id);
     yield put(loadProductById(productData))
   }

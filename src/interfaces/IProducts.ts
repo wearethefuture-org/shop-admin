@@ -32,13 +32,15 @@ export interface IProductFormData {
   name: string,
   price: number,
   description: string,
-  categoryName: string
+  categoryName: string,
+  file: Array<any>
 }
 export interface InnerProductFormProps {
   currencies: Array<any>;
   handleClose: () => void;
   buttonName: string;
   id: number;
+
 }
 
 
@@ -53,4 +55,5 @@ export interface ProductFormProps {
   categoryName?: string;
   buttonName: string;
   fetchFun: (...props: any) => IActions;
+  file: Array<any>
 }
