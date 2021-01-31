@@ -142,21 +142,22 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
 				</List>
 				<Divider />
 				<List className={classes.mainNav}>
-					{['Invoice', 'Settings'].map((text, index) => (
-						<ListItem
-							button
-							key={text}
-							className={classes.listButton}
-							classes={{ root: charToUp(text) === activeBtn ? classes.activeButton : void 0 }}
-							onClick={onActive}
-						>
-							<ListItemIcon className={classes.itemIcon}>
-								{index % 2 === 0
-									? <ReceiptIcon fontSize="small" className={classes.icon} />
-									: <SettingsIcon fontSize="small" className={classes.icon} />}
-							</ListItemIcon>
-							<ListItemText className={classes.itemText} primary={text} />
-						</ListItem>
+					{['/invoice', '/settings'].map((pageURL, index) => (
+						<NavLink to={pageURL} key={charToUp(pageURL)}>
+							<ListItem
+								button
+								className={classes.listButton}
+								classes={{ root: charToUp(pageURL) === activeBtn ? classes.activeButton : void 0 }}
+								onClick={onActive}
+							>
+								<ListItemIcon className={classes.itemIcon}>
+									{index % 2 === 0
+										? <ReceiptIcon fontSize="small" className={classes.icon} />
+										: <SettingsIcon fontSize="small" className={classes.icon} />}
+								</ListItemIcon>
+								<ListItemText className={classes.itemText} primary={charToUp(pageURL)} />
+							</ListItem>
+						</NavLink>
 					))}
 				</List>
 			</div>
