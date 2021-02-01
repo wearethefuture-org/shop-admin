@@ -6,17 +6,13 @@ interface SettingsFormProps {
   data: ISettingsItem;
 }
 
-const reducerForms = (data: ISettingsItem) => {
+const SettingsForms: React.FC<SettingsFormProps> = ({ data }) => {
   switch (data.name) {
     case "widgets":
       return <WidgetSettingsForm data={data} />;
     default:
       return null;
   }
-};
-
-const SettingsForms: React.FC<SettingsFormProps> = ({ data }) => {
-  return reducerForms(data);
 };
 
 export default SettingsForms;

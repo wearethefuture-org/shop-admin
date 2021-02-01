@@ -1,6 +1,6 @@
 import { IActions } from '../interfaces/actions';
-import { ICategoryItem } from "../interfaces/category-Item";
-import { IProductItem } from "../interfaces/IProducts";
+import { ICategoryItem } from '../interfaces/category-Item';
+import { IProductItem } from '../interfaces/IProducts';
 import { ISettingError, ISettingsItem } from '../interfaces/ISettings';
 import {
   ADD_CATEGORY,
@@ -17,7 +17,7 @@ import {
   SUCCESS_SNACKBAR,
   FAIL_SNACKBAR,
   CLOSE_SNACKBAR
-} from "./types";
+} from './types';
 
 export const loadCategories = (categories: ICategoryItem[]): IActions => ({ type: LOAD_CATEGORIES, data: categories });
 export const fetchCategories = (): IActions => ({ type: REQUEST_CATEGORIES });

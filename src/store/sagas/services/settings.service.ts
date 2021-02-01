@@ -1,5 +1,5 @@
-import { api } from "../../../api/api";
-import { IActions } from "../../../interfaces/actions";
+import { api } from '../../../api/api';
+import { IActions } from '../../../interfaces/actions';
 
 export async function fetchedSettings() {
   const settings = await api.settings.get();

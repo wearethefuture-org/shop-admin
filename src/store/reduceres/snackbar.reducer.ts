@@ -1,6 +1,6 @@
-import { IActions } from "../../interfaces/actions";
-import { ISnackBar } from "../../interfaces/ISnackBar";
-import { CLOSE_SNACKBAR, FAIL_SNACKBAR, SUCCESS_SNACKBAR } from "../types";
+import { IActions } from '../../interfaces/actions';
+import { ISnackBar } from '../../interfaces/ISnackBar';
+import { CLOSE_SNACKBAR, FAIL_SNACKBAR, SUCCESS_SNACKBAR } from '../types';
 
 const data: ISnackBar = {
   isOpen: false,

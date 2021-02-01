@@ -1,9 +1,10 @@
-import React from "react";
-import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import { makeStyles, Theme } from "@material-ui/core/styles";
-import useSnackBar from "../../hooks/useSnackbar";
+import React from 'react';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import { Theme } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import useSnackBar from '../../hooks/useSnackbar';
 
 const useStyles = makeStyles((theme: Theme) => ({
   snackbarFail: {
@@ -19,7 +20,7 @@ const SnackBar: React.FC = () => {
   const { errorMessage, isOpen, handleClose, typeSnackBar } = useSnackBar();
 
   return (
-    <div>
+    <>
       <Snackbar
         anchorOrigin={{
           vertical: "bottom",
@@ -36,7 +37,7 @@ const SnackBar: React.FC = () => {
               : classes.snackbarFail,
         }}
         action={
-          <React.Fragment>
+          <>
             <IconButton
               aria-label="close"
               color="inherit"
@@ -44,10 +45,10 @@ const SnackBar: React.FC = () => {
             >
               <CloseIcon />
             </IconButton>
-          </React.Fragment>
+          </>
         }
       />
-    </div>
+    </>
   );
 };
 

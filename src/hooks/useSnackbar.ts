@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
-import { closeSnackBar } from "../store/actions";
-import { RootState } from "../store/store";
+import { useDispatch, useSelector } from 'react-redux';
+import { closeSnackBar } from '../store/actions';
+import { RootState } from '../store/store';
 
 const useSnackBar = () => {
   const dispatch = useDispatch();

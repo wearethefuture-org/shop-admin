@@ -1,6 +1,6 @@
-import { IActions } from "../../interfaces/actions";
-import { ISettingsData } from "../../interfaces/ISettings";
-import { LOAD_SETTINGS, UPDATE_SETTINGS } from "../types";
+import { IActions } from '../../interfaces/actions';
+import { ISettingsData } from '../../interfaces/ISettings';
+import { LOAD_SETTINGS, UPDATE_SETTINGS } from '../types';
 
 const data: ISettingsData = {
   list: [],
