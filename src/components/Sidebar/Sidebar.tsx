@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { NavLink, useLocation } from 'react-router-dom';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -17,153 +17,150 @@ import ReceiptIcon from '@material-ui/icons/Receipt';
 import SettingsIcon from '@material-ui/icons/Settings';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
+import styles from './Sidebar.module.scss';
 import { firstCharToUpperCase as charToUp } from '../../utils/firstCharToUpperCase';
 import useDidUpdate from '../../hooks/useDidUpdate';
 
 interface SidebarProps {
-	isOpen: boolean,
-	onSidebarToggle: () => void
+  isOpen: boolean;
+  onSidebarToggle: () => void;
 }
 
-
-const useStyles = makeStyles(theme => ({
-	sidebar: {
-		height: '100%',
-		width: '240px',
-		marginLeft: (isOpen: boolean) => isOpen ? '0' : '-240px',
-		transition: `margin-left 0.3s ease-in-out`
-	},
-	sidebarPaper: {
-		flexGrow: 1,
-		position: 'relative',
-		boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
-		border: 'none',
-	},
-	sidebarTitle: {
-		display: 'flex',
-		flexShrink: 0,
-		alignItems: 'center',
-		backgroundColor: 'darkgreen',
-		color: '#fff',
-		padding: theme.spacing(0, 1),
-		paddingLeft: '20px',
-		fontSize: '18px',
-		fontStyle: 'bold',
-		...theme.mixins.toolbar,
-	},
-	mainNav: {
-		padding: '4px 10px'
-	},
-	listButton: {
-		color: theme.palette.grey[700],
-		height: '45px'
-	},
-	activeButton: {
-		borderRadius: '3px',
-		color: 'inherit',
-		backgroundColor: theme.palette.action.selected,
-	},
-	itemIcon: {
-		minWidth: '0',
-		margin: '0 8px 0 0'
-	},
-	icon: {
-		color: 'darkgreen'
-	},
-	itemText: {
-		fontSize: '15px',
-	},
+const useStyles = makeStyles((theme) => ({
+  sidebar: {
+    height: '100%',
+    width: '240px',
+    marginLeft: (isOpen: boolean) => (isOpen ? '0' : '-240px'),
+    transition: `margin-left 0.3s ease-in-out`,
+  },
+  sidebarPaper: {
+    flexGrow: 1,
+    position: 'relative',
+    boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
+    border: 'none',
+  },
+  sidebarTitle: {
+    display: 'flex',
+    flexShrink: 0,
+    alignItems: 'center',
+    backgroundColor: 'darkgreen',
+    color: '#fff',
+    padding: theme.spacing(0, 1),
+    paddingLeft: '20px',
+    fontSize: '18px',
+    fontStyle: 'bold',
+    ...theme.mixins.toolbar,
+  },
+  mainNav: {
+    padding: '4px 10px',
+  },
+  listButton: {
+    color: theme.palette.grey[700],
+    height: '45px',
+  },
+  activeButton: {
+    borderRadius: '3px',
+    color: 'inherit',
+    backgroundColor: theme.palette.action.selected,
+  },
+  itemIcon: {
+    minWidth: '0',
+    margin: '0 8px 0 0',
+  },
+  itemText: {
+    fontSize: '15px',
+  },
 }));
 
-
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
-	const screenSize: boolean = useMediaQuery((theme: any) => theme.breakpoints.down('sm'));
-	useDidUpdate(() => screenSize ? onSidebarToggle() : void 0, [screenSize])
-	useDidUpdate(() => !screenSize ? onSidebarToggle() : void 0, [screenSize])
+  const screenSize: boolean = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
+  useDidUpdate(() => (screenSize ? onSidebarToggle() : void 0), [screenSize]);
+  useDidUpdate(() => (!screenSize ? onSidebarToggle() : void 0), [screenSize]);
 
-	const [activeBtn, setActiveBtn] = React.useState('')
-	const onActive = (evt: any) => {
-		setActiveBtn(evt.currentTarget.children[1].textContent);
-	}
+  const { pathname: activePath } = useLocation();
 
-	const classes = useStyles(isOpen);
-	const sidebarItems = [
-		{
-			pageURL: '/dashboard',
-			itemIcon: <HouseIcon fontSize="small" className={classes.icon} />
-		},
-		{
-			pageURL: '/categories',
-			itemIcon: <CategoryIcon fontSize="small" className={classes.icon} />
-		},
-		{
-			pageURL: '/products',
-			itemIcon: <ShoppingCartIcon fontSize="small" className={classes.icon} />
-		},
-		{
-			pageURL: '/statistic',
-			itemIcon: <EqualizerIcon fontSize="small" className={classes.icon} />
-		},
-		{
-			pageURL: '/users',
-			itemIcon: <GroupIcon fontSize="small" className={classes.icon} />
-		},
-	];
+  const classes = useStyles(isOpen);
+  const sidebarItems = [
+    {
+      pageURL: '/dashboard',
+      itemIcon: <HouseIcon fontSize="small" className={styles.icon} />,
+    },
+    {
+      pageURL: '/categories',
+      itemIcon: <CategoryIcon fontSize="small" className={styles.icon} />,
+    },
+    {
+      pageURL: '/products',
+      itemIcon: <ShoppingCartIcon fontSize="small" className={styles.icon} />,
+    },
+    {
+      pageURL: '/statistic',
+      itemIcon: <EqualizerIcon fontSize="small" className={styles.icon} />,
+    },
+    {
+      pageURL: '/users',
+      itemIcon: <GroupIcon fontSize="small" className={styles.icon} />,
+    },
+  ];
 
-
-	return (
-		<Drawer
-			variant="permanent"
-			anchor="left"
-			open={isOpen}
-			className={classes.sidebar}
-			classes={{
-				paper: classes.sidebarPaper,
-			}}
-		>
-			<div className="sidebar-header">
-				<div className={classes.sidebarTitle}>Shop Admin Panel</div>
-				<Divider />
-			</div>
-			<div className="sidebar-nav">
-				<List component="nav" className={classes.mainNav}>
-					{sidebarItems.map(({ pageURL, itemIcon }) => (
-						<NavLink to={pageURL} key={charToUp(pageURL)}>
-							<ListItem
-								button
-								className={classes.listButton}
-								classes={{ root: charToUp(pageURL) === activeBtn ? classes.activeButton : void 0 }}
-								onClick={onActive}
-							>
-								<ListItemIcon className={classes.itemIcon}>{itemIcon}</ListItemIcon>
-								<ListItemText className={classes.itemText} primary={charToUp(pageURL)} />
-							</ListItem>
-						</NavLink>
-					))}
-				</List>
-				<Divider />
-				<List className={classes.mainNav}>
-					{['/invoice', '/settings'].map((pageURL, index) => (
-						<NavLink to={pageURL} key={charToUp(pageURL)}>
-							<ListItem
-								button
-								className={classes.listButton}
-								classes={{ root: charToUp(pageURL) === activeBtn ? classes.activeButton : void 0 }}
-								onClick={onActive}
-							>
-								<ListItemIcon className={classes.itemIcon}>
-									{index % 2 === 0
-										? <ReceiptIcon fontSize="small" className={classes.icon} />
-										: <SettingsIcon fontSize="small" className={classes.icon} />}
-								</ListItemIcon>
-								<ListItemText className={classes.itemText} primary={charToUp(pageURL)} />
-							</ListItem>
-						</NavLink>
-					))}
-				</List>
-			</div>
-		</Drawer>
-	);
-}
+  return (
+    <Drawer
+      variant="permanent"
+      anchor="left"
+      open={isOpen}
+      className={classes.sidebar}
+      classes={{
+        paper: classes.sidebarPaper,
+      }}
+    >
+      <div className="sidebar-header">
+        <div className={classes.sidebarTitle}>Shop Admin Panel</div>
+        <Divider />
+      </div>
+      <div className="sidebar-nav">
+        <List component="nav" className={classes.mainNav}>
+          {sidebarItems.map(({ pageURL, itemIcon }) => (
+            <NavLink to={pageURL} key={charToUp(pageURL)}>
+              <ListItem
+                button
+                className={classes.listButton}
+                classes={{
+                  root: pageURL === activePath ? classes.activeButton : void 0,
+                }}
+              >
+                <ListItemIcon className={classes.itemIcon}>{itemIcon}</ListItemIcon>
+                <ListItemText className={classes.itemText} primary={charToUp(pageURL)} />
+              </ListItem>
+            </NavLink>
+          ))}
+        </List>
+        <Divider />
+        <List className={classes.mainNav}>
+          {['/invoice', '/settings'].map((pageURL, index) => (
+            <NavLink to={pageURL} key={charToUp(pageURL)}>
+              <ListItem
+                button
+                key={pageURL}
+                className={classes.listButton}
+                classes={{
+                  root: charToUp(pageURL) === activePath ? classes.activeButton : void 0,
+                }}
+              >
+                <ListItemIcon className={classes.itemIcon}>
+                  {index % 2 === 0 ? (
+                    <ReceiptIcon fontSize="small" className={styles.icon} />
+                  ) : (
+                    <SettingsIcon fontSize="small" className={styles.icon} />
+                  )}
+                </ListItemIcon>
+                <ListItemText className={classes.itemText} primary={charToUp(pageURL)} />
+              </ListItem>
+            </NavLink>
+          ))}
+        </List>
+      </div>
+    </Drawer>
+  );
+};
 
 export default Sidebar;

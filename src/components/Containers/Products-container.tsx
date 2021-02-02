@@ -1,15 +1,20 @@
 import React from 'react';
-import ProductsTable from '../Tables/Products/Products-table';
 
+import ProductsTable from '../Tables/Products/Products-table';
+import AddProduct from '../AddProduct/AddProduct';
 import useProducts from '../../hooks/useProducts';
-import products from '../../mock/products'
 
 
 const ProductsContainer: React.FC = () => {
-  let data = useProducts();
-  data = products.concat()
+  const { data } = useProducts();
 
-  return <ProductsTable data={data} />
+  return (
+    <div>
+      <ProductsTable {...data} />
+      <AddProduct />
+    </div>
+
+  )
 }
 
 export default ProductsContainer;

@@ -9,10 +9,10 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-import { IProductItem } from '../../../../interfaces/IProducts';
+import { ProductTableData} from '../../../../interfaces/IProducts';
 
-interface CategoryTableFooterProps {
-  rows: IProductItem[],
+interface ProductTableFooterProps {
+  rows: ProductTableData[],
   rowsPerPage: number,
   page: number,
   setPage(page: number): void,
@@ -35,7 +35,7 @@ const useFooterStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const CategoryTableFooter: React.FC<CategoryTableFooterProps> = ({ rows, rowsPerPage, page, setPage, setRowsPerPage }) => {
+const ProductsTableFooter: React.FC<ProductTableFooterProps> = ({ rows, rowsPerPage, page, setPage, setRowsPerPage }) => {
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
@@ -134,4 +134,4 @@ const CategoryTableFooter: React.FC<CategoryTableFooterProps> = ({ rows, rowsPer
   );
 }
 
-export default CategoryTableFooter;
+export default ProductsTableFooter;
