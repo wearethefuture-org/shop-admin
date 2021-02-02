@@ -1,15 +1,19 @@
-import React from "react";
-import { ISettingsItem } from "../../../interfaces/ISettings";
-import WidgetSettingsForm from "./WidgetsSettings/WidgetSettings";
+import React from 'react';
+import { useDispatch } from 'react-redux';
+
+import { ISettingsItem } from '../../../interfaces/ISettings';
+import WidgetForm from './WidgetsSettings/Widget-form';
 
 interface SettingsFormProps {
   data: ISettingsItem;
 }
 
 const SettingsForms: React.FC<SettingsFormProps> = ({ data }) => {
+  const dispath = useDispatch();
+
   switch (data.name) {
-    case "widgets":
-      return <WidgetSettingsForm data={data} />;
+    case 'widgets':
+      return <WidgetForm data={data} dispatch={dispath} />;
     default:
       return null;
   }

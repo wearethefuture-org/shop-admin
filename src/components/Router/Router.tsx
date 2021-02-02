@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+
 import Sidebar from '../Sidebar/Sidebar';
 import SnackBar from '../Common/SnackBar';
 import Dashboard from '../../pages/Dashboard/Dashboard';

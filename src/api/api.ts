@@ -1,5 +1,6 @@
 import { root } from './config';
 import axios, { AxiosResponse } from 'axios';
+
 import { ICategoryItem } from '../interfaces/category-Item';
 import { IActions } from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';

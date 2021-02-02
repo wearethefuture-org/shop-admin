@@ -1,4 +1,5 @@
 import React from 'react';
+
 import SettingsContainer from '../../components/Containers/Settings-container';
 
 const Settings: React.FC = () => {

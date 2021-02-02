@@ -1,14 +1,15 @@
 import React from 'react';
-import { ISettingsItem } from '../../../interfaces/ISettings';
-import { firstCharToUpperCase } from '../../../utils/firstCharToUpperCase';
-import DateMoment from '../../Common/Date-moment';
-import SettingsForms from '../../Forms/Settings-form/Settings-form';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+
+import { ISettingsItem } from '../../../../interfaces/ISettings';
+import { firstCharToUpperCase } from '../../../../utils/firstCharToUpperCase';
+import DateMoment from '../../../Common/Date-moment';
+import SettingsForms from '../../../Forms/Settings-form/Settings-form';
 
 interface SettingsItemProps {
   data: ISettingsItem;

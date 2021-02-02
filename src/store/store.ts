@@ -1,11 +1,12 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import createSagaMiddleware from 'redux-saga';
+
 import categories from './reduceres/categories.reducer';
 import products from './reduceres/products.reducer';
 import settings from './reduceres/settings.reducer';
 import snackBar from './reduceres/snackbar.reducer';
 import theme from './reduceres/themeMode.reducer';
-import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas/sagas';
 
 

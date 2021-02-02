@@ -1,4 +1,6 @@
 import { all, fork, takeEvery } from 'redux-saga/effects';
+import { SagaIterator } from 'redux-saga';
+
 import {
   REQUEST_CATEGORIES,
   REQUEST_ADD_CATEGORIES,
@@ -11,7 +13,6 @@ import {
   addCategoryWorker,
 } from '../sagas/categories.saga';
 import productsWorker from '../sagas/products.saga';
-import { SagaIterator } from 'redux-saga';
 import { fetchSettingsWorker, updateSettingsWorker } from './settings.saga';
 
 function* sagaCategoriesWatcher(): SagaIterator {

@@ -1,6 +1,7 @@
 import React from 'react';
+
 import { ISettingsItem } from '../../../interfaces/ISettings';
-import SettingsAccordion from './SettingsAccordion';
+import SettingsAccordion from './SettingsAccordion/SettingsAccordion';
 import s from './SettingsContent.module.scss';
 
 interface SettingsDataProps {

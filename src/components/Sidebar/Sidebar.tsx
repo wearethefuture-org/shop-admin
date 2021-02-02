@@ -15,8 +15,9 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 import GroupIcon from '@material-ui/icons/Group';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { firstCharToUpperCase as charToUp } from '../../utils/firstCharToUpperCase';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+
+import { firstCharToUpperCase as charToUp } from '../../utils/firstCharToUpperCase';
 import useDidUpdate from '../../hooks/useDidUpdate';
 
 interface SidebarProps {
