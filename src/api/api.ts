@@ -1,7 +1,9 @@
 import { root } from './config';
 import axios, { AxiosResponse } from 'axios';
+
 import { ICategoryItem } from '../interfaces/category-Item';
 import { IActions } from '../interfaces/actions';
+import { ISettingsItem } from '../interfaces/ISettings';
 import { IProductItem } from '../interfaces/IProducts';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
@@ -11,6 +13,7 @@ type ApiFetchedDataType = {
     get: () => FetchedDataType<ICategoryItem>;
     add: (category: IActions) => FetchedDataType<ICategoryItem>;
   };
+
   products: {
     get: () => FetchedDataType<IProductItem>;
     getById: (id: number) => FetchedDataType<IProductItem>;
@@ -19,6 +22,11 @@ type ApiFetchedDataType = {
     updateImg: (data: any) => FetchedDataType<JSON>;
     deleteProduct: (id: IActions) => FetchedDataType<JSON>;
   };
+
+  settings: {
+    get: () => FetchedDataType<ISettingsItem>;
+    put: (settings: IActions) => FetchedDataType<ISettingsItem>;
+  };
 };
 
 export const api: ApiFetchedDataType = {
@@ -26,6 +34,7 @@ export const api: ApiFetchedDataType = {
     get: () => axios.get(`${root}/category`),
     add: (category) => axios.post(`${root}/category`, category),
   },
+
   products: {
     get: () => axios.get(`${root}/product`),
     add: (product) => axios.post(`${root}/product`, product),
@@ -33,5 +42,10 @@ export const api: ApiFetchedDataType = {
     update: (id, product) => axios.patch(`${root}/product/${id}`, product),
     updateImg: (data) => axios.post(`${root}/product/multipleImages`, data),
     deleteProduct: (id) => axios.delete(`${root}/product/${id}`),
+  },
+
+  settings: {
+    get: () => axios.get(`${root}/parameters`),
+    put: (settings) => axios.put(`${root}/parameters`, settings),
   },
 };

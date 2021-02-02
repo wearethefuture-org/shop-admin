@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import styles from './Sidebar.module.scss';
 import { NavLink, useLocation } from 'react-router-dom';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -16,8 +15,10 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 import GroupIcon from '@material-ui/icons/Group';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { firstCharToUpperCase as charToUp } from '../../utils/firstCharToUpperCase';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+
+import styles from './Sidebar.module.scss';
+import { firstCharToUpperCase as charToUp } from '../../utils/firstCharToUpperCase';
 import useDidUpdate from '../../hooks/useDidUpdate';
 
 interface SidebarProps {
@@ -135,24 +136,26 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
         </List>
         <Divider />
         <List className={classes.mainNav}>
-          {['Invoice', 'Settings'].map((text, index) => (
-            <ListItem
-              button
-              key={text}
-              className={classes.listButton}
-              classes={{
-                root: text === activePath ? classes.activeButton : void 0,
-              }}
-            >
-              <ListItemIcon className={classes.itemIcon}>
-                {index % 2 === 0 ? (
-                  <ReceiptIcon fontSize="small" className={styles.icon} />
-                ) : (
-                  <SettingsIcon fontSize="small" className={styles.icon} />
-                )}
-              </ListItemIcon>
-              <ListItemText className={classes.itemText} primary={text} />
-            </ListItem>
+          {['/invoice', '/settings'].map((pageURL, index) => (
+            <NavLink to={pageURL} key={charToUp(pageURL)}>
+              <ListItem
+                button
+                key={pageURL}
+                className={classes.listButton}
+                classes={{
+                  root: charToUp(pageURL) === activePath ? classes.activeButton : void 0,
+                }}
+              >
+                <ListItemIcon className={classes.itemIcon}>
+                  {index % 2 === 0 ? (
+                    <ReceiptIcon fontSize="small" className={styles.icon} />
+                  ) : (
+                    <SettingsIcon fontSize="small" className={styles.icon} />
+                  )}
+                </ListItemIcon>
+                <ListItemText className={classes.itemText} primary={charToUp(pageURL)} />
+              </ListItem>
+            </NavLink>
           ))}
         </List>
       </div>
