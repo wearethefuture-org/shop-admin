@@ -10,6 +10,7 @@ import { fetchUpdateSettings } from '../../../../store/actions';
 interface WidgetFormProps {
   data: ISettingsItem;
   dispatch: Dispatch;
+  handleClick: () => void;
 }
 
 const validationSchema = Yup.object({
@@ -37,6 +38,7 @@ const WidgetForm = withFormik<WidgetFormProps, IFormWidgetValues>({
   validationSchema: validationSchema,
   handleSubmit: (values: IFormWidgetValues, { setSubmitting, props }) => {
     setSubmitting(false);
+    props.handleClick();
     props.dispatch(fetchUpdateSettings(props.data.name, values));
   },
 })(InnerForm);
