@@ -19,22 +19,23 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     heading: {
       fontSize: theme.typography.pxToRem(18),
-      marginRight: "10px",
+      marginRight: '10px',
     },
     secondaryHeading: {
       fontSize: theme.typography.pxToRem(15),
       color: theme.palette.text.secondary,
     },
     dateTitle: {
-      [theme.breakpoints.down("xs")]: {
-        display: "none",
+      [theme.breakpoints.down('xs')]: {
+        display: 'none',
       },
     },
   })
 );
 
-const SettingsAccordion: React.FC<SettingsItemProps> = ({ data }) => {
-  const { id, name, updatedAt } = data;
+const SettingsAccordion: React.FC<SettingsItemProps> = ({
+  data: { id, name, updatedAt, settings },
+}) => {
   const classes = useStyles();
 
   return (
@@ -48,12 +49,12 @@ const SettingsAccordion: React.FC<SettingsItemProps> = ({ data }) => {
           {`Налаштування ${firstCharToUpperCase(name)}`}
         </Typography>
         <Typography className={classes.secondaryHeading}>
-          <span className={classes.dateTitle}>Оновлено</span>{" "}
+          <span className={classes.dateTitle}>Оновлено</span>{' '}
           <DateMoment date={updatedAt} />
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <SettingsForms data={data} />
+        <SettingsForms name={name} parameters={settings} />
       </AccordionDetails>
     </Accordion>
   );

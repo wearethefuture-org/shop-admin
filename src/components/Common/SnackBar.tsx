@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const SnackBar: React.FC = () => {
   const classes = useStyles();
-  const { errorMessage, isOpen, handleClose, typeSnackBar } = useSnackBar();
+  const { errorMessage, isOpen, handleClose, typeSnackbar } = useSnackBar();
 
   return (
     <>
@@ -29,10 +29,10 @@ const SnackBar: React.FC = () => {
         open={isOpen}
         autoHideDuration={3000}
         onClose={handleClose}
-        message={typeSnackBar === "success" ? "Success" : errorMessage}
+        message={typeSnackbar === "success" ? "Success" : errorMessage}
         ContentProps={{
           className:
-            typeSnackBar === "success"
+          typeSnackbar === "success"
               ? classes.snackbarSuccess
               : classes.snackbarFail,
         }}

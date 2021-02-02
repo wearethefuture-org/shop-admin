@@ -5,20 +5,20 @@ import { CLOSE_SNACKBAR, FAIL_SNACKBAR, SUCCESS_SNACKBAR } from '../types';
 const data: ISnackBar = {
   isOpen: false,
   errorMessage: "",
-  type: "success",
+  typeSnackbar: "success",
 };
 
 const snackBar = (state = data, action: IActions) => {
   switch (action.type) {
     case SUCCESS_SNACKBAR: {
-      return { ...state, isOpen: true, type: "success" };
+      return { ...state, isOpen: true, typeSnackbar: "success" };
     }
     case FAIL_SNACKBAR: {
       return {
         ...state,
         isOpen: true,
         errorMessage: action.data,
-        type: "error",
+        typeSnackbar: "error",
       };
     }
     case CLOSE_SNACKBAR: {

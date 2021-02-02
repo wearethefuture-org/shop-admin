@@ -4,13 +4,14 @@ import * as Yup from 'yup';
 
 import InnerForm from './Inner-form';
 import { IFormWidgetValues } from '../../../../interfaces/widget-form';
-import { ISettingsItem } from '../../../../interfaces/ISettings';
+import { ISettingsParams } from '../../../../interfaces/ISettings';
 import { fetchUpdateSettings } from '../../../../store/actions';
 
 interface WidgetFormProps {
-  data: ISettingsItem;
   dispatch: Dispatch;
   handleClick: () => void;
+  parameters: ISettingsParams;
+  name: string;
 }
 
 const validationSchema = Yup.object({
@@ -25,11 +26,9 @@ const validationSchema = Yup.object({
 });
 
 const WidgetForm = withFormik<WidgetFormProps, IFormWidgetValues>({
-  mapPropsToValues: ({ data }) => {
-    const {
-      settings: { quantityNewArrivals, quantityPopularItems },
-    } = data;
-
+  mapPropsToValues: ({
+    parameters: { quantityNewArrivals, quantityPopularItems },
+  }) => {
     return {
       quantityNewArrivals,
       quantityPopularItems,
@@ -39,7 +38,7 @@ const WidgetForm = withFormik<WidgetFormProps, IFormWidgetValues>({
   handleSubmit: (values: IFormWidgetValues, { setSubmitting, props }) => {
     setSubmitting(false);
     props.handleClick();
-    props.dispatch(fetchUpdateSettings(props.data.name, values));
+    props.dispatch(fetchUpdateSettings(props.name, values));
   },
 })(InnerForm);
 

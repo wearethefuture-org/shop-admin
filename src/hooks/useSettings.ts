@@ -12,6 +12,7 @@ const useSettings = () => {
   }, [dispatch]);
 
   const data = useSelector((state: RootState) => state.settings.list);
+  
   return { data, dispatch };
 };
 

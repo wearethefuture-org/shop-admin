@@ -2,21 +2,27 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import useSnackBar from '../../../hooks/useSnackbar';
 
-import { ISettingsItem } from '../../../interfaces/ISettings';
+import { ISettingsParams } from '../../../interfaces/ISettings';
 import WidgetForm from './WidgetsSettings/Widget-form';
 
 interface SettingsFormProps {
-  data: ISettingsItem;
+  name: string;
+  parameters: ISettingsParams;
 }
 
-const SettingsForms: React.FC<SettingsFormProps> = ({ data }) => {
+const SettingsForms: React.FC<SettingsFormProps> = ({ name, parameters }) => {
   const dispath = useDispatch();
   const { handleClick } = useSnackBar();
 
-  switch (data.name) {
+  switch (name) {
     case 'widgets':
       return (
-        <WidgetForm data={data} dispatch={dispath} handleClick={handleClick} />
+        <WidgetForm
+          name={name}
+          parameters={parameters}
+          dispatch={dispath}
+          handleClick={handleClick}
+        />
       );
     default:
       return null;

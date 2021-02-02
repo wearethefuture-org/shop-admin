@@ -5,9 +5,9 @@ import { RootState } from '../store/store';
 
 const useSnackBar = () => {
   const dispatch = useDispatch();
-  const isOpen = useSelector((state: RootState) => state.snackBar.isOpen);
-  const typeSnackBar = useSelector((state: RootState) => state.snackBar.type);
-  const errorMessage = useSelector((state: RootState) => state.snackBar.errorMessage);
+  const { isOpen, errorMessage, typeSnackbar } = useSelector(
+    (state: RootState) => state.snackBar
+  );
 
   const handleClick = () => {
     if (isOpen) {
@@ -19,7 +19,7 @@ const useSnackBar = () => {
     event: React.SyntheticEvent | MouseEvent,
     reason?: string
   ) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return;
     }
     dispatch(closeSnackBar());
@@ -29,7 +29,7 @@ const useSnackBar = () => {
     errorMessage,
     isOpen,
     handleClose,
-    typeSnackBar,
+    typeSnackbar,
     handleClick,
   };
 };
