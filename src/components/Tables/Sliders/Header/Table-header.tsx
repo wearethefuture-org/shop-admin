@@ -9,8 +9,6 @@ const TableHeader:React.FC = () => {
             <TableRow>
                 <TableCell>ID</TableCell>
                 <TableCell align="right">Name</TableCell>
-                <TableCell align="right">Created At</TableCell>
-                <TableCell align="right">Updated At</TableCell>
                 <TableCell align="right">Text</TableCell>
                 <TableCell align="right">Image</TableCell>
                 <TableCell align="right">Href</TableCell>

@@ -1,31 +1,37 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Button, DialogActions, LinearProgress} from '@material-ui/core';
 import {Field, Form, FormikProps} from 'formik';
 import {TextField, SimpleFileUpload, Switch} from 'formik-material-ui';
 import {makeStyles} from '@material-ui/core/styles';
 
 import {IFormValues, InnerSliderFormProps} from '../../../interfaces/slider-form';
-import FileUpload from "../Slider-form-edit/FileUpload";
-
+import FileUpload from "./FileUpload";
+import axios from "axios";
+import {root} from "../../../api/config";
 
 const InnerForm: React.FC<InnerSliderFormProps & FormikProps<IFormValues>> = (
-    {submitForm, isSubmitting, handleClose, ...props}) => {
-    const useStyles = makeStyles({
-        customBtn: {
-            marginTop: "15px",
-        },
-    });
+    {submitForm, /*saveImage,*/ isSubmitting, handleClose, ...props}) => {
 
+    const useStyles = makeStyles({
+            customBtn: {
+                marginTop: "15px",
+            },
+            image: {
+                opacity: "0.5",
+                zIndex: 1000,
+            },
+        }
+    );
     const classes = useStyles();
 
-    const dragOverHandler = (event: React.DragEvent<HTMLFormElement>) => {
+    const dragOverHandler = (event: React.DragEvent<HTMLFormElement>) =>  {
         console.log('File(s) in drop zone');
 
         // Prevent default behavior (Prevent file from being opened)
         event.preventDefault();
     }
 
-    const dropHandler = (event: React.DragEvent<HTMLFormElement>) => {
+    const dropHandler =(event: React.DragEvent<HTMLFormElement>) =>{
         console.log('File(s) dropped');
 
         // Prevent default behavior (Prevent file from being opened)
@@ -52,12 +58,14 @@ const InnerForm: React.FC<InnerSliderFormProps & FormikProps<IFormValues>> = (
     }
 
     return (
-        <Form onDrop={dropHandler}
-              onDragOver={dragOverHandler}
-              onDragEnd={event => {
-                  event.stopPropagation();
-                  event.preventDefault();
-              }}>
+        <Form
+            onDrop={dropHandler}
+            onDragOver={dragOverHandler}
+            onDragEnd={event => {
+                event.stopPropagation();
+                event.preventDefault();
+            }}
+        >
             <Field
                 fullWidth
                 component={TextField}
@@ -73,6 +81,7 @@ const InnerForm: React.FC<InnerSliderFormProps & FormikProps<IFormValues>> = (
                 label="Text"
                 name="text"
             />
+
             <Field
                 fullWidth
                 multiline
@@ -93,7 +102,8 @@ const InnerForm: React.FC<InnerSliderFormProps & FormikProps<IFormValues>> = (
             {/*    fullWidth*/}
             {/*    multiline*/}
             {/*    component={Switch}*/}
-            {/*    type="isShown"*/}
+            {/*    enableReinitialize*/}
+            {/*    type="checkbox"*/}
             {/*    label="IsShown"*/}
             {/*    name="isShown"*/}
             {/*/>*/}
@@ -122,11 +132,10 @@ const InnerForm: React.FC<InnerSliderFormProps & FormikProps<IFormValues>> = (
                     disabled={isSubmitting}
                     onClick={submitForm}
                 >
-                    Create
+                    Save
                 </Button>
             </DialogActions>
         </Form>
     );
 }
-
 export default InnerForm;

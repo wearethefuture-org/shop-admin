@@ -10,12 +10,14 @@ import { IFormValues } from '../../../interfaces/slider-form';
 interface SliderFormProps {
     dispatch: Dispatch;
     handleClose: () => void;
+    initialId?: number;
     initialName?: string;
     initialText?: string;
     initialImage?: string;
     initialHref?: string;
     initialIsShown?: boolean;
     initialPriority?: number;
+    //saveImage: any,
 }
 
 const FILE_SIZE = 9000 * 1024;
@@ -50,19 +52,21 @@ const sliderValidationShema = Yup.object().shape({
 const SliderForm = withFormik<SliderFormProps, IFormValues>({
     mapPropsToValues: props => {
         return {
+            id: props.initialId || -1,
             name: props.initialName || "",
             text: props.initialText || "",
             image: props.initialImage || "",
             href: props.initialHref || "",
             isShown: props.initialIsShown || false,
-            priority: props.initialPriority || 0
+            priority: props.initialPriority || 0,
+            //saveImage: props.saveImage
         };
     },
     validationSchema: sliderValidationShema,
     handleSubmit: (values: IFormValues, { setSubmitting, props }) => {
         console.log(values.image)
         setSubmitting(false);
-        props.dispatch(fetchAddSliders(values.name, values.text, values.image, values.href, values.isShown, values.priority));
+        props.dispatch(fetchAddSliders(values.id, values.name, values.text, values.image, values.href, values.isShown, values.priority));
         props.handleClose();
     }
 })(InnerForm);

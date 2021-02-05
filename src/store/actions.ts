@@ -40,7 +40,7 @@ export const fetchProducts = (): IActions => ({ type: REQUEST_PRODUCTS });
 export const loadSliders = (sliders: ISliderItem[]): IActions => ({ type: LOAD_SLIDERS, data: sliders });
 export const fetchSliders = (): IActions => ({ type: REQUEST_SLIDERS });
 
-export const fetchAddSliders = (name: string, text: string, image: string, href: string, isShown: boolean, priority: number): IActions => ({
+export const fetchAddSliders = (id: number, name: string, text: string, image: string, href: string, isShown: boolean, priority: number): IActions => ({
   type: REQUEST_ADD_SLIDERS,
   data: { name, text, image, href, isShown, priority },
 });

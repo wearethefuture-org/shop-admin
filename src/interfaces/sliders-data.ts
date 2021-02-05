@@ -15,3 +15,4 @@ export interface SliderTableData {
     isShown: boolean;
     priority: number;
 };
+

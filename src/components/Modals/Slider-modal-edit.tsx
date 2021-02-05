@@ -4,21 +4,25 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
 import { Dispatch } from 'redux';
 
 import { ISlidersModal } from '../../interfaces/modals';
-import SliderForm from '../Forms/Slider-form/Slider-form';
+import  SliderFormEdit  from '../Forms/Slider-form-edit/Slider-form-edit';
+import {SliderTableData} from "../../interfaces/sliders-data";
 
 interface FormDialogProps {
     dispatch: Dispatch,
     slidersLength: number,
     modalData: ISlidersModal,
+    row: SliderTableData,
+
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({
                                                    dispatch,
                                                    modalData,
+                                                   row,
                                                }) => {
 
     const { handleClickOpen, handleClose, isOpened } = modalData;
@@ -26,7 +30,7 @@ const FormDialog: React.FC<FormDialogProps> = ({
     return (
         <div>
             <Button variant="contained" color="primary" onClick={handleClickOpen}>
-                <AddIcon /> New Slider
+                <EditIcon />
             </Button>
             <Dialog
                 open={isOpened}
@@ -35,10 +39,17 @@ const FormDialog: React.FC<FormDialogProps> = ({
                 fullWidth
                 maxWidth="xs"
             >
-                <DialogTitle id="form-dialog-title">Add new slider</DialogTitle>
+                <DialogTitle id="form-dialog-title"></DialogTitle>
                 <DialogContent dividers>
-                    <DialogContentText>Choose name of slider.</DialogContentText>
-                    <SliderForm
+                    <DialogContentText>Edit slider</DialogContentText>
+                    <SliderFormEdit
+                        initialId={row.id}
+                        initialName={row.name}
+                        initialText={row.text}
+                        initialImage={row.image as string}
+                        initialHref={row.href}
+                        initialIsShown={row.isShown}
+                        initialPriority={row.priority}
                         dispatch={dispatch}
                         handleClose={handleClose}
                     />
