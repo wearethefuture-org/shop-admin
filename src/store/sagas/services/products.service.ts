@@ -1,6 +1,42 @@
-import { root } from '../../../api/config';
+import { api } from '../../../api/api';
+import { IActions } from '../../../interfaces/actions';
 
 export async function fetchedProducts() {
-  const response = await fetch(`${root}/product`);
-  return await response.json();
+  const products = await api.products.get();
+  return products.data;
+}
+
+export async function fetchedProductById(id: number) {
+  const product = await api.products.getById(id);
+  return product.data;
+}
+
+export async function fetchedDeleteProduct(id: IActions) {
+  await api.products.deleteProduct(id);
+  return id;
+}
+
+export async function fetchedAddProduct(data: any) {
+  const product = await api.products.add(data);
+  return product.data;
+}
+
+export async function fetchedUpdateProduct(data: any) {
+  const product = await api.products.update(data.id, data.product);
+
+  return product.data;
+}
+
+export async function fetchedUploadImage(data: any) {
+  console.log(data.file)
+  const formData = new FormData();
+  formData.append('files', {...data.file} );
+  formData.append('productId', data.id);
+
+
+
+
+  console.log(formData.getAll('files'))
+  const res = await api.products.updateImg(formData)
+  console.log(res)
 }

@@ -1,27 +1,30 @@
-import { applyMiddleware, combineReducers, compose, createStore } from "redux";
-import { composeWithDevTools } from 'redux-devtools-extension';
-import categories from "./reduceres/categories.reducer";
-import products from "./reduceres/products.reducer";
-import sliders from "./reduceres/sliders.reduser";
-import theme from './reduceres/themeMode.reducer';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+// import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from 'redux-saga';
-import {sagaCategoriesWatcher, sagaProductsWatcher, sagaSlidersWatcher} from "./sagas/sagas";
 
+import categories from './reduceres/categories.reducer';
+import products from './reduceres/products.reducer';
+import getProductById from './reduceres/getProductById.reducer';
+import settings from './reduceres/settings.reducer';
+import snackBar from './reduceres/snackbar.reducer';
+import theme from './reduceres/themeMode.reducer';
+import users from './reduceres/users.reducer';
+import rootSaga from './sagas/sagas';
 
 const saga = createSagaMiddleware();
 
-const rootReducer = combineReducers({ categories, products, sliders, theme });
+const rootReducer = combineReducers({ categories, products, getProductById, settings, snackBar, theme, users });
 
-const store = createStore(rootReducer, compose(
-   applyMiddleware(saga),
-   composeWithDevTools()
-));
+const store = createStore(
+  rootReducer,
+  compose(
+    applyMiddleware(saga)
+    //  composeWithDevTools({ trace: true, traceLimit: 25 })
+  )
+);
 
-saga.run(sagaCategoriesWatcher);
-saga.run(sagaProductsWatcher);
-saga.run(sagaSlidersWatcher);
+saga.run(rootSaga);
 
-
-export type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof rootReducer>;
 
 export default store;

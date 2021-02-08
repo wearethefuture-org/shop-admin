@@ -11,7 +11,8 @@ const useProducts = () => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  return useSelector((state: RootState) => state.products.list);
+  const data = useSelector((state: RootState) => state.products);
+  return { data }
 }
 
 export default useProducts;

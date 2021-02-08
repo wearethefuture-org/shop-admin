@@ -1,9 +1,12 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
 import { IProductItem } from '../../../../interfaces/IProducts';
+
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import DateMoment from '../../../Common/Date-moment';
 
 interface TableBodyProps {
@@ -13,19 +16,36 @@ interface TableBodyProps {
   emptyRows: number
 }
 
-const CategoryTableBody: React.FC<TableBodyProps> = ({ rows, rowsPerPage, page, emptyRows }) => {
+const useTableStyles = makeStyles({
+  row: {
+    cursor: 'pointer',
+    '&:hover': {
+      background: "#f5f5f5",
+    },
+    '& > td': {
+      wordBreak: 'break-word',
+    }
+  }
+});
+
+const ProductsTableBody: React.FC<TableBodyProps & RouteComponentProps<any>> = ({ rows, rowsPerPage, page, emptyRows, history }) => {
+
+  const classes = useTableStyles();
   return (
     <TableBody>
       {(rowsPerPage > 0
         ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         : rows
       ).map((row) => (
-        <TableRow key={row.id}>
+        <TableRow className={classes.row} key={row.id} onClick={() => history.push(`/product/${row.id}`)}>
           <TableCell component="th" scope="row">{row.id}</TableCell>
           <TableCell align="right">{row.name}</TableCell>
-          <TableCell align="right"><DateMoment date={row.price} /></TableCell>
-          <TableCell align="right"><DateMoment date={row.discount} /></TableCell>
+          <TableCell align="right">{row.price}</TableCell>
+          <TableCell align="right" >{row.description}</TableCell>
           <TableCell align="right">{row.category}</TableCell>
+          <TableCell align="right"><DateMoment date={row.createdAt} /></TableCell>
+          <TableCell align="right"><DateMoment date={row.updatedAt} /></TableCell>
+
         </TableRow>
       ))}
       {emptyRows > 0 && (
@@ -37,4 +57,4 @@ const CategoryTableBody: React.FC<TableBodyProps> = ({ rows, rowsPerPage, page, 
   );
 }
 
-export default CategoryTableBody;
+export default withRouter(ProductsTableBody);

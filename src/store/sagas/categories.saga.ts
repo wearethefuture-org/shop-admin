@@ -4,7 +4,6 @@ import { loadCategories, addCategory } from '../actions';
 import { SagaIterator } from 'redux-saga';
 import { IActions } from '../../interfaces/actions';
 
-
 export function* fetchCategoryWorker(): SagaIterator {
   try {
     const categoriesData = yield call(fetchedCategories);
@@ -19,6 +18,6 @@ export function* addCategoryWorker({ data }: IActions): SagaIterator {
     const newCategory = yield call(addCategories, data);
     yield put(addCategory(newCategory));
   } catch (error) {
-    console.log(error);
+    console.dir(error);
   }
 }

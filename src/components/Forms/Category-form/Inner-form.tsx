@@ -1,19 +1,25 @@
-import React from 'react'
+import React from 'react';
 import { Button, DialogActions, LinearProgress } from '@material-ui/core';
 import { Field, Form, FormikProps } from 'formik';
-import { TextField } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
-
 import { IFormValues, InnerCategoryFormProps } from '../../../interfaces/category-form';
+import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 
+const useStyles = makeStyles({
+  customBtn: {
+    marginTop: '15px',
+  },
+  input: {
+    marginBottom: '20px',
+  },
+  hint: {
+    fontSize: '12px',
+    marginBottom: '15px',
+  },
+});
 
-const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IFormValues>> = (
-  { submitForm, isSubmitting, handleClose }) => {
-  const useStyles = makeStyles({
-    customBtn: {
-      marginTop: "15px",
-    },
-  });
+const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IFormValues>> = (props) => {
+  const { submitForm, handleClose, isSubmitting, dirty, isValid, touched, errors, status } = props;
 
   const classes = useStyles();
 
@@ -21,19 +27,39 @@ const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IFormValues>> = (
     <Form>
       <Field
         fullWidth
-        component={TextField}
+        component={TextFieldWrapped}
+        className={classes.input}
+        type="text"
+        label="URL key *"
+        name="key"
+        placeholder="url-example"
+        makegreen="true"
+      />
+      {status && status.key && !(touched.key && errors.key) && (
+        <div className={classes.hint}>
+          Підказка: це варіант імені для URL-адреси. Можна використовувати латинські літери в
+          нижньому регістрі та дефіс
+        </div>
+      )}
+      <Field
+        fullWidth
+        component={TextFieldWrapped}
+        className={classes.input}
         type="name"
-        label="Name"
+        label="Name *"
         name="name"
+        makegreen="true"
       />
       <Field
         fullWidth
         multiline
         rowsMax={6}
-        component={TextField}
+        component={TextFieldWrapped}
+        className={classes.input}
         type="description"
-        label="Description"
+        label="Description *"
         name="description"
+        makegreen="true"
       />
       {isSubmitting && <LinearProgress />}
       <DialogActions>
@@ -49,7 +75,7 @@ const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IFormValues>> = (
           className={classes.customBtn}
           variant="contained"
           color="primary"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !(dirty && isValid)}
           onClick={submitForm}
         >
           Create
@@ -57,6 +83,6 @@ const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IFormValues>> = (
       </DialogActions>
     </Form>
   );
-}
+};
 
 export default InnerForm;
