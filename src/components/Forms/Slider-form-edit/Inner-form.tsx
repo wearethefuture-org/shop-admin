@@ -1,58 +1,36 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {Button, DialogActions, LinearProgress} from '@material-ui/core';
 import {Field, Form, FormikProps} from 'formik';
-import {TextField, SimpleFileUpload, Switch} from 'formik-material-ui';
+import {TextField} from 'formik-material-ui';
 import {makeStyles} from '@material-ui/core/styles';
 
 import {IFormValues, InnerSliderFormProps} from '../../../interfaces/slider-form';
 import FileUpload from "./FileUpload";
-import axios from "axios";
-import {root} from "../../../api/config";
 
 const InnerForm: React.FC<InnerSliderFormProps & FormikProps<IFormValues>> = (
-    {submitForm, /*saveImage,*/ isSubmitting, handleClose, ...props}) => {
+    {submitForm, isSubmitting, handleClose, ...props}) => {
 
     const useStyles = makeStyles({
             customBtn: {
                 marginTop: "15px",
             },
-            image: {
-                opacity: "0.5",
-                zIndex: 1000,
-            },
         }
     );
     const classes = useStyles();
 
-    const dragOverHandler = (event: React.DragEvent<HTMLFormElement>) =>  {
-        console.log('File(s) in drop zone');
-
-        // Prevent default behavior (Prevent file from being opened)
+    const dragOverHandler = (event: React.DragEvent<HTMLFormElement>) => {
         event.preventDefault();
     }
 
-    const dropHandler =(event: React.DragEvent<HTMLFormElement>) =>{
-        console.log('File(s) dropped');
-
-        // Prevent default behavior (Prevent file from being opened)
+    const dropHandler = (event: React.DragEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         if (event.dataTransfer.items) {
-            // Use DataTransferItemList interface to access the file(s)
-            for (var i = 0; i < event.dataTransfer.items.length; i++) {
-                // If dropped items aren't files, reject them
+            for (let i = 0; i < event.dataTransfer.items.length; i++) {
                 if (event.dataTransfer.items[i].kind === 'file') {
-                    var file = event.dataTransfer.items[i].getAsFile();
-                    console.log('... file[' + i + '].name = ' + file?.name);
+                    let file = event.dataTransfer.items[i].getAsFile();
                     props.setFieldValue("image", file)
-                    //saveImage( event.dataTransfer.files[i]);
                 }
-            }
-        } else {
-            // Use DataTransfer interface to access the file(s)
-            for (var i = 0; i < event.dataTransfer.files.length; i++) {
-                console.log('... file[' + i + '].name = ' + event.dataTransfer.files[i].name);
-
             }
         }
     }

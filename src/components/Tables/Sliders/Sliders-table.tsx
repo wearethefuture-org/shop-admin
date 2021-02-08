@@ -29,9 +29,8 @@ function createData(
     href: string,
     isShown: boolean,
     priority: number
-
 ) {
-    return {id, name,  createdAt, updatedAt, text, image, href, isShown, priority};
+    return {id, name, createdAt, updatedAt, text, image, href, isShown, priority};
 }
 
 const useTableStyles = makeStyles({

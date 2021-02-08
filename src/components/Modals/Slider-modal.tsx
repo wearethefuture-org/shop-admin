@@ -5,9 +5,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import AddIcon from '@material-ui/icons/Add';
-import { Dispatch } from 'redux';
+import {Dispatch} from 'redux';
 
-import { ISlidersModal } from '../../interfaces/modals';
+import {ISlidersModal} from '../../interfaces/modals';
 import SliderForm from '../Forms/Slider-form/Slider-form';
 
 interface FormDialogProps {
@@ -21,12 +21,12 @@ const FormDialog: React.FC<FormDialogProps> = ({
                                                    modalData,
                                                }) => {
 
-    const { handleClickOpen, handleClose, isOpened } = modalData;
+    const {handleClickOpen, handleClose, isOpened} = modalData;
 
     return (
         <div>
             <Button variant="contained" color="primary" onClick={handleClickOpen}>
-                <AddIcon /> New Slider
+                <AddIcon/> New Slider
             </Button>
             <Dialog
                 open={isOpened}

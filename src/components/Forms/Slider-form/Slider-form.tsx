@@ -1,10 +1,10 @@
-import { withFormik } from 'formik';
-import { Dispatch } from 'redux';
+import {withFormik} from 'formik';
+import {Dispatch} from 'redux';
 import * as Yup from 'yup';
 
-import { fetchAddSliders } from '../../../store/actions';
+import {fetchAddSliders} from '../../../store/actions';
 import InnerForm from './Inner-form';
-import { IFormValues } from '../../../interfaces/slider-form';
+import {IFormValues} from '../../../interfaces/slider-form';
 
 
 interface SliderFormProps {
@@ -17,7 +17,6 @@ interface SliderFormProps {
     initialHref?: string;
     initialIsShown?: boolean;
     initialPriority?: number;
-    //saveImage: any,
 }
 
 const FILE_SIZE = 9000 * 1024;
@@ -31,9 +30,9 @@ const SUPPORTED_FORMATS = [
 const sliderValidationShema = Yup.object().shape({
     name: Yup.string().min(2, 'Too short').max(50, 'Too long').required('Required'),
     text: Yup.string().min(2, 'Too short').max(360, 'Too long').required('Required'),
-    image:  Yup
+    image: Yup
         .mixed()
-         .required("A file is required")
+        .required("A file is required")
         .test(
             "fileSize",
             "File too large",
@@ -46,7 +45,7 @@ const sliderValidationShema = Yup.object().shape({
         ),
     href: Yup.string().min(2, 'Too short').max(360, 'Too long').required('Required'),
     isShown: Yup.boolean().required('Required'),
-    priority: Yup.number().min(0, 'Too short').max(3, 'Too long').required('Required')
+    priority: Yup.number().min(0, 'Too short').max(360, 'Too long').required('Required')
 })
 
 const SliderForm = withFormik<SliderFormProps, IFormValues>({
@@ -59,11 +58,10 @@ const SliderForm = withFormik<SliderFormProps, IFormValues>({
             href: props.initialHref || "",
             isShown: props.initialIsShown || false,
             priority: props.initialPriority || 0,
-            //saveImage: props.saveImage
         };
     },
     validationSchema: sliderValidationShema,
-    handleSubmit: (values: IFormValues, { setSubmitting, props }) => {
+    handleSubmit: (values: IFormValues, {setSubmitting, props}) => {
         console.log(values.image)
         setSubmitting(false);
         props.dispatch(fetchAddSliders(values.id, values.name, values.text, values.image, values.href, values.isShown, values.priority));

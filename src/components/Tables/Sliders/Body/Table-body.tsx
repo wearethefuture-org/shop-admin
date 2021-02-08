@@ -24,20 +24,21 @@ const SliderTableBody: React.FC<TableBodyProps> = ({
                                                        rows,
                                                        rowsPerPage,
                                                        page,
-                                                       emptyRows, }) => {
+                                                       emptyRows,
+                                                   }) => {
     const {data, dispatch} = useSliders();
 
     const [selected, setSelected] = useState(null);
 
-    const changeShown = (id: number, isShown: boolean) =>{
-        const row = rows.find(x=>x.id===id);
+    const changeShown = (id: number, isShown: boolean) => {
+        const row = rows.find(x => x.id === id);
         console.log(isShown)
-        if(row) {
+        if (row) {
             dispatch(fetchUpdateSliders(row.id, row.name, row.text, row.image as string, row.href, isShown, row.priority));
         }
     }
 
-    const createSliderModalData = (id: any)=>{
+    const createSliderModalData = (id: any) => {
 
         const handleClickOpen = () => {
             setSelected(id);
@@ -50,7 +51,7 @@ const SliderTableBody: React.FC<TableBodyProps> = ({
         return {
             handleClickOpen,
             handleClose,
-           isOpened: selected==id,
+            isOpened: selected == id,
         };
 
     }
@@ -62,34 +63,35 @@ const SliderTableBody: React.FC<TableBodyProps> = ({
     return (
         <TableBody>
             {(rowsPerPage > 0
-                    ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    : rows).map((row) => (
+                ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                : rows).map((row) => (
                 <TableRow key={row.id}>
 
-                        <>
-                            <TableCell component="th" scope="row">{row.id}</TableCell>
-                            <TableCell align="right">{row.name}</TableCell>
-                            <TableCell align="right">{row.text}</TableCell>
-                            <TableCell align="right"><img width="50px" src={row.image as string}/></TableCell>
-                            <TableCell align="right">{row.href}</TableCell>
-                            <TableCell align="right"><Switch checked={row.isShown} onChange={()=>changeShown(row.id, !row.isShown)}/></TableCell>
-                            <TableCell align="right">{row.priority}</TableCell>
+                    <>
+                        <TableCell component="th" scope="row">{row.id}</TableCell>
+                        <TableCell align="right">{row.name}</TableCell>
+                        <TableCell align="right">{row.text}</TableCell>
+                        <TableCell align="right"><img width="50px" src={row.image as string}/></TableCell>
+                        <TableCell align="right">{row.href}</TableCell>
+                        <TableCell align="right"><Switch checked={row.isShown}
+                                                         onChange={() => changeShown(row.id, !row.isShown)}/></TableCell>
+                        <TableCell align="right">{row.priority}</TableCell>
 
-                            <TableCell align="right">
-                                <FormDialog
-                                    dispatch={dispatch}
-                                    slidersLength={data.length}
-                                    modalData={createSliderModalData(row.id)}
-                                    row={row}
-                                />
-                            </TableCell>
+                        <TableCell align="right">
+                            <FormDialog
+                                dispatch={dispatch}
+                                slidersLength={data.length}
+                                modalData={createSliderModalData(row.id)}
+                                row={row}
+                            />
+                        </TableCell>
 
-                            <TableCell align="right">
-                                <Button variant="contained" color="primary" onClick={() => handleClickDelete(row)}>
-                                    <DeleteIcon/>
-                                </Button>
-                            </TableCell>
-                        </>
+                        <TableCell align="right">
+                            <Button variant="contained" color="primary" onClick={() => handleClickDelete(row)}>
+                                <DeleteIcon/>
+                            </Button>
+                        </TableCell>
+                    </>
 
                 </TableRow>
             ))}

@@ -10,6 +10,5 @@ export interface IFormValues {
 
 export interface InnerSliderFormProps {
     handleClose: () => void;
-    //saveImage: any;
 }
 

@@ -7,12 +7,12 @@ import useSlidersModal from '../../hooks/useSlidersModal';
 
 
 const SlidersContainer: React.FC = () => {
-    const { data, dispatch } = useSliders();
+    const {data, dispatch} = useSliders();
     const slidersCreateModalData = useSlidersModal();
 
     return (
         <>
-            <SlidersTable data={data} />
+            <SlidersTable data={data}/>
             <FormDialog
                 dispatch={dispatch}
                 slidersLength={data.length}

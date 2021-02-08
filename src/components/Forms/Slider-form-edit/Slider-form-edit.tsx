@@ -1,13 +1,11 @@
-import { withFormik } from 'formik';
-import { Dispatch } from 'redux';
+import {withFormik} from 'formik';
+import {Dispatch} from 'redux';
 import * as Yup from 'yup';
 
-import { fetchUpdateSliders} from '../../../store/actions';
+import {fetchUpdateSliders} from '../../../store/actions';
 import InnerForm from './Inner-form';
-import { IFormValues } from '../../../interfaces/slider-form';
+import {IFormValues} from '../../../interfaces/slider-form';
 import React from "react";
-import axios from "axios";
-import {root} from "../../../api/config";
 
 
 interface SliderFormProps {
@@ -33,7 +31,7 @@ const SUPPORTED_FORMATS = [
 const sliderValidationShema = Yup.object().shape({
     name: Yup.string().min(2, 'Too short').max(50, 'Too long').required('Required'),
     text: Yup.string().min(2, 'Too short').max(360, 'Too long').required('Required'),
-    image:  Yup
+    image: Yup
         .mixed()
         .test(
             "fileSize",
@@ -63,7 +61,7 @@ const SliderFormEdit = withFormik<SliderFormProps, IFormValues>({
             };
         },
         validationSchema: sliderValidationShema,
-        handleSubmit: (values: IFormValues, { setSubmitting, props }) => {
+        handleSubmit: (values: IFormValues, {setSubmitting, props}) => {
             console.log(values.image)
             setSubmitting(false);
             props.dispatch(fetchUpdateSliders(values.id, values.name, values.text, values.image, values.href, values.isShown, values.priority));
