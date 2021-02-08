@@ -1,6 +1,7 @@
 import { IActions } from '../interfaces/actions';
 import { ICategoryItem } from '../interfaces/category-Item';
 import { IProductItem, IProductFormData } from '../interfaces/IProducts';
+import { ISliderItem } from "../interfaces/slider-item";
 import { ISettingError, ISettingsItem } from '../interfaces/ISettings';
 import { IUserItem } from '../interfaces/Users';
 import {
@@ -28,6 +29,14 @@ import {
   SUCCESS_SNACKBAR,
   FAIL_SNACKBAR,
   CLOSE_SNACKBAR,
+  ADD_SLIDER,
+  DELETE_SLIDER,
+  UPDATE_SLIDER,
+  LOAD_SLIDERS,
+  REQUEST_SLIDERS,
+  REQUEST_ADD_SLIDERS,
+  REQUEST_DELETE_SLIDERS,
+  REQUEST_UPDATE_SLIDERS,
 } from './types';
 
 export const loadCategories = (categories: ICategoryItem[]): IActions => ({
@@ -101,6 +110,37 @@ export const fetchUpdateSettings = (name: string, settings: object): IActions =>
 export const updateSetting = (settings: ISettingsItem): IActions => ({
   type: UPDATE_SETTINGS,
   data: settings,
+});
+
+//Sliders
+export const loadSliders = (sliders: ISliderItem[]): IActions => ({ type: LOAD_SLIDERS, data: sliders });
+export const fetchSliders = (): IActions => ({ type: REQUEST_SLIDERS });
+
+export const fetchAddSliders = (id: number, name: string, text: string, image: string, href: string, isShown: boolean, priority: number): IActions => ({
+  type: REQUEST_ADD_SLIDERS,
+  data: { name, text, image, href, isShown, priority },
+});
+export const addSlider = (slider: ISliderItem): IActions => ({
+  type: ADD_SLIDER,
+  data: slider,
+});
+
+export const fetchDeleteSliders = (slider: ISliderItem): IActions => ({
+  type: REQUEST_DELETE_SLIDERS,
+  data: slider,
+});
+export const deleteSlider = (slider: ISliderItem): IActions => ({
+  type: DELETE_SLIDER,
+  data: slider,
+});
+
+export const fetchUpdateSliders = (id: number, name: string, text: string, image: string, href: string, isShown: boolean, priority: number): IActions => ({
+  type: REQUEST_UPDATE_SLIDERS,
+  data: { id, name, text, image, href, isShown, priority },
+});
+export const updateSlider = (slider: ISliderItem): IActions => ({
+  type: UPDATE_SLIDER,
+  data: slider,
 });
 
 // Theme

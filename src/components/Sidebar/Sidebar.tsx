@@ -15,6 +15,7 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 import GroupIcon from '@material-ui/icons/Group';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import SettingsIcon from '@material-ui/icons/Settings';
+import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import styles from './Sidebar.module.scss';
@@ -100,6 +101,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
     {
       pageURL: '/users',
       itemIcon: <GroupIcon fontSize="small" className={styles.icon} />,
+    },
+    {
+      pageURL: '/sliders',
+      itemIcon: <AmpStoriesIcon fontSize="small" className={styles.icon} />
     },
   ];
 

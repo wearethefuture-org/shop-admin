@@ -11,7 +11,18 @@ import {
   REQUEST_UPDATE_PRODUCT,
   REQUEST_SETTINGS,
   REQUEST_UPDATE_SETTINGS,
+  REQUEST_SLIDERS,
+  REQUEST_ADD_SLIDERS,
+  REQUEST_DELETE_SLIDERS,
+  REQUEST_UPDATE_SLIDERS
 } from '../types';
+
+import {
+  fetchSliderWorker,
+  addSliderWorker,
+  deleteSliderWorker,
+  updateSliderWorker
+} from './sliders.saga';
 import { fetchCategoryWorker, addCategoryWorker } from '../sagas/categories.saga';
 import {
   fetchProductWorker,
@@ -41,7 +52,17 @@ function* sagaSettingsWatcher(): SagaIterator {
   yield takeEvery(REQUEST_UPDATE_SETTINGS, updateSettingsWorker);
 }
 
+//Sliders
+export function* sagaSlidersWatcher(): SagaIterator {
+  yield takeEvery(REQUEST_SLIDERS, fetchSliderWorker);
+  yield takeEvery(REQUEST_ADD_SLIDERS, addSliderWorker);
+  yield takeEvery(REQUEST_DELETE_SLIDERS, deleteSliderWorker);
+  yield takeEvery(REQUEST_UPDATE_SLIDERS, updateSliderWorker);
+}
+
 // RootSaga
 export default function* rootSaga(): SagaIterator {
-  yield all([fork(sagaCategoriesWatcher), fork(sagaProductsWatcher), fork(sagaSettingsWatcher)]);
+  yield all([fork(sagaCategoriesWatcher), fork(sagaProductsWatcher), fork(sagaSettingsWatcher), fork(sagaSlidersWatcher)]);
 }
+
+

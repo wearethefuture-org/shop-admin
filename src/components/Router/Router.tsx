@@ -10,6 +10,7 @@ import ProductItem from '../../pages/Products/ProductItem';
 import Statistic from '../../pages/Statistic/Statistic';
 import Users from '../../pages/Users/Users';
 import Settings from '../../pages/Settings/Settings';
+import Sliders from "../../pages/Sliders/Sliders";
 import HeaderBar from '../HeaderBar/HeaderBar';
 import Content from '../Content/Content';
 import styles from './Router.module.scss';
@@ -30,6 +31,7 @@ const Router: React.FC = () => {
             <Route path="/dashboard" render={() => <Dashboard />} />
             <Route path="/categories" render={() => <Categories />} />
             <Route path="/products/" exact={true} component={Products} />
+            <Route path="/sliders" render={() => <Sliders />} />
             <Route path="/statistic" render={() => <Statistic />} />
             <Route path="/users" render={() => <Users />} />
             <Route path="/settings" render={() => <Settings />} />
