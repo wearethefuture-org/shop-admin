@@ -86,7 +86,7 @@ const InnerForm: React.FC<FormikProps<IFormWidgetValues>> = (props) => {
           color="primary"
           variant="contained"
           type="submit"
-          disabled={!(props.isValid)}
+          disabled={!props.isValid}
         >
           Зберегти
         </Button>
