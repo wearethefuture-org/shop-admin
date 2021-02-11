@@ -1,0 +1,27 @@
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100% ;
+}
+
+body *:active,
+body *:focus {
+  outline: none;
+}
+
+a,
+a:hover {
+  text-decoration: none;
+  color: inherit
+}
+
+.wraper {
+  display: flex;
+  align-items: stretch; 
+  height: 100%; 
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+}
