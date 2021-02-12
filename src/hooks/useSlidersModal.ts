@@ -1,21 +1,21 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
 const useSlidersModal = () => {
-    const [isOpened, toggleModal] = useState(false);
+  const [isOpened, toggleModal] = useState(false);
 
-    const handleClickOpen = () => {
-        toggleModal(true);
-    };
+  const handleClickOpen = () => {
+    toggleModal(true);
+  };
 
-    const handleClose = () => {
-        toggleModal(false);
-    };
+  const handleClose = () => {
+    toggleModal(false);
+  };
 
-    return {
-        handleClickOpen,
-        handleClose,
-        isOpened,
-    };
+  return {
+    handleClickOpen,
+    handleClose,
+    isOpened,
+  };
 };
 
 export default useSlidersModal;

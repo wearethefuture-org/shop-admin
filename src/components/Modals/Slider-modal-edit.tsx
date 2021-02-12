@@ -8,55 +8,54 @@ import EditIcon from '@material-ui/icons/Edit';
 import { Dispatch } from 'redux';
 
 import { ISlidersModal } from '../../interfaces/modals';
-import  SliderFormEdit  from '../Forms/Slider-form-edit/Slider-form-edit';
-import {SliderTableData} from "../../interfaces/sliders-data";
+import SliderForm from '../Forms/Slider-form/Slider-form';
+import { SliderTableData } from "../../interfaces/sliders-data";
 
 interface FormDialogProps {
-    dispatch: Dispatch,
-    slidersLength: number,
-    modalData: ISlidersModal,
-    row: SliderTableData,
-
+  dispatch: Dispatch,
+  slidersLength: number,
+  modalData: ISlidersModal,
+  row: SliderTableData,
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({
-                                                   dispatch,
-                                                   modalData,
-                                                   row,
+                                                 dispatch,
+                                                 modalData,
+                                                 row,
                                                }) => {
 
-    const { handleClickOpen, handleClose, isOpened } = modalData;
+  const {handleClickOpen, handleClose, isOpened} = modalData;
 
-    return (
-        <div>
-            <Button variant="contained" color="primary" onClick={handleClickOpen}>
-                <EditIcon />
-            </Button>
-            <Dialog
-                open={isOpened}
-                onClose={handleClose}
-                aria-labelledby="form-dialog-title"
-                fullWidth
-                maxWidth="xs"
-            >
-                <DialogTitle id="form-dialog-title"></DialogTitle>
-                <DialogContent dividers>
-                    <DialogContentText>Edit slider</DialogContentText>
-                    <SliderFormEdit
-                        initialId={row.id}
-                        initialName={row.name}
-                        initialText={row.text}
-                        initialImage={row.image as string}
-                        initialHref={row.href}
-                        initialIsShown={row.isShown}
-                        initialPriority={row.priority}
-                        dispatch={dispatch}
-                        handleClose={handleClose}
-                    />
-                </DialogContent>
-            </Dialog>
-        </div>
-    );
+  return (
+    <div>
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+        <EditIcon/>
+      </Button>
+      <Dialog
+        open={isOpened}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+        fullWidth
+        maxWidth="xs"
+      >
+        <DialogTitle id="form-dialog-title"></DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText>Edit slider</DialogContentText>
+          <SliderForm
+            initialId={row.id}
+            initialName={row.name}
+            initialText={row.text}
+            initialImage={row.image as string}
+            initialHref={row.href}
+            initialIsShown={row.isShown}
+            initialPriority={row.priority}
+            dispatch={dispatch}
+            handleClose={handleClose}
+          />
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 };
 
 export default FormDialog;
