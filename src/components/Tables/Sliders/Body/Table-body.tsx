@@ -6,7 +6,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import { Switch } from "@material-ui/core";
 
-import { SliderTableData } from '../../../../interfaces/sliders-data';
+import { ISliderFormValues, SliderTableData } from '../../../../interfaces/ISliders';
 
 import useSliders from "../../../../hooks/useSliders";
 import { fetchDeleteSliders, fetchUpdateSliders } from "../../../../store/actions";
@@ -31,9 +31,17 @@ const SliderTableBody: React.FC<TableBodyProps> = ({
 
   const changeShown = (id: number, isShown: boolean) => {
     const row = rows.find(x => x.id === id);
-    console.log(isShown)
     if (row) {
-      dispatch(fetchUpdateSliders(row.id, row.name, row.text, row.image as string, row.href, isShown, row.priority));
+      const slider: ISliderFormValues = {
+        id: row.id,
+        name: row.name,
+        text: row.text,
+        image: row.image as string,
+        href: row.href,
+        isShown: row.isShown,
+        priority: row.priority
+      }
+      dispatch(fetchUpdateSliders(slider));
     }
   }
 

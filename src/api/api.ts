@@ -5,7 +5,7 @@ import { ICategoryItem } from '../interfaces/category-Item';
 import {IActions, IActionsImage} from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';
 import { IProductItem } from '../interfaces/IProducts';
-import {ISliderItem} from "../interfaces/slider-item";
+import {ISliderItem} from "../interfaces/ISliders";
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 

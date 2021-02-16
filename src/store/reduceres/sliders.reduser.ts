@@ -1,8 +1,6 @@
 import { IActions } from "../../interfaces/actions";
 import {ADD_SLIDER, DELETE_SLIDER, LOAD_SLIDERS, UPDATE_SLIDER} from "../types";
-import { ISlidersData } from '../../interfaces/sliders-data';
-import {act} from "react-dom/test-utils";
-
+import { ISlidersData } from '../../interfaces/ISliders';
 
 const data: ISlidersData = {
     list: []

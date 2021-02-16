@@ -17,7 +17,7 @@ export async function updateSliders (data: IActionsImage) {
 }
 
 export async function deleteSliders (data: IActionsImage) {
-    const somw_shit =  await api.sliders.delete(data);
-    console.log(somw_shit, somw_shit.data);
-    return somw_shit;
+    const deleteSlider =  await api.sliders.delete(data);
+    console.log(deleteSlider, deleteSlider.data);
+    return deleteSlider;
 }

@@ -7,8 +7,7 @@ import TableHeader from './Header/Table-header';
 import SliderTableBody from './Body/Table-body';
 import SliderTableFooter from './Footer/Table-footer';
 import TableContainer from '@material-ui/core/TableContainer';
-import { ISliderItem } from '../../../interfaces/slider-item';
-import { SliderTableData } from '../../../interfaces/sliders-data';
+import { ISliderItem, SliderTableData } from '../../../interfaces/ISliders';
 
 interface SliderDataProps {
   data: Array<ISliderItem>,

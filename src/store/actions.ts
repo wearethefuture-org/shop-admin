@@ -1,7 +1,7 @@
 import { IActions } from '../interfaces/actions';
 import { ICategoryItem } from '../interfaces/category-Item';
 import { IProductItem, IProductFormData } from '../interfaces/IProducts';
-import { ISliderItem } from "../interfaces/slider-item";
+import { ISliderItem, ISliderFormValues } from "../interfaces/ISliders";
 import { ISettingError, ISettingsItem } from '../interfaces/ISettings';
 import { IUserItem } from '../interfaces/Users';
 import {
@@ -116,9 +116,9 @@ export const updateSetting = (settings: ISettingsItem): IActions => ({
 export const loadSliders = (sliders: ISliderItem[]): IActions => ({ type: LOAD_SLIDERS, data: sliders });
 export const fetchSliders = (): IActions => ({ type: REQUEST_SLIDERS });
 
-export const fetchAddSliders = (id: number, name: string, text: string, image: string, href: string, isShown: boolean, priority: number): IActions => ({
+export const fetchAddSliders = (slider: ISliderFormValues): IActions => ({
   type: REQUEST_ADD_SLIDERS,
-  data: { name, text, image, href, isShown, priority },
+  data: slider,
 });
 export const addSlider = (slider: ISliderItem): IActions => ({
   type: ADD_SLIDER,
@@ -134,9 +134,9 @@ export const deleteSlider = (slider: ISliderItem): IActions => ({
   data: slider,
 });
 
-export const fetchUpdateSliders = (id: number, name: string, text: string, image: string, href: string, isShown: boolean, priority: number): IActions => ({
+export const fetchUpdateSliders = (slider: ISliderFormValues): IActions => ({
   type: REQUEST_UPDATE_SLIDERS,
-  data: { id, name, text, image, href, isShown, priority },
+  data: slider,
 });
 export const updateSlider = (slider: ISliderItem): IActions => ({
   type: UPDATE_SLIDER,

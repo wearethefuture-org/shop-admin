@@ -9,7 +9,7 @@ import { Dispatch } from 'redux';
 
 import { ISlidersModal } from '../../interfaces/modals';
 import SliderForm from '../Forms/Slider-form/Slider-form';
-import { SliderTableData } from "../../interfaces/sliders-data";
+import { SliderTableData } from "../../interfaces/ISliders";
 
 interface FormDialogProps {
   dispatch: Dispatch,

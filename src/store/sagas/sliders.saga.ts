@@ -25,10 +25,8 @@ export function* addSliderWorker({data}: IActions): SagaIterator {
 
 export function* deleteSliderWorker({data}: IActions): SagaIterator {
     try {
-        const newSlider = yield call(deleteSliders, data);
-        if (newSlider.status === 200) {
-            yield put(deleteSlider(data));
-        }
+        yield call(deleteSliders, data);
+        yield put(deleteSlider(data));
     } catch (error) {
         console.log(error);
     }
@@ -37,11 +35,8 @@ export function* deleteSliderWorker({data}: IActions): SagaIterator {
 export function* updateSliderWorker({data}: IActions): SagaIterator {
     try {
         const newSlider = yield call(updateSliders, data);
-        console.log(newSlider)
         yield put(updateSlider(newSlider));
-
     } catch (error) {
         console.log(error);
     }
 }
-

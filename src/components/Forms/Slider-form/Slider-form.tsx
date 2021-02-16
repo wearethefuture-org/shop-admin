@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 
 import { fetchAddSliders, fetchUpdateSliders } from '../../../store/actions';
 import InnerForm from './Inner-form';
-import { IFormValues } from '../../../interfaces/slider-form';
+import { ISliderFormValues } from "../../../interfaces/ISliders";
 
 interface SliderFormProps {
   dispatch: Dispatch;
@@ -45,7 +45,7 @@ const sliderValidationShema = Yup.object().shape({
   priority: Yup.number().min(1, 'The number must been more 0').max(360, 'Too long').required('Required')
 })
 
-const SliderForm = withFormik<SliderFormProps, IFormValues>({
+const SliderForm = withFormik<SliderFormProps, ISliderFormValues>({
     mapPropsToValues: props => {
       return {
         id: props.initialId || -1,
@@ -58,14 +58,12 @@ const SliderForm = withFormik<SliderFormProps, IFormValues>({
       };
     },
     validationSchema: sliderValidationShema,
-    handleSubmit: (values: IFormValues, {setSubmitting, props}) => {
-      console.log(values.image)
+    handleSubmit: (values: ISliderFormValues, {setSubmitting, props}) => {
       setSubmitting(false);
-      console.log(props.initialId)
       if (props.initialId === undefined) {
-        props.dispatch(fetchAddSliders(values.id, values.name, values.text, values.image, values.href, values.isShown, values.priority));
+        props.dispatch(fetchAddSliders(values));
       } else {
-        props.dispatch(fetchUpdateSliders(values.id, values.name, values.text, values.image, values.href, values.isShown, values.priority));
+        props.dispatch(fetchUpdateSliders(values));
       }
       props.handleClose();
     },

@@ -9,7 +9,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-import { SliderTableData } from '../../../../interfaces/sliders-data';
+import { SliderTableData } from '../../../../interfaces/ISliders';
 
 interface SliderTableFooterProps {
   rows: SliderTableData[],
