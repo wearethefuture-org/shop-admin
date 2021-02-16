@@ -1,16 +1,15 @@
 import React from 'react';
-import { Button, DialogActions, LinearProgress, Grid } from '@material-ui/core';
+import { Button, Paper, Grid } from '@material-ui/core';
 import { Field, Form, FormikProps } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { IProductFormData, ProductFormProps } from '../../../interfaces/IProducts';
-import ProductAddImagesModal from '../../Modals/Product-add-images-modal';
-import ProductAddMainImagesModal from '../../Modals/Product-add-main-img';
+import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 
 
 
 const InnerForm: React.FC<ProductFormProps & FormikProps<IProductFormData>> = (
-  { submitForm, handleChange, isSubmitting, handleClose, currencies, buttonName, files, mainImg, ...props }) => {
+  { submitForm, isSubmitting, handleClose, currencies, buttonName, files, mainImg, ...props }) => {
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
@@ -21,6 +20,7 @@ const InnerForm: React.FC<ProductFormProps & FormikProps<IProductFormData>> = (
       },
       customBtn: {
         marginTop: "15px",
+        marginBottom: "15px",
       },
       formControl: {
         margin: theme.spacing(1),
@@ -28,6 +28,17 @@ const InnerForm: React.FC<ProductFormProps & FormikProps<IProductFormData>> = (
       },
       selectEmpty: {
         marginTop: theme.spacing(2),
+      },
+      gridListRoot: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        overflow: 'hidden',
+        backgroundColor: theme.palette.background.paper,
+      },
+      gridList: {
+        flexWrap: 'nowrap',
+        transform: 'translateZ(0)',
       },
       image: {
         width: 200,
@@ -39,8 +50,7 @@ const InnerForm: React.FC<ProductFormProps & FormikProps<IProductFormData>> = (
         maxHeight: '100%',
       },
     })
-  );
-
+  )
   const classes = useStyles();
   return (
     <Grid
@@ -49,91 +59,72 @@ const InnerForm: React.FC<ProductFormProps & FormikProps<IProductFormData>> = (
       justify="space-around"
       alignItems="center"
       spacing={2}>
-
       <Grid item xs={10} container spacing={2}>
-        <Form>
-          <Field
-            fullWidth
-            component={TextField}
-            type="text"
-            label="Name"
-            name="name"
-          />
-          <Field
-            fullWidth
-            component={TextField}
-            type="number"
-            label="Price"
-            name="price"
-          />
-          <Field
-            fullWidth
-            component={TextField}
-            type="text"
-            label="Product key"
-            name="key"
-          />
-          <Field
-            fullWidth
-            multiline
-            rowsMax={6}
-            component={TextField}
-            type="textarea"
-            label="Description"
-            name="description"
-          />
-          <Field
-            select
-            fullWidth
-            component={TextField}
-            type="select"
-            label="Category Name"
-            name="categoryName"
-            SelectProps={{
-              native: true,
-            }}>
-            {currencies.map((option: any) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </Field>
-          <Grid
-            item
-            xs={12}
-            sm
-            container
-            justify="space-around"
-            alignItems="center"
-            spacing={5}>
-            <Grid item>
-              {props.id && <ProductAddImagesModal id={props.id} />}
-            </Grid>
-            <Grid item>
-              {files!.length > 0 && < ProductAddMainImagesModal id={props.id} files={files} mainImg={mainImg} />}
-            </Grid>
-          </Grid>
-          {isSubmitting && <LinearProgress />}
-          <DialogActions>
-            <Button
-              onClick={handleClose}
-              color="primary"
-              variant="contained"
-              className={classes.customBtn}
-            >
-              Cancel
-        </Button>
+        <Paper>
+          <Form>
+            <Field
+              fullWidth
+              component={TextFieldWrapped}
+              type="text"
+              label="Назва"
+              name="name"
+              makegreen="true"
+            />
+            <Field
+              fullWidth
+              component={TextFieldWrapped}
+              type="number"
+              label="ціна"
+              name="price"
+              makegreen="true"
+            />
+            <Field
+              fullWidth
+              component={TextFieldWrapped}
+              type="text"
+              label="URL ключ"
+              name="key"
+              makegreen="true"
+            />
+            <Field
+              fullWidth
+              multiline
+              rowsMax={6}
+              component={TextField}
+              type="textarea"
+              label="Опис"
+              name="description"
+            />
+            <Field
+              select
+              fullWidth
+              component={TextFieldWrapped}
+              type="select"
+              label="Назва категорії"
+              name="categoryName"
+              makegreen="true"
+              SelectProps={{
+                native: true,
+              }}>
+              {currencies.map((option: any) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </Field>
             <Button
               className={classes.customBtn}
               variant="contained"
               color="primary"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !(props.dirty && props.isValid)}
               onClick={submitForm}
             >
               {buttonName}
             </Button>
-          </DialogActions>
-        </Form>
+
+          </Form>
+        </Paper>
+
 
       </Grid>
     </Grid>

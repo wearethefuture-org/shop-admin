@@ -12,6 +12,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useDispatch } from 'react-redux';
 import { fetchDeleteProduct } from '../../store/actions';
+import { imgPath } from '../../api/config';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -67,38 +68,38 @@ const ComplexGrid: React.FC<IComplexGrid & RouteComponentProps<any>> = (data) =>
         <Grid container spacing={2}>
           <Grid item>
             {mainImg && <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="complex" src={`http://localhost:4000/product/img/${mainImg.name}`} />
+              <img className={classes.img} alt="complex" src={`${imgPath}${mainImg.name}`} />
             </ButtonBase>}
 
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
-                <Typography variant="body2" gutterBottom>
-                  Product id: {id}
+                <Typography variant="body2" gutterBottom >
+                  Id товару: <span style={{ fontWeight: "bold" }}>{id}</span>
                 </Typography>
                 <Typography gutterBottom variant="body2">
-                  Product name: {name}
+                  Назва товару: <span style={{ fontWeight: "bold" }}>{name}</span>
                 </Typography>
                 <Typography gutterBottom variant="body2">
-                  Product key: {url_key}
+                  URL ключ товару: <span style={{ fontWeight: "bold" }}>{url_key}</span>
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  Product description: {description}
+                  Опис товару: <span style={{ fontWeight: "bold" }}>{description}</span>
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  Price: {price}
+                  Ціна товару: <span style={{ fontWeight: "bold" }}>{price}</span>
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  Category: {category.name}
+                  Назва категорії: <span style={{ fontWeight: "bold" }}>{category.name}</span>
                 </Typography>
               </Grid>
               <Grid item>
                 <Typography variant="body2" color="textSecondary">
-                  Product created: {createdAt}
+                  Товар створено: {createdAt}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                  Product updated: {updatedAt}
+                  Товар оновлено: {updatedAt}
                 </Typography>
               </Grid>
             </Grid>
@@ -110,7 +111,7 @@ const ComplexGrid: React.FC<IComplexGrid & RouteComponentProps<any>> = (data) =>
                 startIcon={<ArrowBackIosIcon />}
                 onClick={() => { history.push('/products') }}
               >
-                Back
+                Назад
               </Button>
               <Grid item>
                 <EditProduct className={classes.button} props={{ id, name, price, description, categoryName: category.name, files, url_key, mainImg }} />
@@ -123,7 +124,7 @@ const ComplexGrid: React.FC<IComplexGrid & RouteComponentProps<any>> = (data) =>
                   startIcon={<DeleteIcon />}
                   onClick={deleteProduct}
                 >
-                  Delete
+                  Видалити
                 </Button>
               </Grid>
             </Grid>

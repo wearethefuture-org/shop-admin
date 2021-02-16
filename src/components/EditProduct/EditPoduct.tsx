@@ -6,8 +6,8 @@ interface IEditData {
     props?: any
 }
 const EditProduct: React.FC<IEditData> = ({ className, props }) => {
-    const buttonName = 'Edit Product';
-    const modalTitle = 'Edit Product';
+    const buttonName = ' Зберегти Товар';
+    const modalTitle = 'Редагувати Товар';
     const action = 'edit';
     const fetchFun = fetchUpdateProduct;
 

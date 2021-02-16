@@ -5,8 +5,8 @@ import ProductModal from '../Modals/Product-modal';
 
 const AddProduct: React.FC = () => {
 
-  const buttonName = 'Add Product';
-  const modalTitle = 'Create Product';
+  const buttonName = 'Зберегти зміни';
+  const modalTitle = 'Додати Товар';
   const fetchFun = fetchAddProduct;
   const modalData = {
     buttonName,

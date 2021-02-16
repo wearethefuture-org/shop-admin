@@ -8,6 +8,7 @@ import { IProductItem } from '../../../../interfaces/IProducts';
 
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import DateMoment from '../../../Common/Date-moment';
+import { imgPath } from '../../../../api/config';
 
 interface TableBodyProps {
   rows: IProductItem[],
@@ -46,9 +47,9 @@ const ProductsTableBody: React.FC<TableBodyProps & RouteComponentProps<any>> = (
           <TableCell >{row.category}</TableCell>
           <TableCell ><DateMoment date={row.createdAt} /></TableCell>
           <TableCell ><DateMoment date={row.updatedAt} /></TableCell>
-          <TableCell >{row.files!.length}</TableCell>
+          <TableCell >{row.files ? row.files.length : '0'}</TableCell>
           <TableCell >{row.key}</TableCell>
-      {row.mainImg ? <TableCell >{row.mainImg.name}</TableCell> : <TableCell >no</TableCell>}
+          {row.mainImg ? <TableCell ><img src={`${imgPath}${row.mainImg.name}`} alt={row.mainImg.name} width="100" /></TableCell> : <TableCell >no</TableCell>}
         </TableRow>
       ))}
       {emptyRows > 0 && (

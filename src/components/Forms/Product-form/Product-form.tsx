@@ -5,15 +5,15 @@ import { IProductFormData, ProductFormProps } from '../../../interfaces/IProduct
 
 
 const productValidationShema = Yup.object().shape({
-  name: Yup.string().min(2, 'Too short').max(50, 'Too long').required('Required'),
-  price: Yup.number().positive().required('Required'),
-  description: Yup.string().min(40, 'Too shot').max(360, 'Too long').required('Required'),
-  categoryName: Yup.string().required('Required'),
+  name: Yup.string().min(2, 'Мінімальна довжина 2 символа').max(50, 'Максимальна довжина 50 символів').required('Обов`язкове поле'),
+  price: Yup.number().positive('Число повинно бути більше нуля').required('Обов`язкове поле'),
+  description: Yup.string().min(40, 'Мінімальна довжина 40 символів').max(360, 'Максимальна довжина 360 символів').required('Обов`язкове поле'),
+  categoryName: Yup.string().required('Обов`язкове поле'),
   key: Yup.string()
-    .min(2, 'Minimum 2 symbols')
-    .max(30, 'Too long')
-    .matches(/(^[a-zA-Z-]+$)/, 'Please enter a valid string')
-    .required('Required'),
+    .min(2, 'Мінімальна довжина 2 символа')
+    .max(30, 'Максимальна довжина 50 символів')
+    .matches(/(^[a-z0-9-]+$)/, 'Може містити латинські літери в нижньому регістрі (a-z), цифри (0-9), знак тире (-)')
+    .required('Обов`язкове поле'),
 })
 
 

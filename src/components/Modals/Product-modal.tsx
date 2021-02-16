@@ -3,10 +3,13 @@ import { useDispatch } from 'react-redux';
 import ProductForm from '../Forms/Product-form/Product-form';
 import { IActions } from '../../interfaces/actions';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { Modal, Button } from '@material-ui/core';
+import { Modal, Button, Grid, DialogActions } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import useCategories from '../../hooks/useCategories';
+import ProductAddImages from './Add-img';
+import ProductAddMainImages from './Change-preview';;
+
 
 interface IModalData {
   buttonName: string,
@@ -29,13 +32,18 @@ const useStyles = makeStyles((theme: Theme) =>
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
       maxWidth: '60vw',
-      overflowX: 'auto'
+      height: '80vh',
+      overflow: 'auto',
     },
     margin: {
       margin: theme.spacing(1),
     },
     extendedIcon: {
       marginLeft: theme.spacing(1),
+    },
+
+    customBtn: {
+      marginTop: "15px",
     },
 
   }),
@@ -69,7 +77,7 @@ const ProductModal: React.FC<IModalData> = ({ buttonName, modalTitle, action, cl
         startIcon={action === 'edit' ? <EditIcon /> : <AddIcon />}
         onClick={handleOpen}
       >
-        {buttonName}
+        {modalTitle}
       </Button>
       <Modal
         className={classes.modal}
@@ -79,13 +87,49 @@ const ProductModal: React.FC<IModalData> = ({ buttonName, modalTitle, action, cl
       >
         <div className={classes.paper}>
           <h2 id="simple-modal-title" style={{ textAlign: 'center' }}>{modalTitle}</h2>
-          <ProductForm
-            dispatch={dispatch}
-            handleClose={handleClose}
-            currencies={currencies}
-            buttonName={buttonName}
-            fetchFun={fetchFun}
-            {...props} />
+          {props
+            ? <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="stretch"
+            >
+              <Grid item>
+                <ProductForm
+                  dispatch={dispatch}
+                  handleClose={handleClose}
+                  currencies={currencies}
+                  buttonName={buttonName}
+                  fetchFun={fetchFun}
+                  {...props} />
+              </Grid>
+              <Grid item>
+                <ProductAddMainImages {...props} />
+              </Grid>
+              <Grid item>
+                <ProductAddImages id={props.id} />
+              </Grid>
+            </Grid>
+            : <ProductForm
+              dispatch={dispatch}
+              handleClose={handleClose}
+              currencies={currencies}
+              buttonName={buttonName}
+              fetchFun={fetchFun}
+              {...props} />
+          }
+
+          <DialogActions>
+            <Button
+              onClick={handleClose}
+              color="primary"
+              variant="contained"
+              className={classes.customBtn}
+            >
+              Закрити
+        </Button>
+
+          </DialogActions>
         </div>
       </Modal>
     </Fragment>

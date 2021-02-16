@@ -31,6 +31,7 @@ function createData(
 const useTableStyles = makeStyles({
   table: {
     minWidth: 500,
+    overflow: "auto",
   },
 });
 
@@ -38,7 +39,7 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, loading }) => {
   const classes = useTableStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const tableHeaders = ["ID", "Name", "Price", "Description", "Category", "CreatedAt", "UpdatedAt", "Files", "Key", "Main img"]
+  const tableHeaders = ["ID", "Назва", "Ціна", "Опис", "Категорія", "Створено", "Обновлено", "Зображення продукта", "URL ключ", "Головне зображення"]
 
   if (!list.length && loading) return (
     <div>
