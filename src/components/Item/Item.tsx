@@ -12,7 +12,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useDispatch } from 'react-redux';
-import { fetchDeleteProduct } from '../../store/actions';
+import { deleteProductRequest } from '../../store/actions';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,51 +38,82 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1),
       width: '100%',
     },
-  }),
+  })
 );
 
-const ComplexGrid: React.FC<IProductItem & RouteComponentProps<any>> = (props) => {
+interface IComplexGrid {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  category: any;
+  url_key: string;
+  files: Array<any>;
+  mainImg: any;
+  createdAt: string;
+  updatedAt: string;
+}
+
+const ComplexGrid: React.FC<IComplexGrid & RouteComponentProps<any>> = (data) => {
   const classes = useStyles();
+  const {
+    id,
+    name,
+    price,
+    description,
+    category,
+    files,
+    url_key,
+    mainImg,
+    createdAt,
+    updatedAt,
+    history,
+  } = data;
   const dispatch = useDispatch();
   const deleteProduct = () => {
-    dispatch(fetchDeleteProduct(props.id));
-    props.history.push('/products');
-  }
-  const { id, name, price, description, category } = props;
+    dispatch(deleteProductRequest(id));
+    history.push('/products');
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <Grid container spacing={2}>
           <Grid item>
-            <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="complex" src="https://picsum.photos/200" />
-            </ButtonBase>
+            {mainImg && (
+              <ButtonBase className={classes.image}>
+                {/* <img className={classes.img} alt="complex" src={`${imgPath}${mainImg.name}`} /> */}
+              </ButtonBase>
+            )}
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
                 <Typography variant="body2" gutterBottom>
-                  Product id: {props.id}
+                  Id товару: <span style={{ fontWeight: 'bold' }}>{id}</span>
                 </Typography>
                 <Typography gutterBottom variant="body2">
-                  Product name: {props.name}
+                  Назва товару: <span style={{ fontWeight: 'bold' }}>{name}</span>
+                </Typography>
+                <Typography gutterBottom variant="body2">
+                  URL ключ товару: <span style={{ fontWeight: 'bold' }}>{url_key}</span>
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  Product description: {props.description}
+                  Опис товару: <span style={{ fontWeight: 'bold' }}>{description}</span>
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  Price: {props.price}
+                  Ціна товару: <span style={{ fontWeight: 'bold' }}>{price}</span>
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  Category: {props.category.name}
+                  Назва категорії: <span style={{ fontWeight: 'bold' }}>{category.name}</span>
                 </Typography>
               </Grid>
               <Grid item>
                 <Typography variant="body2" color="textSecondary">
-                  Product created: {props.createdAt}
+                  Товар створено: {createdAt}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                  Product updated: {props.updatedAt}
+                  Товар оновлено: {updatedAt}
                 </Typography>
               </Grid>
             </Grid>
@@ -92,12 +123,26 @@ const ComplexGrid: React.FC<IProductItem & RouteComponentProps<any>> = (props) =
                 color="default"
                 className={classes.button}
                 startIcon={<ArrowBackIosIcon />}
-                onClick={() => props.history.push(`/products`)}
+                onClick={() => {
+                  history.push('/products');
+                }}
               >
-                Back
+                Назад
               </Button>
               <Grid item>
-                <EditProduct className={classes.button} props={{ id, name, price, description, categoryName: category.name }} />
+                <EditProduct
+                  className={classes.button}
+                  props={{
+                    id,
+                    name,
+                    price,
+                    description,
+                    categoryName: category.name,
+                    files,
+                    url_key,
+                    mainImg,
+                  }}
+                />
               </Grid>
               <Grid item>
                 <Button
@@ -107,7 +152,7 @@ const ComplexGrid: React.FC<IProductItem & RouteComponentProps<any>> = (props) =
                   startIcon={<DeleteIcon />}
                   onClick={deleteProduct}
                 >
-                  Delete
+                  Видалити
                 </Button>
               </Grid>
             </Grid>
@@ -116,6 +161,6 @@ const ComplexGrid: React.FC<IProductItem & RouteComponentProps<any>> = (props) =
       </Paper>
     </div>
   );
-}
+};
 
 export default withRouter(ComplexGrid);

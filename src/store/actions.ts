@@ -8,16 +8,21 @@ import {
   LOAD_CATEGORIES,
   REQUEST_CATEGORIES,
   REQUEST_ADD_CATEGORIES,
-  LOAD_PRODUCTS,
-  REQUEST_PRODUCTS,
-  LOAD_PRODUCT_BY_ID,
-  REQUEST_PRODUCT_BY_ID,
-  ADD_PRODUCT,
-  REQUEST_ADD_PRODUCT,
-  REQUEST_DELETE_PRODUCT,
-  DELETE_PRODUCT,
-  UPDATE_PRODUCT,
-  REQUEST_UPDATE_PRODUCT,
+  GET_PRODUCTS_REQUEST,
+  GET_PRODUCTS_SUCCESS,
+  GET_PRODUCTS_ERROR,
+  GET_PRODUCT_BY_ID_REQUEST,
+  GET_PRODUCT_BY_ID_SUCCESS,
+  GET_PRODUCT_BY_ID_ERROR,
+  ADD_PRODUCT_REQUEST,
+  ADD_PRODUCT_SUCCESS,
+  ADD_PRODUCT_ERROR,
+  DELETE_PRODUCT_REQUEST,
+  DELETE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT_ERROR,
+  UPDATE_PRODUCT_REQUEST,
+  UPDATE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_ERROR,
   LOAD_USERS,
   REQUEST_USERS,
   SWITCH_DARK_MODE,
@@ -28,6 +33,12 @@ import {
   SUCCESS_SNACKBAR,
   FAIL_SNACKBAR,
   CLOSE_SNACKBAR,
+  UPLOAD_MAIN_IMG_REQUEST,
+  UPLOAD_MAIN_IMG_SUCCESS,
+  UPLOAD_MAIN_IMG_ERROR,
+  UPLOAD_IMAGES_REQUEST,
+  UPLOAD_IMAGES_SUCCESS,
+  UPLOAD_IMAGES_ERROR,
 } from './types';
 
 export const loadCategories = (categories: ICategoryItem[]): IActions => ({
@@ -46,53 +57,132 @@ export const addCategory = (category: ICategoryItem): IActions => ({
   data: category,
 });
 
-export const loadProducts = (products: IProductItem[]): IActions => ({
-  type: LOAD_PRODUCTS,
+// PRODUCTS
+// get all
+export const getProductsRequest = (): IActions => ({
+  type: GET_PRODUCTS_REQUEST,
+});
+
+export const getProductsSuccess = (products: IProductItem[]): IActions => ({
+  type: GET_PRODUCTS_SUCCESS,
   data: products,
 });
-export const fetchProducts = (): IActions => ({ type: REQUEST_PRODUCTS });
 
-export const loadProductById = (product: IProductItem[]): IActions => ({
-  type: LOAD_PRODUCT_BY_ID,
-  data: product,
+export const getProductsError = (message: string): IActions => ({
+  type: GET_PRODUCTS_ERROR,
+  data: message,
 });
-export const fetchProductById = (id: number): IActions => ({
-  type: REQUEST_PRODUCT_BY_ID,
+
+// get one by id
+export const getProductByIdRequest = (id: number): IActions => ({
+  type: GET_PRODUCT_BY_ID_REQUEST,
   data: id,
 });
 
-export const fetchAddProduct = (product: IProductFormData): IActions => ({
-  type: REQUEST_ADD_PRODUCT,
-  data: product,
-});
-export const addProduct = (product: IProductItem): IActions => ({
-  type: ADD_PRODUCT,
+export const getProductByIdSuccess = (product: IProductItem): IActions => ({
+  type: GET_PRODUCT_BY_ID_SUCCESS,
   data: product,
 });
 
-export const deleteProduct = (product: IProductItem[]): IActions => ({
-  type: DELETE_PRODUCT,
-  data: product,
-});
-export const fetchDeleteProduct = (id: number): IActions => ({
-  type: REQUEST_DELETE_PRODUCT,
-  data: id,
+export const getProductByIdError = (message: string): IActions => ({
+  type: GET_PRODUCT_BY_ID_ERROR,
+  data: message,
 });
 
-export const updateProduct = (product: IProductItem[]): IActions => ({
-  type: UPDATE_PRODUCT,
+// add product
+export const addProductRequest = (product: IProductFormData): IActions => ({
+  type: ADD_PRODUCT_REQUEST,
   data: product,
 });
-export const fetchUpdateProduct = (product: IProductFormData, id: number, file:  Array<File>): IActions => ({
-  type: REQUEST_UPDATE_PRODUCT,
+
+export const addProductSuccess = (product: IProductItem): IActions => ({
+  type: ADD_PRODUCT_SUCCESS,
+  data: product,
+});
+
+export const addProductError = (message: string): IActions => ({
+  type: ADD_PRODUCT_ERROR,
+  data: message,
+});
+
+// upload main image
+export const uploadMainImgRequest = (productId: string, imgName: string): IActions => ({
+  type: UPLOAD_MAIN_IMG_REQUEST,
+  data: { productId, imgName },
+});
+
+export const uploadMainImgSuccess = (mainImg: string): IActions => ({
+  type: UPLOAD_MAIN_IMG_SUCCESS,
+  data: mainImg,
+});
+
+export const uploadMainImgError = (message: string): IActions => ({
+  type: UPLOAD_MAIN_IMG_ERROR,
+  data: message,
+});
+
+// upload images
+export const uploadImagesRequest = (images: string[]): IActions => ({
+  type: UPLOAD_IMAGES_REQUEST,
+  data: images,
+});
+
+export const uploadImagesSuccess = (images: string): IActions => ({
+  type: UPLOAD_IMAGES_SUCCESS,
+  data: images,
+});
+
+export const uploadImagesError = (message: string): IActions => ({
+  type: UPLOAD_IMAGES_ERROR,
+  data: message,
+});
+
+// update product
+export const updateProductRequest = (
+  product: IProductFormData,
+  id: number,
+  file: Array<File>
+): IActions => ({
+  type: UPDATE_PRODUCT_REQUEST,
   data: { id, product, file },
 });
+
+export const updateProductSuccess = (product: IProductItem): IActions => ({
+  type: UPDATE_PRODUCT_SUCCESS,
+  data: product,
+});
+
+export const updateProductError = (message: string): IActions => ({
+  type: UPDATE_PRODUCT_ERROR,
+  data: message,
+});
+
+// delete product
+export const deleteProductRequest = (id: number): IActions => ({
+  type: DELETE_PRODUCT_REQUEST,
+  data: id,
+});
+
+export const deleteProductSuccess = (product: IProductItem): IActions => ({
+  type: DELETE_PRODUCT_SUCCESS,
+  data: product,
+});
+
+export const deleteProductError = (message: string): IActions => ({
+  type: DELETE_PRODUCT_ERROR,
+  data: message,
+});
+//
+
 export const loadUsers = (users: IUserItem[]): IActions => ({ type: LOAD_USERS, data: users });
 export const fetchUsers = (): IActions => ({ type: REQUEST_USERS });
 
 // Settings
 export const fetchSettings = (): IActions => ({ type: REQUEST_SETTINGS });
-export const loadSettings = (settings: ISettingsItem[]): IActions =>({ type: LOAD_SETTINGS, data: settings });
+export const loadSettings = (settings: ISettingsItem[]): IActions => ({
+  type: LOAD_SETTINGS,
+  data: settings,
+});
 
 export const fetchUpdateSettings = (name: string, settings: object): IActions => ({
   type: REQUEST_UPDATE_SETTINGS,
@@ -107,6 +197,11 @@ export const updateSetting = (settings: ISettingsItem): IActions => ({
 export const switchDarkMode = (): IActions => ({ type: SWITCH_DARK_MODE });
 
 // SnackBar
-export const successSnackBar = (): IActions => ({ type: SUCCESS_SNACKBAR });
-export const failSnackBar = (error: ISettingError): IActions => ({ type: FAIL_SNACKBAR, data: error });
+export const successSnackBar = (): IActions => ({
+  type: SUCCESS_SNACKBAR,
+});
+export const failSnackBar = (error: ISettingError): IActions => ({
+  type: FAIL_SNACKBAR,
+  data: error,
+});
 export const closeSnackBar = (): IActions => ({ type: CLOSE_SNACKBAR });

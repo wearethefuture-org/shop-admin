@@ -1,9 +1,8 @@
-
 html,
 body,
 #root {
   height: 100%;
-  width: 100% ;
+  width: 100%;
 }
 
 body *:active,
@@ -14,14 +13,25 @@ body *:focus {
 a,
 a:hover {
   text-decoration: none;
-  color: inherit
+  color: inherit;
 }
 
 .wraper {
   display: flex;
-  align-items: stretch; 
-  height: 100%; 
+  align-items: stretch;
+  height: 100%;
   width: 100%;
   position: relative;
   overflow-x: hidden;
+}
+
+// input type number hide arrows
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
 }

@@ -1,59 +1,70 @@
-import { IActions } from './actions';
 import { Dispatch } from 'redux';
 
+import { IActions } from './actions';
+
 export interface IProductItem {
-  id: number,
-  createdAt: string,
-  updatedAt: string,
-  name: string,
-  price: number,
-  description: string,
-  category: any,
-  file?: Array<any>
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  price: number;
+  description: string;
+  category: any;
+  files?: Array<any>;
+  key: string | undefined;
+  mainImg?: any;
 }
 
 export interface IProductsData {
-  list: Array<IProductItem>,
-  loading: boolean
+  list: Array<IProductItem>;
+  loading: boolean;
+  currentProduct: IProductItem | null;
+  error: string | null;
 }
 
 export interface ProductTableData {
-  id: number,
-  name: string,
-  createdAt: string,
-  updatedAt: string,
-  price: number,
-  description: string,
-  category: any,
-  file?: Array<any>
-};
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  price: number;
+  description: string;
+  category: any;
+  key: string | undefined;
+  mainImg?: any;
+  files?: Array<any>;
+}
 
 export interface IProductFormData {
-  name: string,
-  price: number,
-  description: string,
-  categoryName: string,
-  file: Array<any>
+  name: string;
+  price: number;
+  description: string;
+  categoryName: string;
+  key: string | undefined;
+  files: FormData;
+  mainImg: any;
+  // images: [];
+  // images: FormData;
 }
 export interface InnerProductFormProps {
   currencies: Array<any>;
   handleClose: () => void;
   buttonName: string;
   id: number;
-
 }
-
 
 export interface ProductFormProps {
   dispatch: Dispatch;
-  handleClose: () => void;
-  currencies: Array<any>;
+  toggleModal: () => void;
+  categories: Array<any>;
+  editMode: boolean;
   id: number;
   name: string;
   description: string;
   price: number;
   categoryName?: string;
-  buttonName: string;
   fetchFun: (...props: any) => IActions;
-  file: Array<any>
+  files: FormData;
+  url_key: string | undefined;
+  mainImg: any | undefined;
 }

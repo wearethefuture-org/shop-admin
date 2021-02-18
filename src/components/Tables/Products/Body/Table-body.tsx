@@ -3,49 +3,80 @@ import { makeStyles } from '@material-ui/core/styles';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import DateMoment from '../../../Common/Date-moment';
 
 import { IProductItem } from '../../../../interfaces/IProducts';
 
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import DateMoment from '../../../Common/Date-moment';
+import { root } from '../../../../api/config';
 
 interface TableBodyProps {
-  rows: IProductItem[],
-  rowsPerPage: number,
-  page: number,
-  emptyRows: number
+  rows: IProductItem[];
+  rowsPerPage: number;
+  page: number;
+  emptyRows: number;
 }
 
 const useTableStyles = makeStyles({
   row: {
-    cursor: 'pointer',
+    'cursor': 'pointer',
     '&:hover': {
-      background: "#f5f5f5",
+      background: '#f5f5f5',
     },
     '& > td': {
       wordBreak: 'break-word',
-    }
-  }
+    },
+  },
 });
 
-const ProductsTableBody: React.FC<TableBodyProps & RouteComponentProps<any>> = ({ rows, rowsPerPage, page, emptyRows, history }) => {
-
+const ProductsTableBody: React.FC<TableBodyProps & RouteComponentProps<any>> = ({
+  rows,
+  rowsPerPage,
+  page,
+  emptyRows,
+  history,
+}) => {
   const classes = useTableStyles();
+
   return (
     <TableBody>
       {(rowsPerPage > 0
         ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         : rows
       ).map((row) => (
-        <TableRow className={classes.row} key={row.id} onClick={() => history.push(`/product/${row.id}`)}>
-          <TableCell component="th" scope="row">{row.id}</TableCell>
-          <TableCell align="right">{row.name}</TableCell>
-          <TableCell align="right">{row.price}</TableCell>
-          <TableCell align="right" >{row.description}</TableCell>
-          <TableCell align="right">{row.category}</TableCell>
-          <TableCell align="right"><DateMoment date={row.createdAt} /></TableCell>
-          <TableCell align="right"><DateMoment date={row.updatedAt} /></TableCell>
+        <TableRow
+          className={classes.row}
+          key={row.id}
+          onClick={() => history.push(`/product/${row.id}`)}
+        >
+          <TableCell component="th" scope="row">
+            {row.id}
+          </TableCell>
+          <TableCell>{row.name}</TableCell>
+          <TableCell>{row.price}</TableCell>
+          <TableCell>{row.description}</TableCell>
+          <TableCell>{row.category}</TableCell>
 
+          <TableCell>{row.key}</TableCell>
+          <TableCell>
+            <DateMoment date={row.createdAt} />
+          </TableCell>
+          <TableCell>
+            <DateMoment date={row.updatedAt} />
+          </TableCell>
+          <TableCell>{row.files ? row.files.length / 2 : '0'}</TableCell>
+          {row.mainImg ? (
+            <TableCell>
+              <img
+                src={`${root}/product/img/${row.mainImg.name}`}
+                alt={row.mainImg.name}
+                width="100"
+                height="auto"
+              />
+            </TableCell>
+          ) : (
+            <TableCell>-</TableCell>
+          )}
         </TableRow>
       ))}
       {emptyRows > 0 && (
@@ -55,6 +86,6 @@ const ProductsTableBody: React.FC<TableBodyProps & RouteComponentProps<any>> = (
       )}
     </TableBody>
   );
-}
+};
 
 export default withRouter(ProductsTableBody);

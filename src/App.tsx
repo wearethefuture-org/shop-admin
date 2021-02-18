@@ -1,6 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import { ThemeProvider, createMuiTheme, ThemeOptions } from '@material-ui/core/styles';
+import {
+  ThemeProvider,
+  unstable_createMuiStrictModeTheme as createMuiTheme,
+  ThemeOptions,
+} from '@material-ui/core/styles';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
 import Router from './components/Router/Router';

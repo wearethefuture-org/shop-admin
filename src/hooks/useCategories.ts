@@ -3,16 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories } from '../store/actions';
 import { RootState } from '../store/store';
 
-
 const useCategories = () => {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	useEffect(() => {
-		dispatch(fetchCategories());
-	}, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
-	const data = useSelector((state: RootState) => state.categories.list);
-	return { data, dispatch };
-}
+  const data = useSelector((state: RootState) => state.categories.list);
+  return { data, dispatch };
+};
 
 export default useCategories;

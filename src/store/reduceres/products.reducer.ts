@@ -1,85 +1,185 @@
-import { IActions } from "../../interfaces/actions";
+import { IActions } from '../../interfaces/actions';
 import {
-  REQUEST_PRODUCTS,
-  LOAD_PRODUCTS,
-  REQUEST_ADD_PRODUCT,
-  ADD_PRODUCT,
-  REQUEST_UPDATE_PRODUCT,
-  UPDATE_PRODUCT,
-  REQUEST_DELETE_PRODUCT,
-  DELETE_PRODUCT
-} from "../types";
+  GET_PRODUCTS_SUCCESS,
+  GET_PRODUCTS_REQUEST,
+  GET_PRODUCTS_ERROR,
+  GET_PRODUCT_BY_ID_REQUEST,
+  GET_PRODUCT_BY_ID_SUCCESS,
+  GET_PRODUCT_BY_ID_ERROR,
+  ADD_PRODUCT_REQUEST,
+  ADD_PRODUCT_SUCCESS,
+  ADD_PRODUCT_ERROR,
+  UPDATE_PRODUCT_REQUEST,
+  UPDATE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_ERROR,
+  DELETE_PRODUCT_REQUEST,
+  DELETE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT_ERROR,
+  UPLOAD_MAIN_IMG_REQUEST,
+  UPLOAD_MAIN_IMG_SUCCESS,
+  UPLOAD_MAIN_IMG_ERROR,
+} from '../types';
 import { IProductsData } from '../../interfaces/IProducts';
 
-
-const data: IProductsData = {
+const initialState: IProductsData = {
+  loading: false,
   list: [],
-  loading: false
+  currentProduct: null,
+  error: null,
 };
 
-const products = (state = data, action: IActions) => {
-  console.log(action.type)
-  switch (action.type) {
-    case REQUEST_PRODUCTS: {
+const products = (state = initialState, { type, data }: IActions) => {
+  switch (type) {
+    // GET ALL
+    case GET_PRODUCTS_REQUEST: {
       return {
         ...state,
         loading: true,
-      }
+        error: null,
+      };
     }
-    case LOAD_PRODUCTS: {
-      return {
-        ...state,
-        list: action.data,
-        loading: false,
-      }
-    }
-    case REQUEST_ADD_PRODUCT: {
-      return {
-        ...state,
-        loading: true,
-      }
-    }
-    case ADD_PRODUCT: {
-      return {
-        list: [
-          ...state.list,
-          action.data],
-        loading: false
-      }
-    }
-    case REQUEST_UPDATE_PRODUCT: {
-      return {
-        ...state,
-        loading: true,
-      }
-    }
-    case UPDATE_PRODUCT: {
-      const productId = action.data.id;
-      const itemIndex = state.list.findIndex(({ id }) => id === productId);
-      return {
-        ...state,
-        list: [
-          ...state.list.slice(0, itemIndex),
-          action.data,
-          ...state.list.slice(itemIndex + 1)
-        ],
-        loading: false,
-      }
-    }
-    case REQUEST_DELETE_PRODUCT: {
-      return {
-        ...state,
-        loading: true,
-      }
-    }
-    case DELETE_PRODUCT: {
 
+    case GET_PRODUCTS_SUCCESS: {
       return {
         ...state,
-        list: [...state.list.filter((item) => item.id !== action.data)],
+        list: data,
         loading: false,
-      }
+      };
     }
+
+    case GET_PRODUCTS_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+
+    // GET ONE BY ID
+    case GET_PRODUCT_BY_ID_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case GET_PRODUCT_BY_ID_SUCCESS: {
+      return {
+        ...state,
+        currentProduct: data,
+        loading: false,
+      };
+    }
+
+    case GET_PRODUCT_BY_ID_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+
+    // ADD PRODUCT
+    case ADD_PRODUCT_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case ADD_PRODUCT_SUCCESS: {
+      return {
+        ...state,
+        list: [...state.list, data],
+        loading: false,
+      };
+    }
+
+    case ADD_PRODUCT_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+
+    // UPLOAD MAIN IMG
+    case UPLOAD_MAIN_IMG_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case UPLOAD_MAIN_IMG_SUCCESS: {
+      return {
+        ...state,
+        currentProduct: data,
+        loading: false,
+      };
+    }
+
+    case UPLOAD_MAIN_IMG_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+
+    // UPDATE PRODUCT
+    case UPDATE_PRODUCT_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case UPDATE_PRODUCT_SUCCESS: {
+      return {
+        ...state,
+        list: state.list.map((item) => (item.id === data.id ? data : item)),
+        loading: false,
+      };
+    }
+
+    case UPDATE_PRODUCT_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+
+    // DELETE PRODUCT
+    case DELETE_PRODUCT_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case DELETE_PRODUCT_SUCCESS: {
+      return {
+        ...state,
+        list: state.list.filter((item) => item.id !== data),
+        loading: false,
+      };
+    }
+
+    case DELETE_PRODUCT_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+
     default:
       return state;
   }
