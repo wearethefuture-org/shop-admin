@@ -132,12 +132,7 @@ const ProductForm = ({
                 />
                 <FormControl fullWidth>
                   <InputLabel id="category">Назва категорії</InputLabel>
-                  <Select
-                    labelId="category"
-                    id="category"
-                    value={formik.values.categoryName}
-                    // onChange={handleChange}
-                  >
+                  <Select labelId="category" id="category" value={formik.values.categoryName}>
                     {categories.length
                       ? categories.map(({ id, name }: ICategory) => (
                           <MenuItem value={name} key={id}>
@@ -147,24 +142,6 @@ const ProductForm = ({
                       : []}
                   </Select>
                 </FormControl>
-                {/* <Field
-                  select
-                  fullWidth
-                  component={TextFieldWrapped}
-                  type="select"
-                  label="Назва категорії"
-                  name="categoryName"
-                  makegreen="true"
-                  value={formik.values.categoryName}
-                >
-                  {categories.length
-                    ? categories.map(({ id, name }: ICategory) => (
-                        <MenuItem value={name} key={id}>
-                          {name}
-                        </MenuItem>
-                      ))
-                    : []}
-                </Field> */}
               </div>
             </Card>
           ) : null}
