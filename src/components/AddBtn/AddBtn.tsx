@@ -7,7 +7,6 @@ const AddBtn = ({ handleAdd }) => {
     <Button
       variant="contained"
       color="primary"
-      size="large"
       startIcon={<AddIcon />}
       onClick={handleAdd}
       type="button"
