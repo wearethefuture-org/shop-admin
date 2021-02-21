@@ -1,7 +1,7 @@
 import { IActions } from '../interfaces/actions';
 import { ICategoryItem } from '../interfaces/category-Item';
 import { IProductItem, IProductFormData } from '../interfaces/IProducts';
-import { ISliderItem, ISliderFormValues } from "../interfaces/ISliders";
+import { ISliderItem, ISliderUpdateValues, ISliderVisibility } from "../interfaces/ISliders";
 import { ISettingError, ISettingsItem } from '../interfaces/ISettings';
 import { IUserItem } from '../interfaces/Users';
 import {
@@ -37,6 +37,7 @@ import {
   REQUEST_ADD_SLIDERS,
   REQUEST_DELETE_SLIDERS,
   REQUEST_UPDATE_SLIDERS,
+  REQUEST_UPDATE_SLIDER_VISIBILITY,
 } from './types';
 
 export const loadCategories = (categories: ICategoryItem[]): IActions => ({
@@ -116,7 +117,7 @@ export const updateSetting = (settings: ISettingsItem): IActions => ({
 export const loadSliders = (sliders: ISliderItem[]): IActions => ({ type: LOAD_SLIDERS, data: sliders });
 export const fetchSliders = (): IActions => ({ type: REQUEST_SLIDERS });
 
-export const fetchAddSliders = (slider: ISliderFormValues): IActions => ({
+export const fetchAddSliders = (slider: FormData): IActions => ({
   type: REQUEST_ADD_SLIDERS,
   data: slider,
 });
@@ -134,12 +135,17 @@ export const deleteSlider = (slider: ISliderItem): IActions => ({
   data: slider,
 });
 
-export const fetchUpdateSliders = (slider: ISliderFormValues): IActions => ({
+export const fetchUpdateSliders = (slider: ISliderUpdateValues): IActions => ({
   type: REQUEST_UPDATE_SLIDERS,
   data: slider,
 });
 export const updateSlider = (slider: ISliderItem): IActions => ({
   type: UPDATE_SLIDER,
+  data: slider,
+});
+
+export const fetchUpdateSliderVisibility = (slider: ISliderVisibility): IActions => ({
+  type: REQUEST_UPDATE_SLIDER_VISIBILITY,
   data: slider,
 });
 

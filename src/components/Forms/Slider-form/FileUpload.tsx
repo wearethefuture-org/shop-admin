@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import { FieldProps } from "formik";
 import Input, { InputProps } from '@material-ui/core/Input';
+import { root } from "../../../api/config";
 
 export interface SimpleFileUploadProps extends FieldProps {
   label: string;
@@ -27,6 +28,9 @@ const FileUpload = ({
       }
       reader.readAsDataURL(image);
     }
+  }
+  else if(!imageSrc.includes(root) && image.length > 2){
+    setImageSrc(`${ root }/slider/img/${ image }`);
   }
 
   const useStyles = makeStyles({

@@ -61,9 +61,31 @@ const SliderForm = withFormik<SliderFormProps, ISliderFormValues>({
     handleSubmit: (values: ISliderFormValues, {setSubmitting, props}) => {
       setSubmitting(false);
       if (props.initialId === undefined) {
-        props.dispatch(fetchAddSliders(values));
+        const formData = new FormData()
+        formData.append("image", values.image);
+        formData.append("name", values.name);
+        formData.append("isShown", "" + values.isShown);
+        formData.append("priority", "" + values.priority);
+        formData.append("href", values.href);
+        formData.append("text", values.text);
+
+        props.dispatch(fetchAddSliders(formData));
       } else {
-        props.dispatch(fetchUpdateSliders(values));
+        const formData = new FormData()
+        if (typeof values.image != 'string')
+          formData.append("image", values.image);
+        if (values.name !== props.initialName)
+          formData.append("name", values.name);
+        if (values.isShown !== props.initialIsShown)
+          formData.append("isShown", "" + values.isShown);
+        if (values.priority !== props.initialPriority)
+          formData.append("priority", "" + values.priority);
+        if (values.href !== props.initialHref)
+          formData.append("href", values.href);
+        if (values.text !== props.initialText)
+          formData.append("text", values.text);
+
+        props.dispatch(fetchUpdateSliders({id: props.initialId, body: formData}));
       }
       props.handleClose();
     },

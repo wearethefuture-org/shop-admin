@@ -14,14 +14,16 @@ import {
   REQUEST_SLIDERS,
   REQUEST_ADD_SLIDERS,
   REQUEST_DELETE_SLIDERS,
-  REQUEST_UPDATE_SLIDERS
+  REQUEST_UPDATE_SLIDERS,
+  REQUEST_UPDATE_SLIDER_VISIBILITY
 } from '../types';
 
 import {
   fetchSliderWorker,
   addSliderWorker,
   deleteSliderWorker,
-  updateSliderWorker
+  updateSliderWorker,
+  updateSliderVisibilityWorker
 } from './sliders.saga';
 import { fetchCategoryWorker, addCategoryWorker } from '../sagas/categories.saga';
 import {
@@ -32,6 +34,7 @@ import {
   fetchUpdateProductWorker,
 } from '../sagas/products.saga';
 import { fetchSettingsWorker, updateSettingsWorker } from './settings.saga';
+
 
 export function* sagaCategoriesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_CATEGORIES, fetchCategoryWorker);
@@ -58,6 +61,7 @@ export function* sagaSlidersWatcher(): SagaIterator {
   yield takeEvery(REQUEST_ADD_SLIDERS, addSliderWorker);
   yield takeEvery(REQUEST_DELETE_SLIDERS, deleteSliderWorker);
   yield takeEvery(REQUEST_UPDATE_SLIDERS, updateSliderWorker);
+  yield takeEvery(REQUEST_UPDATE_SLIDER_VISIBILITY, updateSliderVisibilityWorker);
 }
 
 // RootSaga

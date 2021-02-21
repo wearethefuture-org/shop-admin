@@ -1,5 +1,11 @@
 import {put, call} from 'redux-saga/effects';
-import {addSliders, deleteSliders, fetchedSliders, updateSliders} from './services/slider.service';
+import {
+    addSliders,
+    deleteSliders,
+    fetchedSliders,
+    updateSliders,
+    updateSliderVisibility
+} from './services/slider.service';
 import {loadSliders, addSlider, deleteSlider, updateSlider} from '../actions';
 import {SagaIterator} from 'redux-saga';
 import {IActions} from '../../interfaces/actions';
@@ -35,6 +41,15 @@ export function* deleteSliderWorker({data}: IActions): SagaIterator {
 export function* updateSliderWorker({data}: IActions): SagaIterator {
     try {
         const newSlider = yield call(updateSliders, data);
+        yield put(updateSlider(newSlider));
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export function* updateSliderVisibilityWorker({data}: IActions): SagaIterator {
+    try {
+        const newSlider = yield call(updateSliderVisibility, data);
         yield put(updateSlider(newSlider));
     } catch (error) {
         console.log(error);

@@ -8,8 +8,18 @@ export interface ISliderFormValues {
   priority: number;
 }
 
+export interface  ISliderUpdateValues {
+  id: number;
+  body: FormData;
+}
+
 export interface InnerSliderFormProps {
   handleClose: () => void;
+}
+
+export interface ISliderVisibility{
+  id:number
+  isShown: boolean
 }
 
 export interface ISliderItem {

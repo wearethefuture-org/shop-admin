@@ -8,9 +8,11 @@ import SliderTableBody from './Body/Table-body';
 import SliderTableFooter from './Footer/Table-footer';
 import TableContainer from '@material-ui/core/TableContainer';
 import { ISliderItem, SliderTableData } from '../../../interfaces/ISliders';
+import { Dispatch } from "redux";
 
 interface SliderDataProps {
   data: Array<ISliderItem>,
+  dispatch: Dispatch;
 }
 
 function createData(
@@ -33,7 +35,7 @@ const useTableStyles = makeStyles({
   },
 });
 
-const SlidersTable: React.FC<SliderDataProps> = ({data}) => {
+const SlidersTable: React.FC<SliderDataProps> = ({data, dispatch}) => {
   const classes = useTableStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -73,6 +75,8 @@ const SlidersTable: React.FC<SliderDataProps> = ({data}) => {
       <Table className={classes.table} aria-label="custom pagination table">
         <TableHeader/>
         <SliderTableBody
+          data={data}
+          dispatch={dispatch}
           rows={rows}
           rowsPerPage={rowsPerPage}
           page={page}

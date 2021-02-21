@@ -6,17 +6,20 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import { Switch } from "@material-ui/core";
 
-import { ISliderFormValues, SliderTableData } from '../../../../interfaces/ISliders';
+import { ISliderItem, SliderTableData } from '../../../../interfaces/ISliders';
 
-import useSliders from "../../../../hooks/useSliders";
-import { fetchDeleteSliders, fetchUpdateSliders } from "../../../../store/actions";
+import { fetchDeleteSliders, fetchUpdateSliderVisibility } from "../../../../store/actions";
 import FormDialog from "../../../Modals/Slider-modal-edit";
+import { Dispatch } from "redux";
+import { root } from "../../../../api/config";
 
 interface TableBodyProps {
   rows: SliderTableData[],
   rowsPerPage: number,
   page: number,
   emptyRows: number,
+  data: Array<ISliderItem>,
+  dispatch: Dispatch;
 }
 
 const SliderTableBody: React.FC<TableBodyProps> = ({
@@ -24,24 +27,16 @@ const SliderTableBody: React.FC<TableBodyProps> = ({
                                                      rowsPerPage,
                                                      page,
                                                      emptyRows,
+                                                     data,
+                                                     dispatch
                                                    }) => {
-  const {data, dispatch} = useSliders();
 
   const [selected, setSelected] = useState(null);
 
   const changeShown = (id: number, isShown: boolean) => {
     const row = rows.find(x => x.id === id);
     if (row) {
-      const slider: ISliderFormValues = {
-        id: row.id,
-        name: row.name,
-        text: row.text,
-        image: row.image as string,
-        href: row.href,
-        isShown: row.isShown,
-        priority: row.priority
-      }
-      dispatch(fetchUpdateSliders(slider));
+      dispatch(fetchUpdateSliderVisibility({id: row.id, isShown: isShown}));
     }
   }
 
@@ -76,7 +71,7 @@ const SliderTableBody: React.FC<TableBodyProps> = ({
             <TableCell component="th" scope="row">{row.id}</TableCell>
             <TableCell align="right">{row.name}</TableCell>
             <TableCell align="right">{row.text}</TableCell>
-            <TableCell align="right"><img width="50px" src={row.image as string}/></TableCell>
+            <TableCell align="right"><img width="50px" src={ `${ root }/slider/img/${ row.image }` }/></TableCell>
             <TableCell align="right">{row.href}</TableCell>
             <TableCell align="right"><Switch checked={row.isShown}
                                              onChange={() => changeShown(row.id, !row.isShown)}/></TableCell>

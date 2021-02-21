@@ -11,7 +11,7 @@ const SlidersContainer: React.FC = () => {
 
   return (
     <>
-      <SlidersTable data={data}/>
+      <SlidersTable data={data}  dispatch={dispatch}/>
       <FormDialog
         dispatch={dispatch}
         slidersLength={data.length}

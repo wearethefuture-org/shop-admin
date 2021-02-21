@@ -5,7 +5,7 @@ import { ICategoryItem } from '../interfaces/category-Item';
 import {IActions, IActionsImage} from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';
 import { IProductItem } from '../interfaces/IProducts';
-import {ISliderItem} from "../interfaces/ISliders";
+import { ISliderItem, ISliderUpdateValues, ISliderVisibility } from "../interfaces/ISliders";
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -16,10 +16,11 @@ type ApiFetchedDataType = {
   };
 
   sliders: {
-      get: () => FetchedDataType<ISliderItem>;
-      add: (slider: IActionsImage) => FetchedDataType<ISliderItem>;
-      update: (slider: IActionsImage) => FetchedDataType<ISliderItem>;
-      delete: (slider: IActionsImage) => FetchedDataType<ISliderItem>;
+    get: () => FetchedDataType<ISliderItem>;
+    add: (slider: FormData) => FetchedDataType<ISliderItem>;
+    update: (slider: ISliderUpdateValues) => FetchedDataType<ISliderItem>;
+    updateVisibility: (slider: ISliderVisibility) => FetchedDataType<ISliderItem>;
+    delete: (slider: IActionsImage) => FetchedDataType<ISliderItem>;
   };
 
   products: {
@@ -44,26 +45,9 @@ export const api: ApiFetchedDataType = {
   },
   sliders: {
     get: () => axios.get(`${root}/slider`),
-    add: async (slider) => {
-
-      if (slider.image instanceof File) {
-        const formData = new FormData()
-        formData.append("image", slider.image)
-        const serverImage = await axios.post(`${root}/slider/images`, formData)
-        slider.image = `${root}/slider/img/${serverImage.data.name}`
-      }
-      return axios.post(`${root}/slider`, slider)
-    },
-    update: async (slider) => {
-
-      if (slider.image instanceof File) {
-         const formData = new FormData()
-         formData.append("image", slider.image)
-         const serverImage = await axios.post(`${root}/slider/images`, formData)
-         slider.image = `${root}/slider/img/${serverImage.data.name}`
-      }
-      return axios.patch(`${root}/slider/${slider.id}`, slider)
-    },
+    add: (slider) =>  axios.post(`${root}/slider`, slider),
+    update: (slider) => axios.patch(`${root}/slider/${slider.id}`, slider.body),
+    updateVisibility: (slider) => axios.patch(`${root}/slider/visibility/${slider.id}`, {isShown: slider.isShown}),
     delete: (slider) => axios.delete(`${root}/slider/${slider.id}`),
   },
 
