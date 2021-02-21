@@ -39,6 +39,9 @@ import {
   UPLOAD_IMAGES_REQUEST,
   UPLOAD_IMAGES_SUCCESS,
   UPLOAD_IMAGES_ERROR,
+  DELETE_IMAGE_REQUEST,
+  DELETE_IMAGE_ERROR,
+  DELETE_IMAGE_SUCCESS,
 } from './types';
 
 export const loadCategories = (categories: ICategoryItem[]): IActions => ({
@@ -137,14 +140,26 @@ export const uploadImagesError = (message: string): IActions => ({
   data: message,
 });
 
+// delete image
+export const deleteImageRequest = (imgName: string, id: string): IActions => ({
+  type: DELETE_IMAGE_REQUEST,
+  data: { imgName, id },
+});
+
+export const deleteImageSuccess = (product: IProductItem): IActions => ({
+  type: DELETE_IMAGE_SUCCESS,
+  data: product,
+});
+
+export const deleteImageError = (message: string): IActions => ({
+  type: DELETE_IMAGE_ERROR,
+  data: message,
+});
+
 // update product
-export const updateProductRequest = (
-  product: IProductFormData,
-  id: number,
-  file: Array<File>
-): IActions => ({
+export const updateProductRequest = (data): IActions => ({
   type: UPDATE_PRODUCT_REQUEST,
-  data: { id, product, file },
+  data,
 });
 
 export const updateProductSuccess = (product: IProductItem): IActions => ({

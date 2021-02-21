@@ -18,6 +18,9 @@ import {
   UPLOAD_MAIN_IMG_REQUEST,
   UPLOAD_MAIN_IMG_SUCCESS,
   UPLOAD_MAIN_IMG_ERROR,
+  DELETE_IMAGE_REQUEST,
+  DELETE_IMAGE_SUCCESS,
+  DELETE_IMAGE_ERROR,
 } from '../types';
 import { IProductsData } from '../../interfaces/IProducts';
 
@@ -130,6 +133,31 @@ const products = (state = initialState, { type, data }: IActions) => {
       };
     }
 
+    // DELETE IMAGE
+    case DELETE_IMAGE_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case DELETE_IMAGE_SUCCESS: {
+      return {
+        ...state,
+        currentProduct: data,
+        loading: false,
+      };
+    }
+
+    case DELETE_IMAGE_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+
     // UPDATE PRODUCT
     case UPDATE_PRODUCT_REQUEST: {
       return {
@@ -142,7 +170,7 @@ const products = (state = initialState, { type, data }: IActions) => {
     case UPDATE_PRODUCT_SUCCESS: {
       return {
         ...state,
-        list: state.list.map((item) => (item.id === data.id ? data : item)),
+        currentProduct: data,
         loading: false,
       };
     }

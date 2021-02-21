@@ -1,6 +1,20 @@
-import { Dispatch } from 'redux';
+export interface IImg {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  url: string;
+}
 
-import { IActions } from './actions';
+export interface ICategory {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  key: string;
+  description: string;
+  characteristics: any[];
+}
 
 export interface IProductItem {
   id: number;
@@ -9,10 +23,10 @@ export interface IProductItem {
   name: string;
   price: number;
   description: string;
-  category: any;
-  files?: Array<any>;
-  key: string | undefined;
-  mainImg?: any;
+  category: ICategory;
+  files?: IImg[];
+  key: string;
+  mainImg?: IImg;
 }
 
 export interface IProductsData {
@@ -29,42 +43,17 @@ export interface ProductTableData {
   updatedAt: string;
   price: number;
   description: string;
-  category: any;
-  key: string | undefined;
-  mainImg?: any;
-  files?: Array<any>;
+  category: string;
+  key: string;
+  mainImg?: IImg;
+  files?: number;
 }
 
 export interface IProductFormData {
   name: string;
-  price: number;
+  price: string;
   description: string;
   categoryName: string;
-  key: string | undefined;
-  files: FormData;
-  mainImg: any;
-  // images: [];
-  // images: FormData;
-}
-export interface InnerProductFormProps {
-  currencies: Array<any>;
-  handleClose: () => void;
-  buttonName: string;
-  id: number;
-}
-
-export interface ProductFormProps {
-  dispatch: Dispatch;
-  toggleModal: () => void;
-  categories: Array<any>;
-  editMode: boolean;
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  categoryName?: string;
-  fetchFun: (...props: any) => IActions;
-  files: FormData;
-  url_key: string | undefined;
-  mainImg: any | undefined;
+  key: string;
+  files: [] | string[] | FormData;
 }

@@ -1,0 +1,49 @@
+.gallery {
+  flex-shrink: 0;
+  margin-right: 20px;
+}
+
+.img-large-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 500px;
+  max-height: 500px;
+  position: relative;
+  background-color: #fff;
+}
+
+.img-large {
+  max-width: 500px;
+  max-height: 500px;
+  object-fit: contain;
+}
+
+.cropped-img {
+  display: inline-flex;
+  object-fit: contain;
+  max-width: 100px;
+  height: auto;
+  margin: 10px;
+
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
+}
+
+.cropped-img-active {
+  @extend .cropped-img;
+  padding: 2px;
+  border: 2px solid #01a701;
+}
+
+.favIcon {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border-radius: 50%;
+  background-color: #fff;
+  color: orange;
+  padding: 2px;
+}

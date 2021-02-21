@@ -21,6 +21,7 @@ type ApiFetchedDataType = {
     update: (id: number, product: any) => FetchedDataType<IProductItem>;
     updateImg: (data: any) => FetchedDataType<JSON>;
     updateMainImg: (data: any) => FetchedDataType<JSON>;
+    deleteImg: (imgName: string) => FetchedDataType<IProductItem>;
     deleteProduct: (id: IActions) => FetchedDataType<JSON>;
   };
 
@@ -43,6 +44,7 @@ export const api: ApiFetchedDataType = {
     update: (id, product) => axios.patch(`${root}/product/${id}`, product),
     updateImg: (data) => axios.post(`${root}/product/multipleimages`, data),
     updateMainImg: (data) => axios.patch(`${root}/product/img/preview`, data),
+    deleteImg: (imgName) => axios.delete(`${root}/product/img/${imgName}`),
     deleteProduct: (id) => axios.delete(`${root}/product/${id}`),
   },
 

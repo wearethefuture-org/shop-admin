@@ -10,10 +10,13 @@ import {
   apiDeleteProduct,
   apiUploadMainImg,
   apiUploadImages,
+  apiDeleteImg,
 } from './services/products.service';
 import {
   addProductError,
   addProductSuccess,
+  deleteImageError,
+  deleteImageSuccess,
   deleteProductError,
   deleteProductSuccess,
   failSnackBar,
@@ -51,9 +54,10 @@ export function* getProductByIdWorker({ data: id }: IActions): SagaIterator {
 export function* addProductWorker({ data }: IActions): SagaIterator {
   try {
     const { name, price, description, categoryName, key, files } = data;
+
     const product = yield call(apiAddProduct, { name, price, description, categoryName, key });
 
-    if (product && files) {
+    if (product && files instanceof FormData) {
       files.append('productId', product.id);
       yield call(apiUploadImages, files);
     }
@@ -80,14 +84,35 @@ export function* uploadMainImgWorker({ data }: IActions): SagaIterator {
   }
 }
 
-export function* updateProductWorker({ data }: IActions): SagaIterator {
+export function* deleteImgWorker({ data: { imgName, id } }: IActions): SagaIterator {
   try {
-    const product = yield call(apiUpdateProduct, data);
-    yield put(updateProductSuccess(product));
+    yield call(apiDeleteImg, imgName);
+    const product = yield call(apiGetProductById, id);
 
-    // yield call(apiUploadImage, data);
-    yield call(apiGetProductById, product.id);
-    yield put(getProductByIdSuccess(product));
+    yield put(deleteImageSuccess(product));
+    yield put(successSnackBar());
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(deleteImageError(error.message));
+  }
+}
+
+export function* updateProductWorker({ data: { id, product } }: IActions): SagaIterator {
+  try {
+    const { name, price, description, categoryName, key, files } = product;
+
+    const editedProduct = yield call(apiUpdateProduct, {
+      id: id,
+      product: { name, price, description, categoryName, key },
+    });
+
+    if (editedProduct && files instanceof FormData) {
+      files.append('productId', editedProduct.id);
+      yield call(apiUploadImages, files);
+    }
+
+    const updatedProduct = yield call(apiGetProductById, editedProduct.id);
+    yield put(updateProductSuccess(updatedProduct));
     yield put(successSnackBar());
   } catch (error) {
     yield put(failSnackBar(error.message));

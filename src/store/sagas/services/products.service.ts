@@ -24,12 +24,16 @@ export async function apiUpdateProduct(data: any) {
 
 export async function apiUploadImages(formData: FormData) {
   const res = await api.products.updateImg(formData);
-  console.log(res);
   return res;
 }
 
 export async function apiUploadMainImg(data: any) {
   const res = await api.products.updateMainImg(data);
+  return res.data;
+}
+
+export async function apiDeleteImg(imgName: string) {
+  const res = await api.products.deleteImg(imgName);
   return res.data;
 }
 

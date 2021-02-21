@@ -12,6 +12,7 @@ import {
   UPDATE_PRODUCT_REQUEST,
   DELETE_PRODUCT_REQUEST,
   UPLOAD_MAIN_IMG_REQUEST,
+  DELETE_IMAGE_REQUEST,
 } from '../types';
 import { fetchCategoryWorker, addCategoryWorker } from '../sagas/categories.saga';
 
@@ -23,6 +24,7 @@ import {
   updateProductWorker,
   deleteProductWorker,
   uploadMainImgWorker,
+  deleteImgWorker,
 } from './products.saga';
 
 export function* sagaCategoriesWatcher(): SagaIterator {
@@ -36,6 +38,7 @@ export function* sagaProductsWatcher(): SagaIterator {
   yield takeEvery(ADD_PRODUCT_REQUEST, addProductWorker);
   yield takeEvery(UPLOAD_MAIN_IMG_REQUEST, uploadMainImgWorker);
   yield takeEvery(UPDATE_PRODUCT_REQUEST, updateProductWorker);
+  yield takeEvery(DELETE_IMAGE_REQUEST, deleteImgWorker);
   yield takeEvery(DELETE_PRODUCT_REQUEST, deleteProductWorker);
 }
 
