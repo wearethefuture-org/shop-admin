@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import { Field, Form, FormikProvider } from 'formik';
 import * as Yup from 'yup';
-import { Button, Card, DialogActions, MenuItem } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  DialogActions,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@material-ui/core';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -68,6 +76,8 @@ const ProductForm = ({
       ? setExpandedBlocks(expandedBlocks.filter((block) => block !== field))
       : setExpandedBlocks([...expandedBlocks, field]);
 
+  // console.log('formik.values :>> ', formik.values);
+
   return (
     <div className={styles['product-form-container']}>
       <div className={styles['go-back-btn']}>
@@ -120,7 +130,24 @@ const ProductForm = ({
                   label="Опис"
                   name="description"
                 />
-                <Field
+                <FormControl fullWidth>
+                  <InputLabel id="category">Назва категорії</InputLabel>
+                  <Select
+                    labelId="category"
+                    id="category"
+                    value={formik.values.categoryName}
+                    // onChange={handleChange}
+                  >
+                    {categories.length
+                      ? categories.map(({ id, name }: ICategory) => (
+                          <MenuItem value={name} key={id}>
+                            {name}
+                          </MenuItem>
+                        ))
+                      : []}
+                  </Select>
+                </FormControl>
+                {/* <Field
                   select
                   fullWidth
                   component={TextFieldWrapped}
@@ -137,7 +164,7 @@ const ProductForm = ({
                         </MenuItem>
                       ))
                     : []}
-                </Field>
+                </Field> */}
               </div>
             </Card>
           ) : null}
@@ -197,7 +224,7 @@ const ProductForm = ({
             </Button>
             <Button
               onClick={handleGoBack}
-              color="primary"
+              color="secondary"
               variant="contained"
               className={styles.customBtn}
             >

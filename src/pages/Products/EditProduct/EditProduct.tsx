@@ -31,7 +31,7 @@ const EditProduct = () => {
     name: product.name ?? '',
     price: product.price ?? '',
     description: product.description ?? '',
-    categoryName: product.categoryName ?? '',
+    categoryName: product.category.name ?? '',
     files: product.files ?? [],
     key: product.key ?? '',
   };
