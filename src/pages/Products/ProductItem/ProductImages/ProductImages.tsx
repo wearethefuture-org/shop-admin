@@ -31,7 +31,9 @@ const ProductImages = ({ product }) => {
       );
     } else {
       setMainImg(product?.mainImg?.name);
-      setImgLarge(product?.mainImg?.name);
+      setImgLarge(
+        largeImages.length && largeImages.find((img) => img.includes(product?.mainImg?.name))
+      );
       setActiveCroppedImg(
         croppedImages.length && croppedImages.find((img) => img.includes(product?.mainImg?.name))
       );
