@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { LinearProgress } from '@material-ui/core';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { deleteProductRequest } from '../../../store/actions';
 import { RootState } from '../../../store/store';
-import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import ProductImages from './ProductImages/ProductImages';
 import ProductDescription from './ProductDescription/ProductDescription';
-import styles from './ProductItem.module.scss';
 import DeleteBtn from '../../../components/DeleteBtn/DeleteBtn';
 import GoBackBtn from '../../../components/GoBackBtn/GoBackBtn';
 import EditBtn from '../../../components/EditBtn/EditBtn';
 import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
+import styles from './ProductItem.module.scss';
 
 const ProductItem: React.FC = () => {
   const dispatch = useDispatch();

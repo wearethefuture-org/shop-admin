@@ -13,6 +13,10 @@ interface ProductsDataProps {
   activeColumns: string[];
 }
 
+const priceFormat = (num) => {
+  return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
+};
+
 const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => {
   const productsColumns = [
     {
@@ -55,7 +59,7 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
             state: { from: '/product' },
           }}
         >
-          {row.name}
+          <span className={styles['product-name']}>{row.name}</span>
         </Link>
       ),
       omit: !activeColumns.includes('Назва'),
@@ -64,6 +68,7 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
       name: 'Ціна',
       selector: 'price',
       sortable: true,
+      format: (row) => <span>&#8372; {priceFormat(row.price)}</span>,
     },
     {
       name: 'Опис',
@@ -73,7 +78,7 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
       format: (row) =>
         row.description.length <= 100 ? row.description : `${row.description.slice(0, 100)}...`,
       maxWidth: '200px',
-      omit: !activeColumns.includes('Ціна'),
+      omit: !activeColumns.includes('Опис'),
     },
     {
       name: 'Категорія',

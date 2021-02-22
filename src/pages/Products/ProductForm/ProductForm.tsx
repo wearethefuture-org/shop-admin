@@ -76,8 +76,6 @@ const ProductForm = ({
       ? setExpandedBlocks(expandedBlocks.filter((block) => block !== field))
       : setExpandedBlocks([...expandedBlocks, field]);
 
-  // console.log('formik.values :>> ', formik.values);
-
   return (
     <div className={styles['product-form-container']}>
       <div className={styles['go-back-btn']}>
@@ -96,7 +94,7 @@ const ProductForm = ({
           </div>
           {expandedBlocks.includes('main') ? (
             <Card>
-              <div className={styles['block-wrapper']}>
+              <div className={styles['block-wrapper-main']}>
                 <Field
                   fullWidth
                   component={TextFieldWrapped}
