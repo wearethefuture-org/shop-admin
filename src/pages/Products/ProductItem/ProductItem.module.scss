@@ -1,6 +1,7 @@
 .itemCard {
   padding: 2rem;
   height: max-content;
+  overflow-x: auto;
 
   h1 {
     margin-top: 20px;
@@ -10,6 +11,7 @@
   .btn-container {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 2rem;
 
     .right-btn-wrapper {
       display: flex;
@@ -19,6 +21,10 @@
         margin-right: 1rem;
       }
     }
+  }
+
+  .breadcrumbs {
+    font-size: 1rem;
   }
 
   .item-main-info {

@@ -1,12 +1,29 @@
 .product-name {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 .mainImg {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100px;
-  width: 100px;
+  height: 90px;
+  width: 90px;
+  border-radius: 4px;
+  margin: 10px 0;
+
+  img {
+    max-width: 90px;
+    max-height: 90px;
+  }
+}
+
+.placeholder {
+  @extend .mainImg;
+  background: linear-gradient(75deg, #9a4354, #636363, #27524c);
+
+  img {
+    max-width: 60px;
+    max-height: 60px;
+  }
 }

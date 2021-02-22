@@ -1,6 +1,8 @@
+import { LinearProgress } from '@material-ui/core';
 import React, { lazy, Suspense, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch, Switch, Route } from 'react-router-dom';
+
 import { getProductByIdRequest } from '../../store/actions';
 import { RootState } from '../../store/store';
 
@@ -19,10 +21,12 @@ const ViewProduct = () => {
     match.params.id && dispatch(getProductByIdRequest(Number(match.params.id)));
   }, [dispatch, match]);
 
-  const product = useSelector((state: RootState) => state.products.currentProduct);
+  const { currentProduct: product, loading } = useSelector((state: RootState) => state.products);
 
   return (
     <>
+      {loading && <LinearProgress />}
+
       {product ? (
         <Suspense fallback={null}>
           <Switch>

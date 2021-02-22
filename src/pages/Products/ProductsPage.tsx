@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { LinearProgress } from '@material-ui/core';
 
 import ProductsTable from './ProductsTable/ProductsTable';
-
 import AddBtn from '../../components/AddBtn/AddBtn';
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
 import useProducts from '../../hooks/useProducts';
-import styles from './ProductsPage.module.scss';
+import { RootState } from '../../store/store';
 import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
+import styles from './ProductsPage.module.scss';
 
 const cols = {
   id: 'ID',
@@ -42,33 +44,40 @@ const Products: React.FC = () => {
       ? setActiveColumns(activeColumns.filter((col) => col !== column))
       : setActiveColumns([...activeColumns, column]);
 
-  return (
-    <div className={styles.container}>
-      {showColumnsMenu && (
-        <ColumnsMenu
-          allColumns={cols}
-          activeColumns={activeColumns}
-          showColumnsMenu={showColumnsMenu}
-          setShowColumnsMenu={setShowColumnsMenu}
-          handleColumns={handleColumns}
-        />
-      )}
+  // LOADING
+  const loading = useSelector((state: RootState) => state.products.loading);
 
-      <div className={styles['header-btn-wrapper']}>
-        <Link
-          to={{
-            pathname: '/product/add',
-            state: { from: `${location.pathname}` },
-          }}
-        >
-          <AddBtn handleAdd={null} />
-        </Link>
-        <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
+  return (
+    <>
+      {loading && <LinearProgress />}
+
+      <div className={styles.container}>
+        {showColumnsMenu && (
+          <ColumnsMenu
+            allColumns={cols}
+            activeColumns={activeColumns}
+            showColumnsMenu={showColumnsMenu}
+            setShowColumnsMenu={setShowColumnsMenu}
+            handleColumns={handleColumns}
+          />
+        )}
+
+        <div className={styles['header-btn-wrapper']}>
+          <Link
+            to={{
+              pathname: '/product/add',
+              state: { from: `${location.pathname}` },
+            }}
+          >
+            <AddBtn handleAdd={null} />
+          </Link>
+          <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
+        </div>
+        <div className={`${styles['table-wrapper']}`}>
+          <ProductsTable list={productsData.list} activeColumns={activeColumns} />
+        </div>
       </div>
-      <div className={`${styles['table-wrapper']}`}>
-        <ProductsTable list={productsData.list} activeColumns={activeColumns} />
-      </div>
-    </div>
+    </>
   );
 };
 

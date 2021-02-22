@@ -1,17 +1,18 @@
 .gallery {
   flex-shrink: 0;
   margin-right: 20px;
-  max-width: 500px;
+  width: 500px;
 }
 
 .img-large-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 500px;
-  max-height: 500px;
+  width: 500px;
+  height: 500px;
   position: relative;
   background-color: #fff;
+  border-radius: 6px;
 }
 
 .img-large {
@@ -20,12 +21,23 @@
   object-fit: contain;
 }
 
+.placeholder {
+  @extend .img-large-wrapper;
+  background: linear-gradient(75deg, #9a4354, #636363, #27524c);
+
+  img {
+    height: 200px;
+    width: 200px;
+  }
+}
+
 .cropped-img {
   display: inline-flex;
   object-fit: contain;
-  max-width: 100px;
-  height: auto;
+  width: 100px;
+  height: 100px;
   margin: 10px;
+  padding: 4px;
 
   &:not(:last-child) {
     margin-right: 10px;

@@ -5,8 +5,9 @@ import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import { IProductItem } from '../../../interfaces/IProducts';
 import DateMoment from '../../../components/Common/Date-moment';
 import { root } from '../../../api/config';
-import placeholder from '../../../assets/images/no-product-image.jpg';
 import styles from './ProductsTable.module.scss';
+
+const placeholder = `${root}/product/img/empty-preview.png`;
 
 interface ProductsDataProps {
   list: IProductItem[];
@@ -33,14 +34,10 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
       format: (row) =>
         row.mainImg ? (
           <div className={styles.mainImg}>
-            <img
-              src={`${root}/product/img/${row.mainImg.name}`}
-              alt={row.mainImg.name}
-              width="100"
-            />
+            <img src={`${root}/product/img/${row.mainImg.name}`} alt={row.mainImg.name} />
           </div>
         ) : (
-          <div>
+          <div className={styles.placeholder}>
             <img src={placeholder} alt="placeholder" width="100" height="auto" />
           </div>
         ),

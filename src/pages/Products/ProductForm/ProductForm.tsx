@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import { Field, Form, FormikProvider } from 'formik';
 import * as Yup from 'yup';
-import {
-  Button,
-  Card,
-  DialogActions,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from '@material-ui/core';
+import { Button, Card, DialogActions, MenuItem } from '@material-ui/core';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -127,19 +119,25 @@ const ProductForm = ({
                   type="textarea"
                   label="Опис"
                   name="description"
+                  makegreen="true"
                 />
-                <FormControl fullWidth>
-                  <InputLabel id="category">Назва категорії</InputLabel>
-                  <Select labelId="category" id="category" value={formik.values.categoryName}>
-                    {categories.length
-                      ? categories.map(({ id, name }: ICategory) => (
-                          <MenuItem value={name} key={id}>
-                            {name}
-                          </MenuItem>
-                        ))
-                      : []}
-                  </Select>
-                </FormControl>
+                <Field
+                  select
+                  fullWidth
+                  component={TextFieldWrapped}
+                  label="Назва категорії"
+                  name="categoryName"
+                  makegreen="true"
+                  value={formik.values.categoryName ?? ''}
+                >
+                  {categories.length
+                    ? categories.map(({ id, name }: ICategory) => (
+                        <MenuItem value={name} key={id}>
+                          {name}
+                        </MenuItem>
+                      ))
+                    : []}
+                </Field>
               </div>
             </Card>
           ) : null}

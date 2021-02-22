@@ -37,6 +37,7 @@ const products = (state = initialState, { type, data }: IActions) => {
     case GET_PRODUCTS_REQUEST: {
       return {
         ...state,
+        currentProduct: null,
         loading: true,
         error: null,
       };

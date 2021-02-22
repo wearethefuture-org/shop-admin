@@ -14,6 +14,10 @@ const ProductDescription = ({ product }) => {
         <p className={styles.value}>{product.name}</p>
       </div>
       <div className={styles.field}>
+        <p className={styles.title}>Категорія:</p>
+        <p className={styles.value}>{product.category?.name}</p>
+      </div>
+      <div className={styles.field}>
         <p className={styles.title}>Ключ:</p>
         <p className={styles.value}>{product.key}</p>
       </div>

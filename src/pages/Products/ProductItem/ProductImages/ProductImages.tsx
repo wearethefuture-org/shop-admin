@@ -5,8 +5,9 @@ import StarIcon from '@material-ui/icons/StarBorder';
 
 import { uploadMainImgRequest } from '../../../../store/actions';
 import { root } from '../../../../api/config';
-import placeholder from '../../../../assets/images/no-product-image.jpg';
 import styles from './ProductImages.module.scss';
+
+const placeholder = `${root}/product/img/empty-preview.png`;
 
 const ProductImages = ({ product }) => {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const ProductImages = ({ product }) => {
         croppedImages.length && croppedImages.find((img) => img.includes(product?.mainImg?.name))
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product]);
 
   const handleGallery = (img, idx) => {
@@ -63,8 +65,8 @@ const ProductImages = ({ product }) => {
             </div>
           </div>
         ) : (
-          <div className={styles.largeImg}>
-            <img src={placeholder} alt="" width={300} />
+          <div className={styles.placeholder}>
+            <img src={placeholder} alt="" className={styles['img-large']} />
           </div>
         )}
 
