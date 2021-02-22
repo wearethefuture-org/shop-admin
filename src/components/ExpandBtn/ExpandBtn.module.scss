@@ -1,0 +1,18 @@
+.expand-btn {
+  border-radius: 50%;
+  background-color: #eee;
+  border: none;
+  outline: none;
+  transition: all ease-in-out 0.3s;
+  height: 30px;
+  width: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+
+  &:hover,
+  &:focus {
+    background-color: #ddd;
+  }
+}

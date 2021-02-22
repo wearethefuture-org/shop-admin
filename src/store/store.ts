@@ -1,10 +1,9 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-// import { composeWithDevTools } from "redux-devtools-extension";
+import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 
 import categories from './reduceres/categories.reducer';
 import products from './reduceres/products.reducer';
-import getProductById from './reduceres/getProductById.reducer';
 import settings from './reduceres/settings.reducer';
 import snackBar from './reduceres/snackbar.reducer';
 import theme from './reduceres/themeMode.reducer';
@@ -13,15 +12,16 @@ import rootSaga from './sagas/sagas';
 
 const saga = createSagaMiddleware();
 
-const rootReducer = combineReducers({ categories, products, getProductById, settings, snackBar, theme, users });
+const rootReducer = combineReducers({
+  categories,
+  products,
+  settings,
+  snackBar,
+  theme,
+  users,
+});
 
-const store = createStore(
-  rootReducer,
-  compose(
-    applyMiddleware(saga)
-    //  composeWithDevTools({ trace: true, traceLimit: 25 })
-  )
-);
+const store = createStore(rootReducer, compose(applyMiddleware(saga), composeWithDevTools()));
 
 saga.run(rootSaga);
 

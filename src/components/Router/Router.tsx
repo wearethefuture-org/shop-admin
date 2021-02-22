@@ -1,18 +1,19 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Sidebar from '../Sidebar/Sidebar';
 import SnackBar from '../Common/SnackBar';
 import Dashboard from '../../pages/Dashboard/Dashboard';
 import Categories from '../../pages/Categories/Categories';
-import Products from '../../pages/Products/Products';
-import ProductItem from '../../pages/Products/ProductItem';
+import Products from '../../pages/Products/ProductsPage';
 import Statistic from '../../pages/Statistic/Statistic';
 import Users from '../../pages/Users/Users';
 import Settings from '../../pages/Settings/Settings';
 import HeaderBar from '../HeaderBar/HeaderBar';
 import Content from '../Content/Content';
 import styles from './Router.module.scss';
+import ViewProduct from '../../pages/Products/ProductRouter';
+import AddProduct from '../Forms/Products/AddProduct/AddProduct';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -27,17 +28,23 @@ const Router: React.FC = () => {
         <div className={styles.main}>
           <HeaderBar onSidebarToggle={toggleSidebar} isShrink={isOpenSidebar} />
           <Content>
-            <Route path="/dashboard" render={() => <Dashboard />} />
-            <Route path="/categories" render={() => <Categories />} />
-            <Route path="/products/" exact={true} component={Products} />
-            <Route path="/statistic" render={() => <Statistic />} />
-            <Route path="/users" render={() => <Users />} />
-            <Route path="/settings" render={() => <Settings />} />
-            <Route
-              path="/product/:id"
-              exact={true}
-              render={({ match }) => <ProductItem {...match.params} />}
-            />
+            <Switch>
+              <Route path="/dashboard" render={() => <Dashboard />} />
+              <Route path="/categories" render={() => <Categories />} />
+              <Route path="/products/" exact={true} component={Products} />
+              <Route path="/statistic" render={() => <Statistic />} />
+              <Route path="/users" render={() => <Users />} />
+              <Route path="/settings" render={() => <Settings />} />
+              <Route
+                path="/product/add"
+                exact={true}
+                render={({ match }) => <AddProduct {...match.params} />}
+              />
+              <Route
+                path="/product/:id"
+                render={({ match }) => <ViewProduct {...match.params} />}
+              />
+            </Switch>
           </Content>
         </div>
       </div>

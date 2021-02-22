@@ -1,12 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { CircularProgress } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import Paper from '@material-ui/core/Paper';
+import TableContainer from '@material-ui/core/TableContainer';
+
 import TableHeader from './Header/Table-header';
 import CategoryTableBody from './Body/Table-body';
 import CategoryTableFooter from './Footer/Table-footer';
-import TableContainer from '@material-ui/core/TableContainer';
 import { ICategoryItem } from '../../../interfaces/category-Item';
 import { CategoryTableData } from '../../../interfaces/categories-data';
 
@@ -44,7 +44,6 @@ const CategoriesTable: React.FC<CategoryDataProps> = ({ data }) => {
             <TableHeader />
           </Table>
         </TableContainer>
-        <CircularProgress />
       </div>
     );
 

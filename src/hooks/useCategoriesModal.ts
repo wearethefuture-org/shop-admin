@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
 const useCategoriesModal = () => {
   const [isOpened, toggleModal] = useState(false);
