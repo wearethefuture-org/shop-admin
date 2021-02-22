@@ -2,15 +2,9 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
-const AddBtn = ({ handleAdd }) => {
+const AddBtn: React.FC = () => {
   return (
-    <Button
-      variant="contained"
-      color="primary"
-      startIcon={<AddIcon />}
-      onClick={handleAdd}
-      type="button"
-    >
+    <Button variant="contained" color="primary" startIcon={<AddIcon />} type="button">
       Додати
     </Button>
   );

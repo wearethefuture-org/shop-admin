@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Field, Form, FormikProvider } from 'formik';
+import { Field, Form, FormikProps, FormikProvider } from 'formik';
 import * as Yup from 'yup';
 import { Button, Card, DialogActions, MenuItem } from '@material-ui/core';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import TextFieldWrapped from '../../../hocs/TextFieldHOC';
-import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
-import { ICategory } from '../../../interfaces/IProducts';
-import GoBackBtn from '../../../components/GoBackBtn/GoBackBtn';
+import TextFieldWrapped from '../../../../hocs/TextFieldHOC';
+import ExpandBtn from '../../../ExpandBtn/ExpandBtn';
+import { ICategory, IProductFormData } from '../../../../interfaces/IProducts';
+import GoBackBtn from '../../../GoBackBtn/GoBackBtn';
 import styles from './ProductForm.module.scss';
 
 export const productValidationShema = Yup.object().shape({
@@ -51,7 +51,17 @@ const renderPhotos = (imagesPreview, handleDeleteImg) => (
   </>
 );
 
-const ProductForm = ({
+interface IProductFormProps {
+  editMode: boolean;
+  formik: FormikProps<IProductFormData>;
+  handleGoBack: () => void;
+  categories: ICategory[];
+  handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  imagesPreview: string[];
+  handleDeleteImg: (img: string, idx: number) => void;
+}
+
+const ProductForm: React.FC<IProductFormProps> = ({
   editMode = false,
   formik,
   handleGoBack,

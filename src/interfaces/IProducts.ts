@@ -36,19 +36,6 @@ export interface IProductsData {
   error: string | null;
 }
 
-export interface ProductTableData {
-  id: number;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  price: number;
-  description: string;
-  category: string;
-  key: string;
-  mainImg?: IImg;
-  files?: number;
-}
-
 export interface IProductFormData {
   name: string;
   price: string;

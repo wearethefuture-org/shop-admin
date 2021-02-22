@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { LinearProgress } from '@material-ui/core';
 
-import ProductsTable from './ProductsTable/ProductsTable';
+import ProductsTable from '../../components/Tables/Products/ProductsTable/ProductsTable';
 import AddBtn from '../../components/AddBtn/AddBtn';
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
 import useProducts from '../../hooks/useProducts';
@@ -69,7 +69,7 @@ const Products: React.FC = () => {
               state: { from: `${location.pathname}` },
             }}
           >
-            <AddBtn handleAdd={null} />
+            <AddBtn />
           </Link>
           <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
         </div>

@@ -1,8 +1,13 @@
 import React from 'react';
 
+import { IProductItem } from '../../../../interfaces/IProducts';
 import styles from './ProductDescription.module.scss';
 
-const ProductDescription = ({ product }) => {
+interface IDescrProps {
+  product: IProductItem;
+}
+
+const ProductDescription: React.FC<IDescrProps> = ({ product }) => {
   return (
     <div className={styles.description}>
       <div className={styles.field}>

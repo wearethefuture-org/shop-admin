@@ -10,7 +10,7 @@ interface DataTableProps {
   title: string;
 }
 
-const AppDataTable = ({ data, columns, title }: DataTableProps) => {
+const AppDataTable: React.FC<DataTableProps> = ({ data, columns, title }) => {
   const [list, setList] = useState<IProductItem[]>([]);
 
   useEffect(() => {

@@ -109,7 +109,7 @@ export const addProductError = (message: string): IActions => ({
 });
 
 // upload main image
-export const uploadMainImgRequest = (productId: string, imgName: string): IActions => ({
+export const uploadMainImgRequest = (productId: number, imgName: string): IActions => ({
   type: UPLOAD_MAIN_IMG_REQUEST,
   data: { productId, imgName },
 });

@@ -2,7 +2,11 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
-const GoBackBtn = ({ handleGoBack }) => {
+interface IBtnProps {
+  handleGoBack: () => void;
+}
+
+const GoBackBtn: React.FC<IBtnProps> = ({ handleGoBack }) => {
   return (
     <Button
       variant="contained"

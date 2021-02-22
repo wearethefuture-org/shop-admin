@@ -11,9 +11,11 @@ interface MatchParams {
 }
 
 const ProductItemLazy = lazy(() => import('./ProductItem/ProductItem'));
-const EditProductLazy = lazy(() => import('./EditProduct/EditProduct'));
+const EditProductLazy = lazy(
+  () => import('../../components/Forms/Products/EditProduct/EditProduct')
+);
 
-const ViewProduct = () => {
+const ViewProduct: React.FC = () => {
   const match = useRouteMatch<MatchParams>();
   const dispatch = useDispatch();
 

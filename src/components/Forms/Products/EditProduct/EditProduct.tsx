@@ -4,17 +4,17 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 import ProductForm, { productValidationShema } from '../ProductForm/ProductForm';
-import useCategories from '../../../hooks/useCategories';
-import { IProductFormData } from '../../../interfaces/IProducts';
-import { RootState } from '../../../store/store';
-import { root } from '../../../api/config';
-import { deleteImageRequest, updateProductRequest } from '../../../store/actions';
+import useCategories from '../../../../hooks/useCategories';
+import { IProductFormData } from '../../../../interfaces/IProducts';
+import { RootState } from '../../../../store/store';
+import { root } from '../../../../api/config';
+import { deleteImageRequest, updateProductRequest } from '../../../../store/actions';
 
 interface stateType {
   from: { pathname: string };
 }
 
-const EditProduct = () => {
+const EditProduct: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation<stateType>();

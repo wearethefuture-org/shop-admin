@@ -13,7 +13,7 @@ import HeaderBar from '../HeaderBar/HeaderBar';
 import Content from '../Content/Content';
 import styles from './Router.module.scss';
 import ViewProduct from '../../pages/Products/ProductRouter';
-import AddProduct from '../../pages/Products/AddProduct/AddProduct';
+import AddProduct from '../Forms/Products/AddProduct/AddProduct';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);

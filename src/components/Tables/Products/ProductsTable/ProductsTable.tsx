@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import AppDataTable from '../../../components/AppDataTable/AppDataTable';
-import { IProductItem } from '../../../interfaces/IProducts';
-import DateMoment from '../../../components/Common/Date-moment';
-import { root } from '../../../api/config';
+import AppDataTable from '../../../AppDataTable/AppDataTable';
+import { IProductItem } from '../../../../interfaces/IProducts';
+import DateMoment from '../../../Common/Date-moment';
+import { root } from '../../../../api/config';
 import styles from './ProductsTable.module.scss';
 
 const placeholder = `${root}/product/img/empty-preview.png`;

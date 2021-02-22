@@ -4,9 +4,9 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 import ProductForm, { productValidationShema } from '../ProductForm/ProductForm';
-import useCategories from '../../../hooks/useCategories';
-import { IProductFormData } from '../../../interfaces/IProducts';
-import { addProductRequest } from '../../../store/actions';
+import useCategories from '../../../../hooks/useCategories';
+import { IProductFormData } from '../../../../interfaces/IProducts';
+import { addProductRequest } from '../../../../store/actions';
 
 const initialValues: IProductFormData = {
   name: '',
@@ -21,7 +21,7 @@ interface stateType {
   from: { pathname: string };
 }
 
-const AddProductForm = () => {
+const AddProductForm: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation<stateType>();

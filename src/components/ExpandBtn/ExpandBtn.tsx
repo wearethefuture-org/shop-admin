@@ -4,7 +4,12 @@ import RemoveIcon from '@material-ui/icons/Remove';
 
 import styles from './ExpandBtn.module.scss';
 
-const ExpandBtn = ({ expandBlock, handleExpand }) => {
+interface IBtnProps {
+  expandBlock: boolean;
+  handleExpand: () => void;
+}
+
+const ExpandBtn: React.FC<IBtnProps> = ({ expandBlock, handleExpand }) => {
   return (
     <button className={styles['expand-btn']} type="button" onClick={handleExpand}>
       {expandBlock ? <RemoveIcon /> : <AddIcon />}

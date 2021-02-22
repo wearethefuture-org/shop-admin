@@ -2,7 +2,11 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 
-const ColumnsBtn = ({ handleClick }) => {
+interface IBtnProps {
+  handleClick: () => void;
+}
+
+const ColumnsBtn: React.FC<IBtnProps> = ({ handleClick }) => {
   return (
     <Button
       variant="outlined"

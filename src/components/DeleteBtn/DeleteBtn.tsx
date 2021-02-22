@@ -2,7 +2,11 @@ import React from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Button } from '@material-ui/core';
 
-const DeleteBtn = ({ handleDelete }) => {
+interface IBtnProps {
+  handleDelete: () => void;
+}
+
+const DeleteBtn: React.FC<IBtnProps> = ({ handleDelete }) => {
   return (
     <Button
       variant="contained"

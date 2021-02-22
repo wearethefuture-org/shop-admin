@@ -3,6 +3,14 @@ import { Checkbox, Dialog, DialogTitle, List, ListItem } from '@material-ui/core
 
 import styles from './ColumnsMenu.module.scss';
 
+interface IColumnsProps {
+  allColumns: string[];
+  activeColumns: string[];
+  showColumnsMenu: boolean;
+  setShowColumnsMenu: () => void;
+  handleColumns: () => void;
+}
+
 const ColumnsMenu = ({
   allColumns,
   activeColumns,
