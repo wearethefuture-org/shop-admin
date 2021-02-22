@@ -38,7 +38,7 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
           </div>
         ) : (
           <div className={styles.placeholder}>
-            <img src={placeholder} alt="placeholder" width="100" height="auto" />
+            <img src={placeholder} alt="placeholder" />
           </div>
         ),
       maxWidth: '140px',
