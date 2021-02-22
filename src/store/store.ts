@@ -1,7 +1,6 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
-
+import { composeWithDevTools } from 'redux-devtools-extension';
 import categories from './reduceres/categories.reducer';
 import products from './reduceres/products.reducer';
 import settings from './reduceres/settings.reducer';
@@ -21,7 +20,10 @@ const rootReducer = combineReducers({
   users,
 });
 
-const store = createStore(rootReducer, compose(applyMiddleware(saga), composeWithDevTools()));
+//const devTools = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__() : null
+const store = createStore(rootReducer, compose(applyMiddleware(saga) 
+//composeWithDevTools()
+));
 
 saga.run(rootSaga);
 
