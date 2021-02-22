@@ -59,7 +59,7 @@ const ProductItem: React.FC = () => {
             <ArrowRightIcon />
           </span>
           <span>
-            <Link to={'/categories'}>{product.category.name}</Link>
+            <Link to={'/categories'}>{product.category?.name}</Link>
           </span>
           <span>
             <ArrowRightIcon />
