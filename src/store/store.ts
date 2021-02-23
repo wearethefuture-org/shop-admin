@@ -20,10 +20,13 @@ const rootReducer = combineReducers({
   users,
 });
 
-//const devTools = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__() : null
-const store = createStore(rootReducer, compose(applyMiddleware(saga) 
-//composeWithDevTools()
-));
+
+const store = createStore(
+  rootReducer,
+  process.env.NODE_ENV === 'production'
+    ? applyMiddleware(saga)
+    : composeWithDevTools(applyMiddleware(saga))
+);
 
 saga.run(rootSaga);
 
