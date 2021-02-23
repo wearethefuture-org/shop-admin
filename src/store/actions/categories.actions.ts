@@ -8,6 +8,9 @@ import {
   GET_CATEGORY_BY_ID_REQUEST,
   GET_CATEGORY_BY_ID_SUCCESS,
   GET_CATEGORY_BY_ID_ERROR,
+  UPDATE_CATEGORY_REQUEST,
+  UPDATE_CATEGORY_SUCCESS,
+  UPDATE_CATEGORY_ERROR,
 } from '../types';
 
 export const loadCategories = (categories: ICategoryItem[]): IActions => ({
@@ -39,5 +42,21 @@ export const getCategoryByIdSuccess = (product: ICategoryItem): IActions => ({
 
 export const getCategoryByIdError = (message: string): IActions => ({
   type: GET_CATEGORY_BY_ID_ERROR,
+  data: message,
+});
+
+// update category
+export const updateCategoryRequest = (data): IActions => ({
+  type: UPDATE_CATEGORY_REQUEST,
+  data,
+});
+
+export const updateCategorySuccess = (category: ICategoryItem): IActions => ({
+  type: UPDATE_CATEGORY_SUCCESS,
+  data: category,
+});
+
+export const updateCategoryError = (message: string): IActions => ({
+  type: UPDATE_CATEGORY_ERROR,
   data: message,
 });
