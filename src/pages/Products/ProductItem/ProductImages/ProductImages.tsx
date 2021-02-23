@@ -72,10 +72,6 @@ const ProductImages: React.FC<IImagesProps> = ({ product }) => {
     dispatch(uploadMainImgRequest(product.id, imgLarge));
   };
 
-  console.log('mainImg :>> ', mainImg);
-  console.log('largeImages :>> ', largeImages);
-  console.log('imgLarge :>> ', imgLarge);
-
   return (
     <div className={styles.gallery}>
       <>
