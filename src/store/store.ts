@@ -21,7 +21,12 @@ const rootReducer = combineReducers({
   users,
 });
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(saga)));
+const store = createStore(
+  rootReducer,
+  process.env.NODE_ENV === 'production'
+    ? applyMiddleware(saga)
+    : composeWithDevTools(applyMiddleware(saga))
+);
 
 saga.run(rootSaga);
 
