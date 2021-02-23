@@ -75,7 +75,7 @@ const ProductImages: React.FC<IImagesProps> = ({ product }) => {
   return (
     <div className={styles.gallery}>
       <>
-        {imgLarge ? (
+        {mainImg && imgLarge ? (
           <div className={styles['img-large-wrapper']}>
             <img
               src={`${root}/product/img/${imgLarge}`}
@@ -87,7 +87,7 @@ const ProductImages: React.FC<IImagesProps> = ({ product }) => {
               title="Зробити головним зображенням"
               onClick={handleMainImage}
             >
-              {mainImg && mainImg.includes(imgLarge) ? <StarFilledIcon /> : <StarIcon />}
+              {mainImg.includes(imgLarge) ? <StarFilledIcon /> : <StarIcon />}
             </div>
           </div>
         ) : (
