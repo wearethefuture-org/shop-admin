@@ -1,13 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 
-import { closeSnackBar } from '../store/actions';
+import { closeSnackBar } from '../store/actions/snackbar.actions';
 import { RootState } from '../store/store';
 
 const useSnackBar = () => {
   const dispatch = useDispatch();
-  const { isOpen, errorMessage, typeSnackbar } = useSelector(
-    (state: RootState) => state.snackBar
-  );
+  const { isOpen, errorMessage, typeSnackbar } = useSelector((state: RootState) => state.snackBar);
 
   const handleClick = () => {
     if (isOpen) {
@@ -15,10 +13,7 @@ const useSnackBar = () => {
     }
   };
 
-  const handleClose = (
-    event: React.SyntheticEvent | MouseEvent,
-    reason?: string
-  ) => {
+  const handleClose = (event: React.SyntheticEvent | MouseEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }

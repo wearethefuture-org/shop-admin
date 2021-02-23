@@ -3,7 +3,7 @@ import React, { lazy, Suspense, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch, Switch, Route } from 'react-router-dom';
 
-import { getProductByIdRequest } from '../../store/actions';
+import { getProductByIdRequest } from '../../store/actions/products.actions';
 import { RootState } from '../../store/store';
 
 interface MatchParams {

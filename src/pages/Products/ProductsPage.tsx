@@ -69,7 +69,7 @@ const Products: React.FC = () => {
               state: { from: `${location.pathname}` },
             }}
           >
-            <AddBtn />
+            <AddBtn title="Додати" handleAdd={undefined} />
           </Link>
           <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
         </div>

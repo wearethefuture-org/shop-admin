@@ -9,19 +9,18 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store/store';
-import { switchDarkMode } from '../../../store/actions';
+import { switchDarkMode } from '../../../store/actions/theme.actions';
 import MobileMenuList from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 interface HeaderBarProps {
-  onMailListOpen: (evt: any) => void,
-  onNotificationListOpen: (evt: any) => void,
-  onAccountListOpen: (evt: any) => void,
-  onMobileMenuOpen: (evt: any) => void,
-  mobileMenuAnchorEl: null | Element,
-  allDropdownsClose: () => void,
+  onMailListOpen: (evt: any) => void;
+  onNotificationListOpen: (evt: any) => void;
+  onAccountListOpen: (evt: any) => void;
+  onMobileMenuOpen: (evt: any) => void;
+  mobileMenuAnchorEl: null | Element;
+  allDropdownsClose: () => void;
 }
-
 
 const useStyles = makeStyles((theme) => ({
   sectionDesktop: {
@@ -37,9 +36,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   nightMode: {
-    color: (isDark: boolean) => (isDark ? "rgba(0, 0, 0, 0.54)" : "white")
-  }
-}))
+    color: (isDark: boolean) => (isDark ? 'rgba(0, 0, 0, 0.54)' : 'white'),
+  },
+}));
 
 const AppBarMenu: React.FC<HeaderBarProps> = (props) => {
   const {
@@ -48,14 +47,14 @@ const AppBarMenu: React.FC<HeaderBarProps> = (props) => {
     onAccountListOpen,
     onMobileMenuOpen,
     mobileMenuAnchorEl,
-    allDropdownsClose
-  } = props
+    allDropdownsClose,
+  } = props;
 
-  const isDark = useSelector((state: RootState) => state.theme.darkMode)
-  const classes = useStyles(isDark)
+  const isDark = useSelector((state: RootState) => state.theme.darkMode);
+  const classes = useStyles(isDark);
 
-  const dispatch = useDispatch()
-  const themeToggle = () => dispatch(switchDarkMode())
+  const dispatch = useDispatch();
+  const themeToggle = () => dispatch(switchDarkMode());
 
   const mobileMenuList = [
     {
@@ -63,16 +62,16 @@ const AppBarMenu: React.FC<HeaderBarProps> = (props) => {
       nmb: 4,
       icon: <MailIcon />,
       msg: 'Messages',
-      onClick: onMailListOpen
+      onClick: onMailListOpen,
     },
     {
       ariaName: 'notifications',
       nmb: 11,
       icon: <NotificationsIcon />,
       msg: 'Notifications',
-      onClick: onNotificationListOpen
-    }
-  ]
+      onClick: onNotificationListOpen,
+    },
+  ];
 
   return (
     <>
@@ -81,10 +80,14 @@ const AppBarMenu: React.FC<HeaderBarProps> = (props) => {
           <Brightness2Icon className={classes.nightMode} />
         </IconButton>
         <IconButton color="inherit" onClick={onMailListOpen}>
-          <Badge color="primary"><MailIcon /></Badge>
+          <Badge color="primary">
+            <MailIcon />
+          </Badge>
         </IconButton>
         <IconButton color="inherit" onClick={onNotificationListOpen}>
-          <Badge color="primary"><NotificationsIcon /></Badge>
+          <Badge color="primary">
+            <NotificationsIcon />
+          </Badge>
         </IconButton>
         <IconButton
           edge="end"
@@ -142,7 +145,7 @@ const AppBarMenu: React.FC<HeaderBarProps> = (props) => {
         </MenuItem>
       </MobileMenuList>
     </>
-  )
-}
+  );
+};
 
-export default AppBarMenu
+export default AppBarMenu;

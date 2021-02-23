@@ -8,7 +8,10 @@ import useCategories from '../../../../hooks/useCategories';
 import { IProductFormData } from '../../../../interfaces/IProducts';
 import { RootState } from '../../../../store/store';
 import { root } from '../../../../api/config';
-import { deleteImageRequest, updateProductRequest } from '../../../../store/actions';
+import {
+  deleteImageRequest,
+  updateProductRequest,
+} from '../../../../store/actions/products.actions';
 
 interface stateType {
   from: { pathname: string };

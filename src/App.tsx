@@ -11,7 +11,7 @@ import Router from './components/Router/Router';
 import { Paper } from '@material-ui/core';
 import { RootState } from './store/store';
 import { useSelector, useDispatch } from 'react-redux';
-import { switchDarkMode } from './store/actions';
+import { switchDarkMode } from './store/actions/theme.actions';
 
 export function App() {
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);

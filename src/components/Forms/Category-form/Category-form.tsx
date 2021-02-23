@@ -2,9 +2,9 @@ import { withFormik } from 'formik';
 import { Dispatch } from 'redux';
 import * as Yup from 'yup';
 
-import { fetchAddCategories } from '../../../store/actions';
+import { fetchAddCategories } from '../../../store/actions/categories.actions';
 import InnerForm from './Inner-form';
-import { IFormValues } from '../../../interfaces/category-form';
+import { IFormValues } from '../../../interfaces/ICategory';
 
 interface CategoryFormProps {
   dispatch: Dispatch;
@@ -21,7 +21,7 @@ const categoryValidationShema = Yup.object().shape({
     .max(30, 'Too long')
     .matches(/(^[a-zA-Z-]+$)/, 'Please enter a valid string')
     .required('Required'),
-  description: Yup.string().min(60, 'Minimum 60 symbols').max(360, 'Too long').required('Required'),
+  description: Yup.string().min(10, 'Minimum 10 symbols').max(360, 'Too long').required('Required'),
 });
 
 const CategoryForm = withFormik<CategoryFormProps, IFormValues>({

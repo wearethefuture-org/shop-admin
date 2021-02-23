@@ -7,8 +7,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHeader from './Header/Table-header';
 import CategoryTableBody from './Body/Table-body';
 import CategoryTableFooter from './Footer/Table-footer';
-import { ICategoryItem } from '../../../interfaces/category-Item';
-import { CategoryTableData } from '../../../interfaces/categories-data';
+import { ICategoryItem } from '../../../interfaces/ICategory';
+import { CategoryTableData } from '../../../interfaces/ICategory';
 
 interface CategoryDataProps {
   data: Array<ICategoryItem>;
