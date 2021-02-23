@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 import ProductForm, { productValidationShema } from '../ProductForm/ProductForm';
 import useCategories from '../../../../hooks/useCategories';
 import { IProductFormData } from '../../../../interfaces/IProducts';
-import { addProductRequest } from '../../../../store/actions';
+import { addProductRequest } from '../../../../store/actions/products.actions';
 
 const initialValues: IProductFormData = {
   name: '',

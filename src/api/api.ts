@@ -1,7 +1,7 @@
 import { root } from './config';
 import axios, { AxiosResponse } from 'axios';
 
-import { ICategoryItem } from '../interfaces/category-Item';
+import { ICategoryItem } from '../interfaces/ICategory';
 import { IActions } from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';
 import { IProductItem } from '../interfaces/IProducts';
@@ -12,6 +12,7 @@ type ApiFetchedDataType = {
   categories: {
     get: () => FetchedDataType<ICategoryItem>;
     add: (category: IActions) => FetchedDataType<ICategoryItem>;
+    getById: (id: number) => FetchedDataType<ICategoryItem>;
   };
 
   products: {
@@ -35,6 +36,7 @@ export const api: ApiFetchedDataType = {
   categories: {
     get: () => axios.get(`${root}/category`),
     add: (category) => axios.post(`${root}/category`, category),
+    getById: (id) => axios.get(`${root}/category/${id}`),
   },
 
   products: {

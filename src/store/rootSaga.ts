@@ -13,10 +13,15 @@ import {
   DELETE_PRODUCT_REQUEST,
   UPLOAD_MAIN_IMG_REQUEST,
   DELETE_IMAGE_REQUEST,
-} from '../types';
-import { fetchCategoryWorker, addCategoryWorker } from '../sagas/categories.saga';
+  GET_CATEGORY_BY_ID_REQUEST,
+} from './types';
+import {
+  fetchCategoryWorker,
+  addCategoryWorker,
+  getCategoryByIdWorker,
+} from './sagas/categories.saga';
 
-import { fetchSettingsWorker, updateSettingsWorker } from './settings.saga';
+import { fetchSettingsWorker, updateSettingsWorker } from './sagas/settings.saga';
 import {
   addProductWorker,
   getProductByIdWorker,
@@ -25,11 +30,12 @@ import {
   deleteProductWorker,
   uploadMainImgWorker,
   deleteImgWorker,
-} from './products.saga';
+} from './sagas/products.saga';
 
 export function* sagaCategoriesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_CATEGORIES, fetchCategoryWorker);
   yield takeEvery(REQUEST_ADD_CATEGORIES, addCategoryWorker);
+  yield takeEvery(GET_CATEGORY_BY_ID_REQUEST, getCategoryByIdWorker);
 }
 
 export function* sagaProductsWatcher(): SagaIterator {

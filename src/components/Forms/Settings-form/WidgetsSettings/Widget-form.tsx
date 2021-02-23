@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import InnerForm from './Inner-form';
 import { IFormWidgetValues } from '../../../../interfaces/widget-form';
 import { ISettingsParams } from '../../../../interfaces/ISettings';
-import { fetchUpdateSettings } from '../../../../store/actions';
+import { fetchUpdateSettings } from '../../../../store/actions/settings.actions';
 
 interface WidgetFormProps {
   dispatch: Dispatch;
@@ -26,9 +26,7 @@ const validationSchema = Yup.object({
 });
 
 const WidgetForm = withFormik<WidgetFormProps, IFormWidgetValues>({
-  mapPropsToValues: ({
-    parameters: { quantityNewArrivals, quantityPopularItems },
-  }) => {
+  mapPropsToValues: ({ parameters: { quantityNewArrivals, quantityPopularItems } }) => {
     return {
       quantityNewArrivals,
       quantityPopularItems,

@@ -19,17 +19,16 @@ import {
   deleteImageSuccess,
   deleteProductError,
   deleteProductSuccess,
-  failSnackBar,
   getProductByIdError,
   getProductByIdSuccess,
   getProductsError,
   getProductsSuccess,
-  successSnackBar,
   updateProductError,
   updateProductSuccess,
   uploadMainImgError,
   uploadMainImgSuccess,
-} from '../actions';
+} from '../actions/products.actions';
+import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 
 export function* getProductsWorker(): SagaIterator {
   try {

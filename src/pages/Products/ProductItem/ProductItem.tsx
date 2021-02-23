@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 
-import { deleteProductRequest } from '../../../store/actions';
+import { deleteProductRequest } from '../../../store/actions/products.actions';
 import { RootState } from '../../../store/store';
 import ProductImages from './ProductImages/ProductImages';
 import ProductDescription from './ProductDescription/ProductDescription';

@@ -14,6 +14,7 @@ import Content from '../Content/Content';
 import styles from './Router.module.scss';
 import ViewProduct from '../../pages/Products/ProductRouter';
 import AddProduct from '../Forms/Products/AddProduct/AddProduct';
+import CategoryInfo from '../../pages/Categories/CategoryInfo/CategoryInfo';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -31,6 +32,7 @@ const Router: React.FC = () => {
             <Switch>
               <Route path="/dashboard" render={() => <Dashboard />} />
               <Route path="/categories" render={() => <Categories />} />
+              <Route path="/category/:id" render={() => <CategoryInfo />} />
               <Route path="/products/" exact={true} component={Products} />
               <Route path="/statistic" render={() => <Statistic />} />
               <Route path="/users" render={() => <Users />} />
