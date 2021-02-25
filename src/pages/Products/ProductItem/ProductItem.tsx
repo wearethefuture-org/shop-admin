@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import ArrowIcon from '@material-ui/icons/ArrowBackIos';
 
 import { deleteProductRequest } from '../../../store/actions/products.actions';
 import { RootState } from '../../../store/store';
@@ -11,6 +11,7 @@ import DeleteBtn from '../../../components/DeleteBtn/DeleteBtn';
 import GoBackBtn from '../../../components/GoBackBtn/GoBackBtn';
 import EditBtn from '../../../components/EditBtn/EditBtn';
 import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
+import { confirmDelete } from '../../../components/confirmAlert/confirmAlert';
 import styles from './ProductItem.module.scss';
 
 const ProductItem: React.FC = () => {
@@ -20,21 +21,28 @@ const ProductItem: React.FC = () => {
   const location = useLocation();
 
   const { currentProduct: product } = useSelector((state: RootState) => state.products);
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const goBack = () => history.push('/products');
 
   // DELETE PRODUCT
   const handleDeleteProduct = () => {
-    dispatch(deleteProductRequest(product.id));
-    goBack();
+    const handleConfirm = () => {
+      dispatch(deleteProductRequest(product.id));
+      goBack();
+    };
+
+    const warning = 'Запис не можна буде відновити';
+
+    confirmDelete(product.name, handleConfirm, warning);
   };
 
   // ADDITIONAL INFO
-  const [expandBlock, setExpandBlock] = useState(false);
+  const [expandBlock, setExpandBlock] = useState<boolean>(false);
 
   return (
     <>
-      <div className={styles.itemCard}>
+      <div className={darkMode ? styles['itemCard-dark'] : styles.itemCard}>
         <div className={styles['btn-container']}>
           <GoBackBtn handleGoBack={() => goBack()} />
 
@@ -56,13 +64,13 @@ const ProductItem: React.FC = () => {
             <Link to={'/products'}>Продукти</Link>
           </span>
           <span>
-            <ArrowRightIcon />
+            <ArrowIcon />
           </span>
           <span>
             <Link to={'/categories'}>{product.category?.name}</Link>
           </span>
           <span>
-            <ArrowRightIcon />
+            <ArrowIcon />
           </span>
           <span>{product.name}</span>
         </p>

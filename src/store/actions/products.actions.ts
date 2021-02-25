@@ -144,9 +144,8 @@ export const deleteProductRequest = (id: number): IActions => ({
   data: id,
 });
 
-export const deleteProductSuccess = (product: IProductItem): IActions => ({
+export const deleteProductSuccess = (): IActions => ({
   type: DELETE_PRODUCT_SUCCESS,
-  data: product,
 });
 
 export const deleteProductError = (message: string): IActions => ({

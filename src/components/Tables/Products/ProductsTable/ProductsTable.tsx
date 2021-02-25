@@ -22,7 +22,7 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
   const productsColumns = [
     {
       name: 'ID',
-      selector: (row) => row['id'],
+      selector: (row) => row.id,
       sortable: true,
       maxWidth: '60px',
       minWidth: '60px',
@@ -30,7 +30,7 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
     },
     {
       name: 'Головне зображення',
-      selector: (row) => row['mainImg'],
+      selector: (row) => row.mainImg,
       format: (row) =>
         row.mainImg ? (
           <div className={styles.mainImg}>
@@ -47,7 +47,7 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
     },
     {
       name: 'Назва',
-      selector: (row) => row['name'],
+      selector: (row) => row.name,
       sortable: true,
       cell: (row) => (
         <Link
@@ -63,13 +63,13 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
     },
     {
       name: 'Ціна',
-      selector: (row) => row['price'],
+      selector: (row) => row.price,
       sortable: true,
       format: (row) => <span>&#8372; {priceFormat(row.price)}</span>,
     },
     {
       name: 'Опис',
-      selector: (row) => row['description'],
+      selector: (row) => row.description,
       wrap: true,
       sortable: true,
       format: (row) =>
@@ -79,18 +79,18 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
     },
     {
       name: 'Категорія',
-      selector: (row) => row['category.name'],
+      selector: (row) => row.category.name,
       sortable: true,
       omit: !activeColumns.includes('Категорія'),
     },
     {
       name: 'URL ключ',
-      selector: (row) => row['key'],
+      selector: (row) => row.key,
       omit: !activeColumns.includes('URL ключ'),
     },
     {
       name: 'Зображення продукта',
-      selector: (row) => row['files'],
+      selector: (row) => row.files,
       maxWidth: '110px',
       minWidth: '110px',
       format: (row) => <span>{row?.files?.length ? row?.files?.length / 2 : 0}</span>,
@@ -98,14 +98,14 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
     },
     {
       name: 'Створено',
-      selector: (row) => row['createdAt'],
+      selector: (row) => row.createdAt,
       sortable: true,
       format: (row) => <DateMoment date={row.createdAt} />,
       omit: !activeColumns.includes('Створено'),
     },
     {
       name: 'Оновлено',
-      selector: (row) => row['updatedAt'],
+      selector: (row) => row.updatedAt,
       sortable: true,
       format: (row) => <DateMoment date={row.updatedAt} />,
       omit: !activeColumns.includes('Оновлено'),

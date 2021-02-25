@@ -7,11 +7,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHeader from './Header/Table-header';
 import CategoryTableBody from './Body/Table-body';
 import CategoryTableFooter from './Footer/Table-footer';
-import { ICategoryItem } from '../../../interfaces/ICategory';
+import { ICategoryItem, ICategoryItemResponse } from '../../../interfaces/ICategory';
 import { CategoryTableData } from '../../../interfaces/ICategory';
 
 interface CategoryDataProps {
-  data: Array<ICategoryItem>;
+  data: Array<ICategoryItemResponse>;
 }
 
 function createData(
@@ -22,7 +22,14 @@ function createData(
   name: string,
   products: Array<ICategoryItem>
 ) {
-  return { id, key, name, createdAt, updatedAt, products: products.length };
+  return {
+    id,
+    key,
+    name,
+    createdAt,
+    updatedAt,
+    products: products.length,
+  };
 }
 
 const useTableStyles = makeStyles({
@@ -47,7 +54,7 @@ const CategoriesTable: React.FC<CategoryDataProps> = ({ data }) => {
       </div>
     );
 
-  const rows: Array<CategoryTableData> = data.map((category: ICategoryItem) => {
+  const rows: Array<CategoryTableData> = data.map((category: ICategoryItemResponse) => {
     if (!category.products) category.products = [];
 
     return createData(

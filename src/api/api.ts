@@ -13,6 +13,7 @@ type ApiFetchedDataType = {
     get: () => FetchedDataType<ICategoryItem>;
     add: (category: IActions) => FetchedDataType<ICategoryItem>;
     getById: (id: number) => FetchedDataType<ICategoryItem>;
+    update: (data: IActions) => FetchedDataType<ICategoryItem>;
   };
 
   products: {
@@ -20,8 +21,8 @@ type ApiFetchedDataType = {
     getById: (id: number) => FetchedDataType<IProductItem>;
     add: (product: IActions) => FetchedDataType<IProductItem>;
     update: (id: number, product: any) => FetchedDataType<IProductItem>;
-    updateImg: (data: any) => FetchedDataType<JSON>;
-    updateMainImg: (data: any) => FetchedDataType<JSON>;
+    updateImg: (data: FormData) => FetchedDataType<JSON>;
+    updateMainImg: (data: IActions) => FetchedDataType<JSON>;
     deleteImg: (imgName: string) => FetchedDataType<IProductItem>;
     deleteProduct: (id: IActions) => FetchedDataType<JSON>;
   };
@@ -37,6 +38,7 @@ export const api: ApiFetchedDataType = {
     get: () => axios.get(`${root}/category`),
     add: (category) => axios.post(`${root}/category`, category),
     getById: (id) => axios.get(`${root}/category/${id}`),
+    update: (data) => axios.patch(`${root}/category`, data),
   },
 
   products: {

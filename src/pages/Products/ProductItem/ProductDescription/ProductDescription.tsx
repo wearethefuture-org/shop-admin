@@ -1,6 +1,8 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { IProductItem } from '../../../../interfaces/IProducts';
+import { RootState } from '../../../../store/store';
 import styles from './ProductDescription.module.scss';
 
 interface IDescrProps {
@@ -8,8 +10,10 @@ interface IDescrProps {
 }
 
 const ProductDescription: React.FC<IDescrProps> = ({ product }) => {
+  const { darkMode } = useSelector((state: RootState) => state.theme);
+
   return (
-    <div className={styles.description}>
+    <div className={darkMode ? styles['description-dark'] : styles.description}>
       <div className={styles.field}>
         <p className={styles.title}>ID:</p>
         <p className={styles.value}>{product.id}</p>

@@ -121,8 +121,9 @@ export function* updateProductWorker({ data: { id, product } }: IActions): SagaI
 
 export function* deleteProductWorker({ data }: IActions): SagaIterator {
   try {
-    const product = yield call(apiDeleteProduct, data);
-    yield put(deleteProductSuccess(product));
+    yield call(apiDeleteProduct, data);
+
+    yield put(deleteProductSuccess());
     yield put(successSnackBar());
   } catch (error) {
     yield put(failSnackBar(error.message));

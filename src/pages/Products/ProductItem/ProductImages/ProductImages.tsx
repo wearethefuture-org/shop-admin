@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import StarFilledIcon from '@material-ui/icons/Star';
 import StarIcon from '@material-ui/icons/StarBorder';
 
@@ -7,6 +7,7 @@ import { uploadMainImgRequest } from '../../../../store/actions/products.actions
 import { root } from '../../../../api/config';
 import { IProductItem } from '../../../../interfaces/IProducts';
 import { failSnackBar } from '../../../../store/actions/snackbar.actions';
+import { RootState } from '../../../../store/store';
 import styles from './ProductImages.module.scss';
 
 const placeholder = `${root}/product/img/empty-preview.png`;
@@ -17,6 +18,8 @@ interface IImagesProps {
 
 const ProductImages: React.FC<IImagesProps> = ({ product }) => {
   const dispatch = useDispatch();
+
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   // GALLERY
   const [imgUrls, setImgUrls] = useState<string[]>([]);
@@ -73,7 +76,7 @@ const ProductImages: React.FC<IImagesProps> = ({ product }) => {
   };
 
   return (
-    <div className={styles.gallery}>
+    <div className={darkMode ? styles['gallery-dark'] : styles.gallery}>
       <>
         {imgLarge ? (
           <div className={styles['img-large-wrapper']}>

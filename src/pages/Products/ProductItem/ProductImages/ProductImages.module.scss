@@ -60,3 +60,12 @@
   color: orange;
   padding: 2px;
 }
+
+.gallery-dark {
+  @extend .gallery;
+  background-color: inherit;
+
+  .img-large-wrapper {
+    background-color: #bbb;
+  }
+}

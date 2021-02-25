@@ -15,3 +15,8 @@ export async function apiGetCategoryById(id: number) {
   const category = await api.categories.getById(id);
   return category.data;
 }
+
+export async function apiUpdateCategory(data: IActions) {
+  const category = await api.categories.update(data);
+  return category.data;
+}

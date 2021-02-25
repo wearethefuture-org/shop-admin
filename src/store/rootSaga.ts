@@ -14,11 +14,13 @@ import {
   UPLOAD_MAIN_IMG_REQUEST,
   DELETE_IMAGE_REQUEST,
   GET_CATEGORY_BY_ID_REQUEST,
+  UPDATE_CATEGORY_REQUEST,
 } from './types';
 import {
   fetchCategoryWorker,
   addCategoryWorker,
   getCategoryByIdWorker,
+  updateCategoryWorker,
 } from './sagas/categories.saga';
 
 import { fetchSettingsWorker, updateSettingsWorker } from './sagas/settings.saga';
@@ -36,6 +38,7 @@ export function* sagaCategoriesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_CATEGORIES, fetchCategoryWorker);
   yield takeEvery(REQUEST_ADD_CATEGORIES, addCategoryWorker);
   yield takeEvery(GET_CATEGORY_BY_ID_REQUEST, getCategoryByIdWorker);
+  yield takeEvery(UPDATE_CATEGORY_REQUEST, updateCategoryWorker);
 }
 
 export function* sagaProductsWatcher(): SagaIterator {

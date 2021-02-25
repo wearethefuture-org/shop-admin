@@ -1,5 +1,5 @@
 import { IActions } from '../../interfaces/actions';
-import { ICategoryItem } from '../../interfaces/ICategory';
+import { ICategoryItem, ICategoryItemResponse } from '../../interfaces/ICategory';
 import {
   ADD_CATEGORY,
   LOAD_CATEGORIES,
@@ -46,12 +46,12 @@ export const getCategoryByIdError = (message: string): IActions => ({
 });
 
 // update category
-export const updateCategoryRequest = (data): IActions => ({
+export const updateCategoryRequest = (data: ICategoryItem): IActions => ({
   type: UPDATE_CATEGORY_REQUEST,
   data,
 });
 
-export const updateCategorySuccess = (category: ICategoryItem): IActions => ({
+export const updateCategorySuccess = (category: ICategoryItemResponse): IActions => ({
   type: UPDATE_CATEGORY_SUCCESS,
   data: category,
 });

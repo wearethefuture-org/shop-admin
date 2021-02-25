@@ -29,3 +29,12 @@
     }
   }
 }
+
+.description-dark {
+  @extend .description;
+  background-color: inherit;
+
+  .field .title {
+    color: #eee;
+  }
+}

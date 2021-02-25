@@ -196,7 +196,6 @@ const products = (state = initialState, { type, data }: IActions) => {
     case DELETE_PRODUCT_SUCCESS: {
       return {
         ...state,
-        list: state.list.filter((item) => item.id !== data),
         loading: false,
       };
     }

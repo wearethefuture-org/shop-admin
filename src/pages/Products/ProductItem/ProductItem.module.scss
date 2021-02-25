@@ -26,6 +26,10 @@
   .breadcrumbs {
     font-size: 1rem;
     color: rgb(71, 57, 165);
+
+    svg {
+      transform: rotate(180deg) scale(0.6) translate(6px, 2px);
+    }
   }
 
   .item-main-info {
@@ -58,5 +62,17 @@
         padding: 0;
       }
     }
+  }
+}
+
+.itemCard-dark {
+  @extend .itemCard;
+
+  .breadcrumbs {
+    color: #ddd;
+  }
+
+  .item-additional-info .additional-info-block {
+    background-color: inherit;
   }
 }

@@ -13,16 +13,19 @@ import styles from './ProductForm.module.scss';
 
 export const productValidationShema = Yup.object().shape({
   name: Yup.string()
+    .trim()
     .min(2, 'Мінімальна довжина 2 символа')
     .max(50, 'Максимальна довжина 50 символів')
     .required('Обов`язкове поле'),
   price: Yup.number().positive('Число повинно бути більше нуля').required('Обов`язкове поле'),
   description: Yup.string()
+    .trim()
     .min(10, 'Мінімальна довжина 10 символів')
     .max(360, 'Максимальна довжина 360 символів')
     .required('Обов`язкове поле'),
-  categoryName: Yup.string().required('Обов`язкове поле'),
+  categoryName: Yup.string().trim().required('Обов`язкове поле'),
   key: Yup.string()
+    .trim()
     .min(2, 'Мінімальна довжина 2 символа')
     .max(30, 'Максимальна довжина 30 символів')
     .matches(
