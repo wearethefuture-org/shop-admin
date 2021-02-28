@@ -1,7 +1,7 @@
 import { IActions } from '../interfaces/actions';
 import { ICategoryItem } from '../interfaces/category-Item';
 import { IProductItem, IProductFormData } from '../interfaces/IProducts';
-import { ISliderItem, ISliderUpdateValues, ISliderVisibility } from "../interfaces/ISliders";
+import { ISlideItem, ISlideUpdateValues, ISlideVisibility } from "../interfaces/ISlides";
 import { ISettingError, ISettingsItem } from '../interfaces/ISettings';
 import { IUserItem } from '../interfaces/Users';
 import {
@@ -29,15 +29,15 @@ import {
   SUCCESS_SNACKBAR,
   FAIL_SNACKBAR,
   CLOSE_SNACKBAR,
-  ADD_SLIDER,
-  DELETE_SLIDER,
-  UPDATE_SLIDER,
-  LOAD_SLIDERS,
-  REQUEST_SLIDERS,
-  REQUEST_ADD_SLIDERS,
-  REQUEST_DELETE_SLIDERS,
-  REQUEST_UPDATE_SLIDERS,
-  REQUEST_UPDATE_SLIDER_VISIBILITY,
+  ADD_SLIDE,
+  DELETE_SLIDE,
+  UPDATE_SLIDE,
+  LOAD_SLIDES,
+  REQUEST_SLIDES,
+  REQUEST_ADD_SLIDES,
+  REQUEST_DELETE_SLIDES,
+  REQUEST_UPDATE_SLIDES,
+  REQUEST_UPDATE_SLIDE_VISIBILITY,
 } from './types';
 
 export const loadCategories = (categories: ICategoryItem[]): IActions => ({
@@ -114,39 +114,39 @@ export const updateSetting = (settings: ISettingsItem): IActions => ({
 });
 
 //Sliders
-export const loadSliders = (sliders: ISliderItem[]): IActions => ({ type: LOAD_SLIDERS, data: sliders });
-export const fetchSliders = (): IActions => ({ type: REQUEST_SLIDERS });
+export const loadSlides = (slides: ISlideItem[]): IActions => ({ type: LOAD_SLIDES, data: slides });
+export const fetchSlides = (): IActions => ({ type: REQUEST_SLIDES });
 
-export const fetchAddSliders = (slider: FormData): IActions => ({
-  type: REQUEST_ADD_SLIDERS,
-  data: slider,
+export const fetchAddSlides = (slide: FormData): IActions => ({
+  type: REQUEST_ADD_SLIDES,
+  data: slide,
 });
-export const addSlider = (slider: ISliderItem): IActions => ({
-  type: ADD_SLIDER,
-  data: slider,
-});
-
-export const fetchDeleteSliders = (slider: ISliderItem): IActions => ({
-  type: REQUEST_DELETE_SLIDERS,
-  data: slider,
-});
-export const deleteSlider = (slider: ISliderItem): IActions => ({
-  type: DELETE_SLIDER,
-  data: slider,
+export const addSlide = (slide: ISlideItem): IActions => ({
+  type: ADD_SLIDE,
+  data: slide,
 });
 
-export const fetchUpdateSliders = (slider: ISliderUpdateValues): IActions => ({
-  type: REQUEST_UPDATE_SLIDERS,
-  data: slider,
+export const fetchDeleteSlides = (slide: ISlideItem): IActions => ({
+  type: REQUEST_DELETE_SLIDES,
+  data: slide,
 });
-export const updateSlider = (slider: ISliderItem): IActions => ({
-  type: UPDATE_SLIDER,
-  data: slider,
+export const deleteSlide = (slide: ISlideItem): IActions => ({
+  type: DELETE_SLIDE,
+  data: slide,
 });
 
-export const fetchUpdateSliderVisibility = (slider: ISliderVisibility): IActions => ({
-  type: REQUEST_UPDATE_SLIDER_VISIBILITY,
-  data: slider,
+export const fetchUpdateSlides = (slide: ISlideUpdateValues): IActions => ({
+  type: REQUEST_UPDATE_SLIDES,
+  data: slide,
+});
+export const updateSlide = (slide: ISlideItem): IActions => ({
+  type: UPDATE_SLIDE,
+  data: slide,
+});
+
+export const fetchUpdateSlideVisibility = (slide: ISlideVisibility): IActions => ({
+  type: REQUEST_UPDATE_SLIDE_VISIBILITY,
+  data: slide,
 });
 
 // Theme

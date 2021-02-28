@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useSlidersModal = () => {
+const useSlidesModal = () => {
   const [isOpened, toggleModal] = useState(false);
 
   const handleClickOpen = () => {
@@ -18,4 +18,4 @@ const useSlidersModal = () => {
   };
 };
 
-export default useSlidersModal;
+export default useSlidesModal;

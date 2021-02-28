@@ -7,15 +7,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import EditIcon from '@material-ui/icons/Edit';
 import { Dispatch } from 'redux';
 
-import { ISlidersModal } from '../../interfaces/modals';
-import SliderForm from '../Forms/Slider-form/Slider-form';
-import { SliderTableData } from "../../interfaces/ISliders";
+import { ISlidesModal } from '../../interfaces/modals';
+import SlideForm from '../Forms/Slide-form/Slide-form';
+import { SlideTableData } from "../../interfaces/ISlides";
 
 interface FormDialogProps {
   dispatch: Dispatch,
-  slidersLength: number,
-  modalData: ISlidersModal,
-  row: SliderTableData,
+  slidesLength: number,
+  modalData: ISlidesModal,
+  row: SlideTableData,
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({
@@ -38,10 +38,10 @@ const FormDialog: React.FC<FormDialogProps> = ({
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle id="form-dialog-title"></DialogTitle>
+        <DialogTitle id="form-dialog-title">Edit slide</DialogTitle>
         <DialogContent dividers>
-          <DialogContentText>Edit slider</DialogContentText>
-          <SliderForm
+          <DialogContentText>Change name of slide</DialogContentText>
+          <SlideForm
             initialId={row.id}
             initialName={row.name}
             initialText={row.text}

@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchSliders } from '../store/actions';
+import { fetchSlides } from '../store/actions';
 import { RootState } from '../store/store';
 
-const useSliders = () => {
+const useSlides = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchSliders());
+    dispatch(fetchSlides());
   }, [dispatch]);
 
-  const data = useSelector((state: RootState) => state.sliders.list);
+  const data = useSelector((state: RootState) => state.slides.list);
   return {data, dispatch};
 }
 
-export default useSliders;
+export default useSlides;

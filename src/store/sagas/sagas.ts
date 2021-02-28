@@ -11,20 +11,20 @@ import {
   REQUEST_UPDATE_PRODUCT,
   REQUEST_SETTINGS,
   REQUEST_UPDATE_SETTINGS,
-  REQUEST_SLIDERS,
-  REQUEST_ADD_SLIDERS,
-  REQUEST_DELETE_SLIDERS,
-  REQUEST_UPDATE_SLIDERS,
-  REQUEST_UPDATE_SLIDER_VISIBILITY
+  REQUEST_SLIDES,
+  REQUEST_ADD_SLIDES,
+  REQUEST_DELETE_SLIDES,
+  REQUEST_UPDATE_SLIDES,
+  REQUEST_UPDATE_SLIDE_VISIBILITY
 } from '../types';
 
 import {
-  fetchSliderWorker,
-  addSliderWorker,
-  deleteSliderWorker,
-  updateSliderWorker,
-  updateSliderVisibilityWorker
-} from './sliders.saga';
+  fetchSlideWorker,
+  addSlideWorker,
+  deleteSlideWorker,
+  updateSlideWorker,
+  updateSlideVisibilityWorker
+} from './slides.saga';
 import { fetchCategoryWorker, addCategoryWorker } from '../sagas/categories.saga';
 import {
   fetchProductWorker,
@@ -56,17 +56,17 @@ function* sagaSettingsWatcher(): SagaIterator {
 }
 
 //Sliders
-export function* sagaSlidersWatcher(): SagaIterator {
-  yield takeEvery(REQUEST_SLIDERS, fetchSliderWorker);
-  yield takeEvery(REQUEST_ADD_SLIDERS, addSliderWorker);
-  yield takeEvery(REQUEST_DELETE_SLIDERS, deleteSliderWorker);
-  yield takeEvery(REQUEST_UPDATE_SLIDERS, updateSliderWorker);
-  yield takeEvery(REQUEST_UPDATE_SLIDER_VISIBILITY, updateSliderVisibilityWorker);
+export function* sagaSlidesWatcher(): SagaIterator {
+  yield takeEvery(REQUEST_SLIDES, fetchSlideWorker);
+  yield takeEvery(REQUEST_ADD_SLIDES, addSlideWorker);
+  yield takeEvery(REQUEST_DELETE_SLIDES, deleteSlideWorker);
+  yield takeEvery(REQUEST_UPDATE_SLIDES, updateSlideWorker);
+  yield takeEvery(REQUEST_UPDATE_SLIDE_VISIBILITY, updateSlideVisibilityWorker);
 }
 
 // RootSaga
 export default function* rootSaga(): SagaIterator {
-  yield all([fork(sagaCategoriesWatcher), fork(sagaProductsWatcher), fork(sagaSettingsWatcher), fork(sagaSlidersWatcher)]);
+  yield all([fork(sagaCategoriesWatcher), fork(sagaProductsWatcher), fork(sagaSettingsWatcher), fork(sagaSlidesWatcher)]);
 }
 
 

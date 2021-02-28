@@ -1,18 +1,19 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { CircularProgress } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import Paper from '@material-ui/core/Paper';
 import TableHeader from './Header/Table-header';
-import SliderTableBody from './Body/Table-body';
-import SliderTableFooter from './Footer/Table-footer';
+import SlideTableBody from './Body/Table-body';
+import SlideTableFooter from './Footer/Table-footer';
 import TableContainer from '@material-ui/core/TableContainer';
-import { ISliderItem, SliderTableData } from '../../../interfaces/ISliders';
+import { ISlideItem, SlideTableData } from '../../../interfaces/ISlides';
 import { Dispatch } from "redux";
+import { ISlidesModal } from "../../../interfaces/modals";
 
-interface SliderDataProps {
-  data: Array<ISliderItem>,
-  dispatch: Dispatch;
+interface SlideDataProps {
+  data: Array<ISlideItem>,
+  dispatch: Dispatch,
+  modalData: ISlidesModal,
 }
 
 function createData(
@@ -35,34 +36,23 @@ const useTableStyles = makeStyles({
   },
 });
 
-const SlidersTable: React.FC<SliderDataProps> = ({data, dispatch}) => {
+const SlidesTable: React.FC<SlideDataProps> = ({data, dispatch, modalData}) => {
   const classes = useTableStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  if (!data.length) return (
-    <div>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="custom pagination table">
-          <TableHeader/>
-        </Table>
-      </TableContainer>
-      <CircularProgress/>
-    </div>
-  );
-
-  const rows: Array<SliderTableData> = data.map((slider: ISliderItem) => {
+  const rows: Array<SlideTableData> = data.map((slide: ISlideItem) => {
 
     return createData(
-      slider.id,
-      slider.createdAt,
-      slider.updatedAt,
-      slider.name,
-      slider.text,
-      slider.image as string,
-      slider.href,
-      slider.isShown,
-      slider.priority
+      slide.id,
+      slide.createdAt,
+      slide.updatedAt,
+      slide.name,
+      slide.text,
+      slide.image as string,
+      slide.href,
+      slide.isShown,
+      slide.priority
     )
   })
 
@@ -74,15 +64,16 @@ const SlidersTable: React.FC<SliderDataProps> = ({data, dispatch}) => {
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">
         <TableHeader/>
-        <SliderTableBody
+        <SlideTableBody
           data={data}
           dispatch={dispatch}
+          modalData={modalData}
           rows={rows}
           rowsPerPage={rowsPerPage}
           page={page}
           emptyRows={emptyRows}
         />
-        <SliderTableFooter
+        <SlideTableFooter
           rows={rows}
           rowsPerPage={rowsPerPage}
           page={page}
@@ -94,4 +85,4 @@ const SlidersTable: React.FC<SliderDataProps> = ({data, dispatch}) => {
   );
 }
 
-export default SlidersTable;
+export default SlidesTable;

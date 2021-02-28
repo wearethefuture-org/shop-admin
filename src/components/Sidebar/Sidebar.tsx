@@ -103,7 +103,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
       itemIcon: <GroupIcon fontSize="small" className={styles.icon} />,
     },
     {
-      pageURL: '/sliders',
+      pageURL: '/slides',
       itemIcon: <AmpStoriesIcon fontSize="small" className={styles.icon} />
     },
   ];

@@ -2,11 +2,11 @@ import { withFormik } from 'formik';
 import { Dispatch } from 'redux';
 import * as Yup from 'yup';
 
-import { fetchAddSliders, fetchUpdateSliders } from '../../../store/actions';
+import { fetchAddSlides, fetchUpdateSlides } from '../../../store/actions';
 import InnerForm from './Inner-form';
-import { ISliderFormValues } from "../../../interfaces/ISliders";
+import { ISlideFormValues } from "../../../interfaces/ISlides";
 
-interface SliderFormProps {
+interface SlideFormProps {
   dispatch: Dispatch;
   handleClose: () => void;
   initialId?: number;
@@ -26,7 +26,7 @@ const SUPPORTED_FORMATS = [
   "image/png"
 ];
 
-const sliderValidationShema = Yup.object().shape({
+const slideValidationShema = Yup.object().shape({
   name: Yup.string().min(2, 'Minimum 2 symbols').max(50, 'Too long').required('Required'),
   text: Yup.string().min(2, 'Minimum 2 symbols').max(360, 'Too long').required('Required'),
   image: Yup
@@ -45,7 +45,7 @@ const sliderValidationShema = Yup.object().shape({
   priority: Yup.number().min(1, 'The number must been more 0').max(360, 'Too long').required('Required')
 })
 
-const SliderForm = withFormik<SliderFormProps, ISliderFormValues>({
+const SlideForm = withFormik<SlideFormProps, ISlideFormValues>({
     mapPropsToValues: props => {
       return {
         id: props.initialId || -1,
@@ -57,8 +57,8 @@ const SliderForm = withFormik<SliderFormProps, ISliderFormValues>({
         priority: props.initialPriority || 1,
       };
     },
-    validationSchema: sliderValidationShema,
-    handleSubmit: (values: ISliderFormValues, {setSubmitting, props}) => {
+    validationSchema: slideValidationShema,
+    handleSubmit: (values: ISlideFormValues, {setSubmitting, props}) => {
       setSubmitting(false);
       if (props.initialId === undefined) {
         const formData = new FormData()
@@ -69,7 +69,7 @@ const SliderForm = withFormik<SliderFormProps, ISliderFormValues>({
         formData.append("href", values.href);
         formData.append("text", values.text);
 
-        props.dispatch(fetchAddSliders(formData));
+        props.dispatch(fetchAddSlides(formData));
       } else {
         const formData = new FormData()
         if (typeof values.image != 'string')
@@ -85,11 +85,11 @@ const SliderForm = withFormik<SliderFormProps, ISliderFormValues>({
         if (values.text !== props.initialText)
           formData.append("text", values.text);
 
-        props.dispatch(fetchUpdateSliders({id: props.initialId, body: formData}));
+        props.dispatch(fetchUpdateSlides({id: props.initialId, body: formData}));
       }
       props.handleClose();
     },
   }
 )(InnerForm);
 
-export default SliderForm;
+export default SlideForm;

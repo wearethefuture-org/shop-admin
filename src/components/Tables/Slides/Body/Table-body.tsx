@@ -6,41 +6,47 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Button from "@material-ui/core/Button";
 import { Switch } from "@material-ui/core";
 
-import { ISliderItem, SliderTableData } from '../../../../interfaces/ISliders';
+import { ISlideItem, SlideTableData } from '../../../../interfaces/ISlides';
 
-import { fetchDeleteSliders, fetchUpdateSliderVisibility } from "../../../../store/actions";
-import FormDialog from "../../../Modals/Slider-modal-edit";
+import { fetchDeleteSlides, fetchUpdateSlideVisibility } from "../../../../store/actions";
+import FormDialog from "../../../Modals/Slide-modal-edit";
 import { Dispatch } from "redux";
 import { root } from "../../../../api/config";
+import AddIcon from "@material-ui/icons/Add";
+import { ISlidesModal } from "../../../../interfaces/modals";
 
 interface TableBodyProps {
-  rows: SliderTableData[],
+  rows: SlideTableData[],
   rowsPerPage: number,
   page: number,
   emptyRows: number,
-  data: Array<ISliderItem>,
-  dispatch: Dispatch;
+  data: Array<ISlideItem>,
+  dispatch: Dispatch,
+  modalData: ISlidesModal,
 }
 
-const SliderTableBody: React.FC<TableBodyProps> = ({
+const SlideTableBody: React.FC<TableBodyProps> = ({
                                                      rows,
                                                      rowsPerPage,
                                                      page,
                                                      emptyRows,
                                                      data,
-                                                     dispatch
+                                                     dispatch,
+                                                     modalData
                                                    }) => {
 
   const [selected, setSelected] = useState(null);
 
+  const {handleClickOpen} = modalData;
+
   const changeShown = (id: number, isShown: boolean) => {
     const row = rows.find(x => x.id === id);
     if (row) {
-      dispatch(fetchUpdateSliderVisibility({id: row.id, isShown: isShown}));
+      dispatch(fetchUpdateSlideVisibility({id: row.id, isShown: isShown}));
     }
   }
 
-  const createSliderModalData = (id: any) => {
+  const createSlideModalData = (id: any) => {
 
     const handleClickOpen = () => {
       setSelected(id);
@@ -57,8 +63,8 @@ const SliderTableBody: React.FC<TableBodyProps> = ({
     };
   }
 
-  const handleClickDelete = (item: SliderTableData) => {
-    dispatch(fetchDeleteSliders(item))
+  const handleClickDelete = (item: SlideTableData) => {
+    dispatch(fetchDeleteSlides(item))
   }
 
   return (
@@ -68,29 +74,28 @@ const SliderTableBody: React.FC<TableBodyProps> = ({
         : rows).map((row) => (
         <TableRow key={row.id}>
           <>
-            <TableCell component="th" scope="row">{row.id}</TableCell>
-            <TableCell align="right">{row.name}</TableCell>
-            <TableCell align="right">{row.text}</TableCell>
-            <TableCell align="right"><img width="50px" src={ `${ root }/slider/img/${ row.image }` }/></TableCell>
-            <TableCell align="right">{row.href}</TableCell>
-            <TableCell align="right"><Switch checked={row.isShown}
+            <TableCell classes={{ root: 'row-table-id' }} component="th" scope="row">{row.id}</TableCell>
+            <TableCell align="left">{row.name}</TableCell>
+            <TableCell align="left">{row.text}</TableCell>
+            <TableCell ><img width="50px" src={ `${ root }/slide/img/${ row.image }` }/></TableCell>
+            <TableCell >{row.href}</TableCell>
+            <TableCell ><Switch checked={row.isShown}
                                              onChange={() => changeShown(row.id, !row.isShown)}/></TableCell>
-            <TableCell align="right">{row.priority}</TableCell>
+            <TableCell >{row.priority}</TableCell>
             <TableCell align="right">
               <FormDialog
                 dispatch={dispatch}
-                slidersLength={data.length}
-                modalData={createSliderModalData(row.id)}
+                slidesLength={data.length}
+                modalData={createSlideModalData(row.id)}
                 row={row}
               />
             </TableCell>
             <TableCell align="right">
-              <Button variant="contained" color="primary" onClick={() => handleClickDelete(row)}>
+              <Button variant="contained" color="secondary" onClick={() => handleClickDelete(row)}>
                 <DeleteIcon/>
               </Button>
             </TableCell>
           </>
-
         </TableRow>
       ))}
       {emptyRows > 0 && (
@@ -98,8 +103,13 @@ const SliderTableBody: React.FC<TableBodyProps> = ({
           <TableCell colSpan={6}/>
         </TableRow>
       )}
+      <TableRow>
+        <TableCell colSpan={2}>
+          <Button variant="contained" color="primary" startIcon={<AddIcon/>} onClick={handleClickOpen}>Add slide</Button>
+        </TableCell>
+      </TableRow>
     </TableBody>
   );
 }
 
-export default SliderTableBody;
+export default SlideTableBody;

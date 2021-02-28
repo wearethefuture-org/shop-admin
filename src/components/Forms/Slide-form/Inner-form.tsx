@@ -3,7 +3,7 @@ import { Button, DialogActions, LinearProgress } from '@material-ui/core';
 import { Field, Form, FormikProps } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
-import { ISliderFormValues, InnerSliderFormProps } from '../../../interfaces/ISliders';
+import { ISlideFormValues, InnerSlideFormProps } from '../../../interfaces/ISlides';
 import FileUpload from "./FileUpload";
 
 const useStyles = makeStyles({
@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-const InnerForm: React.FC<InnerSliderFormProps & FormikProps<ISliderFormValues>> = (
+const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> = (
   {submitForm, isSubmitting, handleClose, ...props}) => {
 
   const classes = useStyles();
@@ -91,7 +91,7 @@ const InnerForm: React.FC<InnerSliderFormProps & FormikProps<ISliderFormValues>>
         <Button
           className={classes.customBtn}
           variant="contained"
-          color="primary"
+          color="secondary"
           disabled={isSubmitting}
           onClick={submitForm}
         >

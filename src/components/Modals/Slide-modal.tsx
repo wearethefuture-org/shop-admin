@@ -1,19 +1,17 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import AddIcon from '@material-ui/icons/Add';
 import { Dispatch } from 'redux';
 
-import { ISlidersModal } from '../../interfaces/modals';
-import SliderForm from '../Forms/Slider-form/Slider-form';
+import { ISlidesModal } from '../../interfaces/modals';
+import SlideForm from '../Forms/Slide-form/Slide-form';
 
 interface FormDialogProps {
   dispatch: Dispatch,
-  slidersLength: number,
-  modalData: ISlidersModal,
+  slidesLength: number,
+  modalData: ISlidesModal,
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({
@@ -21,13 +19,10 @@ const FormDialog: React.FC<FormDialogProps> = ({
                                                  modalData,
                                                }) => {
 
-  const {handleClickOpen, handleClose, isOpened} = modalData;
+  const {handleClose, isOpened} = modalData;
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        <AddIcon/> New Slider
-      </Button>
       <Dialog
         open={isOpened}
         onClose={handleClose}
@@ -35,10 +30,10 @@ const FormDialog: React.FC<FormDialogProps> = ({
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle id="form-dialog-title">Add new slider</DialogTitle>
+        <DialogTitle id="form-dialog-title">Add new slide</DialogTitle>
         <DialogContent dividers>
-          <DialogContentText>Choose name of slider.</DialogContentText>
-          <SliderForm
+          <DialogContentText>Choose name of slide</DialogContentText>
+          <SlideForm
             dispatch={dispatch}
             handleClose={handleClose}
           />

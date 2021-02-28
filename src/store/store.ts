@@ -4,7 +4,7 @@ import createSagaMiddleware from 'redux-saga';
 
 import categories from './reduceres/categories.reducer';
 import products from './reduceres/products.reducer';
-import sliders from "./reduceres/sliders.reduser";
+import slides from "./reduceres/slides.reduser";
 import getProductById from './reduceres/getProductById.reducer';
 import settings from './reduceres/settings.reducer';
 import snackBar from './reduceres/snackbar.reducer';
@@ -15,7 +15,7 @@ import rootSaga from './sagas/sagas';
 
 const saga = createSagaMiddleware();
 
-const rootReducer = combineReducers({ categories, products, getProductById, settings, snackBar, theme, users, sliders });
+const rootReducer = combineReducers({ categories, products, getProductById, settings, snackBar, theme, users, slides });
 
 const store = createStore(
   rootReducer,

@@ -4,7 +4,7 @@ export interface ICategoriesModal {
   isOpened: boolean;
 }
 
-export interface ISlidersModal {
+export interface ISlidesModal {
   handleClickOpen: () => void;
   handleClose: () => void;
   isOpened: boolean;

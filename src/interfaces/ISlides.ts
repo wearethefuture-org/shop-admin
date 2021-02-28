@@ -1,4 +1,4 @@
-export interface ISliderFormValues {
+export interface ISlideFormValues {
   id: number;
   name: string;
   text: string;
@@ -8,21 +8,21 @@ export interface ISliderFormValues {
   priority: number;
 }
 
-export interface  ISliderUpdateValues {
+export interface  ISlideUpdateValues {
   id: number;
   body: FormData;
 }
 
-export interface InnerSliderFormProps {
+export interface InnerSlideFormProps {
   handleClose: () => void;
 }
 
-export interface ISliderVisibility{
+export interface ISlideVisibility{
   id:number
   isShown: boolean
 }
 
-export interface ISliderItem {
+export interface ISlideItem {
   id: number;
   name: string;
   createdAt: string;
@@ -34,11 +34,11 @@ export interface ISliderItem {
   priority: number;
 }
 
-export interface ISlidersData {
-  list: Array<ISliderItem>
+export interface ISlidesData {
+  list: Array<ISlideItem>
 }
 
-export interface SliderTableData {
+export interface SlideTableData {
   id: number;
   name: string;
   createdAt: string;
