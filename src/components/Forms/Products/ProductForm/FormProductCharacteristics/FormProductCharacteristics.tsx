@@ -3,17 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import ArrowIcon from '@material-ui/icons/ArrowBackIos';
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
+import { IconButton } from '@material-ui/core';
 
 import AsteriskIcon from '../../../../../assets/icons/AsteriskIcon';
-import { getIcon } from '../../../../../components/Modals/CategoryCharModal/CategoryCharModal';
 import { AppDispatch, RootState } from '../../../../../store/store';
 import { getCategoryByIdRequest } from '../../../../../store/actions/categories.actions';
 import { ICharResponse } from '../../../../../interfaces/ICategory';
 import { charDynamicFields } from './charDynamicFields';
 import { getValidationSchema } from './charDynamicValidation';
 import { productValidationShema } from '../productFormHelpers';
+import { getIcon } from '../../../../Modals/CategoryCharModal/categoryCharModalHelpers';
 import styles from './FormProductCharacteristics.module.scss';
-import { IconButton } from '@material-ui/core';
 
 interface IProductChar {
   categoryName: string;
@@ -124,15 +124,17 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
                         <div className={styles['char-block']}>
                           <div className={styles['char-block-with-input']}>
                             <div className={styles['char-name-wrapper']}>
-                              <div
-                                className={
-                                  !char.required
-                                    ? styles['asterisk-icon']
-                                    : styles['asterisk-icon-required']
-                                }
-                              >
-                                <AsteriskIcon />
-                              </div>
+                              {char.type !== 'json' ? (
+                                <div
+                                  className={
+                                    !char.required
+                                      ? styles['asterisk-icon']
+                                      : styles['asterisk-icon-required']
+                                  }
+                                >
+                                  <AsteriskIcon />
+                                </div>
+                              ) : null}
                               <span className={styles['list-icon']}>{getIcon(char.type)}</span>
                               <span key={char.id}>{char.name}</span>
                               {char.type === 'json' ? (
