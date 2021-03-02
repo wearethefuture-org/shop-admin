@@ -147,7 +147,8 @@ export const charDynamicFields = (char, formik, product) => {
               <ClearIcon />
             </IconButton>
             <div role="group" aria-labelledby="checkbox-group">
-              {char.defaultValues.values &&
+              {char.defaultValues &&
+                char.defaultValues.values &&
                 char.defaultValues.values.length &&
                 char.defaultValues.values.map((value) => (
                   <div key={value}>
