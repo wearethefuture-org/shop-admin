@@ -1,4 +1,3 @@
-
 html,
 body,
 #root {
@@ -14,7 +13,7 @@ body *:focus {
 a,
 a:hover {
   text-decoration: none;
-  color: inherit
+  color: inherit;
 }
 
 .wraper {
@@ -26,11 +25,13 @@ a:hover {
   overflow-x: hidden;
 }
 
-.row-table-id {
-  width: 8%;
-  text-align: center;
+// input type number hide arrows
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-.row-table-button {
-  width: 15%;
+input[type='number'] {
+  -moz-appearance: textfield;
 }

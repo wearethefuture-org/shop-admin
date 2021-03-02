@@ -14,7 +14,3 @@ export interface ISettingsParams {
   quantityPopularItems: number;
   quantityNewArrivals: number;
 }
-
-export interface ISettingError {
-  error: string;
-}

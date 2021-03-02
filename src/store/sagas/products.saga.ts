@@ -1,72 +1,131 @@
 import { put, call } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
+
+import { IActions } from '../../interfaces/actions';
 import {
-  fetchedProducts,
-  fetchedProductById,
-  fetchedDeleteProduct,
-  fetchedAddProduct,
-  fetchedUpdateProduct,
-  fetchedUploadImage
+  apiGetProducts,
+  apiGetProductById,
+  apiAddProduct,
+  apiUpdateProduct,
+  apiDeleteProduct,
+  apiUploadMainImg,
+  apiUploadImages,
+  apiDeleteImg,
 } from './services/products.service';
 import {
-  loadProducts,
-  loadProductById,
-  deleteProduct,
-  addProduct,
-  updateProduct
-} from '../actions';
-import { IActions } from '../../interfaces/actions';
+  addProductError,
+  addProductSuccess,
+  deleteImageError,
+  deleteImageSuccess,
+  deleteProductError,
+  deleteProductSuccess,
+  getProductByIdError,
+  getProductByIdSuccess,
+  getProductsError,
+  getProductsSuccess,
+  updateProductError,
+  updateProductSuccess,
+  uploadMainImgError,
+  uploadMainImgSuccess,
+} from '../actions/products.actions';
+import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 
-export function* fetchProductWorker(): SagaIterator {
+export function* getProductsWorker(): SagaIterator {
   try {
-    const productsData = yield call(fetchedProducts);
-    yield put(loadProducts(productsData));
-  }
-  catch (error) {
-    console.log(error);
+    const products = yield call(apiGetProducts);
+    yield put(getProductsSuccess(products));
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(getProductsError(error.message));
   }
 }
 
-export function* fetchProductByIdWorker(data: IActions): SagaIterator {
+export function* getProductByIdWorker({ data: id }: IActions): SagaIterator {
   try {
-    const productData = yield call(fetchedProductById, data.data);
-    yield put(loadProductById(productData));
-  }
-  catch (error) {
-    console.log(error);
+    const product = yield call(apiGetProductById, id);
+    yield put(getProductByIdSuccess(product));
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(getProductByIdError(error.message));
   }
 }
 
-export function* fetchDeleteProductWorker(action: IActions): SagaIterator {
+export function* addProductWorker({ data }: IActions): SagaIterator {
   try {
-    const productData = yield call(fetchedDeleteProduct, action.data);
-    yield put(deleteProduct(productData));
-  }
-  catch (error) {
-    console.log(error);
+    const { name, price, description, categoryName, key, files } = data;
+
+    const product = yield call(apiAddProduct, { name, price, description, categoryName, key });
+
+    if (product && files instanceof FormData) {
+      files.append('productId', product.id);
+      yield call(apiUploadImages, files);
+    }
+
+    const updatedProduct = yield call(apiGetProductById, product.id);
+
+    yield put(addProductSuccess(updatedProduct));
+    yield put(successSnackBar());
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(addProductError(error.message));
   }
 }
 
-export function* fetchAddProductWorker(product: IActions): SagaIterator {
+export function* uploadMainImgWorker({ data }: IActions): SagaIterator {
   try {
-    const productData = yield call(fetchedAddProduct, product.data);
-    yield put(addProduct(productData));
-  }
-  catch (error) {
-    console.log(error);
+    const product = yield call(apiUploadMainImg, data);
+
+    yield put(uploadMainImgSuccess(product));
+    yield put(successSnackBar());
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(uploadMainImgError(error.message));
   }
 }
 
-export function* fetchUpdateProductWorker(product: IActions): SagaIterator {
-  
+export function* deleteImgWorker({ data: { imgName, id } }: IActions): SagaIterator {
   try {
-    const productData = yield call(fetchedUpdateProduct, product.data);
-    yield put(updateProduct(productData));
-    yield call(fetchedUploadImage,product.data)
-    yield call(fetchedProductById, productData.id);
-    yield put(loadProductById(productData))
+    yield call(apiDeleteImg, imgName);
+    const product = yield call(apiGetProductById, id);
+
+    yield put(deleteImageSuccess(product));
+    yield put(successSnackBar());
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(deleteImageError(error.message));
   }
-  catch (error) {
-    console.log(error);
+}
+
+export function* updateProductWorker({ data: { id, product } }: IActions): SagaIterator {
+  try {
+    const { name, price, description, categoryName, key, files } = product;
+
+    const editedProduct = yield call(apiUpdateProduct, {
+      id: id,
+      product: { name, price, description, categoryName, key },
+    });
+
+    if (editedProduct && files instanceof FormData) {
+      files.append('productId', editedProduct.id);
+      yield call(apiUploadImages, files);
+    }
+
+    const updatedProduct = yield call(apiGetProductById, editedProduct.id);
+    yield put(updateProductSuccess(updatedProduct));
+    yield put(successSnackBar());
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(updateProductError(error.message));
+  }
+}
+
+export function* deleteProductWorker({ data }: IActions): SagaIterator {
+  try {
+    const product = yield call(apiDeleteProduct, data);
+    yield put(deleteProductSuccess(product));
+    yield put(successSnackBar());
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(deleteProductError(error.message));
   }
 }

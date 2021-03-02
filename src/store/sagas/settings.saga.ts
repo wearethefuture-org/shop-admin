@@ -2,7 +2,8 @@ import { put, call } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 
 import { fetchedSettings, updateSettings } from './services/settings.service';
-import { failSnackBar, loadSettings, successSnackBar, updateSetting } from '../actions';
+import { loadSettings, updateSetting } from '../actions/settings.actions';
+import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 import { IActions } from '../../interfaces/actions';
 
 export function* fetchSettingsWorker(): SagaIterator {

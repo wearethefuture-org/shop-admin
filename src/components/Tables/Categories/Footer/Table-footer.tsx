@@ -9,40 +9,46 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
-
-import { CategoryTableData } from '../../../../interfaces/categories-data';
+import { CategoryTableData } from '../../../../interfaces/ICategory';
 
 interface CategoryTableFooterProps {
-   rows: CategoryTableData[],
-   rowsPerPage: number,
-   page: number,
-   setPage(page:number):void,
-   setRowsPerPage(rows:number):void
+  rows: CategoryTableData[];
+  rowsPerPage: number;
+  page: number;
+  setPage(page: number): void;
+  setRowsPerPage(rows: number): void;
 }
 
 interface TablePaginationActionsProps {
-   count: number;
-   page: number;
-   rowsPerPage: number;
-   onChangePage: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
- }
+  count: number;
+  page: number;
+  rowsPerPage: number;
+  onChangePage: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
+}
 
- const useFooterStyles = makeStyles((theme: Theme) =>
- createStyles({
-   root: {
-     flexShrink: 0,
-     marginLeft: theme.spacing(2.5),
-   },
- })
+const useFooterStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexShrink: 0,
+      marginLeft: theme.spacing(2.5),
+    },
+  })
 );
 
-const CategoryTableFooter:React.FC<CategoryTableFooterProps> = ({ rows, rowsPerPage, page, setPage, setRowsPerPage }) => {
-
+const CategoryTableFooter: React.FC<CategoryTableFooterProps> = ({
+  rows,
+  rowsPerPage,
+  page,
+  setPage,
+  setRowsPerPage,
+}) => {
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -55,27 +61,19 @@ const CategoryTableFooter:React.FC<CategoryTableFooterProps> = ({ rows, rowsPerP
   }: TablePaginationActionsProps) {
     const classes = useFooterStyles();
 
-    const handleFirstPageButtonClick = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
+    const handleFirstPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onChangePage(event, 0);
     };
 
-    const handleBackButtonClick = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
+    const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onChangePage(event, page - 1);
     };
 
-    const handleNextButtonClick = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
+    const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onChangePage(event, page + 1);
     };
 
-    const handleLastPageButtonClick = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
+    const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
     };
 
@@ -117,13 +115,13 @@ const CategoryTableFooter:React.FC<CategoryTableFooterProps> = ({ rows, rowsPerP
     <TableFooter>
       <TableRow>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+          rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
           colSpan={3}
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           SelectProps={{
-            inputProps: { "aria-label": "rows per page" },
+            inputProps: { 'aria-label': 'rows per page' },
             native: true,
           }}
           onChangePage={handleChangePage}
@@ -133,6 +131,6 @@ const CategoryTableFooter:React.FC<CategoryTableFooterProps> = ({ rows, rowsPerP
       </TableRow>
     </TableFooter>
   );
-}
+};
 
 export default CategoryTableFooter;
