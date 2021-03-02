@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import AppDataTable from '../../../AppDataTable/AppDataTable';
-import { IProductItem } from '../../../../interfaces/IProducts';
+import { IGetProducts } from '../../../../interfaces/IProducts';
 import DateMoment from '../../../Common/Date-moment';
 import { root } from '../../../../api/config';
 import styles from './ProductsTable.module.scss';
@@ -10,7 +10,7 @@ import styles from './ProductsTable.module.scss';
 const placeholder = `${root}/product/img/empty-preview.png`;
 
 interface ProductsDataProps {
-  list: IProductItem[];
+  list: IGetProducts[];
   activeColumns: string[];
 }
 

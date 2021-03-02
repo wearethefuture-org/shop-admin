@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 
 import { closeSnackBar } from '../store/actions/snackbar.actions';
-import { RootState } from '../store/store';
+import { AppDispatch, RootState } from '../store/store';
 
 const useSnackBar = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { isOpen, errorMessage, typeSnackbar } = useSelector((state: RootState) => state.snackBar);
 
   const handleClick = () => {

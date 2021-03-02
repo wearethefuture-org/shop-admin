@@ -11,6 +11,10 @@ import {
   apiUploadMainImg,
   apiUploadImages,
   apiDeleteImg,
+  apiGetProductsInCart,
+  apiDeleteChar,
+  apiUpdateProductCharValues,
+  apiAddProductCharValues,
 } from './services/products.service';
 import {
   addProductError,
@@ -50,10 +54,11 @@ export function* getProductByIdWorker({ data: id }: IActions): SagaIterator {
   }
 }
 
-export function* addProductWorker({ data }: IActions): SagaIterator {
+export function* addProductWorker({
+  data: { productValues, characteristicValues },
+}: IActions): SagaIterator {
   try {
-    const { name, price, description, categoryName, key, files } = data;
-
+    const { name, price, description, categoryName, key, files } = productValues;
     const product = yield call(apiAddProduct, { name, price, description, categoryName, key });
 
     if (product && files instanceof FormData) {
@@ -61,6 +66,12 @@ export function* addProductWorker({ data }: IActions): SagaIterator {
       yield call(apiUploadImages, files);
     }
 
+    if (product && characteristicValues) {
+      yield call(apiAddProductCharValues, {
+        productId: product.id,
+        characteristicValues,
+      });
+    }
     const updatedProduct = yield call(apiGetProductById, product.id);
 
     yield put(addProductSuccess(updatedProduct));
@@ -73,9 +84,11 @@ export function* addProductWorker({ data }: IActions): SagaIterator {
 
 export function* uploadMainImgWorker({ data }: IActions): SagaIterator {
   try {
-    const product = yield call(apiUploadMainImg, data);
+    yield call(apiUploadMainImg, data);
 
-    yield put(uploadMainImgSuccess(product));
+    const updatedProduct = yield call(apiGetProductById, data.productId);
+
+    yield put(uploadMainImgSuccess(updatedProduct));
     yield put(successSnackBar());
   } catch (error) {
     yield put(failSnackBar(error.message));
@@ -96,13 +109,22 @@ export function* deleteImgWorker({ data: { imgName, id } }: IActions): SagaItera
   }
 }
 
-export function* updateProductWorker({ data: { id, product } }: IActions): SagaIterator {
+export function* updateProductWorker({
+  data: {
+    id,
+    productValues,
+    characteristicValues: { charsToAdd, charsToEdit, charsToDelete },
+  },
+}: IActions): SagaIterator<void> {
   try {
-    const { name, price, description, categoryName, key, files } = product;
-
+    const { name, price, description, categoryName, key, files } = productValues;
     const editedProduct = yield call(apiUpdateProduct, {
-      id: id,
-      product: { name, price, description, categoryName, key },
+      id,
+      name,
+      price,
+      description,
+      categoryName,
+      key,
     });
 
     if (editedProduct && files instanceof FormData) {
@@ -110,7 +132,30 @@ export function* updateProductWorker({ data: { id, product } }: IActions): SagaI
       yield call(apiUploadImages, files);
     }
 
+    if (charsToAdd.length) {
+      yield call(apiAddProductCharValues, {
+        productId: id,
+        characteristicValues: charsToAdd,
+      });
+    }
+
+    if (charsToEdit.length) {
+      yield call(apiUpdateProductCharValues, {
+        productId: id,
+        characteristicValues: charsToEdit,
+      });
+    }
+
+    if (charsToDelete.length) {
+      yield call(
+        apiDeleteChar,
+        { url: '/characteristics-values' },
+        { characteristicValuesIds: charsToDelete }
+      );
+    }
+
     const updatedProduct = yield call(apiGetProductById, editedProduct.id);
+
     yield put(updateProductSuccess(updatedProduct));
     yield put(successSnackBar());
   } catch (error) {
@@ -119,12 +164,18 @@ export function* updateProductWorker({ data: { id, product } }: IActions): SagaI
   }
 }
 
-export function* deleteProductWorker({ data }: IActions): SagaIterator {
+export function* deleteProductWorker({ data: id }: IActions): SagaIterator {
   try {
-    yield call(apiDeleteProduct, data);
+    const products = yield call(apiGetProductsInCart);
+    const productsInCartIds = products.length && products.map((product) => product.productId);
 
-    yield put(deleteProductSuccess());
-    yield put(successSnackBar());
+    if (productsInCartIds.length && productsInCartIds.includes(id)) {
+      yield put(failSnackBar('Продукт знаходиться у кошику та не може бути видалений'));
+    } else {
+      yield call(apiDeleteProduct, id);
+      yield put(deleteProductSuccess(id));
+      yield put(successSnackBar());
+    }
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(deleteProductError(error.message));

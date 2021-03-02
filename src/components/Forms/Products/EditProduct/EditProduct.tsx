@@ -3,64 +3,88 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 
-import ProductForm, { productValidationShema } from '../ProductForm/ProductForm';
+import ProductForm from '../ProductForm/ProductForm';
 import useCategories from '../../../../hooks/useCategories';
-import { IProductFormData } from '../../../../interfaces/IProducts';
-import { RootState } from '../../../../store/store';
+import { IGetProductById, IUpdateProduct } from '../../../../interfaces/IProducts';
+import { AppDispatch, RootState } from '../../../../store/store';
 import { root } from '../../../../api/config';
 import {
   deleteImageRequest,
   updateProductRequest,
 } from '../../../../store/actions/products.actions';
+import { productValidationShema } from '../ProductForm/productFormHelpers';
+import { ICategoryResponse, ICharResponse } from '../../../../interfaces/ICategory';
+import { getEditCharValuesObject } from './getEditCharValuesObject';
 
-interface stateType {
+interface ILocation {
   from: { pathname: string };
 }
 
 const EditProduct: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation<stateType>();
+  const location = useLocation<ILocation>();
+
   const { data: categories } = useCategories();
 
-  const product = useSelector((state: RootState) => state.products.currentProduct);
+  const category: ICategoryResponse = useSelector(
+    (state: RootState) => state.categories.currentCategory
+  );
+  const product: IGetProductById = useSelector((state: RootState) => state.products.currentProduct);
 
   const handleGoBack = () => {
     history.push(location?.state?.from || '/products');
   };
 
+  const [validation, setValidation] = useState(productValidationShema);
+
   // FORMIK
-  const initialValues: IProductFormData = {
+  const initialValues = {
     name: product.name ?? '',
-    price: product.price ?? '',
+    price: product.price ?? 0,
     description: product.description ?? '',
     categoryName: product.category?.name ?? '',
-    files: product.files ?? [],
+    files: product.files ? product.files : {},
     key: product.key ?? '',
+    subForm: {},
   };
 
   const formik = useFormik({
     initialValues,
+    validateOnChange: false,
+    validateOnBlur: false,
+    validationSchema: validation,
+    onSubmit: (values: IUpdateProduct): void => {
+      const { subForm, ...productValues } = values;
 
-    validationSchema: productValidationShema,
-    onSubmit: (values: IProductFormData): void => {
-      const imagesFD = new FormData();
-      if (images.length) {
-        for (let image of images) {
-          imagesFD.append('images', image);
-        }
-        formik.values.files = imagesFD;
-      } else {
-        formik.values.files = product.files;
-      }
+      const chars: ICharResponse[] =
+        category && category.characteristicGroup.map((group) => group.characteristic).flat(1);
 
-      dispatch(updateProductRequest({ id: product.id, product: values }));
+      dispatch(
+        updateProductRequest(
+          product.id,
+          productValues,
+          getEditCharValuesObject(chars, product, formik)
+        )
+      );
+
       handleGoBack();
     },
   });
 
+  // HANDLE IMAGES
   const [images, setImages] = useState<File[]>([]);
   const [imagesPreview, setImagesPreview] = useState<string[]>([]);
+
+  const imagesFD = new FormData();
+  if (images.length) {
+    for (let image of images) {
+      imagesFD.append('images', image);
+    }
+    formik.values.files = imagesFD;
+  } else {
+    formik.values.files = product.files;
+  }
 
   useEffect(() => {
     if (product.files?.length) {
@@ -104,6 +128,7 @@ const EditProduct: React.FC = () => {
       handleImageChange={handleImageChange}
       imagesPreview={imagesPreview}
       handleDeleteImg={handleDeleteImg}
+      setValidation={setValidation}
     />
   );
 };

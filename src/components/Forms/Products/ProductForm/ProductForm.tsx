@@ -1,67 +1,26 @@
 import React, { useState } from 'react';
 import { Field, Form, FormikProps, FormikProvider } from 'formik';
-import * as Yup from 'yup';
 import { Button, Card, DialogActions, MenuItem } from '@material-ui/core';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import TextFieldWrapped from '../../../../hocs/TextFieldHOC';
 import ExpandBtn from '../../../ExpandBtn/ExpandBtn';
-import { ICategory, IProductFormData } from '../../../../interfaces/IProducts';
 import GoBackBtn from '../../../GoBackBtn/GoBackBtn';
+import FormProductCharacteristics from './FormProductCharacteristics/FormProductCharacteristics';
+import { formatKey } from './productFormHelpers';
+import { IGetCategoriesResponse } from '../../../../interfaces/ICategory';
 import styles from './ProductForm.module.scss';
 
-export const productValidationShema = Yup.object().shape({
-  name: Yup.string()
-    .trim()
-    .min(2, 'Мінімальна довжина 2 символа')
-    .max(50, 'Максимальна довжина 50 символів')
-    .required('Обов`язкове поле'),
-  price: Yup.number().positive('Число повинно бути більше нуля').required('Обов`язкове поле'),
-  description: Yup.string()
-    .trim()
-    .min(10, 'Мінімальна довжина 10 символів')
-    .max(360, 'Максимальна довжина 360 символів')
-    .required('Обов`язкове поле'),
-  categoryName: Yup.string().trim().required('Обов`язкове поле'),
-  key: Yup.string()
-    .trim()
-    .min(2, 'Мінімальна довжина 2 символа')
-    .max(30, 'Максимальна довжина 30 символів')
-    .matches(
-      /(^[a-z0-9-]+$)/,
-      'Може містити латинські літери в нижньому регістрі (a-z), цифри (0-9), знак тире (-)'
-    )
-    .required('Обов`язкове поле'),
-});
-
-const formatKey = (string) =>
-  string
-    .toLowerCase()
-    .split(/\W/ || ' ')
-    .join('-');
-
-const renderPhotos = (imagesPreview, handleDeleteImg) => (
-  <>
-    {imagesPreview.map((img, idx) => (
-      <div className={styles['img-wrapper']} key={img}>
-        <button className={styles['delete-img']} type="button">
-          <DeleteIcon onClick={() => handleDeleteImg(img, idx)} />
-        </button>
-        <img key={img} src={img} alt="" className={styles.image} />
-      </div>
-    ))}
-  </>
-);
-
-interface IProductFormProps {
+export interface IProductFormProps {
   editMode: boolean;
-  formik: FormikProps<IProductFormData>;
+  formik: FormikProps<any>;
   handleGoBack: () => void;
-  categories: ICategory[];
+  categories: IGetCategoriesResponse[];
   handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   imagesPreview: string[];
   handleDeleteImg: (img: string, idx: number) => void;
+  setValidation: (v: any) => void;
 }
 
 const ProductForm: React.FC<IProductFormProps> = ({
@@ -72,11 +31,12 @@ const ProductForm: React.FC<IProductFormProps> = ({
   handleImageChange,
   imagesPreview,
   handleDeleteImg,
+  setValidation,
 }) => {
   // EXPAND BLOCKS
-  const [expandedBlocks, setExpandedBlocks] = useState(['main']);
+  const [expandedBlocks, setExpandedBlocks] = useState<string[]>(['main']);
 
-  const handleExpand = (field) =>
+  const handleExpand = (field: string) =>
     expandedBlocks.includes(field)
       ? setExpandedBlocks(expandedBlocks.filter((block) => block !== field))
       : setExpandedBlocks([...expandedBlocks, field]);
@@ -94,6 +54,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
             <ExpandBtn
               expandBlock={expandedBlocks.includes('main')}
               handleExpand={() => handleExpand('main')}
+              disabled={false}
             />
             <h4>Основна інформація</h4>
           </div>
@@ -122,7 +83,9 @@ const ProductForm: React.FC<IProductFormProps> = ({
                   label="URL ключ"
                   name="key"
                   makegreen="true"
-                  value={formatKey(formik.values.key)}
+                  InputProps={{
+                    onChange: (e) => formik.setFieldValue('key', formatKey(e.target.value)),
+                  }}
                 />
                 <Field
                   fullWidth
@@ -144,7 +107,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                   value={formik.values.categoryName ?? ''}
                 >
                   {categories.length
-                    ? categories.map(({ id, name }: ICategory) => (
+                    ? categories.map(({ id, name }: IGetCategoriesResponse) => (
                         <MenuItem value={name} key={id}>
                           {name}
                         </MenuItem>
@@ -159,6 +122,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
             <ExpandBtn
               expandBlock={expandedBlocks.includes('images')}
               handleExpand={() => handleExpand('images')}
+              disabled={false}
             />
             <h4>Зображення</h4>
           </div>
@@ -174,7 +138,18 @@ const ProductForm: React.FC<IProductFormProps> = ({
                     onChange={handleImageChange}
                   />
                   <div className={styles.labelHolder}>
-                    {imagesPreview.length ? renderPhotos(imagesPreview, handleDeleteImg) : null}
+                    {imagesPreview.length ? (
+                      <>
+                        {imagesPreview.map((img, idx) => (
+                          <div className={styles['img-wrapper']} key={img}>
+                            <button className={styles['delete-img']} type="button">
+                              <DeleteIcon onClick={() => handleDeleteImg(img, idx)} />
+                            </button>
+                            <img key={img} src={img} alt="" className={styles.image} />
+                          </div>
+                        ))}
+                      </>
+                    ) : null}
                     <label htmlFor="file" className={styles.label}>
                       <AddAPhotoIcon />
                     </label>
@@ -188,16 +163,19 @@ const ProductForm: React.FC<IProductFormProps> = ({
             <ExpandBtn
               expandBlock={expandedBlocks.includes('additional')}
               handleExpand={() => handleExpand('additional')}
+              disabled={!formik.values.categoryName}
             />
             <h4>Додаткова інформація</h4>
           </div>
+
           {expandedBlocks.includes('additional') ? (
-            <Card>
-              <div className={styles['block-wrapper']}>
-                <p>Lorem Ipsum</p>
-              </div>
-            </Card>
+            <FormProductCharacteristics
+              formik={formik}
+              categoryName={formik.values.categoryName}
+              setValidation={setValidation}
+            />
           ) : null}
+
           <DialogActions>
             <Button
               className={styles.customBtn}
@@ -205,6 +183,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
               color="primary"
               disabled={formik.isSubmitting}
               type="submit"
+              onClick={() => setExpandedBlocks(['main', 'additional'])}
             >
               {editMode ? 'Зберегти' : 'Додати'}
             </Button>

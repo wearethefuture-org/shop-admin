@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import ArrowIcon from '@material-ui/icons/ArrowBackIos';
 
 import { deleteProductRequest } from '../../../store/actions/products.actions';
-import { RootState } from '../../../store/store';
+import { AppDispatch, RootState } from '../../../store/store';
 import ProductImages from './ProductImages/ProductImages';
 import ProductDescription from './ProductDescription/ProductDescription';
 import DeleteBtn from '../../../components/DeleteBtn/DeleteBtn';
@@ -12,16 +12,24 @@ import GoBackBtn from '../../../components/GoBackBtn/GoBackBtn';
 import EditBtn from '../../../components/EditBtn/EditBtn';
 import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
 import { confirmDelete } from '../../../components/confirmAlert/confirmAlert';
+import { getCategoryByIdRequest } from '../../../store/actions/categories.actions';
+import ProductCharacteristics from './ProductCharacteristics/ProductCharacteristics';
+import { IGetProductById } from '../../../interfaces/IProducts';
 import styles from './ProductItem.module.scss';
 
 const ProductItem: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
   const match = useRouteMatch();
   const location = useLocation();
 
-  const { currentProduct: product } = useSelector((state: RootState) => state.products);
+  const product: IGetProductById = useSelector((state: RootState) => state.products.currentProduct);
+
   const { darkMode } = useSelector((state: RootState) => state.theme);
+
+  useEffect(() => {
+    product && product.category && dispatch(getCategoryByIdRequest(product.category?.id));
+  }, [product, dispatch]);
 
   const goBack = () => history.push('/products');
 
@@ -32,13 +40,15 @@ const ProductItem: React.FC = () => {
       goBack();
     };
 
-    const warning = 'Запис не можна буде відновити';
-
-    confirmDelete(product.name, handleConfirm, warning);
+    confirmDelete(
+      product.name,
+      handleConfirm,
+      'Продукт та усі пов`язані з ним значення буде неможливо відновити'
+    );
   };
 
   // ADDITIONAL INFO
-  const [expandBlock, setExpandBlock] = useState<boolean>(false);
+  const [expandBlock, setExpandBlock] = useState<boolean>(true);
 
   return (
     <>
@@ -77,8 +87,8 @@ const ProductItem: React.FC = () => {
         <h1>{product.name}</h1>
 
         <div className={styles['item-main-info']}>
-          <ProductImages product={product} />
-          <ProductDescription product={product} />
+          <ProductImages />
+          <ProductDescription />
         </div>
 
         <div className={styles['item-additional-info']}>
@@ -86,16 +96,11 @@ const ProductItem: React.FC = () => {
             <ExpandBtn
               expandBlock={expandBlock}
               handleExpand={() => setExpandBlock(!expandBlock)}
+              disabled={false}
             />
             <span>Характеристики</span>
           </div>
-          {expandBlock ? (
-            <div className={styles['additional-info-block']}>
-              <ul>
-                <li>Some info</li>
-              </ul>
-            </div>
-          ) : null}
+          {expandBlock ? <ProductCharacteristics categoryName={product.category?.name} /> : null}
         </div>
       </div>
     </>

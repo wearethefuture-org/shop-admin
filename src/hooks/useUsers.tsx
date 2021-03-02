@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers } from '../store/actions/users.actions';
-import { RootState } from '../store/store';
+import { AppDispatch, RootState } from '../store/store';
 
 const useUsers = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchUsers());

@@ -10,29 +10,30 @@ import {
   getCategoryByIdRequest,
   updateCategoryRequest,
 } from '../../../store/actions/categories.actions';
-import { RootState } from '../../../store/store';
+import { AppDispatch, RootState } from '../../../store/store';
 import AddBtn from '../../../components/AddBtn/AddBtn';
 import CategoryGroupModal from '../../../components/Modals/CategoryGroupModal/CategoryGroupModal';
-import { IGroup } from '../../../interfaces/ICategory';
+import { ICategoryResponse, IGroupResponse } from '../../../interfaces/ICategory';
 import CategoryCharModal from '../../../components/Modals/CategoryCharModal/CategoryCharModal';
 import { confirmDelete } from '../../../components/confirmAlert/confirmAlert';
 import CharBlock from '../CharBlock/CharBlock';
 import styles from './CategoryInfo.module.scss';
 
 const CategoryInfo: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { id } = useParams<Record<string, string | undefined>>();
 
   useEffect(() => {
     dispatch(getCategoryByIdRequest(Number(id)));
   }, [dispatch, id]);
 
-  const { currentCategory: category, loading } = useSelector(
-    (state: RootState) => state.categories
+  const category: ICategoryResponse = useSelector(
+    (state: RootState) => state.categories.currentCategory
   );
+  const { loading } = useSelector((state: RootState) => state.categories);
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
-  const [charGroup, setCharGroup] = useState<IGroup[]>([]);
+  const [charGroup, setCharGroup] = useState<IGroupResponse[]>([]);
 
   useEffect(() => {
     category && setCharGroup(category.characteristicGroup);
@@ -54,13 +55,13 @@ const CategoryInfo: React.FC = () => {
   // DELETE GROUP
   const handleDeleteGroup = (id: number | undefined, name: string | undefined) => {
     const char = charGroup.find((group) => group.id === id);
-    // @ts-ignore
+
     const charIds = char && char?.characteristic?.map((char) => char.id);
 
     const handleConfirm = () => {
       id &&
         dispatch(
-          charIds.length
+          charIds && charIds.length
             ? updateCategoryRequest({
                 id: category.id,
                 removedCharacteristics: {
@@ -77,17 +78,19 @@ const CategoryInfo: React.FC = () => {
         );
     };
 
-    const warning: string =
-      "Значення цієї групи характеристик будуть видалені з усіх пов'язаних з нею продуктів";
-
-    name && confirmDelete(name, handleConfirm, warning);
+    name &&
+      confirmDelete(
+        name,
+        handleConfirm,
+        "Значення цієї групи характеристик будуть видалені з усіх пов'язаних з нею продуктів"
+      );
   };
 
   // ADD CHARACTERISTIC
   const [openCharModal, setOpenCharModal] = useState<boolean>(false);
   const [charGroupId, setCharGroupId] = useState<number>(-1);
 
-  const handleChar = (id) => {
+  const handleChar = (id: number) => {
     setCharGroupId(id);
     setOpenCharModal(true);
   };

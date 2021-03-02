@@ -27,14 +27,12 @@ enum cols {
 const Products: React.FC = () => {
   const location = useLocation();
 
-  const {
-    data: { list },
-  } = useProducts();
+  const { list } = useProducts();
 
   const loading = useSelector((state: RootState) => state.products.loading);
 
-  const [showColumnsMenu, setShowColumnsMenu] = useState(false);
-  const [activeColumns, setActiveColumns] = useState([
+  const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
+  const [activeColumns, setActiveColumns] = useState<string[]>([
     cols.id,
     cols.mainImg,
     cols.name,
@@ -44,7 +42,7 @@ const Products: React.FC = () => {
     cols.files,
   ]);
 
-  const handleColumns = (column) =>
+  const handleColumns = (column: string) =>
     activeColumns.includes(column)
       ? setActiveColumns(activeColumns.filter((col) => col !== column))
       : setActiveColumns([...activeColumns, column]);

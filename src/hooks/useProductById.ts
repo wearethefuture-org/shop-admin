@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductByIdRequest } from '../store/actions/products.actions';
-import { RootState } from '../store/store';
+import { AppDispatch, RootState } from '../store/store';
 
 const useProductById = (id: number) => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getProductByIdRequest(id));

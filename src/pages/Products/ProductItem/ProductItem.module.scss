@@ -51,17 +51,6 @@
         font-weight: bold;
       }
     }
-
-    .additional-info-block {
-      background-color: #fff;
-      padding: 1rem;
-
-      ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-    }
   }
 }
 
@@ -70,9 +59,5 @@
 
   .breadcrumbs {
     color: #ddd;
-  }
-
-  .item-additional-info .additional-info-block {
-    background-color: inherit;
   }
 }

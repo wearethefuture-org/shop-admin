@@ -8,7 +8,7 @@ import CategoryCharModal, {
   getIcon,
 } from '../../../components/Modals/CategoryCharModal/CategoryCharModal';
 import { updateCategoryRequest } from '../../../store/actions/categories.actions';
-import { RootState } from '../../../store/store';
+import { AppDispatch, RootState } from '../../../store/store';
 import { confirmDelete } from '../../../components/confirmAlert/confirmAlert';
 import AsteriskIcon from '../../../assets/icons/AsteriskIcon';
 import { IGroupResponse } from '../../../interfaces/ICategory';
@@ -18,8 +18,8 @@ interface ICharBlock {
   group: IGroupResponse;
 }
 
-const CharBlock = ({ group }) => {
-  const dispatch = useDispatch();
+const CharBlock: React.FC<ICharBlock> = ({ group }) => {
+  const dispatch: AppDispatch = useDispatch();
 
   const { currentCategory: category } = useSelector((state: RootState) => state.categories);
   const { darkMode } = useSelector((state: RootState) => state.theme);
@@ -65,7 +65,6 @@ const CharBlock = ({ group }) => {
       ],
     };
 
-    // @ts-ignore
     dispatch(updateCategoryRequest(updatedChar));
   };
 
@@ -91,23 +90,26 @@ const CharBlock = ({ group }) => {
               >
                 <div className={styles['char-block']}>
                   <div className={styles['char-name-wrapper']}>
-                    <div
-                      className={
-                        !char.required ? styles['asterisk-icon'] : styles['asterisk-icon-required']
-                      }
-                      onClick={() => handleRequired(char)}
-                    >
-                      <AsteriskIcon />
-                    </div>
+                    {char.type !== 'json' ? (
+                      <div
+                        className={
+                          !char.required
+                            ? styles['asterisk-icon']
+                            : styles['asterisk-icon-required']
+                        }
+                        onClick={() => handleRequired(char)}
+                      >
+                        <AsteriskIcon />
+                      </div>
+                    ) : null}
                     <span className={styles['list-icon']}>{getIcon(char.type)}</span>
                     <span key={char.id}>{char.name}</span>
                   </div>
 
                   {char.type === 'enum' ? (
                     <ul className={styles['enum-values']}>
-                      {char.defaultValues.values.map((value) => (
-                        <li key={value}>{value}</li>
-                      ))}
+                      {char.defaultValues &&
+                        char.defaultValues.values.map((value) => <li key={value}>{value}</li>)}
                     </ul>
                   ) : null}
 

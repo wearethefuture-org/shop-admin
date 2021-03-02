@@ -1,12 +1,12 @@
 import { api } from '../../../api/api';
-import { IActions } from '../../../interfaces/actions';
+import { IAddCategory, IUpdateCategory } from '../../../interfaces/ICategory';
 
 export async function fetchedCategories() {
   const categories = await api.categories.get();
   return categories.data;
 }
 
-export async function addCategories(data: IActions) {
+export async function addCategories(data: IAddCategory) {
   const newCategory = await api.categories.add(data);
   return newCategory.data;
 }
@@ -16,7 +16,7 @@ export async function apiGetCategoryById(id: number) {
   return category.data;
 }
 
-export async function apiUpdateCategory(data: IActions) {
+export async function apiUpdateCategory(data: IUpdateCategory) {
   const category = await api.categories.update(data);
   return category.data;
 }

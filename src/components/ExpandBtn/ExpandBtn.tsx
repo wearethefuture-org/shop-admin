@@ -7,11 +7,17 @@ import styles from './ExpandBtn.module.scss';
 interface IBtnProps {
   expandBlock: boolean;
   handleExpand: () => void;
+  disabled: boolean;
 }
 
-const ExpandBtn: React.FC<IBtnProps> = ({ expandBlock, handleExpand }) => {
+const ExpandBtn: React.FC<IBtnProps> = ({ expandBlock, handleExpand, disabled }) => {
   return (
-    <button className={styles['expand-btn']} type="button" onClick={handleExpand}>
+    <button
+      className={styles['expand-btn']}
+      type="button"
+      onClick={handleExpand}
+      disabled={disabled}
+    >
       {expandBlock ? <RemoveIcon /> : <AddIcon />}
     </button>
   );

@@ -28,7 +28,8 @@ const TextFieldWrapped: React.FC<TextFieldProps & TextFieldHOCProps> = (props) =
   } = props;
 
   const classes = useStyles();
-  const condition = status && status.everTouched[name] && !errors[name] && dirty;
+  const condition =
+    status && errors && status.everTouched && status.everTouched[name] && !errors[name] && dirty;
 
   const ownHandleFocus = () => {
     setStatus({

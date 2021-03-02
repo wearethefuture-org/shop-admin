@@ -1,39 +1,90 @@
-export interface ICategoryItem {
-  id?: number;
-  key?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  name?: string;
-  description?: string;
-  products?: any[];
-  characteristicGroups?: IGroup[] | [];
-  removedCharacteristics?: {
-    characteristicGroupIDs?: number[] | [];
-    characteristicIDs?: number[] | [];
-  };
-}
+import { IBasicProduct } from './IProducts';
 
-export interface ICategoryItemResponse {
+export interface IGetCategoriesResponse {
   id: number;
   key: string;
   createdAt: string;
   updatedAt: string;
   name: string;
   description: string;
-  products?: any[];
-  characteristicGroup: IGroupResponse[] | [];
-  removedCharacteristics: {
-    characteristicGroupIDs: [];
-    characteristicIDs: [];
+  products: IBasicProduct[];
+}
+
+export interface IAddCategory {
+  name: string;
+  description: string;
+  key: string;
+}
+
+export interface IAddCategoryResponse {
+  id: number;
+  key: string;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  description: string;
+}
+
+export interface IUpdateCategory {
+  id: number;
+  name?: string;
+  description?: string;
+  key?: string;
+  characteristicGroups?: {
+    name?: string;
+    id?: number;
+    characteristics: {
+      id?: number;
+      name?: string;
+      description?: string;
+      required?: boolean;
+      type?: string;
+      defaultValues?: {
+        values: string[];
+      };
+      minValue?: number;
+      maxValue?: number;
+      categoryId?: number;
+    }[];
+  }[];
+  removedCharacteristics?: {
+    characteristicGroupIDs?: number[];
+    characteristicIDs?: number[];
   };
 }
 
-export interface IGroup {
+export interface ICategoryResponse {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  key: string;
+  description: string;
+  characteristicGroup: IGroupResponse[];
+}
+
+export interface IChar {
   id?: number;
-  name?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  characteristics: IChar[];
+  name: string;
+  description: string;
+  required?: boolean;
+  type: string;
+  minValue?: number;
+  maxValue?: number;
+  defaultValues?: { values: string[] };
+}
+
+export interface ICharResponse {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  description: string;
+  required: boolean;
+  type: string;
+  minValue: number;
+  maxValue: number;
+  defaultValues: null | { values: string[] };
 }
 
 export interface IGroupResponse {
@@ -41,36 +92,7 @@ export interface IGroupResponse {
   name: string;
   createdAt: string;
   updatedAt: string;
-  characteristic: ICharResponse[] | [];
-}
-
-export interface IChar {
-  id?: number;
-  name: string;
-  description: string;
-  required: boolean;
-  type: string;
-  minValue?: number;
-  maxValue?: number;
-  defaultValues: any;
-}
-
-export interface ICharResponse {
-  id?: number;
-  name: string;
-  description: string;
-  required: boolean;
-  type: string;
-  minValue?: number;
-  maxValue?: number;
-  defaultValues: any;
-}
-
-export interface ICategoriesData {
-  list: Array<ICategoryItem>;
-  loading: boolean;
-  currentCategory: ICategoryItem | null;
-  error: string | null;
+  characteristic: ICharResponse[];
 }
 
 export interface CategoryTableData {
@@ -81,12 +103,6 @@ export interface CategoryTableData {
   name: string;
   description?: string;
   products: number;
-}
-
-export interface IFormValues {
-  name: string;
-  key: string;
-  description: string;
 }
 
 export interface InnerCategoryFormProps {

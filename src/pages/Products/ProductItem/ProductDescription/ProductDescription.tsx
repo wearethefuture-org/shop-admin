@@ -1,15 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { IProductItem } from '../../../../interfaces/IProducts';
+import { IGetProductById } from '../../../../interfaces/IProducts';
 import { RootState } from '../../../../store/store';
 import styles from './ProductDescription.module.scss';
 
-interface IDescrProps {
-  product: IProductItem;
-}
+const ProductDescription: React.FC = () => {
+  const product: IGetProductById = useSelector((state: RootState) => state.products.currentProduct);
 
-const ProductDescription: React.FC<IDescrProps> = ({ product }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
   return (

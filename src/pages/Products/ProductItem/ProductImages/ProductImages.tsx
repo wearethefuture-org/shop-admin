@@ -5,27 +5,29 @@ import StarIcon from '@material-ui/icons/StarBorder';
 
 import { uploadMainImgRequest } from '../../../../store/actions/products.actions';
 import { root } from '../../../../api/config';
-import { IProductItem } from '../../../../interfaces/IProducts';
+import { IGetProductById } from '../../../../interfaces/IProducts';
 import { failSnackBar } from '../../../../store/actions/snackbar.actions';
-import { RootState } from '../../../../store/store';
+import { AppDispatch, RootState } from '../../../../store/store';
 import styles from './ProductImages.module.scss';
 
 const placeholder = `${root}/product/img/empty-preview.png`;
 
-interface IImagesProps {
-  product: IProductItem;
-}
+const ProductImages: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
 
-const ProductImages: React.FC<IImagesProps> = ({ product }) => {
-  const dispatch = useDispatch();
+  const product: IGetProductById = useSelector((state: RootState) => state.products.currentProduct);
 
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
   // GALLERY
-  const [imgUrls, setImgUrls] = useState<string[]>([]);
+  const [imgUrls, setImgUrls] = useState<string[] | []>([]);
 
   useEffect(() => {
-    product.files && setImgUrls(product.files.map((file) => file.name));
+    if (product.files && product.files.length) {
+      setImgUrls(product.files.map((file) => file.name));
+    } else {
+      return;
+    }
   }, [product]);
 
   const [largeImages, setLargeImages] = useState<string[]>([]);
@@ -59,7 +61,7 @@ const ProductImages: React.FC<IImagesProps> = ({ product }) => {
         );
   }, [mainImg, croppedImages, largeImages]);
 
-  const handleGallery = (img, idx) => {
+  const handleGallery = (img: string, idx: number) => {
     setActiveCroppedImg(img);
     setImgLarge(largeImages && largeImages[idx]);
   };

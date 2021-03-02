@@ -10,13 +10,13 @@ import { Paper } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Router from './components/Router/Router';
-import { RootState } from './store/store';
+import { AppDispatch, RootState } from './store/store';
 import { switchDarkMode } from './store/actions/theme.actions';
 import './App.scss';
 
 export function App() {
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     const bool: string = localStorage.getItem('darkMode')!;

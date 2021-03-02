@@ -13,7 +13,8 @@ import jsonIcon from '../../../assets/icons/json.svg';
 import rangeIcon from '../../../assets/icons/range.svg';
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import { updateCategoryRequest } from '../../../store/actions/categories.actions';
-import { RootState } from '../../../store/store';
+import { AppDispatch, RootState } from '../../../store/store';
+import { ICategoryResponse } from '../../../interfaces/ICategory';
 import styles from './CategoryCharModal.module.scss';
 
 const validationSchema = () =>
@@ -30,14 +31,18 @@ const validationSchema = () =>
       .required('Обов`язкове поле'),
     required: Yup.boolean(),
     type: Yup.string().required('Обов`язкове поле'),
-    minValue: Yup.number().when('type', {
-      is: 'range',
-      then: Yup.number().required('Обов`язкове поле'),
-    }),
-    maxValue: Yup.number().when('type', {
-      is: 'range',
-      then: Yup.number().required('Обов`язкове поле'),
-    }),
+    minValue: Yup.number()
+      .when('type', {
+        is: 'range',
+        then: Yup.number().required('Обов`язкове поле'),
+      })
+      .nullable(),
+    maxValue: Yup.number()
+      .when('type', {
+        is: 'range',
+        then: Yup.number().required('Обов`язкове поле'),
+      })
+      .nullable(),
     defaultVal: Yup.string()
       .trim()
       .when('type', {
@@ -93,17 +98,6 @@ enum charTypes {
   range = 'Діапазон',
 }
 
-interface ICharValues {
-  name: string;
-  description: string;
-  required: boolean;
-  type: string;
-  defaultVal: string;
-  defaultValues: { values: string[] } | null;
-  minValue: number;
-  maxValue: number;
-}
-
 interface IModalProps {
   openCharModal: boolean;
   setOpenCharModal: (b: boolean) => void;
@@ -119,9 +113,11 @@ const CategoryCharModal: React.FC<IModalProps> = ({
   setEditCharId,
   charGroupId,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
-  const { currentCategory: category } = useSelector((state: RootState) => state.categories);
+  const category: ICategoryResponse = useSelector(
+    (state: RootState) => state.categories.currentCategory
+  );
 
   const group = category.characteristicGroup.find((group) => group.id === charGroupId);
   const char = group && editCharId && group.characteristic.find((char) => char.id === editCharId);
@@ -133,21 +129,21 @@ const CategoryCharModal: React.FC<IModalProps> = ({
 
   const formik = useFormik({
     initialValues: {
-      name: (char && char.name) ?? '',
-      description: (char && char.description) ?? '',
-      required: (char && char.required) ?? false,
-      type: (char && char.type) ?? '',
-      defaultVal: char?.defaultValues?.values.join(', ') ?? '',
-      defaultValues: null,
-      minValue: (char && char.minValue) ?? '',
-      maxValue: (char && char.maxValue) ?? '',
+      name: char && char.name ? char.name : '',
+      description: char && char.description ? char.description : '',
+      required: char && char.required ? char.required : false,
+      type: char && char.type ? char.type : '',
+      defaultVal: char && char?.defaultValues ? char?.defaultValues?.values.join(', ') : '',
+      defaultValues: { values: [''] },
+      minValue: char && char.minValue ? char.minValue : 0,
+      maxValue: char && char.maxValue ? char.maxValue : 0,
     },
 
     validationSchema,
 
-    onSubmit: (values: ICharValues): void => {
+    onSubmit: (values) => {
       if (values.defaultVal) {
-        const res = values.defaultVal.split(',').map((value) => value.trim().toLowerCase());
+        const res = values.defaultVal.split(',').map((value) => value.trim());
         values.defaultValues = { values: [...res] };
       }
 
@@ -197,10 +193,8 @@ const CategoryCharModal: React.FC<IModalProps> = ({
       };
 
       if (char) {
-        // @ts-ignore
-        dispatch(updateCategoryRequest(updatedChar));
+        updatedChar && dispatch(updateCategoryRequest(updatedChar));
       } else {
-        // @ts-ignore
         dispatch(updateCategoryRequest(newChar));
       }
 
@@ -235,20 +229,6 @@ const CategoryCharModal: React.FC<IModalProps> = ({
               select
               fullWidth
               component={TextFieldWrapped}
-              label="Є обов'язковою характеристикою"
-              name="requred"
-              makegreen="true"
-              value={formik.values.required ?? ''}
-              onChange={handleOnChange}
-            >
-              <MenuItem value={'true'}>Так</MenuItem>
-              <MenuItem value={'false'}>Ні</MenuItem>
-            </Field>
-
-            <Field
-              select
-              fullWidth
-              component={TextFieldWrapped}
               label="Тип *"
               name="type"
               makegreen="true"
@@ -261,6 +241,22 @@ const CategoryCharModal: React.FC<IModalProps> = ({
                 </MenuItem>
               ))}
             </Field>
+
+            {formik.values.type !== 'json' ? (
+              <Field
+                select
+                fullWidth
+                component={TextFieldWrapped}
+                label="Є обов'язковою характеристикою"
+                name="requred"
+                makegreen="true"
+                value={formik.values.required ?? ''}
+                onChange={handleOnChange}
+              >
+                <MenuItem value={'true'}>Так</MenuItem>
+                <MenuItem value={'false'}>Ні</MenuItem>
+              </Field>
+            ) : null}
 
             {formik.values.type === 'enum' && (
               <Field

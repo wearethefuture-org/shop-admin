@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import useSnackBar from '../../../hooks/useSnackbar';
 
 import { ISettingsParams } from '../../../interfaces/ISettings';
+import { AppDispatch } from '../../../store/store';
 import WidgetForm from './WidgetsSettings/Widget-form';
 
 interface SettingsFormProps {
@@ -11,7 +12,7 @@ interface SettingsFormProps {
 }
 
 const SettingsForms: React.FC<SettingsFormProps> = ({ name, parameters }) => {
-  const dispath = useDispatch();
+  const dispath: AppDispatch = useDispatch();
   const { handleClick } = useSnackBar();
 
   switch (name) {

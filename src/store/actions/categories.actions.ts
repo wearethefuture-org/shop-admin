@@ -1,5 +1,11 @@
 import { IActions } from '../../interfaces/actions';
-import { ICategoryItem, ICategoryItemResponse } from '../../interfaces/ICategory';
+import {
+  IAddCategory,
+  IAddCategoryResponse,
+  ICategoryResponse,
+  IGetCategoriesResponse,
+  IUpdateCategory,
+} from '../../interfaces/ICategory';
 import {
   ADD_CATEGORY,
   LOAD_CATEGORIES,
@@ -13,18 +19,18 @@ import {
   UPDATE_CATEGORY_ERROR,
 } from '../types';
 
-export const loadCategories = (categories: ICategoryItem[]): IActions => ({
+export const loadCategories = (categories: IGetCategoriesResponse[]): IActions => ({
   type: LOAD_CATEGORIES,
   data: categories,
 });
 export const fetchCategories = (): IActions => ({ type: REQUEST_CATEGORIES });
 
-export const fetchAddCategories = (name: string, key: string, description: string): IActions => ({
+export const fetchAddCategories = (data: IAddCategory): IActions => ({
   type: REQUEST_ADD_CATEGORIES,
-  data: { name, key, description },
+  data,
 });
 
-export const addCategory = (category: ICategoryItem): IActions => ({
+export const addCategory = (category: IAddCategoryResponse): IActions => ({
   type: ADD_CATEGORY,
   data: category,
 });
@@ -35,9 +41,9 @@ export const getCategoryByIdRequest = (id: number): IActions => ({
   data: id,
 });
 
-export const getCategoryByIdSuccess = (product: ICategoryItem): IActions => ({
+export const getCategoryByIdSuccess = (category: ICategoryResponse): IActions => ({
   type: GET_CATEGORY_BY_ID_SUCCESS,
-  data: product,
+  data: category,
 });
 
 export const getCategoryByIdError = (message: string): IActions => ({
@@ -46,12 +52,12 @@ export const getCategoryByIdError = (message: string): IActions => ({
 });
 
 // update category
-export const updateCategoryRequest = (data: ICategoryItem): IActions => ({
+export const updateCategoryRequest = (data: IUpdateCategory): IActions => ({
   type: UPDATE_CATEGORY_REQUEST,
   data,
 });
 
-export const updateCategorySuccess = (category: ICategoryItemResponse): IActions => ({
+export const updateCategorySuccess = (category: ICategoryResponse): IActions => ({
   type: UPDATE_CATEGORY_SUCCESS,
   data: category,
 });

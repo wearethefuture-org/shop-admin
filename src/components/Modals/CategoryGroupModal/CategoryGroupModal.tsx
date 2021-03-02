@@ -6,13 +6,14 @@ import { Button, Dialog } from '@material-ui/core';
 
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import { updateCategoryRequest } from '../../../store/actions/categories.actions';
-import { ICategoryItemResponse } from '../../../interfaces/ICategory';
+import { ICategoryResponse, IGroupResponse } from '../../../interfaces/ICategory';
+import { AppDispatch } from '../../../store/store';
 import styles from './CategoryGroupModal.module.scss';
 
 interface IModalProps {
   openGroupModal: boolean;
   setOpenGroupModal: (b: boolean) => void;
-  category: ICategoryItemResponse;
+  category: ICategoryResponse;
   editGroupName: boolean;
   setEditGroupName: (b: boolean) => void;
   groupNameEditId: number;
@@ -30,12 +31,12 @@ const CategoryGroupModal: React.FC<IModalProps> = ({
   setEditGroupName,
   groupNameEditId,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
-  const group =
-    editGroupName &&
-    groupNameEditId &&
-    category.characteristicGroup.find((group) => group.id === groupNameEditId);
+  const group: IGroupResponse | undefined =
+    editGroupName && groupNameEditId
+      ? category.characteristicGroup.find((group) => group.id === groupNameEditId)
+      : undefined;
 
   const formik = useFormik({
     initialValues: {
