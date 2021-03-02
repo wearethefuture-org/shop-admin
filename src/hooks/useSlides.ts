@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchSlides } from '../store/actions';
+import { fetchSlides } from '../store/actions/slides.actions';
 import { RootState } from '../store/store';
 
 const useSlides = () => {

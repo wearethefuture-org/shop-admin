@@ -2,7 +2,7 @@ import { withFormik } from 'formik';
 import { Dispatch } from 'redux';
 import * as Yup from 'yup';
 
-import { fetchAddSlides, fetchUpdateSlides } from '../../../store/actions';
+import { fetchAddSlides, fetchUpdateSlides } from '../../../store/actions/slides.actions';
 import InnerForm from './Inner-form';
 import { ISlideFormValues } from "../../../interfaces/ISlides";
 

@@ -8,7 +8,7 @@ import { Switch } from "@material-ui/core";
 
 import { ISlideItem, SlideTableData } from '../../../../interfaces/ISlides';
 
-import { fetchDeleteSlides, fetchUpdateSlideVisibility } from "../../../../store/actions";
+import { fetchDeleteSlides, fetchUpdateSlideVisibility } from "../../../../store/actions/slides.actions";
 import FormDialog from "../../../Modals/Slide-modal-edit";
 import { Dispatch } from "redux";
 import { root } from "../../../../api/config";
@@ -59,7 +59,7 @@ const SlideTableBody: React.FC<TableBodyProps> = ({
     return {
       handleClickOpen,
       handleClose,
-      isOpened: selected == id,
+      isOpened: selected === id,
     };
   }
 

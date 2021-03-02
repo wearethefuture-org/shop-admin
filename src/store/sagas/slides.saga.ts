@@ -6,9 +6,10 @@ import {
     updateSlides,
     updateSlideVisibility
 } from './services/slides.service';
-import { loadSlides, addSlide, deleteSlide, updateSlide, failSnackBar, successSnackBar } from '../actions';
+import { loadSlides, addSlide, deleteSlide, updateSlide } from '../actions/slides.actions';
 import {SagaIterator} from 'redux-saga';
 import {IActions} from '../../interfaces/actions';
+import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 
 
 export function* fetchSlideWorker(): SagaIterator {
