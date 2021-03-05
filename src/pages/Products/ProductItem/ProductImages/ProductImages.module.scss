@@ -1,23 +1,23 @@
 .gallery {
   flex-shrink: 0;
   margin-right: 20px;
-  width: 500px;
+  width: 32rem;
 }
 
 .img-large-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 500px;
-  height: 500px;
+  width: 32rem;
+  height: 32rem;
   position: relative;
   background-color: #fff;
   border-radius: 6px;
 }
 
 .img-large {
-  max-width: 500px;
-  max-height: 500px;
+  max-width: 32rem;
+  max-height: 32rem;
   object-fit: contain;
 }
 
@@ -26,21 +26,21 @@
   background: linear-gradient(75deg, #9a4354, #636363, #27524c);
 
   img {
-    height: 200px;
-    width: 200px;
+    height: 15rem;
+    width: 15rem;
   }
 }
 
 .cropped-img {
   display: inline-flex;
   object-fit: contain;
-  width: 100px;
-  height: 100px;
-  margin: 10px;
-  padding: 4px;
+  width: 6.5rem;
+  height: 6.5rem;
+  margin: 0.5rem;
+  padding: 0.3rem;
 
   &:not(:last-child) {
-    margin-right: 10px;
+    margin-right: 0.6rem;
   }
 }
 

@@ -110,6 +110,15 @@ const CategoryInfo: React.FC = () => {
         };
       }
 
+      if (groupsToDelete.length) {
+        valuesToDispatch = {
+          ...basicObj,
+          removedCharacteristics: {
+            characteristicGroupIDs: groupsToDelete,
+          },
+        };
+      }
+
       dispatch(updateCategoryRequest(valuesToDispatch));
 
       setGroupsToDelete([]);
