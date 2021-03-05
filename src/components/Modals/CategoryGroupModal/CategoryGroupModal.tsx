@@ -1,22 +1,21 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { Field, Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Dialog } from '@material-ui/core';
 
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
-import { updateCategoryRequest } from '../../../store/actions/categories.actions';
-import { ICategoryResponse, IGroupResponse } from '../../../interfaces/ICategory';
-import { AppDispatch } from '../../../store/store';
+import { IGroup } from '../../../interfaces/ICategory';
 import styles from './CategoryGroupModal.module.scss';
 
 interface IModalProps {
   openGroupModal: boolean;
   setOpenGroupModal: (b: boolean) => void;
-  category: ICategoryResponse;
-  editGroupName: boolean;
-  setEditGroupName: (b: boolean) => void;
-  groupNameEditId: number;
+  editGroup: boolean;
+  setEditGroup: (b: boolean) => void;
+  groupToEdit: IGroup | null;
+  handleAddGroup: (g: string) => void;
+  handleEditGroup: (g: IGroup) => void;
+  charGroup: IGroup[];
 }
 
 interface IGroupValues {
@@ -26,21 +25,16 @@ interface IGroupValues {
 const CategoryGroupModal: React.FC<IModalProps> = ({
   openGroupModal,
   setOpenGroupModal,
-  category,
-  editGroupName,
-  setEditGroupName,
-  groupNameEditId,
+  editGroup,
+  setEditGroup,
+  groupToEdit,
+  handleAddGroup,
+  handleEditGroup,
+  charGroup,
 }) => {
-  const dispatch: AppDispatch = useDispatch();
-
-  const group: IGroupResponse | undefined =
-    editGroupName && groupNameEditId
-      ? category.characteristicGroup.find((group) => group.id === groupNameEditId)
-      : undefined;
-
   const formik = useFormik({
     initialValues: {
-      group: (group && group.name) || '',
+      group: (groupToEdit && groupToEdit.name) || '',
     },
 
     validationSchema: Yup.object().shape({
@@ -51,42 +45,25 @@ const CategoryGroupModal: React.FC<IModalProps> = ({
         .required('Обов`язкове поле'),
     }),
 
-    onSubmit: (values: IGroupValues): void => {
-      editGroupName
-        ? group &&
-          dispatch(
-            updateCategoryRequest({
-              id: category.id,
-              characteristicGroups: [
-                {
-                  id: group.id,
-                  name: values.group,
-                  characteristics: [],
-                },
-              ],
-            })
-          )
-        : dispatch(
-            updateCategoryRequest({
-              id: category.id,
-              characteristicGroups: [
-                {
-                  name: values.group,
-                  characteristics: [],
-                },
-              ],
-            })
-          );
+    onSubmit: ({ group }: IGroupValues): void => {
+      if (charGroup.find((g) => g.name === group)) {
+        formik.setFieldError('group', 'Група з такою назвою вже існує');
+        formik.setSubmitting(false);
+      } else {
+        !editGroup && !groupToEdit
+          ? handleAddGroup(group)
+          : handleEditGroup({ ...groupToEdit, name: group });
 
-      editGroupName && setEditGroupName(false);
-      setOpenGroupModal(false);
+        editGroup && setEditGroup(false);
+        setOpenGroupModal(false);
+      }
     },
   });
 
   return (
     <Dialog open={openGroupModal} onClose={() => setOpenGroupModal(false)}>
       <div className={styles['modal-container']}>
-        <h5>{editGroupName ? 'Редагувати ' : 'Додати '}групу</h5>
+        <h5>{editGroup ? 'Редагувати ' : 'Додати '}групу</h5>
         <FormikProvider value={formik}>
           <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
             <Field

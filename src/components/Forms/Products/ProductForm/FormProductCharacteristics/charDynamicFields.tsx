@@ -8,10 +8,13 @@ import styles from './FormProductCharacteristics.module.scss';
 
 export const charDynamicFields = (char, formik, product) => {
   if (!char) return;
-  const { name, type } = char;
+  const { name, type, defaultValues } = char;
 
   if (type === 'enum') {
     formik.initialValues.subForm[name] = [];
+  } else if (type === 'string' || type === 'number') {
+    formik.initialValues.subForm[name] =
+      defaultValues && defaultValues.values ? defaultValues?.values[0] : '';
   } else if (type === 'json') {
     formik.initialValues.subForm[name] = { 'value-1': '' };
   } else {
@@ -20,9 +23,20 @@ export const charDynamicFields = (char, formik, product) => {
 
   product &&
     product.characteristicValue.forEach(
-      ({ name, type, stringValue, numberValue, enumValue, booleanValue, dateValue, jsonValue }) => {
+      ({
+        name,
+        type,
+        stringValue,
+        numberValue,
+        enumValue,
+        booleanValue,
+        dateValue,
+        jsonValue,
+        defaultValues,
+      }) => {
         if (type === 'string') {
-          formik.initialValues.subForm[name] = stringValue || '';
+          formik.initialValues.subForm[name] =
+            stringValue || (defaultValues && defaultValues.values ? defaultValues?.values[0] : '');
         } else if (type === 'enum') {
           formik.initialValues.subForm[name] = enumValue || [];
         } else if (type === 'boolean') {
@@ -34,7 +48,9 @@ export const charDynamicFields = (char, formik, product) => {
             ? jsonValue
             : { 'value-1': '' };
         } else {
-          formik.initialValues.subForm[name] = numberValue || '';
+          formik.initialValues.subForm[name] =
+            numberValue ||
+            (defaultValues && defaultValues.values ? Number(defaultValues?.values[0]) : '');
         }
       }
     );
@@ -283,7 +299,7 @@ export const charDynamicFields = (char, formik, product) => {
                 <Field key={idx}>
                   {({ field, form, meta }) => (
                     <TextFieldWrapped
-                      label="Ключ"
+                      label="Значення"
                       fullWidth
                       field={{
                         ...field,

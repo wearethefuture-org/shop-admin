@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { IGetProductById } from '../../../../interfaces/IProducts';
 import { RootState } from '../../../../store/store';
+import { formatISODate } from '../../../../utils/formatISODate';
 import styles from './ProductDescription.module.scss';
 
 const ProductDescription: React.FC = () => {
@@ -38,11 +39,11 @@ const ProductDescription: React.FC = () => {
       </div>
       <div className={styles.field}>
         <p className={styles.title}>Створено:</p>
-        <p className={styles.value}>{product.createdAt}</p>
+        <p className={styles.value}>{formatISODate(product.createdAt)}</p>
       </div>
       <div className={styles.field}>
         <p className={styles.title}>Оновлено:</p>
-        <p className={styles.value}>{product.updatedAt}</p>
+        <p className={styles.value}>{formatISODate(product.updatedAt)}</p>
       </div>
     </div>
   );

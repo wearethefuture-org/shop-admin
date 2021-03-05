@@ -1,55 +1,49 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Field, Form, FormikProvider, useFormik } from 'formik';
 import { Button, Dialog, MenuItem } from '@material-ui/core';
 
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
-import { updateCategoryRequest } from '../../../store/actions/categories.actions';
-import { AppDispatch, RootState } from '../../../store/store';
-import { ICategoryResponse } from '../../../interfaces/ICategory';
+import { IChar, ICharToAdd, IGroup } from '../../../interfaces/ICategory';
 import { charTypes, charValidationSchema, getIcon } from './categoryCharModalHelpers';
 import styles from './CategoryCharModal.module.scss';
 
 interface IModalProps {
   openCharModal: boolean;
   setOpenCharModal: (b: boolean) => void;
-  editCharId: number | null;
-  setEditCharId: ((id: number) => void) | null;
-  charGroupId: number;
+  handleAddChar: (c: ICharToAdd, n: string) => void;
+  handleEditChar: (c: IChar, group: IGroup) => void;
+  charToEdit: IChar | null;
+  setCharToEdit: (char: IChar | null) => void;
+  group: IGroup;
 }
 
 const CategoryCharModal: React.FC<IModalProps> = ({
   openCharModal,
   setOpenCharModal,
-  editCharId,
-  setEditCharId,
-  charGroupId,
+  handleAddChar,
+  handleEditChar,
+  charToEdit: char,
+  setCharToEdit,
+  group,
 }) => {
-  const dispatch: AppDispatch = useDispatch();
-
-  const category: ICategoryResponse = useSelector(
-    (state: RootState) => state.categories.currentCategory
-  );
-
-  const group = category.characteristicGroup.find((group) => group.id === charGroupId);
-  const char = group && editCharId && group.characteristic.find((char) => char.id === editCharId);
-
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     value === 'true' ? (formik.values.required = true) : (formik.values.required = false);
   };
 
+  const initialValues: ICharToAdd = {
+    name: char && char.name ? char.name : '',
+    description: char && char.description ? char.description : '',
+    required: char && char.required ? char.required : false,
+    type: char && char.type ? char.type : '',
+    defaultVal: char && char?.defaultValues ? char?.defaultValues?.values.join(', ') : '',
+    defaultValues: { values: [''] },
+    minValue: (char && char.minValue) ?? '',
+    maxValue: (char && char.maxValue) ?? '',
+  };
+
   const formik = useFormik({
-    initialValues: {
-      name: char && char.name ? char.name : '',
-      description: char && char.description ? char.description : '',
-      required: char && char.required ? char.required : false,
-      type: char && char.type ? char.type : '',
-      defaultVal: char && char?.defaultValues ? char?.defaultValues?.values.join(', ') : '',
-      defaultValues: { values: [''] },
-      minValue: char && char.minValue ? char.minValue : 0,
-      maxValue: char && char.maxValue ? char.maxValue : 0,
-    },
+    initialValues,
 
     validationSchema: charValidationSchema,
 
@@ -57,60 +51,43 @@ const CategoryCharModal: React.FC<IModalProps> = ({
       if (values.defaultVal) {
         const res = values.defaultVal.split(',').map((value) => value.trim());
         values.defaultValues = { values: [...res] };
-      }
-
-      const { name, description, required, type, defaultValues, minValue, maxValue } = values;
-
-      const newChar = {
-        id: category.id,
-        characteristicGroups: [
-          {
-            id: charGroupId,
-            characteristics: [
-              {
-                name,
-                description,
-                required,
-                type,
-                defaultValues,
-                minValue,
-                maxValue,
-                categoryId: category.id,
-              },
-            ],
-          },
-        ],
-      };
-
-      const updatedChar = char && {
-        id: category.id,
-        characteristicGroups: [
-          {
-            id: charGroupId,
-            characteristics: [
-              {
-                id: char.id,
-                name,
-                description,
-                required,
-                type,
-                defaultValues,
-                minValue,
-                maxValue,
-                categoryId: category.id,
-              },
-            ],
-          },
-        ],
-      };
-
-      if (char) {
-        updatedChar && dispatch(updateCategoryRequest(updatedChar));
       } else {
-        dispatch(updateCategoryRequest(newChar));
+        values.defaultValues = null;
       }
 
-      editCharId && setEditCharId && setEditCharId(-1);
+      const { defaultVal, ...charValues } = values;
+
+      const nullableValues = Object.entries(charValues).map(([key, value]) => [
+        key,
+        value || key === 'required' ? value : null,
+      ]);
+
+      const finalValues: ICharToAdd = Object.fromEntries(nullableValues);
+
+      const existingName =
+        group &&
+        group.characteristics &&
+        group.characteristics.find(
+          (char) => char.name?.toLowerCase() === values.name?.toLowerCase()
+        );
+
+      if (group && group.name) {
+        if (existingName && !char) {
+          formik.setFieldError('name', 'Характеристика з такою назвою вже існує');
+          formik.setSubmitting(false);
+          return;
+        } else {
+          handleAddChar(finalValues, group.name);
+        }
+      }
+
+      if (group && char) {
+        char.id
+          ? handleEditChar({ id: char.id, ...finalValues }, group)
+          : handleEditChar({ tempId: char.tempId, ...finalValues }, group);
+      }
+
+      char && setCharToEdit(null);
       setOpenCharModal(false);
     },
   });
@@ -118,7 +95,7 @@ const CategoryCharModal: React.FC<IModalProps> = ({
   return (
     <Dialog open={openCharModal} onClose={() => setOpenCharModal(false)}>
       <div className={styles['modal-container']}>
-        <h5>{editCharId ? 'Редагувати ' : 'Додати '}характеристику</h5>
+        <h5>{char ? 'Редагувати ' : 'Додати '}характеристику</h5>
         <FormikProvider value={formik}>
           <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
             <Field
@@ -170,12 +147,18 @@ const CategoryCharModal: React.FC<IModalProps> = ({
               </Field>
             ) : null}
 
-            {formik.values.type === 'enum' && (
+            {(formik.values.type === 'enum' ||
+              formik.values.type === 'string' ||
+              formik.values.type === 'number') && (
               <Field
                 as="textarea"
                 fullWidth
                 component={TextFieldWrapped}
-                label="Значення (через кому) *"
+                label={
+                  formik.values.type === 'enum'
+                    ? 'Значення (через кому) *'
+                    : 'Значення за замовченням'
+                }
                 name="defaultVal"
                 makegreen="true"
               />

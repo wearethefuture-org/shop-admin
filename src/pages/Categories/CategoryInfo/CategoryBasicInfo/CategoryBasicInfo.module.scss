@@ -1,9 +1,4 @@
 .description {
-  padding: 2rem;
-  flex: 1;
-  background-color: #fff;
-  border-radius: 4px;
-
   .field {
     display: flex;
     align-items: baseline;
@@ -30,7 +25,6 @@
 
 .description-dark {
   @extend .description;
-  background-color: inherit;
 
   .field .title {
     color: #eee;

@@ -5,8 +5,8 @@ import {
   IAddCategory,
   IAddCategoryResponse,
   ICategoryResponse,
+  ICategoryToUpdate,
   IGetCategoriesResponse,
-  IUpdateCategory,
 } from '../interfaces/ICategory';
 import { IActions } from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';
@@ -28,7 +28,7 @@ type ApiFetchedDataType = {
     get: () => FetchedDataType<IGetCategoriesResponse>;
     add: (category: IAddCategory) => FetchedDataType<IAddCategoryResponse>;
     getById: (id: number) => FetchedDataType<ICategoryResponse>;
-    update: (data: IUpdateCategory) => FetchedDataType<ICategoryResponse>;
+    update: (data: ICategoryToUpdate) => FetchedDataType<ICategoryResponse>;
   };
 
   products: {

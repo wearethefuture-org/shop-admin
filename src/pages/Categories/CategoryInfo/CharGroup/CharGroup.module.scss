@@ -1,0 +1,77 @@
+.group-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  margin: 1rem 0;
+  background-color: #fff;
+  transition: all ease-in-out 0.3s;
+
+  .hide-btn {
+    margin-right: 1rem;
+
+    svg {
+      transform: rotate(270deg) translateX(7px);
+    }
+  }
+
+  .expand-btn {
+    @extend .hide-btn;
+
+    svg {
+      fill: darkorange;
+      transform: rotate(180deg) translate(6px, 2px);
+    }
+  }
+
+  .group-name {
+    font-size: 1.3rem;
+    font-weight: 500;
+  }
+
+  &:hover {
+    background-color: #efefef;
+
+    .hidden-btns {
+      opacity: 1;
+      pointer-events: initial;
+    }
+  }
+
+  .group-btn-wrapper {
+    display: flex;
+    align-items: center;
+
+    .add-char-btn {
+      background-color: darkgreen;
+      color: #fff;
+    }
+  }
+
+  .hidden-btns {
+    display: inline-flex;
+    opacity: 0;
+    pointer-events: none;
+    margin-right: 1rem;
+    transition: all ease-in-out 0.3s;
+  }
+}
+
+.group-wrapper-dark {
+  @extend .group-wrapper;
+  color: #333;
+  background-color: #bbb;
+
+  .hidden-btns {
+    button:first-of-type {
+      svg {
+        color: #333;
+      }
+    }
+  }
+
+  &:hover {
+    background-color: #ccc;
+  }
+}

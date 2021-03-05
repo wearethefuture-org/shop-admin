@@ -45,3 +45,22 @@ input[type='number'] {
   background: darkgreen;
   border-radius: 10px;
 }
+
+// espandable blocks
+.expanded {
+  transform: scaleY(1);
+  max-height: auto;
+  transform-origin: 0 0;
+  transition: all 0.3s ease;
+}
+
+.shrinked {
+  transform: scaleY(0);
+  max-height: 0;
+  transform-origin: 0 0;
+  transition: all 0.1s ease;
+}
+
+.react-confirm-alert-overlay {
+  background-color: transparent !important;
+}

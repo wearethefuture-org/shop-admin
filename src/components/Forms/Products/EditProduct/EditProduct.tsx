@@ -40,12 +40,12 @@ const EditProduct: React.FC = () => {
 
   // FORMIK
   const initialValues = {
-    name: product.name ?? '',
-    price: product.price ?? 0,
-    description: product.description ?? '',
-    categoryName: product.category?.name ?? '',
-    files: product.files ? product.files : {},
-    key: product.key ?? '',
+    name: product ? product.name : '',
+    price: product.price ? product.price : '',
+    description: product ? product.description : '',
+    categoryName: product ? product.category?.name : '',
+    files: product ? product.files : {},
+    key: product ? product.key : '',
     subForm: {},
   };
 

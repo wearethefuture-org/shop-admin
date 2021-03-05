@@ -11,6 +11,7 @@ import FormProductCharacteristics from './FormProductCharacteristics/FormProduct
 import { formatKey } from './productFormHelpers';
 import { IGetCategoriesResponse } from '../../../../interfaces/ICategory';
 import styles from './ProductForm.module.scss';
+import { ErrorFocus, ErrorSubFormFocus } from '../../../ErrorFocus';
 
 export interface IProductFormProps {
   editMode: boolean;
@@ -58,7 +59,8 @@ const ProductForm: React.FC<IProductFormProps> = ({
             />
             <h4>Основна інформація</h4>
           </div>
-          {expandedBlocks.includes('main') ? (
+
+          <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
             <Card>
               <div className={styles['block-wrapper-main']}>
                 <Field
@@ -116,7 +118,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                 </Field>
               </div>
             </Card>
-          ) : null}
+          </div>
 
           <div className={styles['expandable-field']}>
             <ExpandBtn
@@ -126,7 +128,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
             />
             <h4>Зображення</h4>
           </div>
-          {expandedBlocks.includes('images') ? (
+          <div className={expandedBlocks.includes('images') ? 'expanded' : 'shrinked'}>
             <Card>
               <div className={styles['block-wrapper']}>
                 <div>
@@ -157,7 +159,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                 </div>
               </div>
             </Card>
-          ) : null}
+          </div>
 
           <div className={styles['expandable-field']}>
             <ExpandBtn
@@ -168,13 +170,13 @@ const ProductForm: React.FC<IProductFormProps> = ({
             <h4>Додаткова інформація</h4>
           </div>
 
-          {expandedBlocks.includes('additional') ? (
+          <div className={expandedBlocks.includes('additional') ? 'expanded' : 'shrinked'}>
             <FormProductCharacteristics
               formik={formik}
               categoryName={formik.values.categoryName}
               setValidation={setValidation}
             />
-          ) : null}
+          </div>
 
           <DialogActions>
             <Button
@@ -191,11 +193,15 @@ const ProductForm: React.FC<IProductFormProps> = ({
               onClick={handleGoBack}
               color="secondary"
               variant="contained"
+              type="button"
               className={styles.customBtn}
             >
               Закрити
             </Button>
           </DialogActions>
+
+          <ErrorFocus />
+          <ErrorSubFormFocus />
         </Form>
       </FormikProvider>
     </div>

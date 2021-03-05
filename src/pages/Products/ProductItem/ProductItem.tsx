@@ -51,59 +51,60 @@ const ProductItem: React.FC = () => {
   const [expandBlock, setExpandBlock] = useState<boolean>(true);
 
   return (
-    <>
-      <div className={darkMode ? styles['itemCard-dark'] : styles.itemCard}>
-        <div className={styles['btn-container']}>
-          <GoBackBtn handleGoBack={() => goBack()} />
+    <div className={darkMode ? styles['itemCard-dark'] : styles.itemCard}>
+      <div className={styles['btn-container']}>
+        <GoBackBtn handleGoBack={() => goBack()} />
 
-          <div className={styles['right-btn-wrapper']}>
-            <Link
-              to={{
-                pathname: `${match.path}/edit`,
-                state: { from: `${location.pathname}` },
-              }}
-            >
-              <EditBtn handleClick={() => {}} />
-            </Link>
-            <DeleteBtn handleDelete={handleDeleteProduct} />
-          </div>
-        </div>
-
-        <p className={styles.breadcrumbs}>
-          <span>
-            <Link to={'/products'}>Продукти</Link>
-          </span>
-          <span>
-            <ArrowIcon />
-          </span>
-          <span>
-            <Link to={'/categories'}>{product.category?.name}</Link>
-          </span>
-          <span>
-            <ArrowIcon />
-          </span>
-          <span>{product.name}</span>
-        </p>
-        <h1>{product.name}</h1>
-
-        <div className={styles['item-main-info']}>
-          <ProductImages />
-          <ProductDescription />
-        </div>
-
-        <div className={styles['item-additional-info']}>
-          <div className={styles['expand-field']}>
-            <ExpandBtn
-              expandBlock={expandBlock}
-              handleExpand={() => setExpandBlock(!expandBlock)}
-              disabled={false}
-            />
-            <span>Характеристики</span>
-          </div>
-          {expandBlock ? <ProductCharacteristics categoryName={product.category?.name} /> : null}
+        <div className={styles['right-btn-wrapper']}>
+          <Link
+            to={{
+              pathname: `${match.path}/edit`,
+              state: { from: `${location.pathname}` },
+            }}
+          >
+            <EditBtn handleClick={() => {}} />
+          </Link>
+          <DeleteBtn handleDelete={handleDeleteProduct} />
         </div>
       </div>
-    </>
+
+      <p className={styles.breadcrumbs}>
+        <span>
+          <Link to={'/products'}>Продукти</Link>
+        </span>
+        <span>
+          <ArrowIcon />
+        </span>
+        <span>
+          <Link to={'/categories'}>{product.category?.name}</Link>
+        </span>
+        <span>
+          <ArrowIcon />
+        </span>
+        <span>{product.name}</span>
+      </p>
+      <h1>{product.name}</h1>
+
+      <div className={styles['item-main-info']}>
+        <ProductImages />
+        <ProductDescription />
+      </div>
+
+      <div className={styles['item-additional-info']}>
+        <div className={styles['expand-field']}>
+          <ExpandBtn
+            expandBlock={expandBlock}
+            handleExpand={() => setExpandBlock(!expandBlock)}
+            disabled={false}
+          />
+          <span>Характеристики</span>
+        </div>
+
+        <div className={expandBlock ? 'expanded' : 'shrinked'}>
+          <ProductCharacteristics categoryName={product.category?.name} />
+        </div>
+      </div>
+    </div>
   );
 };
 

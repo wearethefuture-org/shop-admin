@@ -16,17 +16,23 @@ export const getAddCharValuesObject = (subForm, chars: ICharResponse[]) => {
       };
 
       if (type === 'number' || type === 'range') {
-        value && charArr.push({ ...basicValues, numberValue: Number(value) });
+        value && charArr.push({ ...basicValues, numberValue: value ? Number(value) : null });
       } else if (type === 'enum') {
-        value.length && charArr.push({ ...basicValues, enumValue: value });
+        value.length && charArr.push({ ...basicValues, enumValue: value ? value : null });
       } else if (type === 'boolean') {
-        value && charArr.push({ ...basicValues, booleanValue: value === 'true' ? true : false });
+        value &&
+          charArr.push({
+            ...basicValues,
+            booleanValue: value ? (value === 'true' ? true : false) : null,
+          });
       } else if (type === 'json') {
-        Object.keys(value).length && charArr.push({ ...basicValues, jsonValue: value });
+        Object.keys(value).length &&
+          charArr.push({ ...basicValues, jsonValue: value ? value : null });
       } else if (type === 'date') {
-        value && charArr.push({ ...basicValues, dateValue: new Date(value).toISOString() });
+        value &&
+          charArr.push({ ...basicValues, dateValue: value ? new Date(value).toISOString() : null });
       } else if (type === 'string') {
-        value && charArr.push({ ...basicValues, stringValue: value });
+        value && charArr.push({ ...basicValues, stringValue: value ? value : null });
       }
       return charArr;
     },

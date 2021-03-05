@@ -2,6 +2,7 @@
   padding: 2rem;
   height: max-content;
   overflow-x: auto;
+  min-height: 100vh;
 
   h1 {
     margin-top: 20px;
@@ -35,6 +36,7 @@
   .item-main-info {
     display: flex;
     margin-top: 1rem;
+    flex: 1;
   }
 
   .item-additional-info {

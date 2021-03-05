@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Route, Switch, useLocation } from 'react-router-dom';
 
 import Sidebar from '../Sidebar/Sidebar';
 import SnackBar from '../Common/SnackBar';
@@ -14,7 +14,13 @@ import Content from '../Content/Content';
 import styles from './Router.module.scss';
 import ViewProduct from '../../pages/Products/ProductRouter';
 import AddProduct from '../Forms/Products/AddProduct/AddProduct';
-import CategoryInfo from '../../pages/Categories/CategoryInfo/CategoryInfo';
+import CategoryRouter from '../../pages/Categories/CategoryRouter';
+
+const ScrollToTop = ({ children }) => {
+  const location = useLocation();
+  useEffect(() => window.scrollTo(0, 0), [location.pathname]);
+  return children;
+};
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -26,29 +32,34 @@ const Router: React.FC = () => {
         <Sidebar isOpen={isOpenSidebar} onSidebarToggle={toggleSidebar} />
         <SnackBar />
 
-        <div className={styles.main}>
-          <HeaderBar onSidebarToggle={toggleSidebar} isShrink={isOpenSidebar} />
-          <Content>
-            <Switch>
-              <Route path="/dashboard" render={() => <Dashboard />} />
-              <Route path="/categories" render={() => <Categories />} />
-              <Route path="/category/:id" render={() => <CategoryInfo />} />
-              <Route path="/products/" exact={true} component={Products} />
-              <Route path="/statistic" render={() => <Statistic />} />
-              <Route path="/users" render={() => <Users />} />
-              <Route path="/settings" render={() => <Settings />} />
-              <Route
-                path="/product/add"
-                exact={true}
-                render={({ match }) => <AddProduct {...match.params} />}
-              />
-              <Route
-                path="/product/:id"
-                render={({ match }) => <ViewProduct {...match.params} />}
-              />
-            </Switch>
-          </Content>
-        </div>
+        <ScrollToTop>
+          <div className={styles.main}>
+            <HeaderBar onSidebarToggle={toggleSidebar} isShrink={isOpenSidebar} />
+            <Content>
+              <Switch>
+                <Route path="/dashboard" render={() => <Dashboard />} />
+                <Route path="/categories" render={() => <Categories />} />
+                <Route path="/products/" exact={true} component={Products} />
+                <Route path="/statistic" render={() => <Statistic />} />
+                <Route path="/users" render={() => <Users />} />
+                <Route path="/settings" render={() => <Settings />} />
+                <Route
+                  path="/product/add"
+                  exact={true}
+                  render={({ match }) => <AddProduct {...match.params} />}
+                />
+                <Route
+                  path="/product/:id"
+                  render={({ match }) => <ViewProduct {...match.params} />}
+                />
+                <Route
+                  path="/category/:id"
+                  render={({ match }) => <CategoryRouter {...match.params} />}
+                />
+              </Switch>
+            </Content>
+          </div>
+        </ScrollToTop>
       </div>
     </BrowserRouter>
   );

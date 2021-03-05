@@ -70,7 +70,7 @@ export interface IAddCharResponse {
 export interface IAddProduct {
   name: string;
   description: string;
-  price: number;
+  price: number | string;
   categoryName: string;
   key: string;
   files?: [] | FormData;
@@ -81,7 +81,7 @@ export interface IUpdateProduct {
   id?: number;
   name: string;
   description: string;
-  price: number;
+  price: number | string;
   categoryName: string;
   key: string;
   files: IImg[] | {};
@@ -111,13 +111,13 @@ export interface IProductsData {
 export interface ICharValue {
   id?: number;
   name: string;
-  stringValue?: string;
-  numberValue?: number;
-  enumValue?: string[];
-  rangeValue?: number[];
-  booleanValue?: boolean;
-  jsonValue?: object;
-  dateValue?: string;
+  stringValue?: string | null;
+  numberValue?: number | null;
+  enumValue?: string[] | null;
+  rangeValue?: number[] | null;
+  booleanValue?: boolean | null;
+  jsonValue?: object | null;
+  dateValue?: string | null;
   characteristicId: number;
 }
 

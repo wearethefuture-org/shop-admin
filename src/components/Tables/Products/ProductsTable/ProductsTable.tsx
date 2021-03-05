@@ -52,7 +52,7 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
       cell: (row) => (
         <Link
           to={{
-            pathname: `/product/${row.id}/details`,
+            pathname: `/product/${row.id}`,
             state: { from: '/product' },
           }}
         >

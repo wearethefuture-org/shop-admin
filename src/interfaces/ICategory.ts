@@ -25,32 +25,26 @@ export interface IAddCategoryResponse {
   description: string;
 }
 
-export interface IUpdateCategory {
+// CATEGORY RESPONSE
+export interface ICharResponse {
   id: number;
-  name?: string;
-  description?: string;
-  key?: string;
-  characteristicGroups?: {
-    name?: string;
-    id?: number;
-    characteristics: {
-      id?: number;
-      name?: string;
-      description?: string;
-      required?: boolean;
-      type?: string;
-      defaultValues?: {
-        values: string[];
-      };
-      minValue?: number;
-      maxValue?: number;
-      categoryId?: number;
-    }[];
-  }[];
-  removedCharacteristics?: {
-    characteristicGroupIDs?: number[];
-    characteristicIDs?: number[];
-  };
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  description: string;
+  required: boolean;
+  type: string;
+  minValue: number | null;
+  maxValue: number | null;
+  defaultValues: null | { values: string[] };
+}
+
+export interface IGroupResponse {
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  characteristic: ICharResponse[];
 }
 
 export interface ICategoryResponse {
@@ -63,36 +57,50 @@ export interface ICategoryResponse {
   characteristicGroup: IGroupResponse[];
 }
 
+// UPDATE
 export interface IChar {
   id?: number;
-  name: string;
-  description: string;
+  tempId?: number;
+  name?: string;
+  description?: string;
   required?: boolean;
-  type: string;
-  minValue?: number;
-  maxValue?: number;
-  defaultValues?: { values: string[] };
+  type?: string;
+  minValue?: number | string | null;
+  maxValue?: number | string | null;
+  defaultValues?: null | { values: string[] };
+  categoryId?: number;
 }
 
-export interface ICharResponse {
+export interface IGroup {
+  id?: number;
+  tempId?: number;
+  name?: string;
+  characteristics?: IChar[];
+}
+
+export interface ICategoryToUpdate {
   id: number;
-  createdAt: string;
-  updatedAt: string;
+  name?: string;
+  key?: string;
+  description?: string;
+  characteristicGroups: IGroup[];
+  removedCharacteristics?: {
+    characteristicGroupIDs?: number[];
+    characteristicIDs?: number[];
+  };
+}
+
+export interface ICharToAdd {
+  tempId?: number;
   name: string;
-  description: string;
-  required: boolean;
-  type: string;
-  minValue: number;
-  maxValue: number;
+  description?: string;
+  required?: boolean;
+  type?: string;
+  minValue?: number | string | null;
+  maxValue?: number | string | null;
+  defaultVal?: string;
   defaultValues: null | { values: string[] };
-}
-
-export interface IGroupResponse {
-  id: number;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  characteristic: ICharResponse[];
+  categoryId?: number;
 }
 
 export interface CategoryTableData {

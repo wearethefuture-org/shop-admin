@@ -29,8 +29,8 @@ export const getEditCharValuesObject = (
           const basicValues = { name, characteristicId };
 
           if (!productChar && value) {
-            if (type === 'enum' && value.length) {
-              acc.push({ ...basicValues, enumValue: value });
+            if (type === 'enum') {
+              acc.push({ ...basicValues, enumValue: value && value.length ? value : null });
             } else if (type === 'json') {
               const entries: [string, string][] = Object.entries(value);
 
@@ -39,18 +39,25 @@ export const getEditCharValuesObject = (
 
                 const resultObject: object = Object.fromEntries(filteredValue);
 
-                acc.push({ ...basicValues, jsonValue: resultObject });
+                acc.push({
+                  ...basicValues,
+                  jsonValue:
+                    resultObject && Object.values(resultObject).length ? resultObject : null,
+                });
               }
             } else if (type === 'string') {
-              acc.push({ ...basicValues, stringValue: value });
+              acc.push({ ...basicValues, stringValue: value ? value : null });
             } else if (type === 'number') {
-              acc.push({ ...basicValues, numberValue: value });
+              acc.push({ ...basicValues, numberValue: value ? value : null });
             } else if (type === 'range') {
-              acc.push({ ...basicValues, numberValue: value });
+              acc.push({ ...basicValues, numberValue: value ? value : null });
             } else if (type === 'date') {
-              acc.push({ ...basicValues, dateValue: value });
+              acc.push({ ...basicValues, dateValue: value ? value : null });
             } else if (type === 'boolean') {
-              acc.push({ ...basicValues, booleanValue: value === 'true' ? true : false });
+              acc.push({
+                ...basicValues,
+                booleanValue: value ? (value === 'true' ? true : false) : null,
+              });
             }
           }
 
@@ -83,7 +90,7 @@ export const getEditCharValuesObject = (
               const valuesEqual = arrayEquals(initialValue, value);
 
               if (!valuesEqual) {
-                acc.push({ ...basicValues, enumValue: value });
+                acc.push({ ...basicValues, enumValue: value && value.length ? value : null });
               }
             } else if (type === 'json') {
               const entries: [string, string][] = Object.entries(value);
@@ -97,27 +104,34 @@ export const getEditCharValuesObject = (
                 arrayEquals(Object.values(initialValue), Object.values(resultObject));
 
               if (!valuesEqual) {
-                acc.push({ ...basicValues, jsonValue: resultObject });
+                acc.push({
+                  ...basicValues,
+                  jsonValue:
+                    resultObject && Object.values(resultObject).length ? resultObject : null,
+                });
               }
             } else if (type === 'string') {
               if (initialValue !== value) {
-                acc.push({ ...basicValues, stringValue: value });
+                acc.push({ ...basicValues, stringValue: value ? value : null });
               }
             } else if (type === 'number') {
               if (Number(initialValue) !== Number(value)) {
-                acc.push({ ...basicValues, numberValue: value });
+                acc.push({ ...basicValues, numberValue: value ? value : null });
               }
             } else if (type === 'range') {
               if (Number(initialValue) !== Number(value)) {
-                acc.push({ ...basicValues, numberValue: value });
+                acc.push({ ...basicValues, numberValue: value ? value : null });
               }
             } else if (type === 'date') {
               if (initialValue !== value) {
-                acc.push({ ...basicValues, dateValue: value });
+                acc.push({ ...basicValues, dateValue: value ? value : null });
               }
             } else if (type === 'boolean') {
               if (initialValue !== value) {
-                acc.push({ ...basicValues, booleanValue: value === 'true' ? true : false });
+                acc.push({
+                  ...basicValues,
+                  booleanValue: value ? (value === 'true' ? true : false) : null,
+                });
               }
             }
           }

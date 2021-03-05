@@ -61,8 +61,8 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
           value,
           required: chars.find((char) => char.name === name)?.required || false,
           type: chars.find((char) => char.name === name)?.type || 'string',
-          minValue: chars.find((char) => char.name === name)?.minValue || 0,
-          maxValue: chars.find((char) => char.name === name)?.maxValue || 0,
+          minValue: chars.find((char) => char.name === name)?.minValue || '',
+          maxValue: chars.find((char) => char.name === name)?.maxValue || '',
         }))
       );
   }, [chars, formik.values.subForm]);
@@ -97,23 +97,34 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
   return (
     <>
       {category ? (
-        <div className={darkMode ? styles['additional-info-block-dark'] : ''}>
-          {category?.characteristicGroup.map((group) => (
-            <div key={group.id}>
-              <div className={darkMode ? styles['group-wrapper-dark'] : styles['group-wrapper']}>
-                <span
-                  className={
-                    expandedGroups.includes(group.id) ? styles['hide-btn'] : styles['expand-btn']
-                  }
-                  onClick={() => handleExpandedGroups(group.id)}
-                >
-                  <ArrowIcon />
-                </span>
-                <span className={styles['group-name']}>{group.name}</span>
-              </div>
+        <>
+          {category?.characteristicGroup.some(
+            (group) => group.characteristic && group.characteristic.length
+          ) ? (
+            <div className={styles['asterisk-indicator']}>
+              <span>
+                <AsteriskIcon />
+              </span>
+              <span>Є обов`язковою характеристикою</span>
+            </div>
+          ) : null}
 
-              {expandedGroups.includes(group.id) ? (
-                <div>
+          <div className={darkMode ? styles['additional-info-block-dark'] : ''}>
+            {category?.characteristicGroup.map((group) => (
+              <div key={group.id}>
+                <div className={darkMode ? styles['group-wrapper-dark'] : styles['group-wrapper']}>
+                  <span
+                    className={
+                      expandedGroups.includes(group.id) ? styles['hide-btn'] : styles['expand-btn']
+                    }
+                    onClick={() => handleExpandedGroups(group.id)}
+                  >
+                    <ArrowIcon />
+                  </span>
+                  <span className={styles['group-name']}>{group.name}</span>
+                </div>
+
+                <div className={expandedGroups.includes(group.id) ? 'expanded' : 'shrinked'}>
                   {group.characteristic
                     .sort((a, b) => a.id - b.id)
                     .map((char) => (
@@ -135,6 +146,7 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
                                   <AsteriskIcon />
                                 </div>
                               ) : null}
+
                               <span className={styles['list-icon']}>{getIcon(char.type)}</span>
                               <span key={char.id}>{char.name}</span>
                               {char.type === 'json' ? (
@@ -218,10 +230,10 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
                       </div>
                     ))}
                 </div>
-              ) : null}
-            </div>
-          ))}
-        </div>
+              </div>
+            ))}
+          </div>
+        </>
       ) : null}
     </>
   );

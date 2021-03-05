@@ -14,7 +14,7 @@ import { IAddProduct } from '../../../../interfaces/IProducts';
 
 const initialValues: IAddProduct = {
   name: '',
-  price: 0,
+  price: '',
   description: '',
   categoryName: '',
   files: [] || FormData,

@@ -20,7 +20,7 @@ const ProductImages: React.FC = () => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
   // GALLERY
-  const [imgUrls, setImgUrls] = useState<string[] | []>([]);
+  const [imgUrls, setImgUrls] = useState<string[]>([]);
 
   useEffect(() => {
     if (product.files && product.files.length) {
