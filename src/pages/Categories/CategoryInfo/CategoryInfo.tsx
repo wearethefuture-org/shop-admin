@@ -12,7 +12,6 @@ import {
   IAddCategory,
   ICategoryResponse,
   IChar,
-  IGetCategoriesResponse,
   IGroup,
   ICategoryToUpdate,
 } from '../../../interfaces/ICategory';
@@ -23,16 +22,14 @@ import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
 import GoBackBtn from '../../../components/GoBackBtn/GoBackBtn';
 import CharGroup from './CharGroup/CharGroup';
 import { categoryValidationShema, getEditedChar, getFilteredKeys } from './categoryInfoHelpers';
-import styles from './CategoryInfo.module.scss';
 import AsteriskIcon from '../../../assets/icons/AsteriskIcon';
+import styles from './CategoryInfo.module.scss';
 
 const CategoryInfo: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
 
-  const { loading, list }: { loading: boolean; list: IGetCategoriesResponse[] } = useSelector(
-    (state: RootState) => state.categories
-  );
+  const { loading } = useSelector((state: RootState) => state.categories);
 
   const baseCategory: ICategoryResponse = useSelector(
     (state: RootState) => state.categories.currentCategory

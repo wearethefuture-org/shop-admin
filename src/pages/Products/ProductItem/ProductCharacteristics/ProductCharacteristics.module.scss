@@ -2,9 +2,9 @@
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
   margin: 1rem 0;
-  background-color: #fff;
   transition: all ease-in-out 0.3s;
 
   .hide-btn {
@@ -14,57 +14,44 @@
       transform: rotate(270deg) translateX(5px) scale(0.8);
     }
   }
-
-  .expand-btn {
-    @extend .hide-btn;
-
-    svg {
-      fill: darkorange;
-      transform: rotate(180deg) translate(6px, 2px) scale(0.8);
-    }
-  }
-
-  .group-name {
-    font-size: 1.2rem;
-    font-weight: 500;
-  }
-
-  &:hover {
-    background-color: #efefef;
-  }
 }
 
 .char-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0;
   border-bottom: 1px solid #ddd;
   transition: all ease-in-out 0.2s;
 
   .char-block {
     display: flex;
     align-items: center;
+    flex: 1;
   }
 
   .char-name-wrapper {
     display: flex;
     align-items: baseline;
     justify-content: center;
-    margin-right: 3rem;
+    flex: 1;
+    padding: 0.3rem 1rem;
+    background-color: #fff;
 
     .char-name {
       font-size: 1rem;
       line-height: 2rem;
       text-transform: capitalize;
       margin: 0;
+      flex: 1;
     }
 
     .char-values {
       margin-left: 1rem;
-      background-color: #fff;
       padding: 0.5rem 1rem;
       font-style: italic;
+      font-size: 1rem;
+      flex: 2;
 
       .enum-values {
         margin: 0;

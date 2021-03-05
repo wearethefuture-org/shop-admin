@@ -4,10 +4,10 @@ import { IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
-import { RootState } from '../../../../../store/store';
-import AsteriskIcon from '../../../../../assets/icons/AsteriskIcon';
-import { IChar, IGroup } from '../../../../../interfaces/ICategory';
-import { getIcon } from '../../../../../components/Modals/CategoryCharModal/categoryCharModalHelpers';
+import { RootState } from '../../../store/store';
+import AsteriskIcon from '../../../assets/icons/AsteriskIcon';
+import { IChar, IGroup } from '../../../interfaces/ICategory';
+import { getIcon } from '../../../components/Modals/CategoryCharModal/categoryCharModalHelpers';
 import styles from './CharBlock.module.scss';
 
 interface ICharBlock {

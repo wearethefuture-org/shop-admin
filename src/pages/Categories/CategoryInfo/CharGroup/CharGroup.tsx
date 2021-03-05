@@ -6,7 +6,7 @@ import ArrowIcon from '@material-ui/icons/ArrowBackIos';
 import { Button, IconButton } from '@material-ui/core';
 
 import { RootState } from '../../../../store/store';
-import CharBlock from './CharBlock/CharBlock';
+import CharBlock from '../../CharBlock/CharBlock';
 import { IChar, ICharToAdd, IGroup } from '../../../../interfaces/ICategory';
 import CategoryCharModal from '../../../../components/Modals/CategoryCharModal/CategoryCharModal';
 import styles from './CharGroup.module.scss';

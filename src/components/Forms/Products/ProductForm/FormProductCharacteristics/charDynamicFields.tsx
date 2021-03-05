@@ -44,9 +44,7 @@ export const charDynamicFields = (char, formik, product) => {
         } else if (type === 'date') {
           formik.initialValues.subForm[name] = dateValue || '';
         } else if (type === 'json') {
-          formik.initialValues.subForm[name] = Object.keys(jsonValue).length
-            ? jsonValue
-            : { 'value-1': '' };
+          formik.initialValues.subForm[name] = jsonValue ? jsonValue : { 'value-1': '' };
         } else {
           formik.initialValues.subForm[name] =
             numberValue ||
