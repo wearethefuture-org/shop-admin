@@ -1,10 +1,11 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
 import DateMoment from '../../../Common/Date-moment';
-import { CategoryTableData } from '../../../../interfaces/categories-data';
+import { CategoryTableData } from '../../../../interfaces/ICategory';
 
 interface TableBodyProps {
   rows: CategoryTableData[];
@@ -14,13 +15,19 @@ interface TableBodyProps {
 }
 
 const CategoryTableBody: React.FC<TableBodyProps> = ({ rows, rowsPerPage, page, emptyRows }) => {
+  const history = useHistory();
+
   return (
     <TableBody>
       {(rowsPerPage > 0
         ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         : rows
       ).map((row) => (
-        <TableRow key={row.id}>
+        <TableRow
+          key={row.id}
+          onClick={() => history.push(`/category/${row.id}`)}
+          style={{ cursor: 'pointer' }}
+        >
           <TableCell component="th" scope="row">
             {row.id}
           </TableCell>

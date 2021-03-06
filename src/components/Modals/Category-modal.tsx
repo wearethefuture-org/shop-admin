@@ -11,16 +11,12 @@ import { ICategoriesModal } from '../../interfaces/modals';
 import CategoryForm from '../Forms/Category-form/Category-form';
 
 interface FormDialogProps {
-  dispatch: Dispatch,
-  categoriesLength: number,
-  modalData: ICategoriesModal
+  dispatch: Dispatch;
+  categoriesLength: number;
+  modalData: ICategoriesModal;
 }
 
-const FormDialog: React.FC<FormDialogProps> = ({
-  dispatch,
-  modalData
-}) => {
-
+const FormDialog: React.FC<FormDialogProps> = ({ dispatch, modalData }) => {
   const { handleClickOpen, handleClose, isOpened } = modalData;
 
   return (
@@ -38,10 +34,7 @@ const FormDialog: React.FC<FormDialogProps> = ({
         <DialogTitle id="form-dialog-title">Add new category</DialogTitle>
         <DialogContent dividers>
           <DialogContentText>Choose name of category.</DialogContentText>
-          <CategoryForm
-            dispatch={dispatch}
-            handleClose={handleClose}
-          />
+          <CategoryForm dispatch={dispatch} handleClose={handleClose} />
         </DialogContent>
       </Dialog>
     </div>

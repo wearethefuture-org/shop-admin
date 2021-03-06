@@ -14,7 +14,7 @@ const CategoriesContainer: React.FC = () => {
       <CategoriesTable data={data} />
       <FormDialog
         dispatch={dispatch}
-        categoriesLength={data.length}
+        categoriesLength={data?.length}
         modalData={categoriesCreateModalData}
       />
     </>

@@ -1,18 +1,18 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProductById } from '../store/actions';
+import { getProductByIdRequest } from '../store/actions/products.actions';
 import { RootState } from '../store/store';
 
-
 const useProductById = (id: number) => {
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(fetchProductById(id));
-    }, [dispatch, id]);
+  const dispatch = useDispatch();
 
-    const data = useSelector((state: RootState) => state.getProductById);
+  useEffect(() => {
+    dispatch(getProductByIdRequest(id));
+  }, [dispatch, id]);
 
-    return { data }
-}
+  const data = useSelector((state: RootState) => state.products.currentProduct);
+
+  return { data };
+};
 
 export default useProductById;

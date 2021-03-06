@@ -1,13 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import { ThemeProvider, createMuiTheme, ThemeOptions } from '@material-ui/core/styles';
+import {
+  ThemeProvider,
+  unstable_createMuiStrictModeTheme as createMuiTheme,
+  ThemeOptions,
+} from '@material-ui/core/styles';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
 import Router from './components/Router/Router';
 import { Paper } from '@material-ui/core';
 import { RootState } from './store/store';
 import { useSelector, useDispatch } from 'react-redux';
-import { switchDarkMode } from './store/actions';
+import { switchDarkMode } from './store/actions/theme.actions';
 
 export function App() {
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);

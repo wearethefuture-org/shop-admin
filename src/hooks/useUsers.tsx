@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsers } from '../store/actions';
+import { fetchUsers } from '../store/actions/users.actions';
 import { RootState } from '../store/store';
-
-
 
 const useUsers = () => {
   const dispatch = useDispatch();
@@ -12,8 +10,8 @@ const useUsers = () => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
-  const data =  useSelector((state: RootState) => state.users.list);
+  const data = useSelector((state: RootState) => state.users.list);
   return { data, dispatch };
-}
+};
 
 export default useUsers;

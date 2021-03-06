@@ -1,0 +1,109 @@
+.product-form-container {
+  margin: 2rem;
+
+  .go-back-btn {
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    margin-bottom: 2rem;
+  }
+
+  h4 {
+    margin: 0;
+    line-height: 30px;
+  }
+
+  .block-wrapper {
+    margin: 1rem;
+  }
+
+  .block-wrapper-main {
+    padding: 2rem;
+    padding-bottom: 3rem;
+  }
+
+  .expandable-field {
+    margin: 2rem 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .customBtn {
+    margin-top: 1rem;
+  }
+
+  .formControl {
+    margin-bottom: 2rem;
+  }
+
+  .addImgTitle {
+    margin-top: 1rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    color: #858585;
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  .labelHolder {
+    max-width: 100%;
+    min-height: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .label {
+    height: 100px;
+    width: 100px;
+    margin: 10px;
+    background-color: #eee;
+    border-radius: 4px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .img-wrapper {
+    position: relative;
+    padding: 0.5rem;
+
+    .delete-img {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      top: 0px;
+      right: 0px;
+      color: red;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      z-index: 10;
+      border: none;
+      outline: none;
+      visibility: hidden;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    &:hover .delete-img {
+      visibility: visible;
+    }
+
+    .image {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
+  }
+}

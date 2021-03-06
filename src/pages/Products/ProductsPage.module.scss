@@ -1,0 +1,13 @@
+.container {
+  margin: 1rem;
+
+  .header-btn-wrapper {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: flex-end;
+
+    & button:first-of-type {
+      margin-right: 1rem;
+    }
+  }
+}
