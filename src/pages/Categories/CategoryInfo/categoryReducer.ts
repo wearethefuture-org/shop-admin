@@ -71,7 +71,7 @@ interface EditCharAction {
   type: 'editChar';
   groupId?: number;
   groupName: string;
-  prevCharName: string;
+  prevChar: Char;
   editedChar: Char;
 }
 
@@ -218,7 +218,7 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
                 ? {
                     ...group,
                     characteristics: group.characteristics?.map((char) =>
-                      char.name === action.prevCharName
+                      char.name === action.prevChar.name
                         ? { ...action.editedChar, categoryId: state.id }
                         : char
                     ),
@@ -229,6 +229,7 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
               id: action.groupId && action.groupId,
               characteristics: [
                 {
+                  id: action.prevChar.id && action.prevChar.id,
                   ...action.editedChar,
                   categoryId: state.id,
                 },

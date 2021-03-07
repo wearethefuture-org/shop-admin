@@ -62,16 +62,6 @@ const CategoryCharModal: React.FC<IModalProps> = ({
 
       const { defaultVal, ...charValues } = values;
 
-      if (
-        group.characteristic.find(
-          (char) => char.name?.toLowerCase() === charValues.name?.toLowerCase()
-        )
-      ) {
-        formik.setFieldError('name', 'Характеристика з такою назвою вже існує');
-        formik.setSubmitting(false);
-        return;
-      }
-
       const finalValues: Char = Object.fromEntries(
         Object.entries(charValues).map(([key, value]) => [
           key,
@@ -85,7 +75,7 @@ const CategoryCharModal: React.FC<IModalProps> = ({
             type: 'editChar',
             groupId: group.id,
             groupName: group.name,
-            prevCharName: char.name,
+            prevChar: char,
             editedChar: finalValues,
           });
           categoryDisplayDispatch({
@@ -95,6 +85,16 @@ const CategoryCharModal: React.FC<IModalProps> = ({
             editedChar: finalValues,
           });
         } else {
+          if (
+            group.characteristic.find(
+              (char) => char.name?.toLowerCase() === charValues.name?.toLowerCase()
+            )
+          ) {
+            formik.setFieldError('name', 'Характеристика з такою назвою вже існує');
+            formik.setSubmitting(false);
+            return;
+          }
+
           categoryDispatch({
             type: 'addChar',
             groupId: group.id,
