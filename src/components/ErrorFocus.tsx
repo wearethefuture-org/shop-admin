@@ -5,7 +5,6 @@ export const ErrorFocus = () => {
   const { isSubmitting, isValidating, errors } = useFormikContext();
 
   useEffect(() => {
-    //@ts-ignore
     const keys = errors && Object.keys(errors);
 
     if (keys.length > 0 && isSubmitting && !isValidating) {

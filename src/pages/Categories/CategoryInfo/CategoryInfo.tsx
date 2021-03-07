@@ -91,8 +91,6 @@ const CategoryInfo: React.FC = () => {
 
       categoryDispatch({ type: 'editCategory', name, key, description });
 
-      console.log('categoryState :>> ', categoryState);
-
       dispatch(updateCategoryRequest(categoryState));
       setEditBasicInfo(false);
       formik.setSubmitting(false);
