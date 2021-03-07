@@ -1,76 +1,101 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Field, Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Dialog } from '@material-ui/core';
 
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
-import { IGroup } from '../../../interfaces/ICategory';
+import {
+  CategoryToDispalayAction,
+  GroupToDisplay,
+} from '../../../pages/Categories/CategoryInfo/categoryToDisplayReducer';
+import { CategoryAction } from '../../../pages/Categories/CategoryInfo/categoryReducer';
 import styles from './CategoryGroupModal.module.scss';
 
 interface IModalProps {
   openGroupModal: boolean;
   setOpenGroupModal: (b: boolean) => void;
-  editGroup: boolean;
-  setEditGroup: (b: boolean) => void;
-  groupToEdit: IGroup | null;
-  handleAddGroup: (g: string) => void;
-  handleEditGroup: (g: IGroup) => void;
-  charGroup: IGroup[];
+  categoryDispatch: Dispatch<CategoryAction>;
+  categoryDisplayDispatch: Dispatch<CategoryToDispalayAction>;
+  charGroup: GroupToDisplay[];
+  groupToEdit: GroupToDisplay | null;
+  setGroupToEdit: Dispatch<SetStateAction<GroupToDisplay | null>>;
 }
 
 interface IGroupValues {
-  group: string;
+  groupName: string;
 }
 
 const CategoryGroupModal: React.FC<IModalProps> = ({
   openGroupModal,
   setOpenGroupModal,
-  editGroup,
-  setEditGroup,
-  groupToEdit,
-  handleAddGroup,
-  handleEditGroup,
+  categoryDispatch,
+  categoryDisplayDispatch,
   charGroup,
+  groupToEdit,
+  setGroupToEdit,
 }) => {
   const formik = useFormik({
     initialValues: {
-      group: (groupToEdit && groupToEdit.name) || '',
+      groupName: (groupToEdit && groupToEdit.name) || '',
     },
 
     validationSchema: Yup.object().shape({
-      group: Yup.string()
+      groupName: Yup.string()
         .trim()
         .min(2, 'Мінімальна довжина 2 символа')
         .max(50, 'Максимальна довжина 50 символів')
         .required('Обов`язкове поле'),
     }),
 
-    onSubmit: ({ group }: IGroupValues): void => {
-      if (charGroup.find((g) => g.name === group)) {
-        formik.setFieldError('group', 'Група з такою назвою вже існує');
+    onSubmit: ({ groupName }: IGroupValues): void => {
+      if (charGroup.find((group) => group.name?.toLowerCase() === groupName?.toLowerCase())) {
+        formik.setFieldError('groupName', 'Група з такою назвою вже існує');
         formik.setSubmitting(false);
-      } else {
-        !editGroup && !groupToEdit
-          ? handleAddGroup(group)
-          : handleEditGroup({ ...groupToEdit, name: group });
-
-        editGroup && setEditGroup(false);
-        setOpenGroupModal(false);
+        return;
       }
+
+      if (groupToEdit && groupToEdit.name) {
+        categoryDispatch({
+          type: 'editGroup',
+          prevGroupName: groupToEdit.name,
+          editedGroup: {
+            id: groupToEdit.id && groupToEdit.id,
+            name: groupName,
+            characteristics: groupToEdit.characteristic && groupToEdit.characteristic,
+          },
+        });
+        categoryDisplayDispatch({
+          type: 'editDisplayGroup',
+          prevGroupName: groupToEdit.name,
+          editedGroup: { ...groupToEdit, name: groupName },
+        });
+      } else {
+        categoryDispatch({
+          type: 'addGroup',
+          groupName,
+        });
+        categoryDisplayDispatch({
+          type: 'addDisplayGroup',
+          groupName,
+        });
+      }
+
+      groupToEdit && setGroupToEdit(null);
+      setOpenGroupModal(false);
     },
   });
 
   return (
     <Dialog open={openGroupModal} onClose={() => setOpenGroupModal(false)}>
       <div className={styles['modal-container']}>
-        <h5>{editGroup ? 'Редагувати ' : 'Додати '}групу</h5>
+        <h5>{groupToEdit ? 'Редагувати ' : 'Додати '}групу</h5>
         <FormikProvider value={formik}>
           <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
             <Field
               fullWidth
               component={TextFieldWrapped}
               label="Група *"
-              name="group"
+              name="groupName"
               makegreen="true"
             />
 

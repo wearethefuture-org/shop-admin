@@ -25,7 +25,6 @@ export interface IAddCategoryResponse {
   description: string;
 }
 
-// CATEGORY RESPONSE
 export interface ICharResponse {
   id: number;
   createdAt: string;
@@ -39,14 +38,6 @@ export interface ICharResponse {
   defaultValues: null | { values: string[] };
 }
 
-export interface IGroupResponse {
-  id: number;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  characteristic: ICharResponse[];
-}
-
 export interface ICategoryResponse {
   id: number;
   createdAt: string;
@@ -54,44 +45,16 @@ export interface ICategoryResponse {
   name: string;
   key: string;
   description: string;
-  characteristicGroup: IGroupResponse[];
-}
-
-// UPDATE
-export interface IChar {
-  id?: number;
-  tempId?: number;
-  name?: string;
-  description?: string;
-  required?: boolean;
-  type?: string;
-  minValue?: number | string | null;
-  maxValue?: number | string | null;
-  defaultValues?: null | { values: string[] };
-  categoryId?: number;
-}
-
-export interface IGroup {
-  id?: number;
-  tempId?: number;
-  name?: string;
-  characteristics?: IChar[];
-}
-
-export interface ICategoryToUpdate {
-  id: number;
-  name?: string;
-  key?: string;
-  description?: string;
-  characteristicGroups: IGroup[];
-  removedCharacteristics?: {
-    characteristicGroupIDs?: number[];
-    characteristicIDs?: number[];
-  };
+  characteristicGroup: {
+    id: number;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+    characteristic: ICharResponse[];
+  }[];
 }
 
 export interface ICharToAdd {
-  tempId?: number;
   name: string;
   description?: string;
   required?: boolean;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useSelector } from 'react-redux';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -6,43 +6,58 @@ import ArrowIcon from '@material-ui/icons/ArrowBackIos';
 import { Button, IconButton } from '@material-ui/core';
 
 import { RootState } from '../../../../store/store';
-import CharBlock from '../../CharBlock/CharBlock';
-import { IChar, ICharToAdd, IGroup } from '../../../../interfaces/ICategory';
+import CharBlock from './CharBlock/CharBlock';
 import CategoryCharModal from '../../../../components/Modals/CategoryCharModal/CategoryCharModal';
+import { CategoryToDispalayAction, GroupToDisplay } from '../categoryToDisplayReducer';
+import { CategoryAction, Char } from '../categoryReducer';
+import { confirmDelete } from '../../../../components/confirmAlert/confirmAlert';
 import styles from './CharGroup.module.scss';
 
 interface IGroupProps {
-  group: IGroup;
+  group: GroupToDisplay;
   expandedGroups: string[];
-  setExpandedGroups: (g: string[]) => void;
-  setGroupToEdit: (g: IGroup) => void;
-  setOpenGroupModal: (b: boolean) => void;
-  setEditGroup: (b: boolean) => void;
-  handleDeleteGroup: (char: IGroup) => void;
-  handleAddChar: (char: ICharToAdd, n: string) => void;
-  handleEditChar: (char: IChar, group: IGroup) => void;
-  handleDeleteChar: (char: IChar) => void;
+  setExpandedGroups: Dispatch<SetStateAction<string[]>>;
+  setOpenGroupModal: Dispatch<SetStateAction<boolean>>;
+  setGroupToEdit: Dispatch<SetStateAction<GroupToDisplay | null>>;
+  categoryDispatch: Dispatch<CategoryAction>;
+  categoryDisplayDispatch: Dispatch<CategoryToDispalayAction>;
 }
 
 const CharGroup: React.FC<IGroupProps> = ({
   group,
   expandedGroups,
   setExpandedGroups,
-  setGroupToEdit,
   setOpenGroupModal,
-  setEditGroup,
-  handleDeleteGroup,
-  handleAddChar,
-  handleEditChar,
-  handleDeleteChar,
+  setGroupToEdit,
+  categoryDispatch,
+  categoryDisplayDispatch,
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
   // EDIT GROUP
-  const handleEdit = (group) => {
-    setEditGroup(true);
+  const handleEditGroup = (group) => {
     setOpenGroupModal(true);
     group && setGroupToEdit(group);
+  };
+
+  // DELETE GROUP
+  const handleDeleteGroup = (group) => {
+    const handleDelete = () => {
+      categoryDispatch({
+        type: 'deleteGroup',
+        prevGroup: group,
+      });
+      categoryDisplayDispatch({
+        type: 'deleteDisplayGroup',
+        groupName: group.name,
+      });
+    };
+
+    confirmDelete(
+      group.name,
+      handleDelete,
+      'Група буде повністю видалена, включаючи пов`язані з нею характеристики та їх значення'
+    );
   };
 
   // EXPANDED GROUPS
@@ -53,10 +68,37 @@ const CharGroup: React.FC<IGroupProps> = ({
         )
       : expandedGroups && name && setExpandedGroups([...expandedGroups, name]);
 
+  // OPEN MODAL
   const [openCharModal, setOpenCharModal] = useState<boolean>(false);
 
   // EDIT CHAR
-  const [charToEdit, setCharToEdit] = useState<IChar | null>(null);
+  const [charToEdit, setCharToEdit] = useState<Char | null>(null);
+
+  // DELETE CHAR
+  const handleDeleteChar = (char) => {
+    const handleDelete = () => {
+      if (group.name) {
+        categoryDispatch({
+          type: 'deleteChar',
+          groupName: group.name,
+          charName: char.name,
+          charId: char.id,
+        });
+        categoryDisplayDispatch({
+          type: 'deleteDisplayChar',
+          groupName: group.name,
+          charName: char.name,
+        });
+      }
+    };
+
+    group.name &&
+      confirmDelete(
+        group.name,
+        handleDelete,
+        'Характеристика та її значення будуть повністю видалені з усіх пов`язаних з нею продуктів'
+      );
+  };
 
   return (
     <>
@@ -66,11 +108,11 @@ const CharGroup: React.FC<IGroupProps> = ({
             <CategoryCharModal
               openCharModal={openCharModal}
               setOpenCharModal={setOpenCharModal}
-              handleAddChar={handleAddChar}
-              handleEditChar={handleEditChar}
               charToEdit={charToEdit}
               setCharToEdit={setCharToEdit}
               group={group}
+              categoryDispatch={categoryDispatch}
+              categoryDisplayDispatch={categoryDisplayDispatch}
             />
           )}
 
@@ -94,7 +136,7 @@ const CharGroup: React.FC<IGroupProps> = ({
                   aria-label="edit"
                   color="default"
                   type="button"
-                  onClick={() => handleEdit(group)}
+                  onClick={() => handleEditGroup(group)}
                 >
                   <EditIcon />
                 </IconButton>
@@ -123,8 +165,8 @@ const CharGroup: React.FC<IGroupProps> = ({
           >
             <CharBlock
               group={group}
-              setCharToEdit={setCharToEdit}
               setOpenCharModal={setOpenCharModal}
+              setCharToEdit={setCharToEdit}
               handleDeleteChar={handleDeleteChar}
             />
           </div>

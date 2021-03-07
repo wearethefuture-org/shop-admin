@@ -1,30 +1,35 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Field, Form, FormikProvider, useFormik } from 'formik';
 import { Button, Dialog, MenuItem } from '@material-ui/core';
 
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
-import { IChar, ICharToAdd, IGroup } from '../../../interfaces/ICategory';
+import { ICharToAdd } from '../../../interfaces/ICategory';
 import { charTypes, charValidationSchema, getIcon } from './categoryCharModalHelpers';
+import { CategoryAction, Char } from '../../../pages/Categories/CategoryInfo/categoryReducer';
+import {
+  CategoryToDispalayAction,
+  GroupToDisplay,
+} from '../../../pages/Categories/CategoryInfo/categoryToDisplayReducer';
 import styles from './CategoryCharModal.module.scss';
 
 interface IModalProps {
   openCharModal: boolean;
-  setOpenCharModal: (b: boolean) => void;
-  handleAddChar: (c: ICharToAdd, n: string) => void;
-  handleEditChar: (c: IChar, group: IGroup) => void;
-  charToEdit: IChar | null;
-  setCharToEdit: (char: IChar | null) => void;
-  group: IGroup;
+  setOpenCharModal: Dispatch<SetStateAction<boolean>>;
+  charToEdit: Char | null;
+  setCharToEdit: Dispatch<SetStateAction<Char | null>>;
+  group: GroupToDisplay;
+  categoryDispatch: Dispatch<CategoryAction>;
+  categoryDisplayDispatch: Dispatch<CategoryToDispalayAction>;
 }
 
 const CategoryCharModal: React.FC<IModalProps> = ({
   openCharModal,
   setOpenCharModal,
-  handleAddChar,
-  handleEditChar,
   charToEdit: char,
   setCharToEdit,
   group,
+  categoryDispatch,
+  categoryDisplayDispatch,
 }) => {
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -38,8 +43,8 @@ const CategoryCharModal: React.FC<IModalProps> = ({
     type: char && char.type ? char.type : '',
     defaultVal: char && char?.defaultValues ? char?.defaultValues?.values.join(', ') : '',
     defaultValues: { values: [''] },
-    minValue: (char && char.minValue) ?? '',
-    maxValue: (char && char.maxValue) ?? '',
+    minValue: char && char.minValue ? char.minValue : '',
+    maxValue: char && char.maxValue ? char.maxValue : '',
   };
 
   const formik = useFormik({
@@ -57,34 +62,51 @@ const CategoryCharModal: React.FC<IModalProps> = ({
 
       const { defaultVal, ...charValues } = values;
 
-      const nullableValues = Object.entries(charValues).map(([key, value]) => [
-        key,
-        value || key === 'required' ? value : null,
-      ]);
-
-      const finalValues: ICharToAdd = Object.fromEntries(nullableValues);
-
-      const existingName =
-        group &&
-        group.characteristics &&
-        group.characteristics.find(
-          (char) => char.name?.toLowerCase() === values.name?.toLowerCase()
-        );
-
-      if (group && group.name) {
-        if (existingName && !char) {
-          formik.setFieldError('name', 'Характеристика з такою назвою вже існує');
-          formik.setSubmitting(false);
-          return;
-        } else {
-          handleAddChar(finalValues, group.name);
-        }
+      if (
+        group.characteristic.find(
+          (char) => char.name?.toLowerCase() === charValues.name?.toLowerCase()
+        )
+      ) {
+        formik.setFieldError('name', 'Характеристика з такою назвою вже існує');
+        formik.setSubmitting(false);
+        return;
       }
 
-      if (group && char) {
-        char.id
-          ? handleEditChar({ id: char.id, ...finalValues }, group)
-          : handleEditChar({ tempId: char.tempId, ...finalValues }, group);
+      const finalValues: Char = Object.fromEntries(
+        Object.entries(charValues).map(([key, value]) => [
+          key,
+          value || key === 'required' ? value : null,
+        ])
+      );
+
+      if (group.name) {
+        if (char && char.name) {
+          categoryDispatch({
+            type: 'editChar',
+            groupId: group.id,
+            groupName: group.name,
+            prevCharName: char.name,
+            editedChar: finalValues,
+          });
+          categoryDisplayDispatch({
+            type: 'editDisplayChar',
+            groupName: group.name,
+            prevCharName: char.name,
+            editedChar: finalValues,
+          });
+        } else {
+          categoryDispatch({
+            type: 'addChar',
+            groupId: group.id,
+            groupName: group.name,
+            newChar: finalValues,
+          });
+          categoryDisplayDispatch({
+            type: 'addDisplayChar',
+            groupName: group.name,
+            newChar: finalValues,
+          });
+        }
       }
 
       char && setCharToEdit(null);

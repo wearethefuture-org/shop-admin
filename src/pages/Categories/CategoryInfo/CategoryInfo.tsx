@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, IconButton, LinearProgress } from '@material-ui/core';
@@ -8,220 +8,99 @@ import { updateCategoryRequest } from '../../../store/actions/categories.actions
 import { AppDispatch, RootState } from '../../../store/store';
 import AddBtn from '../../../components/AddBtn/AddBtn';
 import CategoryGroupModal from '../../../components/Modals/CategoryGroupModal/CategoryGroupModal';
-import {
-  IAddCategory,
-  ICategoryResponse,
-  IChar,
-  IGroup,
-  ICategoryToUpdate,
-} from '../../../interfaces/ICategory';
+import { IAddCategory, ICategoryResponse } from '../../../interfaces/ICategory';
 import CategoryEditForm from '../../../components/Forms/Category-form/CategoryEditForm/CategoryEditForm';
 import CategoryBasicInfo from './CategoryBasicInfo/CategoryBasicInfo';
 import { Form, FormikProvider, useFormik } from 'formik';
 import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
 import GoBackBtn from '../../../components/GoBackBtn/GoBackBtn';
 import CharGroup from './CharGroup/CharGroup';
-import { categoryValidationShema, getEditedChar, getFilteredKeys } from './categoryInfoHelpers';
+import { categoryValidationShema } from './categoryValidationShema';
 import AsteriskIcon from '../../../assets/icons/AsteriskIcon';
+import { Category, categoryReducer } from './categoryReducer';
+import {
+  categoryDisplayReducer,
+  CategoryToDisplay,
+  GroupToDisplay,
+} from './categoryToDisplayReducer';
 import styles from './CategoryInfo.module.scss';
 
 const CategoryInfo: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
 
+  // SELECTORS
   const { loading } = useSelector((state: RootState) => state.categories);
-
-  const baseCategory: ICategoryResponse = useSelector(
+  const categoryList: ICategoryResponse[] = useSelector(
+    (state: RootState) => state.categories.list
+  );
+  const category: ICategoryResponse = useSelector(
     (state: RootState) => state.categories.currentCategory
   );
 
-  const [category, setCategory] = useState<ICategoryResponse>(baseCategory);
+  const [categoryState, categoryDispatch] = useReducer(categoryReducer, {} as Category);
+
+  const [categoryDisplayState, categoryDisplayDispatch] = useReducer(
+    categoryDisplayReducer,
+    category as CategoryToDisplay
+  );
 
   useEffect(() => {
-    baseCategory && setCategory(JSON.parse(JSON.stringify(baseCategory)));
-  }, [baseCategory]);
-
-  // CHARACTERISTIC GROUPS
-  const [charGroup, setCharGroup] = useState<IGroup[]>([]);
-
-  useEffect(() => {
-    const modifiedCharGroup =
-      category &&
-      category.characteristicGroup.map(({ id, name, characteristic }) => ({
-        id,
-        name,
-        characteristics: characteristic.map((char) => char),
-      }));
-
-    category && setCharGroup(modifiedCharGroup);
+    categoryDispatch({ type: 'setCategoryId', id: category.id });
+    categoryDisplayDispatch({ type: 'setDisplayCategoryId', id: category.id });
   }, [category]);
 
-  const initialValues: IAddCategory = {
-    name: category ? category.name : '',
-    description: category ? category.description : '',
-    key: category ? category.key : '',
-  };
+  const charGroup = categoryDisplayState.characteristicGroup;
 
   // FORMIK;
+  const initialValues: IAddCategory = {
+    name: categoryState.name ? categoryState.name : category ? category.name : '',
+    description: categoryState.description
+      ? categoryState.description
+      : category
+      ? category.description
+      : '',
+    key: categoryState.key ? categoryState.key : category ? category.key : '',
+  };
+
   const formik = useFormik({
     initialValues,
     validationSchema: categoryValidationShema,
     onSubmit: (values): void => {
-      const filteredGroupKeysObj: IGroup[] = getFilteredKeys(charGroup);
+      const { name, key, description } = values;
 
-      //@ts-ignore
-      const characteristicGroups: IGroup[] = filteredGroupKeysObj
-        ? filteredGroupKeysObj.map((group) => ({
-            ...group,
-            characteristics: group.characteristics?.map((char) => ({
-              ...char,
-              categoryId: category.id,
-            })),
-          }))
-        : [];
+      const existingName =
+        categoryList.length &&
+        categoryList.filter((cat) => cat.id !== category.id).find((cat) => cat.name === name);
 
-      const basicObj: ICategoryToUpdate = category && {
-        id: category.id,
-        ...values,
-        characteristicGroups,
-      };
+      const existingKey =
+        categoryList.length &&
+        categoryList.filter((cat) => cat.id !== category.id).find((cat) => cat.key === key);
 
-      if (!basicObj) return;
-
-      let valuesToDispatch: ICategoryToUpdate = basicObj;
-
-      if (charsToDelete.length) {
-        valuesToDispatch = {
-          ...basicObj,
-          removedCharacteristics: {
-            characteristicIDs: charsToDelete,
-          },
-        };
+      if (existingName) {
+        formik.setFieldError('name', 'Така категорія вже існує');
+        formik.setSubmitting(false);
+        return;
       }
 
-      if (charsToDelete.length && groupsToDelete.length) {
-        valuesToDispatch = {
-          ...basicObj,
-          removedCharacteristics: {
-            ...basicObj.removedCharacteristics,
-            characteristicGroupIDs: groupsToDelete,
-            characteristicIDs: charsToDelete,
-          },
-        };
+      if (existingKey) {
+        formik.setFieldError('key', 'Такий URL-ключ вже існує');
+        formik.setSubmitting(false);
+        return;
       }
 
-      if (groupsToDelete.length) {
-        valuesToDispatch = {
-          ...basicObj,
-          removedCharacteristics: {
-            characteristicGroupIDs: groupsToDelete,
-          },
-        };
-      }
+      categoryDispatch({ type: 'editCategory', name, key, description });
 
-      dispatch(updateCategoryRequest(valuesToDispatch));
+      console.log('categoryState :>> ', categoryState);
 
-      setGroupsToDelete([]);
-      setCharsToDelete([]);
+      dispatch(updateCategoryRequest(categoryState));
       setEditBasicInfo(false);
-
       formik.setSubmitting(false);
     },
   });
 
   // EDIT BASIC INFO
   const [editBasicInfo, setEditBasicInfo] = useState<boolean>(false);
-
-  // ADD GROUP
-  const [openGroupModal, setOpenGroupModal] = useState<boolean>(false);
-
-  const handleAddGroup = (name: string) => {
-    setCharGroup([...charGroup, { tempId: Date.now(), name, characteristics: [] }]);
-  };
-
-  // EDIT GROUP
-  const [editGroup, setEditGroup] = useState<boolean>(false);
-  const [groupToEdit, setGroupToEdit] = useState<IGroup | null>(null);
-
-  const handleEditGroup = (group: IGroup) => {
-    if (group.id) {
-      setCharGroup(charGroup.map((g) => (g.id === group.id ? group : g)));
-    } else if (group.tempId) {
-      setCharGroup(charGroup.map((g) => (g.tempId === group.tempId ? group : g)));
-    }
-
-    setGroupToEdit(null);
-  };
-
-  // DELETE GROUP
-  const [groupsToDelete, setGroupsToDelete] = useState<number[]>([]);
-
-  const handleDeleteGroup = (group: IGroup) => {
-    if (group.id) {
-      setGroupsToDelete([...groupsToDelete, group.id]);
-
-      //@ts-ignore
-      const charIds: number[] =
-        group.characteristics && group.characteristics.length
-          ? group.characteristics.filter((char) => char.id).map((char) => char && char.id)
-          : [];
-
-      charIds && charsToDelete
-        ? setCharsToDelete(Array.from(new Set(charsToDelete.concat(charIds))))
-        : setCharsToDelete([...charsToDelete]);
-
-      setCharGroup(charGroup.filter((g) => g && g.id !== group.id));
-    } else if (group.tempId) {
-      setCharGroup(charGroup.filter((g) => g.tempId !== group.tempId));
-    }
-  };
-
-  // ADD CHAR
-  const handleAddChar = (char: IChar, groupName: string) => {
-    setCharGroup(
-      charGroup.map((group) =>
-        group.name === groupName
-          ? {
-              ...group,
-              characteristics: group.characteristics && [
-                ...group.characteristics,
-                { tempId: Date.now(), ...char },
-              ],
-            }
-          : group
-      )
-    );
-  };
-
-  // EDIT CHAR
-  const handleEditChar = (char: IChar, group: IGroup) => {
-    category && setCharGroup(getEditedChar(charGroup, group, char));
-  };
-
-  // DELETE CHAR
-  const [charsToDelete, setCharsToDelete] = useState<number[]>([]);
-
-  const handleDeleteChar = (char: IChar) => {
-    if (char.id) {
-      char.id ? setCharsToDelete([...charsToDelete, char.id]) : setCharsToDelete(charsToDelete);
-
-      setCharGroup(
-        charGroup.map((group) => ({
-          ...group,
-          characteristics:
-            group.characteristics && group.characteristics.filter((c) => c.id !== char.id),
-        }))
-      );
-    } else if (char.tempId) {
-      setCharGroup(
-        charGroup.map((group) => ({
-          ...group,
-          characteristics:
-            group.characteristics && group.characteristics.filter((c) => c.tempId !== char.tempId),
-        }))
-      );
-    }
-  };
 
   // EXPANDED BLOCKS
   const [expandedBlocks, setExpandedBlocks] = useState<string[]>(['main', 'characteristics']);
@@ -243,20 +122,25 @@ const CategoryInfo: React.FC = () => {
     groupNames ? setExpandedGroups(groupNames) : setExpandedGroups([]);
   }, [charGroup]);
 
+  // OPEN GROUP MODAL
+  const [openGroupModal, setOpenGroupModal] = useState<boolean>(false);
+
+  // EDIT GROUP
+  const [groupToEdit, setGroupToEdit] = useState<GroupToDisplay | null>(null);
+
   return (
     <>
       {loading && <LinearProgress />}
 
-      {openGroupModal && (
+      {openGroupModal && charGroup && (
         <CategoryGroupModal
           openGroupModal={openGroupModal}
           setOpenGroupModal={setOpenGroupModal}
-          editGroup={editGroup}
-          setEditGroup={setEditGroup}
-          groupToEdit={groupToEdit}
-          handleAddGroup={handleAddGroup}
-          handleEditGroup={handleEditGroup}
+          categoryDispatch={categoryDispatch}
+          categoryDisplayDispatch={categoryDisplayDispatch}
           charGroup={charGroup}
+          groupToEdit={groupToEdit}
+          setGroupToEdit={setGroupToEdit}
         />
       )}
 
@@ -288,9 +172,9 @@ const CategoryInfo: React.FC = () => {
               </div>
               <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
                 {editBasicInfo ? (
-                  <CategoryEditForm setFieldValue={formik.setFieldValue} />
+                  <CategoryEditForm />
                 ) : (
-                  <CategoryBasicInfo />
+                  <CategoryBasicInfo categoryDisplayState={categoryDisplayState} />
                 )}
               </div>
 
@@ -314,9 +198,8 @@ const CategoryInfo: React.FC = () => {
                     }}
                   />
                 </div>
-                {charGroup.some(
-                  (group) => group.characteristics && group.characteristics.length
-                ) ? (
+                {charGroup &&
+                charGroup.some((group) => group.characteristic && group.characteristic.length) ? (
                   <div className={styles['asterisk-icon-required']}>
                     <span>
                       <AsteriskIcon />
@@ -324,22 +207,20 @@ const CategoryInfo: React.FC = () => {
                     <span>Є обов`язковою характеристикою</span>
                   </div>
                 ) : null}
+
                 {charGroup && charGroup.length
                   ? charGroup.map(
                       (group) =>
                         group && (
                           <CharGroup
-                            key={group.id || group.tempId}
+                            key={group.name}
                             group={group}
                             expandedGroups={expandedGroups}
                             setExpandedGroups={setExpandedGroups}
                             setOpenGroupModal={setOpenGroupModal}
                             setGroupToEdit={setGroupToEdit}
-                            setEditGroup={setEditGroup}
-                            handleDeleteGroup={handleDeleteGroup}
-                            handleAddChar={handleAddChar}
-                            handleEditChar={handleEditChar}
-                            handleDeleteChar={handleDeleteChar}
+                            categoryDispatch={categoryDispatch}
+                            categoryDisplayDispatch={categoryDisplayDispatch}
                           />
                         )
                     )

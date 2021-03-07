@@ -3,9 +3,9 @@ import {
   IAddCategory,
   IAddCategoryResponse,
   ICategoryResponse,
-  ICategoryToUpdate,
   IGetCategoriesResponse,
 } from '../../interfaces/ICategory';
+import { Category } from '../../pages/Categories/CategoryInfo/categoryReducer';
 import {
   ADD_CATEGORY,
   LOAD_CATEGORIES,
@@ -52,7 +52,7 @@ export const getCategoryByIdError = (message: string): IActions => ({
 });
 
 // update category
-export const updateCategoryRequest = (data: ICategoryToUpdate): IActions => ({
+export const updateCategoryRequest = (data: Category): IActions => ({
   type: UPDATE_CATEGORY_REQUEST,
   data,
 });

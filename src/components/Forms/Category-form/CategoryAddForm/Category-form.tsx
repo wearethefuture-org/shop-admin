@@ -2,9 +2,9 @@ import { withFormik } from 'formik';
 import { Dispatch } from 'redux';
 import * as Yup from 'yup';
 
-import { fetchAddCategories } from '../../../store/actions/categories.actions';
+import { fetchAddCategories } from '../../../../store/actions/categories.actions';
 import InnerForm from './Inner-form';
-import { IAddCategory } from '../../../interfaces/ICategory';
+import { IAddCategory } from '../../../../interfaces/ICategory';
 
 interface CategoryFormProps {
   dispatch: Dispatch;

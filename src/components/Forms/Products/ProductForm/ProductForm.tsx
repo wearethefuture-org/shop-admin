@@ -59,7 +59,6 @@ const ProductForm: React.FC<IProductFormProps> = ({
             />
             <h4>Основна інформація</h4>
           </div>
-
           <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
             <Card>
               <div className={styles['block-wrapper-main']}>
@@ -69,6 +68,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                   label="Назва"
                   name="name"
                   makegreen="true"
+                  className={styles['edit-field']}
                 />
                 <Field
                   fullWidth
@@ -77,6 +77,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                   label="Ціна"
                   name="price"
                   makegreen="true"
+                  className={styles['edit-field']}
                 />
                 <Field
                   fullWidth
@@ -85,6 +86,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                   label="URL ключ"
                   name="key"
                   makegreen="true"
+                  className={styles['edit-field']}
                   InputProps={{
                     onChange: (e) => formik.setFieldValue('key', formatKey(e.target.value)),
                   }}
@@ -98,6 +100,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                   label="Опис"
                   name="description"
                   makegreen="true"
+                  className={styles['edit-field']}
                 />
                 <Field
                   select
@@ -106,6 +109,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                   label="Назва категорії"
                   name="categoryName"
                   makegreen="true"
+                  className={styles['edit-field']}
                   value={formik.values.categoryName ?? ''}
                 >
                   {categories.length
@@ -119,8 +123,13 @@ const ProductForm: React.FC<IProductFormProps> = ({
               </div>
             </Card>
           </div>
-
-          <div className={styles['expandable-field']}>
+          <div
+            className={
+              expandedBlocks.includes('images')
+                ? styles['expandable-field']
+                : styles['expandable-field-shrinked']
+            }
+          >
             <ExpandBtn
               expandBlock={expandedBlocks.includes('images')}
               handleExpand={() => handleExpand('images')}
@@ -160,7 +169,6 @@ const ProductForm: React.FC<IProductFormProps> = ({
               </div>
             </Card>
           </div>
-
           <div className={styles['expandable-field']}>
             <ExpandBtn
               expandBlock={expandedBlocks.includes('additional')}
@@ -169,7 +177,6 @@ const ProductForm: React.FC<IProductFormProps> = ({
             />
             <h4>Додаткова інформація</h4>
           </div>
-
           <div className={expandedBlocks.includes('additional') ? 'expanded' : 'shrinked'}>
             <FormProductCharacteristics
               formik={formik}
@@ -177,7 +184,6 @@ const ProductForm: React.FC<IProductFormProps> = ({
               setValidation={setValidation}
             />
           </div>
-
           <DialogActions>
             <Button
               className={styles.customBtn}
@@ -200,8 +206,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
             </Button>
           </DialogActions>
 
-          <ErrorFocus />
-          <ErrorSubFormFocus />
+          {<ErrorFocus /> || <ErrorSubFormFocus />}
         </Form>
       </FormikProvider>
     </div>

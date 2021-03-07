@@ -5,7 +5,6 @@ import {
   IAddCategory,
   IAddCategoryResponse,
   ICategoryResponse,
-  ICategoryToUpdate,
   IGetCategoriesResponse,
 } from '../interfaces/ICategory';
 import { IActions } from '../interfaces/actions';
@@ -20,6 +19,7 @@ import {
   IProductsInCart,
   IUpdateProduct,
 } from '../interfaces/IProducts';
+import { Category } from '../pages/Categories/CategoryInfo/categoryReducer';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -28,7 +28,7 @@ type ApiFetchedDataType = {
     get: () => FetchedDataType<IGetCategoriesResponse>;
     add: (category: IAddCategory) => FetchedDataType<IAddCategoryResponse>;
     getById: (id: number) => FetchedDataType<ICategoryResponse>;
-    update: (data: ICategoryToUpdate) => FetchedDataType<ICategoryResponse>;
+    update: (data: Category) => FetchedDataType<ICategoryResponse>;
   };
 
   products: {

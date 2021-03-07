@@ -3,7 +3,7 @@ import React, { lazy, Suspense, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch, Switch, Route } from 'react-router-dom';
 
-import { getCategoryByIdRequest } from '../../store/actions/categories.actions';
+import { fetchCategories, getCategoryByIdRequest } from '../../store/actions/categories.actions';
 import { AppDispatch, RootState } from '../../store/store';
 import { ICategoryResponse } from '../../interfaces/ICategory';
 
@@ -16,6 +16,10 @@ const CategoryInfoLazy = lazy(() => import('./CategoryInfo/CategoryInfo'));
 const CategoryRouter: React.FC = () => {
   const match = useRouteMatch<MatchParams>();
   const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   useEffect(() => {
     match.params.id && dispatch(getCategoryByIdRequest(Number(match.params.id)));

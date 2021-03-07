@@ -8,7 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { Dispatch } from 'redux';
 
 import { ICategoriesModal } from '../../interfaces/modals';
-import CategoryForm from '../Forms/Category-form/Category-form';
+import CategoryForm from '../Forms/Category-form/CategoryAddForm/Category-form';
 
 interface FormDialogProps {
   dispatch: Dispatch;
