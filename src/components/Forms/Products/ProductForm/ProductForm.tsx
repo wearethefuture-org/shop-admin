@@ -206,7 +206,8 @@ const ProductForm: React.FC<IProductFormProps> = ({
             </Button>
           </DialogActions>
 
-          {<ErrorFocus /> || <ErrorSubFormFocus />}
+          <ErrorSubFormFocus />
+          <ErrorFocus />
         </Form>
       </FormikProvider>
     </div>
