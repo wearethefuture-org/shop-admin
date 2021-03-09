@@ -1,7 +1,12 @@
 import { FormikProps } from 'formik';
 
 import { ICharResponse } from '../../../../interfaces/ICategory';
-import { ICharValue, IGetProductById, IUpdateProduct } from '../../../../interfaces/IProducts';
+import {
+  ICharValue,
+  IGetProductById,
+  IProductCharResponse,
+  IUpdateProduct,
+} from '../../../../interfaces/IProducts';
 
 const arrayEquals = (a: string[], b: string[]) => {
   return (
@@ -29,8 +34,8 @@ export const getEditCharValuesObject = (
           const basicValues = { name, characteristicId };
 
           if (!productChar && value) {
-            if (type === 'enum') {
-              acc.push({ ...basicValues, enumValue: value && value.length ? value : null });
+            if (type === 'enum' && value && value.length) {
+              acc.push({ ...basicValues, enumValue: value });
             } else if (type === 'json') {
               const entries: [string, string][] = Object.entries(value);
 
@@ -39,24 +44,25 @@ export const getEditCharValuesObject = (
 
                 const resultObject: object = Object.fromEntries(filteredValue);
 
-                acc.push({
-                  ...basicValues,
-                  jsonValue:
-                    resultObject && Object.values(resultObject).length ? resultObject : null,
-                });
+                if (resultObject && Object.values(resultObject).length) {
+                  acc.push({
+                    ...basicValues,
+                    jsonValue: resultObject,
+                  });
+                }
               }
-            } else if (type === 'string') {
-              acc.push({ ...basicValues, stringValue: value ? value : null });
-            } else if (type === 'number') {
-              acc.push({ ...basicValues, numberValue: value ? value : null });
-            } else if (type === 'range') {
-              acc.push({ ...basicValues, numberValue: value ? value : null });
-            } else if (type === 'date') {
-              acc.push({ ...basicValues, dateValue: value ? value : null });
-            } else if (type === 'boolean') {
+            } else if (type === 'string' && value.trim()) {
+              acc.push({ ...basicValues, stringValue: value });
+            } else if (type === 'number' && value) {
+              acc.push({ ...basicValues, numberValue: Number(value) });
+            } else if (type === 'range' && value) {
+              acc.push({ ...basicValues, numberValue: Number(value) });
+            } else if (type === 'date' && value) {
+              acc.push({ ...basicValues, dateValue: value });
+            } else if (type === 'boolean' && value) {
               acc.push({
                 ...basicValues,
-                booleanValue: value ? (value === 'true' ? true : false) : null,
+                booleanValue: value === 'true' ? true : false,
               });
             }
           }
@@ -89,8 +95,8 @@ export const getEditCharValuesObject = (
             if (type === 'enum') {
               const valuesEqual = arrayEquals(initialValue, value);
 
-              if (!valuesEqual) {
-                acc.push({ ...basicValues, enumValue: value && value.length ? value : null });
+              if (!valuesEqual && value && value.length) {
+                acc.push({ ...basicValues, enumValue: value });
               }
             } else if (type === 'json') {
               const entries: [string, string][] = Object.entries(value);
@@ -103,34 +109,33 @@ export const getEditCharValuesObject = (
                 arrayEquals(Object.keys(initialValue), Object.keys(resultObject)) &&
                 arrayEquals(Object.values(initialValue), Object.values(resultObject));
 
-              if (!valuesEqual) {
+              if (!valuesEqual && resultObject && Object.values(resultObject).length) {
                 acc.push({
                   ...basicValues,
-                  jsonValue:
-                    resultObject && Object.values(resultObject).length ? resultObject : null,
+                  jsonValue: resultObject,
                 });
               }
             } else if (type === 'string') {
-              if (initialValue !== value) {
-                acc.push({ ...basicValues, stringValue: value ? value : null });
+              if (initialValue !== value && value.trim()) {
+                acc.push({ ...basicValues, stringValue: value });
               }
-            } else if (type === 'number') {
+            } else if (type === 'number' && value) {
               if (Number(initialValue) !== Number(value)) {
-                acc.push({ ...basicValues, numberValue: value ? value : null });
+                acc.push({ ...basicValues, numberValue: value });
               }
-            } else if (type === 'range') {
+            } else if (type === 'range' && value) {
               if (Number(initialValue) !== Number(value)) {
-                acc.push({ ...basicValues, numberValue: value ? value : null });
+                acc.push({ ...basicValues, numberValue: value });
               }
-            } else if (type === 'date') {
+            } else if (type === 'date' && value) {
               if (initialValue !== value) {
-                acc.push({ ...basicValues, dateValue: value ? value : null });
+                acc.push({ ...basicValues, dateValue: value });
               }
-            } else if (type === 'boolean') {
+            } else if (type === 'boolean' && value) {
               if (initialValue !== value) {
                 acc.push({
                   ...basicValues,
-                  booleanValue: value ? (value === 'true' ? true : false) : null,
+                  booleanValue: value === 'true' ? true : false,
                 });
               }
             }
@@ -143,11 +148,23 @@ export const getEditCharValuesObject = (
   const charsToDelete =
     chars && chars.length
       ? chars.reduce((acc: number[], char) => {
-          const productChar = product.characteristicValue.find(({ name }) => name === char.name);
-          const value = char.id && formik.values.subForm && formik.values.subForm[char.name];
+          const productChar: IProductCharResponse | undefined = product.characteristicValue.find(
+            ({ name }) => name === char.name
+          );
+          const value =
+            productChar && formik.values.subForm && formik.values.subForm[productChar.name];
 
-          if (productChar && !value) {
-            acc.push(productChar.id);
+          if (productChar) {
+            if (productChar.enumValue && !value.length) {
+              acc.push(productChar.id);
+            } else if (productChar.jsonValue) {
+              const values: string[] = Object.values(value);
+              const filteredValues: string[] = values.filter((value) => value.trim());
+
+              !filteredValues.length && acc.push(productChar.id);
+            } else if (!value) {
+              acc.push(productChar.id);
+            }
           }
 
           return acc;

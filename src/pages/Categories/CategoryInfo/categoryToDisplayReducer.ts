@@ -14,9 +14,9 @@ export interface CategoryToDisplay {
   characteristicGroup?: GroupToDisplay[];
 }
 
-interface SetDisplayCategoryId {
-  type: 'setDisplayCategoryId';
-  id: number;
+interface SetCategoryAction {
+  type: 'setDisplayCategory';
+  category: CategoryToDisplay;
 }
 
 interface EditCategoryAction {
@@ -62,7 +62,7 @@ interface DeleteCharAction {
 }
 
 export type CategoryToDispalayAction =
-  | SetDisplayCategoryId
+  | SetCategoryAction
   | EditCategoryAction
   | AddGroupAction
   | EditGroupAction
@@ -76,11 +76,8 @@ export const categoryDisplayReducer = (
   action: CategoryToDispalayAction
 ): CategoryToDisplay => {
   switch (action.type) {
-    case 'setDisplayCategoryId':
-      return {
-        ...state,
-        id: action.id,
-      };
+    case 'setDisplayCategory':
+      return action.category;
 
     case 'editDisplayCategory':
       return action.name || action.key || action.description

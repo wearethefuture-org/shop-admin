@@ -7,7 +7,7 @@ import { IGetProductById } from '../../interfaces/IProducts';
 import { getProductByIdRequest } from '../../store/actions/products.actions';
 import { AppDispatch, RootState } from '../../store/store';
 
-function useScrollToTop() {
+export function useScrollToTop() {
   const ref = useRef<HTMLDivElement>(null);
 
   if (null !== ref.current) {

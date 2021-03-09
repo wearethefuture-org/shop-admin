@@ -80,9 +80,8 @@ const CharGroup: React.FC<IGroupProps> = ({
       if (group.name) {
         categoryDispatch({
           type: 'deleteChar',
-          groupName: group.name,
-          charName: char.name,
-          charId: char.id,
+          group: group,
+          char: char,
         });
         categoryDisplayDispatch({
           type: 'deleteDisplayChar',

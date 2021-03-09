@@ -26,13 +26,13 @@ export const getAddCharValuesObject = (subForm, chars: ICharResponse[]) => {
             booleanValue: value ? (value === 'true' ? true : false) : null,
           });
       } else if (type === 'json') {
-        Object.keys(value).length &&
+        Object.values(value).length &&
           charArr.push({ ...basicValues, jsonValue: value ? value : null });
       } else if (type === 'date') {
         value &&
           charArr.push({ ...basicValues, dateValue: value ? new Date(value).toISOString() : null });
       } else if (type === 'string') {
-        value && charArr.push({ ...basicValues, stringValue: value ? value : null });
+        value.trim() && charArr.push({ ...basicValues, stringValue: value ? value : null });
       }
       return charArr;
     },

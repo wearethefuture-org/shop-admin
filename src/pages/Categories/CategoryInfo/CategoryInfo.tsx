@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, IconButton, LinearProgress } from '@material-ui/core';
@@ -29,6 +29,8 @@ const CategoryInfo: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
 
+  const ref = useRef<HTMLDivElement>(null);
+
   // SELECTORS
   const { loading } = useSelector((state: RootState) => state.categories);
   const categoryList: ICategoryResponse[] = useSelector(
@@ -47,20 +49,16 @@ const CategoryInfo: React.FC = () => {
 
   useEffect(() => {
     categoryDispatch({ type: 'setCategoryId', id: category.id });
-    categoryDisplayDispatch({ type: 'setDisplayCategoryId', id: category.id });
+    categoryDisplayDispatch({ type: 'setDisplayCategory', category });
   }, [category]);
 
   const charGroup = categoryDisplayState.characteristicGroup;
 
   // FORMIK;
   const initialValues: IAddCategory = {
-    name: categoryState.name ? categoryState.name : category ? category.name : '',
-    description: categoryState.description
-      ? categoryState.description
-      : category
-      ? category.description
-      : '',
-    key: categoryState.key ? categoryState.key : category ? category.key : '',
+    name: categoryDisplayState.name ? categoryDisplayState.name : '',
+    description: categoryDisplayState.description ? categoryDisplayState.description : '',
+    key: categoryDisplayState.key ? categoryDisplayState.key : '',
   };
 
   const formik = useFormik({
@@ -71,11 +69,15 @@ const CategoryInfo: React.FC = () => {
 
       const existingName =
         categoryList.length &&
-        categoryList.filter((cat) => cat.id !== category.id).find((cat) => cat.name === name);
+        categoryList
+          .filter((cat) => cat.id !== category.id)
+          .find((cat) => cat.name.toLowerCase() === name.trim().toLowerCase());
 
       const existingKey =
         categoryList.length &&
-        categoryList.filter((cat) => cat.id !== category.id).find((cat) => cat.key === key);
+        categoryList
+          .filter((cat) => cat.id !== category.id)
+          .find((cat) => cat.key.toLowerCase() === key.trim().toLowerCase());
 
       if (existingName) {
         formik.setFieldError('name', 'Така категорія вже існує');
@@ -92,6 +94,12 @@ const CategoryInfo: React.FC = () => {
       categoryDispatch({ type: 'editCategory', name, key, description });
 
       dispatch(updateCategoryRequest(categoryState));
+      categoryDispatch({ type: 'resetCategory' });
+
+      if (null !== ref.current) {
+        ref.current.scrollIntoView();
+      }
+
       setEditBasicInfo(false);
       formik.setSubmitting(false);
     },
@@ -127,7 +135,7 @@ const CategoryInfo: React.FC = () => {
   const [groupToEdit, setGroupToEdit] = useState<GroupToDisplay | null>(null);
 
   return (
-    <>
+    <div ref={ref}>
       {loading && <LinearProgress />}
 
       {openGroupModal && charGroup && (
@@ -245,7 +253,7 @@ const CategoryInfo: React.FC = () => {
           </FormikProvider>
         </div>
       ) : null}
-    </>
+    </div>
   );
 };
 

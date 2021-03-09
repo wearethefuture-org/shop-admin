@@ -48,20 +48,26 @@ const CategoryGroupModal: React.FC<IModalProps> = ({
     }),
 
     onSubmit: ({ groupName }: IGroupValues): void => {
-      if (charGroup.find((group) => group.name?.toLowerCase() === groupName?.toLowerCase())) {
-        formik.setFieldError('groupName', 'Група з такою назвою вже існує');
-        formik.setSubmitting(false);
-        return;
-      }
-
       if (groupToEdit && groupToEdit.name) {
+        const existingGroup = charGroup
+          .filter(
+            (group) => group.name?.toLowerCase().trim() !== groupToEdit.name?.toLowerCase().trim()
+          )
+          .find((group) => group.name?.toLowerCase().trim() === groupName?.toLowerCase().trim());
+
+        if (existingGroup) {
+          formik.setFieldError('groupName', 'Група з такою назвою вже існує');
+          formik.setSubmitting(false);
+          return;
+        }
+
         categoryDispatch({
           type: 'editGroup',
-          prevGroupName: groupToEdit.name,
+          prevGroup: groupToEdit,
           editedGroup: {
             id: groupToEdit.id && groupToEdit.id,
             name: groupName,
-            characteristics: groupToEdit.characteristic && groupToEdit.characteristic,
+            characteristics: [],
           },
         });
         categoryDisplayDispatch({
@@ -70,6 +76,16 @@ const CategoryGroupModal: React.FC<IModalProps> = ({
           editedGroup: { ...groupToEdit, name: groupName },
         });
       } else {
+        const existingGroup = charGroup.find(
+          (group) => group.name?.toLowerCase().trim() === groupName?.toLowerCase().trim()
+        );
+
+        if (existingGroup) {
+          formik.setFieldError('groupName', 'Група з такою назвою вже існує');
+          formik.setSubmitting(false);
+          return;
+        }
+
         categoryDispatch({
           type: 'addGroup',
           groupName,

@@ -62,19 +62,34 @@ const CategoryCharModal: React.FC<IModalProps> = ({
 
       const { defaultVal, ...charValues } = values;
 
-      const finalValues: Char = Object.fromEntries(
-        Object.entries(charValues).map(([key, value]) => [
-          key,
-          value || key === 'required' ? value : null,
-        ])
+      const finalValues = Object.fromEntries(
+        Object.entries(charValues).filter(([key, value]) => {
+          let resultValue;
+          if (key === 'required') {
+            resultValue = value;
+          } else if (key === 'defaultValues' && value && value.values.length) {
+            resultValue = value;
+          } else if (value) resultValue = value;
+
+          return resultValue && [key, resultValue];
+        })
       );
 
       if (group.name) {
         if (char && char.name) {
+          const existingChar = group.characteristic
+            .filter((c) => c.name?.toLowerCase().trim() !== char.name?.toLowerCase().trim())
+            .find((c) => c.name?.toLowerCase().trim() === values.name?.toLowerCase().trim());
+
+          if (existingChar) {
+            formik.setFieldError('name', 'Група з такою назвою вже існує');
+            formik.setSubmitting(false);
+            return;
+          }
+
           categoryDispatch({
             type: 'editChar',
-            groupId: group.id,
-            groupName: group.name,
+            group: group,
             prevChar: char,
             editedChar: finalValues,
           });
@@ -97,8 +112,7 @@ const CategoryCharModal: React.FC<IModalProps> = ({
 
           categoryDispatch({
             type: 'addChar',
-            groupId: group.id,
-            groupName: group.name,
+            group: group,
             newChar: finalValues,
           });
           categoryDisplayDispatch({

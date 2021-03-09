@@ -32,6 +32,10 @@ interface RemovedChars {
   characteristicIDs?: number[];
 }
 
+interface ResetCategory {
+  type: 'resetCategory';
+}
+
 interface SetCategoryId {
   type: 'setCategoryId';
   id: number;
@@ -51,7 +55,7 @@ interface AddGroupAction {
 
 interface EditGroupAction {
   type: 'editGroup';
-  prevGroupName: string;
+  prevGroup: Group;
   editedGroup: Group;
 }
 
@@ -62,27 +66,25 @@ interface DeleteGroupAction {
 
 interface AddCharAction {
   type: 'addChar';
-  groupId?: number;
-  groupName: string;
+  group: GroupToDisplay;
   newChar: Char;
 }
 
 interface EditCharAction {
   type: 'editChar';
-  groupId?: number;
-  groupName: string;
+  group: GroupToDisplay;
   prevChar: Char;
   editedChar: Char;
 }
 
 interface DeleteCharAction {
   type: 'deleteChar';
-  groupName: string;
-  charName: string;
-  charId?: number;
+  group: GroupToDisplay;
+  char: Char;
 }
 
 export type CategoryAction =
+  | ResetCategory
   | SetCategoryId
   | EditCategoryAction
   | AddGroupAction
@@ -94,6 +96,9 @@ export type CategoryAction =
 
 export const categoryReducer = (state: Category, action: CategoryAction): Category => {
   switch (action.type) {
+    case 'resetCategory':
+      return {};
+
     case 'setCategoryId':
       if (!state.id) state.id = undefined;
 
@@ -131,21 +136,25 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
       return {
         ...state,
         characteristicGroups: state.characteristicGroups.find(
-          (group) => group.name === action.prevGroupName
+          (group) => group.id === action.prevGroup.id || group.name === action.prevGroup.name
         )
           ? state.characteristicGroups.map((group) =>
-              group.name === action.prevGroupName ? action.editedGroup : group
+              group.id === action.prevGroup.id || group.name === action.prevGroup.name
+                ? action.editedGroup
+                : group
             )
           : state.characteristicGroups.concat(action.editedGroup),
       };
 
     case 'deleteGroup': {
       if (action.prevGroup.id) {
-        const removedCharacteristics = {} as RemovedChars;
-        removedCharacteristics.characteristicGroupIDs = [];
-        removedCharacteristics.characteristicGroupIDs = removedCharacteristics.characteristicGroupIDs.concat(
-          action.prevGroup.id
-        );
+        if (!state.removedCharacteristics) {
+          state.removedCharacteristics = { characteristicGroupIDs: [] };
+        }
+
+        state.removedCharacteristics.characteristicGroupIDs =
+          state.removedCharacteristics.characteristicGroupIDs &&
+          state.removedCharacteristics.characteristicGroupIDs.concat(action.prevGroup.id);
 
         const charIds = action.prevGroup.characteristic.reduce((acc: number[], char) => {
           if (char.id) {
@@ -155,23 +164,23 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
         }, []);
 
         if (charIds?.length) {
-          removedCharacteristics.characteristicIDs = [];
-          removedCharacteristics.characteristicIDs = Array.from(
-            new Set(removedCharacteristics.characteristicIDs.concat(charIds))
-          );
-        }
+          if (!state.removedCharacteristics.characteristicIDs) {
+            state.removedCharacteristics.characteristicIDs = [];
+          }
 
-        return {
-          ...state,
-          removedCharacteristics,
-        };
+          state.removedCharacteristics.characteristicIDs =
+            state.removedCharacteristics.characteristicIDs &&
+            Array.from(new Set(state.removedCharacteristics.characteristicIDs.concat(charIds)));
+        }
       }
 
       return {
         ...state,
         characteristicGroups:
           state.characteristicGroups &&
-          state.characteristicGroups.filter((group) => group.name !== action.prevGroup.name),
+          state.characteristicGroups.filter(
+            (group) => group.id !== action.prevGroup.id || group.name !== action.prevGroup.name
+          ),
       };
     }
 
@@ -180,29 +189,19 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
 
       return {
         ...state,
-        characteristicGroups: state.characteristicGroups.find(
-          (group) => group.name === action.groupName
-        )
-          ? state.characteristicGroups.map((group) =>
-              group.name === action.groupName && group.characteristics && state.id
-                ? {
-                    ...group,
-                    characteristics: group.characteristics.concat({
-                      ...action.newChar,
-                      categoryId: state.id,
-                    }),
-                  }
-                : group
-            )
-          : state.characteristicGroups.concat({
-              id: action.groupId && action.groupId,
-              characteristics: [
-                {
-                  ...action.newChar,
-                  categoryId: state.id,
-                },
-              ],
-            }),
+        characteristicGroups: state.characteristicGroups.map((group) =>
+          group.name === action.group.name
+            ? {
+                ...group,
+                characteristics:
+                  group.characteristics &&
+                  group.characteristics.concat({
+                    ...action.newChar,
+                    categoryId: state.id,
+                  }),
+              }
+            : group
+        ),
       };
 
     case 'editChar':
@@ -211,10 +210,10 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
       return {
         ...state,
         characteristicGroups: state.characteristicGroups.find(
-          (group) => group.name === action.groupName || group.id === action.groupId
+          (group) => group.name === action.group.name
         )
           ? state.characteristicGroups.map((group) =>
-              group.name === action.groupName || group.id === action.groupId
+              group.name === action.group.name
                 ? {
                     ...group,
                     characteristics: group.characteristics?.map((char) =>
@@ -226,7 +225,8 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
                 : group
             )
           : state.characteristicGroups.concat({
-              id: action.groupId && action.groupId,
+              id: action.group.id && action.group.id,
+              name: action.group.name && action.group.name,
               characteristics: [
                 {
                   id: action.prevChar.id && action.prevChar.id,
@@ -238,34 +238,40 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
       };
 
     case 'deleteChar':
-      if (action.charId) {
-        const removedCharacteristics = {} as RemovedChars;
+      if (action.char.id) {
+        if (!state.removedCharacteristics) {
+          state.removedCharacteristics = {};
+        }
 
-        removedCharacteristics.characteristicIDs = [];
-        removedCharacteristics.characteristicIDs = Array.from(
-          new Set(removedCharacteristics.characteristicIDs.concat(action.charId))
-        );
+        if (!state.removedCharacteristics.characteristicIDs) {
+          state.removedCharacteristics.characteristicIDs = [];
+        }
 
-        return {
-          ...state,
-          removedCharacteristics,
-        };
+        state.removedCharacteristics.characteristicIDs =
+          state.removedCharacteristics.characteristicIDs &&
+          Array.from(
+            new Set(state.removedCharacteristics.characteristicIDs.concat(action.char.id))
+          );
       }
+
+      const filteredGroups =
+        state.characteristicGroups &&
+        state.characteristicGroups.map((group) =>
+          group.id === action.group.id || group.name === action.group.name
+            ? {
+                ...group,
+                characteristics:
+                  group.characteristics &&
+                  group.characteristics.filter(
+                    (char) => char.id !== action.char.id || char.name !== action.char.name
+                  ),
+              }
+            : group
+        );
 
       return {
         ...state,
-        characteristicGroups:
-          state.characteristicGroups &&
-          state.characteristicGroups.map((group) =>
-            group.name === action.groupName
-              ? {
-                  ...group,
-                  characteristics:
-                    group.characteristics &&
-                    group.characteristics.filter((char) => char.name !== action.charName),
-                }
-              : group
-          ),
+        characteristicGroups: filteredGroups?.length ? filteredGroups : undefined,
       };
 
     default:

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import ArrowIcon from '@material-ui/icons/ArrowBackIos';
@@ -12,7 +12,6 @@ import GoBackBtn from '../../../components/GoBackBtn/GoBackBtn';
 import EditBtn from '../../../components/EditBtn/EditBtn';
 import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
 import { confirmDelete } from '../../../components/confirmAlert/confirmAlert';
-import { getCategoryByIdRequest } from '../../../store/actions/categories.actions';
 import ProductCharacteristics from './ProductCharacteristics/ProductCharacteristics';
 import { IGetProductById } from '../../../interfaces/IProducts';
 import styles from './ProductItem.module.scss';
@@ -26,10 +25,6 @@ const ProductItem: React.FC = () => {
   const product: IGetProductById = useSelector((state: RootState) => state.products.currentProduct);
 
   const { darkMode } = useSelector((state: RootState) => state.theme);
-
-  useEffect(() => {
-    product && product.category && dispatch(getCategoryByIdRequest(product.category?.id));
-  }, [product, dispatch]);
 
   const goBack = () => history.push('/products');
 
