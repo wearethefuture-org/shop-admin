@@ -61,6 +61,54 @@ input[type='number'] {
   transition: all 0.1s ease;
 }
 
+// alert
 .react-confirm-alert-overlay {
   background-color: transparent !important;
+}
+
+// gallery
+.image-gallery {
+  .image-gallery-swipe {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1/1;
+    background-color: #fff;
+    border-radius: 4px;
+
+    .image-gallery-image {
+      padding: 0.2rem;
+      aspect-ratio: 1/1;
+    }
+  }
+}
+
+.image-gallery-icon {
+  filter: none !important;
+  color: #ccc !important;
+
+  svg {
+    transform: scale(0.5);
+    transition: all ease 0.25s;
+  }
+}
+
+.image-gallery-icon:hover .image-gallery-svg {
+  transform: scale(0.6) !important;
+}
+
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:hover,
+.image-gallery-thumbnail:focus {
+  border: 3px solid #01a701 !important;
+}
+
+.image-gallery-bullets .image-gallery-bullet {
+  border: 1px solid #ccc !important;
+  box-shadow: none !important;
+
+  &:hover,
+  &:focus {
+    background: #bbb !important;
+  }
 }

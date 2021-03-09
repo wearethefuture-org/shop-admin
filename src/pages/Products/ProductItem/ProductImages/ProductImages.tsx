@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import StarFilledIcon from '@material-ui/icons/Star';
 import StarIcon from '@material-ui/icons/StarBorder';
+import ImageGallery from 'react-image-gallery';
+import 'react-image-gallery/styles/css/image-gallery.css';
 
 import { uploadMainImgRequest } from '../../../../store/actions/products.actions';
 import { root } from '../../../../api/config';
@@ -17,8 +19,6 @@ const ProductImages: React.FC = () => {
 
   const product: IGetProductById = useSelector((state: RootState) => state.products.currentProduct);
 
-  const { darkMode } = useSelector((state: RootState) => state.theme);
-
   // GALLERY
   const [imgUrls, setImgUrls] = useState<string[]>([]);
 
@@ -32,7 +32,6 @@ const ProductImages: React.FC = () => {
 
   const [largeImages, setLargeImages] = useState<string[]>([]);
   const [croppedImages, setCroppedImages] = useState<string[]>([]);
-
   useEffect(() => {
     if (!imgUrls?.length) return;
     setLargeImages(imgUrls.filter((file) => !file.includes('cropped')));
@@ -40,81 +39,62 @@ const ProductImages: React.FC = () => {
   }, [imgUrls]);
 
   const [mainImg, setMainImg] = useState<string | 0 | undefined>('');
-  const [imgLarge, setImgLarge] = useState<string | 0 | undefined>('');
-  const [activeCroppedImg, setActiveCroppedImg] = useState<string | 0 | undefined>('');
 
   useEffect(() => {
     product?.mainImg?.name && setMainImg(product?.mainImg?.name);
   }, [product]);
 
-  useEffect(() => {
-    mainImg && largeImages.length
-      ? setImgLarge(largeImages.find((img) => img.includes(mainImg)))
-      : setImgLarge(largeImages[0]);
-  }, [mainImg, largeImages]);
+  const images = largeImages.map((img, idx) => ({
+    original: `${root}/product/img/${img}`,
+    thumbnail: `${root}/product/img/${croppedImages[idx]}`,
+  }));
 
-  useEffect(() => {
-    mainImg && croppedImages.length
-      ? setActiveCroppedImg(croppedImages.find((img) => img.includes(mainImg)))
-      : setActiveCroppedImg(
-          croppedImages.length && croppedImages.find((img) => img.includes(largeImages[0]))
-        );
-  }, [mainImg, croppedImages, largeImages]);
+  const galleryRef = useRef(null);
 
-  const handleGallery = (img: string, idx: number) => {
-    setActiveCroppedImg(img);
-    setImgLarge(largeImages && largeImages[idx]);
+  const [activeIdx, setActiveIdx] = useState<number | null>(null);
+
+  const getIndex = () => {
+    //@ts-ignore
+    galleryRef && galleryRef.current && setActiveIdx(galleryRef.current.getCurrentIndex());
   };
 
   const handleMainImage = () => {
-    if (!imgLarge) return;
-
-    if (product?.mainImg?.name && product?.mainImg?.name === imgLarge) {
-      dispatch(failSnackBar('Зображення вже призначене головним зображенням'));
-      return;
+    if (activeIdx) {
+      product?.mainImg?.name && product?.mainImg?.name === largeImages[activeIdx]
+        ? dispatch(failSnackBar('Зображення вже призначене головним зображенням'))
+        : dispatch(uploadMainImgRequest(product.id, largeImages[activeIdx]));
     }
-
-    dispatch(uploadMainImgRequest(product.id, imgLarge));
   };
 
   return (
-    <div className={darkMode ? styles['gallery-dark'] : styles.gallery}>
-      <>
-        {imgLarge ? (
-          <div className={styles['img-large-wrapper']}>
-            <img
-              src={`${root}/product/img/${imgLarge}`}
-              alt={product.name}
-              className={styles['img-large']}
-            />
-            <div
-              className={styles.favIcon}
-              title="Зробити головним зображенням"
-              onClick={handleMainImage}
-            >
-              {mainImg && mainImg.includes(imgLarge) ? <StarFilledIcon /> : <StarIcon />}
-            </div>
+    <div className={styles.gallery}>
+      {imgUrls.length ? (
+        <>
+          <ImageGallery
+            items={images}
+            showPlayButton={false}
+            showFullscreenButton={false}
+            showBullets={true}
+            ref={galleryRef}
+            onSlide={getIndex}
+          />
+          <div
+            className={styles.favIcon}
+            title="Зробити головним зображенням"
+            onClick={handleMainImage}
+          >
+            {mainImg && activeIdx && mainImg.includes(largeImages[activeIdx]) ? (
+              <StarFilledIcon />
+            ) : (
+              <StarIcon />
+            )}
           </div>
-        ) : (
-          <div className={styles.placeholder}>
-            <img src={placeholder} alt={product.name} className={styles['img-large']} />
-          </div>
-        )}
-
-        {croppedImages && croppedImages.length
-          ? croppedImages.map((img, idx) => (
-              <img
-                key={idx}
-                className={
-                  img === activeCroppedImg ? styles['cropped-img-active'] : styles['cropped-img']
-                }
-                src={`${root}/product/img/${img}`}
-                alt={product.name}
-                onClick={() => handleGallery(img, idx)}
-              />
-            ))
-          : null}
-      </>
+        </>
+      ) : (
+        <div className={styles.placeholder}>
+          <img src={placeholder} alt={product.name} />
+        </div>
+      )}
     </div>
   );
 };
