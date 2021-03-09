@@ -1,15 +1,17 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import { useSelector } from 'react-redux';
 import { Field, Form, FormikProvider, useFormik } from 'formik';
 import { Button, Dialog, MenuItem } from '@material-ui/core';
 
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
-import { ICharToAdd } from '../../../interfaces/ICategory';
+import { ICategoryResponse, ICharToAdd } from '../../../interfaces/ICategory';
 import { charTypes, charValidationSchema, getIcon } from './categoryCharModalHelpers';
 import { CategoryAction, Char } from '../../../pages/Categories/CategoryInfo/categoryReducer';
 import {
   CategoryToDispalayAction,
   GroupToDisplay,
 } from '../../../pages/Categories/CategoryInfo/categoryToDisplayReducer';
+import { RootState } from '../../../store/store';
 import styles from './CategoryCharModal.module.scss';
 
 interface IModalProps {
@@ -35,6 +37,12 @@ const CategoryCharModal: React.FC<IModalProps> = ({
     const value = e.target.value;
     value === 'true' ? (formik.values.required = true) : (formik.values.required = false);
   };
+
+  const category: ICategoryResponse = useSelector(
+    (state: RootState) => state.categories.currentCategory
+  );
+
+  const characteristics = category.characteristicGroup.map((group) => group.characteristic).flat(1);
 
   const initialValues: ICharToAdd = {
     name: char && char.name ? char.name : '',
@@ -77,7 +85,7 @@ const CategoryCharModal: React.FC<IModalProps> = ({
 
       if (group.name) {
         if (char && char.name) {
-          const existingChar = group.characteristic
+          const existingChar = characteristics
             .filter((c) => c.name?.toLowerCase().trim() !== char.name?.toLowerCase().trim())
             .find((c) => c.name?.toLowerCase().trim() === values.name?.toLowerCase().trim());
 
@@ -101,7 +109,7 @@ const CategoryCharModal: React.FC<IModalProps> = ({
           });
         } else {
           if (
-            group.characteristic.find(
+            characteristics.find(
               (char) => char.name?.toLowerCase() === charValues.name?.toLowerCase()
             )
           ) {
