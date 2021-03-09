@@ -11,6 +11,11 @@ export interface ISettingsData {
 }
 
 export interface ISettingsParams {
-  quantityPopularItems: number;
-  quantityNewArrivals: number;
+  popularItems: ISettingsParamsItem;
+  newArrivals: ISettingsParamsItem;
+}
+
+export interface ISettingsParamsItem {
+  quantity: number;
+  isWidgetActive: boolean;
 }

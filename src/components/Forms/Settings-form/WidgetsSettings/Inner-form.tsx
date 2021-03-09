@@ -2,13 +2,7 @@ import React from 'react';
 import { Field, Form, FormikProps } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Button,
-  createStyles,
-  DialogActions,
-  Theme,
-  Typography,
-} from '@material-ui/core';
+import { Button, createStyles, DialogActions, Switch, Theme, Typography } from '@material-ui/core';
 
 import { IFormWidgetValues } from '../../../../interfaces/widget-form';
 
@@ -19,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     inputContainer: {
       display: 'flex',
-      alignItems: 'baseline',
+      alignItems: 'center',
       marginBottom: '20px',
     },
     title: {
@@ -28,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     input: {
       width: '150px',
+    },
+    switch: {
+      marginLeft: 'auto',
     },
     secondaryHeading: {
       flexGrow: 1,
@@ -47,12 +44,20 @@ const useStyles = makeStyles((theme: Theme) =>
 const InnerForm: React.FC<FormikProps<IFormWidgetValues>> = (props) => {
   const classes = useStyles();
 
+  const [state, setState] = React.useState({
+    isWidgetActiveNewArrivals: props.values.isWidgetActiveNewArrivals,
+    isWidgetActivePopularItems: props.values.isWidgetActivePopularItems,
+  });
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+    props.setFieldValue(event.target.name, event.target.checked);
+  };
+
   return (
     <Form className={classes.form}>
       <div className={classes.inputContainer}>
-        <Typography className={classes.title}>
-          Слайдер нових товарів:
-        </Typography>
+        <Typography className={classes.title}>Слайдер нових товарів:</Typography>
         <Field
           component={TextField}
           className={classes.input}
@@ -61,14 +66,16 @@ const InnerForm: React.FC<FormikProps<IFormWidgetValues>> = (props) => {
           name="quantityNewArrivals"
           label="Кількість"
         />
-        <Typography className={classes.secondaryHeading}>
-          Кількість слайдів: 4-20
-        </Typography>
+        <Typography className={classes.secondaryHeading}>Кількість слайдів: 4-20</Typography>
+        <Switch
+          className={classes.switch}
+          checked={state.isWidgetActiveNewArrivals}
+          onChange={handleChange}
+          name="isWidgetActiveNewArrivals"
+        />
       </div>
       <div className={classes.inputContainer}>
-        <Typography className={classes.title}>
-          Слайдер популярних товарів:
-        </Typography>
+        <Typography className={classes.title}>Слайдер популярних товарів:</Typography>
         <Field
           component={TextField}
           className={classes.input}
@@ -77,17 +84,16 @@ const InnerForm: React.FC<FormikProps<IFormWidgetValues>> = (props) => {
           name="quantityPopularItems"
           label="Кількість"
         />
-        <Typography className={classes.secondaryHeading}>
-          Кількість слайдів: 4-20
-        </Typography>
+        <Typography className={classes.secondaryHeading}>Кількість слайдів: 4-20</Typography>
+        <Switch
+          className={classes.switch}
+          checked={state.isWidgetActivePopularItems}
+          onChange={handleChange}
+          name="isWidgetActivePopularItems"
+        />
       </div>
       <DialogActions>
-        <Button
-          color="primary"
-          variant="contained"
-          type="submit"
-          disabled={!props.isValid}
-        >
+        <Button color="primary" variant="contained" type="submit" disabled={!props.isValid}>
           Зберегти
         </Button>
       </DialogActions>
