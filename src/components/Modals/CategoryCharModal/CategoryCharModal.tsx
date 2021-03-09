@@ -90,7 +90,7 @@ const CategoryCharModal: React.FC<IModalProps> = ({
             .find((c) => c.name?.toLowerCase().trim() === values.name?.toLowerCase().trim());
 
           if (existingChar) {
-            formik.setFieldError('name', 'Група з такою назвою вже існує');
+            formik.setFieldError('name', 'Характеристика з такою назвою вже існує');
             formik.setSubmitting(false);
             return;
           }
