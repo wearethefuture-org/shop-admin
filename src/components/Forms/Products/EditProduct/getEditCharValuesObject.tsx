@@ -52,11 +52,9 @@ export const getEditCharValuesObject = (
                 }
               }
             } else if (type === 'string' && value.trim()) {
-              acc.push({ ...basicValues, stringValue: value });
-            } else if (type === 'number' && value) {
-              acc.push({ ...basicValues, numberValue: Number(value) });
-            } else if (type === 'range' && value) {
-              acc.push({ ...basicValues, numberValue: Number(value) });
+              acc.push({ ...basicValues, stringValue: value.trim() });
+            } else if ((type === 'number' || type === 'range') && value.trim()) {
+              acc.push({ ...basicValues, numberValue: Number(value.trim()) });
             } else if (type === 'date' && value) {
               acc.push({ ...basicValues, dateValue: value });
             } else if (type === 'boolean' && value) {

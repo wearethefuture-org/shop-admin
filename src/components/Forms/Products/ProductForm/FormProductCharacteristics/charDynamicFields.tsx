@@ -48,7 +48,8 @@ export const charDynamicFields = (char, formik, product) => {
         } else {
           formik.initialValues.subForm[name] =
             numberValue ||
-            (defaultValues && defaultValues.values ? Number(defaultValues?.values[0]) : '');
+            (defaultValues && defaultValues.values ? Number(defaultValues?.values[0]) : '') ||
+            '';
         }
       }
     );
@@ -90,7 +91,7 @@ export const charDynamicFields = (char, formik, product) => {
                   onChange: (e) =>
                     formik.setValues({
                       ...formik.values,
-                      subForm: { ...formik.values.subForm, [name]: Number(e.target.value) },
+                      subForm: { ...formik.values.subForm, [name]: e.target.value },
                     }),
                 }}
                 form={{ ...form, ...subFormObj }}
@@ -130,7 +131,7 @@ export const charDynamicFields = (char, formik, product) => {
                   onChange: (e) =>
                     formik.setValues({
                       ...formik.values,
-                      subForm: { ...formik.values.subForm, [name]: Number(e.target.value) },
+                      subForm: { ...formik.values.subForm, [name]: e.target.value },
                     }),
                 }}
                 form={{ ...form, ...subFormObj }}
