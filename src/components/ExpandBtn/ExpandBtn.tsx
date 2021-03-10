@@ -10,16 +10,14 @@ interface IBtnProps {
   disabled: boolean;
 }
 
-const ExpandBtn: React.FC<IBtnProps> = ({ expandBlock, handleExpand, disabled }) => {
+const ExpandBtn: React.FC<IBtnProps> = ({ expandBlock, handleExpand, disabled, children }) => {
   return (
-    <button
-      className={styles['expand-btn']}
-      type="button"
-      onClick={handleExpand}
-      disabled={disabled}
-    >
-      {expandBlock ? <RemoveIcon /> : <AddIcon />}
-    </button>
+    <div onClick={handleExpand} className={styles['expandable-field']}>
+      <button className={styles['expand-btn']} type="button" disabled={disabled}>
+        {expandBlock ? <RemoveIcon /> : <AddIcon />}
+      </button>
+      {children}
+    </div>
   );
 };
 

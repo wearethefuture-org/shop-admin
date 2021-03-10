@@ -31,6 +31,7 @@ const AppDataTable: React.FC<DataTableProps> = ({ data, columns, title }) => {
         title={title}
         paginationRowsPerPageOptions={[10, 30, 50, 100]}
         theme={darkMode ? 'dark' : 'default'}
+        highlightOnHover={true}
       />
     </Card>
   );

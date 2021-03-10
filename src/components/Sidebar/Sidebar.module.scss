@@ -4,8 +4,10 @@
 }
 
 .sidebar {
-  padding: 25px;
   font-size: 18px;
+  position: fixed;
+  height: 100%;
+  z-index: 55555;
 }
 
 .list {

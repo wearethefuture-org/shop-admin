@@ -88,14 +88,13 @@ const ProductItem: React.FC = () => {
         </div>
 
         <div className={styles['item-additional-info']}>
-          <div className={styles['expand-field']}>
-            <ExpandBtn
-              expandBlock={expandBlock}
-              handleExpand={() => setExpandBlock(!expandBlock)}
-              disabled={false}
-            />
-            <span>Характеристики</span>
-          </div>
+          <ExpandBtn
+            expandBlock={expandBlock}
+            handleExpand={() => setExpandBlock(!expandBlock)}
+            disabled={false}
+          >
+            <h4>Характеристики</h4>
+          </ExpandBtn>
 
           <div className={expandBlock ? 'expanded' : 'shrinked'}>
             <ProductCharacteristics categoryName={product.category?.name} />

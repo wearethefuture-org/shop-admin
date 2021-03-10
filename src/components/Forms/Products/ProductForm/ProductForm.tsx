@@ -62,14 +62,13 @@ const ProductForm: React.FC<IProductFormProps> = ({
 
       <FormikProvider value={formik}>
         <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
-          <div className={styles['expandable-field']}>
-            <ExpandBtn
-              expandBlock={expandedBlocks.includes('main')}
-              handleExpand={() => handleExpand('main')}
-              disabled={false}
-            />
+          <ExpandBtn
+            expandBlock={expandedBlocks.includes('main')}
+            handleExpand={() => handleExpand('main')}
+            disabled={false}
+          >
             <h4>Основна інформація</h4>
-          </div>
+          </ExpandBtn>
           <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
             <Card>
               <div className={styles['block-wrapper-main']}>
@@ -134,20 +133,13 @@ const ProductForm: React.FC<IProductFormProps> = ({
               </div>
             </Card>
           </div>
-          <div
-            className={
-              expandedBlocks.includes('images')
-                ? styles['expandable-field']
-                : styles['expandable-field-shrinked']
-            }
+          <ExpandBtn
+            expandBlock={expandedBlocks.includes('images')}
+            handleExpand={() => handleExpand('images')}
+            disabled={false}
           >
-            <ExpandBtn
-              expandBlock={expandedBlocks.includes('images')}
-              handleExpand={() => handleExpand('images')}
-              disabled={false}
-            />
             <h4>Зображення</h4>
-          </div>
+          </ExpandBtn>
           <div className={expandedBlocks.includes('images') ? 'expanded' : 'shrinked'}>
             <Card>
               <div className={styles['block-wrapper']}>
@@ -188,14 +180,13 @@ const ProductForm: React.FC<IProductFormProps> = ({
               </div>
             </Card>
           </div>
-          <div className={styles['expandable-field']}>
-            <ExpandBtn
-              expandBlock={expandedBlocks.includes('additional')}
-              handleExpand={() => handleExpand('additional')}
-              disabled={!formik.values.categoryName}
-            />
+          <ExpandBtn
+            expandBlock={expandedBlocks.includes('additional')}
+            handleExpand={() => handleExpand('additional')}
+            disabled={!formik.values.categoryName}
+          >
             <h4>Додаткова інформація</h4>
-          </div>
+          </ExpandBtn>
           <div className={expandedBlocks.includes('additional') ? 'expanded' : 'shrinked'}>
             <FormProductCharacteristics
               formik={formik}

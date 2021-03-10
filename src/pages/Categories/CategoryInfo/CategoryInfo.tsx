@@ -158,14 +158,13 @@ const CategoryInfo: React.FC = () => {
           <FormikProvider value={formik}>
             <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
               <div className={styles['expandable-field-wrapper']}>
-                <div className={styles['expandable-field']}>
-                  <ExpandBtn
-                    expandBlock={expandedBlocks.includes('main')}
-                    handleExpand={() => handleExpandedBlocks('main')}
-                    disabled={false}
-                  />
+                <ExpandBtn
+                  expandBlock={expandedBlocks.includes('main')}
+                  handleExpand={() => handleExpandedBlocks('main')}
+                  disabled={false}
+                >
                   <h4>Основна інформація</h4>
-                </div>
+                </ExpandBtn>
 
                 <IconButton
                   aria-label="edit"
@@ -184,16 +183,13 @@ const CategoryInfo: React.FC = () => {
                 )}
               </div>
 
-              <div className={styles['expandable-field-wrapper']}>
-                <div className={styles['expandable-field']}>
-                  <ExpandBtn
-                    expandBlock={expandedBlocks.includes('characteristics')}
-                    handleExpand={() => handleExpandedBlocks('characteristics')}
-                    disabled={false}
-                  />
-                  <h4>Характеристики</h4>
-                </div>
-              </div>
+              <ExpandBtn
+                expandBlock={expandedBlocks.includes('characteristics')}
+                handleExpand={() => handleExpandedBlocks('characteristics')}
+                disabled={false}
+              >
+                <h4>Характеристики</h4>
+              </ExpandBtn>
 
               <div className={expandedBlocks.includes('characteristics') ? 'expanded' : 'shrinked'}>
                 <div className={styles['add-btn-wrapper']}>

@@ -1,5 +1,5 @@
 .itemCard {
-  padding: 2rem;
+  padding: 1rem;
   height: max-content;
   min-height: 100vh;
 
@@ -46,15 +46,8 @@
     padding: 0 2rem;
     border-top: 1px solid #ddd;
 
-    .expand-field {
-      display: flex;
-      align-items: center;
-      margin-top: 2rem;
-
-      span {
-        font-size: 1.5rem;
-        font-weight: bold;
-      }
+    h4 {
+      margin-bottom: 0;
     }
   }
 }

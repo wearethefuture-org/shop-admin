@@ -6,6 +6,7 @@ import TableRow from '@material-ui/core/TableRow';
 
 import DateMoment from '../../../Common/Date-moment';
 import { CategoryTableData } from '../../../../interfaces/ICategory';
+import styles from './Table-body.module.scss';
 
 interface TableBodyProps {
   rows: CategoryTableData[];
@@ -26,7 +27,7 @@ const CategoryTableBody: React.FC<TableBodyProps> = ({ rows, rowsPerPage, page, 
         <TableRow
           key={row.id}
           onClick={() => history.push(`/category/${row.id}`)}
-          style={{ cursor: 'pointer' }}
+          className={styles['table-row']}
         >
           <TableCell component="th" scope="row">
             {row.id}

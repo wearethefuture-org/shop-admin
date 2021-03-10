@@ -17,9 +17,9 @@ import ReceiptIcon from '@material-ui/icons/Receipt';
 import SettingsIcon from '@material-ui/icons/Settings';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import styles from './Sidebar.module.scss';
 import { firstCharToUpperCase as charToUp } from '../../utils/firstCharToUpperCase';
 import useDidUpdate from '../../hooks/useDidUpdate';
+import styles from './Sidebar.module.scss';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -28,6 +28,8 @@ interface SidebarProps {
 
 const useStyles = makeStyles((theme) => ({
   sidebar: {
+    position: 'fixed',
+    zIndex: 5,
     height: '100%',
     width: '240px',
     marginLeft: (isOpen: boolean) => (isOpen ? '0' : '-240px'),

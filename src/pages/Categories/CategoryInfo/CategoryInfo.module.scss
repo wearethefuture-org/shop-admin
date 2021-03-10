@@ -1,6 +1,8 @@
 .block-wrapper-main {
-  padding: 2rem;
+  padding: 1rem;
   padding-bottom: 3rem;
+  padding-top: 84px;
+  margin-top: -54px;
 }
 
 h1 {
@@ -10,16 +12,10 @@ h1 {
 .expandable-field-wrapper {
   display: flex;
   justify-content: space-between;
-  margin: 2rem 0;
+}
 
-  .expandable-field {
-    display: flex;
-    align-items: center;
-
-    h4 {
-      margin: 0;
-    }
-  }
+h4 {
+  margin: 0;
 }
 
 .add-btn-wrapper {

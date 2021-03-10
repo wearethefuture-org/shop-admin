@@ -10,14 +10,14 @@ const CategoriesContainer: React.FC = () => {
   const categoriesCreateModalData = useCategoriesModal();
 
   return (
-    <>
+    <div style={{ padding: '1rem' }}>
       <FormDialog
         dispatch={dispatch}
         categoriesLength={data?.length}
         modalData={categoriesCreateModalData}
       />
       <CategoriesTable data={data} />
-    </>
+    </div>
   );
 };
 
