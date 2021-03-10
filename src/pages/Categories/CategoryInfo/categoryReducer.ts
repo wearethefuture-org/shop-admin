@@ -153,7 +153,11 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
     case 'deleteGroup': {
       if (action.prevGroup.id) {
         if (!state.removedCharacteristics) {
-          state.removedCharacteristics = { characteristicGroupIDs: [] };
+          state.removedCharacteristics = {};
+        }
+
+        if (!state.removedCharacteristics.characteristicGroupIDs) {
+          state.removedCharacteristics.characteristicGroupIDs = [];
         }
 
         state.removedCharacteristics.characteristicGroupIDs =
