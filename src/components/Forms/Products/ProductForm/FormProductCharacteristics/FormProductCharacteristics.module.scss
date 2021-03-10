@@ -44,7 +44,7 @@
   .char-block {
     display: flex;
     align-items: center;
-    min-width: 50%;
+    min-width: 100%;
   }
 
   &:hover {
@@ -116,7 +116,7 @@
     margin-bottom: 0;
 
     span {
-      background-color: #fff;
+      font-style: italic;
       padding: 0.3rem 0.6rem;
       margin-left: 0.3rem;
 
@@ -158,6 +158,7 @@
 .field-wrapper {
   display: flex;
   align-items: flex-start;
+  width: 100%;
 
   button {
     transform: translateY(-4px);

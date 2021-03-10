@@ -65,21 +65,6 @@ export const charDynamicFields = (char, formik, product) => {
     case 'number':
       return (
         <div className={styles['field-wrapper']}>
-          <IconButton
-            type="button"
-            aria-label="delete"
-            color="secondary"
-            title="Видалити значення"
-            disabled={!formik.values?.subForm[name]}
-            onClick={() =>
-              formik.setValues({
-                ...formik.values,
-                subForm: { ...formik.values?.subForm, [name]: '' },
-              })
-            }
-          >
-            <ClearIcon />
-          </IconButton>
           <Field>
             {({ field, form, meta }) => (
               <TextFieldWrapped
@@ -99,27 +84,27 @@ export const charDynamicFields = (char, formik, product) => {
               />
             )}
           </Field>
+          <IconButton
+            type="button"
+            aria-label="delete"
+            color="secondary"
+            title="Видалити значення"
+            disabled={!formik.values?.subForm[name]}
+            onClick={() =>
+              formik.setValues({
+                ...formik.values,
+                subForm: { ...formik.values?.subForm, [name]: '' },
+              })
+            }
+          >
+            <ClearIcon />
+          </IconButton>
         </div>
       );
 
     case 'range':
       return (
         <div className={styles['field-wrapper']}>
-          <IconButton
-            type="button"
-            aria-label="delete"
-            color="secondary"
-            title="Видалити значення"
-            disabled={!formik.values?.subForm[name]}
-            onClick={() =>
-              formik.setValues({
-                ...formik.values,
-                subForm: { ...formik.values?.subForm, [name]: '' },
-              })
-            }
-          >
-            <ClearIcon />
-          </IconButton>
           <Field>
             {({ field, form, meta }) => (
               <TextFieldWrapped
@@ -139,6 +124,21 @@ export const charDynamicFields = (char, formik, product) => {
               />
             )}
           </Field>
+          <IconButton
+            type="button"
+            aria-label="delete"
+            color="secondary"
+            title="Видалити значення"
+            disabled={!formik.values?.subForm[name]}
+            onClick={() =>
+              formik.setValues({
+                ...formik.values,
+                subForm: { ...formik.values?.subForm, [name]: '' },
+              })
+            }
+          >
+            <ClearIcon />
+          </IconButton>
         </div>
       );
 
@@ -249,21 +249,6 @@ export const charDynamicFields = (char, formik, product) => {
     case 'date':
       return (
         <div className={styles['field-wrapper']}>
-          <IconButton
-            type="button"
-            aria-label="delete"
-            color="secondary"
-            title="Видалити значення"
-            disabled={!formik.values?.subForm[name]}
-            onClick={() =>
-              formik.setValues({
-                ...formik.values,
-                subForm: { ...formik.values?.subForm, [name]: '' },
-              })
-            }
-          >
-            <ClearIcon />
-          </IconButton>
           <Field>
             {({ field, form, meta }) => (
               <TextFieldWrapped
@@ -286,6 +271,21 @@ export const charDynamicFields = (char, formik, product) => {
               />
             )}
           </Field>
+          <IconButton
+            type="button"
+            aria-label="delete"
+            color="secondary"
+            title="Видалити значення"
+            disabled={!formik.values?.subForm[name]}
+            onClick={() =>
+              formik.setValues({
+                ...formik.values,
+                subForm: { ...formik.values?.subForm, [name]: '' },
+              })
+            }
+          >
+            <ClearIcon />
+          </IconButton>
         </div>
       );
 
@@ -330,21 +330,6 @@ export const charDynamicFields = (char, formik, product) => {
     default:
       return (
         <div className={styles['field-wrapper']}>
-          <IconButton
-            type="button"
-            aria-label="delete"
-            color="secondary"
-            title="Видалити значення"
-            disabled={!formik.values?.subForm[name]}
-            onClick={() =>
-              formik.setValues({
-                ...formik.values,
-                subForm: { ...formik.values?.subForm, [name]: '' },
-              })
-            }
-          >
-            <ClearIcon />
-          </IconButton>
           <Field>
             {({ field, form, meta }) => (
               <TextFieldWrapped
@@ -365,6 +350,21 @@ export const charDynamicFields = (char, formik, product) => {
               />
             )}
           </Field>
+          <IconButton
+            type="button"
+            aria-label="delete"
+            color="secondary"
+            title="Видалити значення"
+            disabled={!formik.values?.subForm[name]}
+            onClick={() =>
+              formik.setValues({
+                ...formik.values,
+                subForm: { ...formik.values?.subForm, [name]: '' },
+              })
+            }
+          >
+            <ClearIcon />
+          </IconButton>
         </div>
       );
   }

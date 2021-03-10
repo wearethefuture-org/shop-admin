@@ -9,6 +9,7 @@
   .char-block {
     display: flex;
     align-items: center;
+    flex: 9;
   }
 
   &:hover {
@@ -23,8 +24,8 @@
   .char-name-wrapper {
     display: flex;
     align-items: center;
-    justify-content: center;
     margin-right: 3rem;
+    flex: 1;
 
     span {
       font-size: 1rem;
@@ -67,6 +68,7 @@
 
 .enum-values {
   margin-top: 0.5rem;
+  flex: 1;
 
   li {
     text-transform: capitalize;
@@ -76,18 +78,21 @@
 }
 
 .default-values {
-  background-color: #fff;
+  flex: 1;
   padding: 0.3rem 0.6rem;
+  font-style: italic;
 }
 
 .range-values {
+  flex: 1;
+
   p {
     display: inline-flex;
     align-items: center;
     margin-bottom: 0;
 
     span {
-      background-color: #fff;
+      font-style: italic;
       padding: 0.3rem 0.6rem;
       margin-left: 0.3rem;
 

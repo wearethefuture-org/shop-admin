@@ -71,13 +71,7 @@ const CategoryCharModal: React.FC<IModalProps> = ({
       const { defaultVal, ...charValues } = values;
 
       const filteredKeys = Object.keys(charValues).filter(
-        (key) =>
-          key === 'required' ||
-          (key === 'defaultValues' &&
-            charValues['defaultValues'] &&
-            charValues['defaultValues'].values &&
-            charValues['defaultValues'].values.length) ||
-          charValues[key]
+        (key) => key === 'required' || key === 'defaultValues' || charValues[key]
       );
 
       const finalValues: Char = filteredKeys.reduce((acc, key) => {
