@@ -51,7 +51,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
     [handleImageChange]
   );
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
     <div className={styles['product-form-container']}>
@@ -175,7 +175,11 @@ const ProductForm: React.FC<IProductFormProps> = ({
                         ))}
                       </>
                     ) : null}
-                    <div className={styles.label} {...getRootProps()}>
+                    <div
+                      className={isDragActive ? styles['dropzone-active'] : styles.dropzone}
+                      {...getRootProps()}
+                    >
+                      <div className={styles['dropzone-border']}></div>
                       <AddAPhotoIcon />
                       <p>Виберіть файли або перетягніть їх сюди</p>
                     </div>

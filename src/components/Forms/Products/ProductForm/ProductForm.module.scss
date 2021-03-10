@@ -70,7 +70,7 @@
     margin-top: 1rem;
   }
 
-  .label {
+  .dropzone {
     height: 100px;
     width: 100px;
     margin: 10px;
@@ -89,6 +89,41 @@
       margin-bottom: 0;
       margin-top: 0.5rem;
       font-size: 0.7rem;
+    }
+  }
+
+  .dropzone-active {
+    @extend .dropzone;
+    position: relative;
+    height: 100px;
+    width: 100px;
+    border: 2px dashed transparent;
+
+    .dropzone-border {
+      position: absolute;
+      left: -2px;
+      top: -2px;
+      width: 100px;
+      height: 100px;
+      border-radius: 4px;
+
+      background: linear-gradient(90deg, #ccc 50%, transparent 50%),
+        linear-gradient(0deg, #ccc 50%, transparent 50%),
+        linear-gradient(90deg, #ccc 50%, transparent 50%),
+        linear-gradient(0deg, #ccc 50%, transparent 50%);
+      background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
+      background-size: 8px 1.5px, 1.5px 8px, 8px 1.5px, 1.5px 8px;
+      background-position: left top, right top, left bottom, left top;
+      animation: border-dance 4s infinite linear;
+    }
+
+    @keyframes border-dance {
+      0% {
+        background-position: left top, right top, right bottom, left bottom;
+      }
+      100% {
+        background-position: right top, right bottom, left bottom, left top;
+      }
     }
   }
 

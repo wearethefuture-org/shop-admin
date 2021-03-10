@@ -69,7 +69,7 @@ input[type='number'] {
 // gallery
 .image-gallery {
   min-width: 300px;
-  max-width: 35vw;
+  max-width: 32vw;
 
   .image-gallery-swipe {
     display: flex;
@@ -102,7 +102,7 @@ input[type='number'] {
 .image-gallery-thumbnail.active,
 .image-gallery-thumbnail:hover,
 .image-gallery-thumbnail:focus {
-  border: 3px solid #01a701 !important;
+  border: 3px solid darkgreen !important;
 }
 
 .image-gallery-bullets .image-gallery-bullet {
@@ -110,7 +110,12 @@ input[type='number'] {
   box-shadow: none !important;
 
   &:hover,
-  &:focus {
+  &:focus,
+  &:active {
     background: #bbb !important;
   }
+}
+
+.image-gallery-bullets .image-gallery-bullet.active {
+  background: darkgreen !important;
 }

@@ -47,11 +47,12 @@ const ProductImages: React.FC = () => {
   const images = largeImages.map((img, idx) => ({
     original: `${root}/product/img/${img}`,
     thumbnail: `${root}/product/img/${croppedImages[idx]}`,
+    bulletClass: styles.bullet,
   }));
 
   const galleryRef = useRef(null);
 
-  const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const [activeIdx, setActiveIdx] = useState<number>(0);
 
   const getIndex = () => {
     //@ts-ignore
@@ -59,11 +60,9 @@ const ProductImages: React.FC = () => {
   };
 
   const handleMainImage = () => {
-    if (activeIdx) {
-      product?.mainImg?.name && product?.mainImg?.name === largeImages[activeIdx]
-        ? dispatch(failSnackBar('Зображення вже призначене головним зображенням'))
-        : dispatch(uploadMainImgRequest(product.id, largeImages[activeIdx]));
-    }
+    product?.mainImg?.name && product?.mainImg?.name === largeImages[activeIdx]
+      ? dispatch(failSnackBar('Зображення вже призначене головним зображенням'))
+      : dispatch(uploadMainImgRequest(product.id, largeImages[activeIdx]));
   };
 
   return (
@@ -83,7 +82,7 @@ const ProductImages: React.FC = () => {
             title="Зробити головним зображенням"
             onClick={handleMainImage}
           >
-            {mainImg && activeIdx && mainImg.includes(largeImages[activeIdx]) ? (
+            {mainImg && mainImg.includes(largeImages[activeIdx]) ? (
               <StarFilledIcon />
             ) : (
               <StarIcon />

@@ -50,6 +50,10 @@ const CategoryInfo: React.FC = () => {
   useEffect(() => {
     categoryDispatch({ type: 'setCategoryId', id: category.id });
     categoryDisplayDispatch({ type: 'setDisplayCategory', category });
+
+    if (null !== ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [category]);
 
   const charGroup = categoryDisplayState.characteristicGroup;
@@ -95,10 +99,6 @@ const CategoryInfo: React.FC = () => {
 
       dispatch(updateCategoryRequest(categoryState));
       categoryDispatch({ type: 'resetCategory' });
-
-      if (null !== ref.current) {
-        ref.current.scrollIntoView({ behavior: 'smooth' });
-      }
 
       setEditBasicInfo(false);
       formik.setSubmitting(false);
