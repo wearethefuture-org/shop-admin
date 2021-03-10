@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import StarFilledIcon from '@material-ui/icons/Star';
 import StarIcon from '@material-ui/icons/StarBorder';
+import { Card } from '@material-ui/core';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 

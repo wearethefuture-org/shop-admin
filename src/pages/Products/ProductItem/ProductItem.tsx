@@ -15,6 +15,7 @@ import { confirmDelete } from '../../../components/confirmAlert/confirmAlert';
 import ProductCharacteristics from './ProductCharacteristics/ProductCharacteristics';
 import { IGetProductById } from '../../../interfaces/IProducts';
 import styles from './ProductItem.module.scss';
+import { Card } from '@material-ui/core';
 
 const ProductItem: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -31,14 +32,14 @@ const ProductItem: React.FC = () => {
   // DELETE PRODUCT
   const handleDeleteProduct = () => {
     const handleConfirm = () => {
-      dispatch(deleteProductRequest(product.id));
+      dispatch(deleteProductRequest(product));
       goBack();
     };
 
     confirmDelete(
       product.name,
       handleConfirm,
-      'Продукт та усі пов`язані з ним значення буде неможливо відновити'
+      'Продукт та усі пов`язані з ним дані буде неможливо відновити'
     );
   };
 
@@ -80,25 +81,27 @@ const ProductItem: React.FC = () => {
       </p>
       <h1>{product.name}</h1>
 
-      <div className={styles['item-main-info']}>
-        <ProductImages />
-        <ProductDescription />
-      </div>
-
-      <div className={styles['item-additional-info']}>
-        <div className={styles['expand-field']}>
-          <ExpandBtn
-            expandBlock={expandBlock}
-            handleExpand={() => setExpandBlock(!expandBlock)}
-            disabled={false}
-          />
-          <span>Характеристики</span>
+      <Card>
+        <div className={styles['item-main-info']}>
+          <ProductImages />
+          <ProductDescription />
         </div>
 
-        <div className={expandBlock ? 'expanded' : 'shrinked'}>
-          <ProductCharacteristics categoryName={product.category?.name} />
+        <div className={styles['item-additional-info']}>
+          <div className={styles['expand-field']}>
+            <ExpandBtn
+              expandBlock={expandBlock}
+              handleExpand={() => setExpandBlock(!expandBlock)}
+              disabled={false}
+            />
+            <span>Характеристики</span>
+          </div>
+
+          <div className={expandBlock ? 'expanded' : 'shrinked'}>
+            <ProductCharacteristics categoryName={product.category?.name} />
+          </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

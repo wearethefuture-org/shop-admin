@@ -68,12 +68,14 @@ input[type='number'] {
 
 // gallery
 .image-gallery {
+  min-width: 300px;
+  max-width: 35vw;
+
   .image-gallery-swipe {
     display: flex;
     align-items: center;
     justify-content: center;
     aspect-ratio: 1/1;
-    background-color: #fff;
     border-radius: 4px;
 
     .image-gallery-image {

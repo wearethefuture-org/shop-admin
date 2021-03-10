@@ -1,7 +1,6 @@
 .itemCard {
   padding: 2rem;
   height: max-content;
-  overflow-x: auto;
   min-height: 100vh;
 
   h1 {
@@ -35,22 +34,25 @@
 
   .item-main-info {
     display: flex;
-    margin-top: 1rem;
     flex: 1;
-    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 1rem;
+    justify-content: space-between;
   }
 
   .item-additional-info {
     height: max-content;
     margin-top: 4rem;
+    padding: 0 2rem;
+    border-top: 1px solid #ddd;
 
     .expand-field {
       display: flex;
       align-items: center;
-      margin-bottom: 1rem;
+      margin-top: 2rem;
 
       span {
-        font-size: 1rem;
+        font-size: 1.5rem;
         font-weight: bold;
       }
     }

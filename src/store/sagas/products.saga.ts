@@ -1,4 +1,4 @@
-import { put, call } from 'redux-saga/effects';
+import { put, call, all } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 
 import { IActions } from '../../interfaces/actions';
@@ -19,8 +19,6 @@ import {
 import {
   addProductError,
   addProductSuccess,
-  deleteImageError,
-  deleteImageSuccess,
   deleteProductError,
   deleteProductSuccess,
   getProductByIdError,
@@ -96,24 +94,12 @@ export function* uploadMainImgWorker({ data }: IActions): SagaIterator {
   }
 }
 
-export function* deleteImgWorker({ data: { imgName, id } }: IActions): SagaIterator {
-  try {
-    yield call(apiDeleteImg, imgName);
-    const product = yield call(apiGetProductById, id);
-
-    yield put(deleteImageSuccess(product));
-    yield put(successSnackBar());
-  } catch (error) {
-    yield put(failSnackBar(error.message));
-    yield put(deleteImageError(error.message));
-  }
-}
-
 export function* updateProductWorker({
   data: {
     id,
     productValues,
     characteristicValues: { charsToAdd, charsToEdit, charsToDelete },
+    imagesToDelete,
   },
 }: IActions): SagaIterator<void> {
   try {
@@ -154,6 +140,10 @@ export function* updateProductWorker({
       );
     }
 
+    if (imagesToDelete.length) {
+      yield all(imagesToDelete.map((img) => call(apiDeleteImg, img)));
+    }
+
     const updatedProduct = yield call(apiGetProductById, editedProduct.id);
 
     yield put(updateProductSuccess(updatedProduct));
@@ -164,16 +154,25 @@ export function* updateProductWorker({
   }
 }
 
-export function* deleteProductWorker({ data: id }: IActions): SagaIterator {
+export function* deleteProductWorker({ data: product }: IActions): SagaIterator {
   try {
+    const charValues = product.characteristicValue.map((value) => value.id);
+
     const products = yield call(apiGetProductsInCart);
     const productsInCartIds = products.length && products.map((product) => product.productId);
 
-    if (productsInCartIds.length && productsInCartIds.includes(id)) {
-      yield put(failSnackBar('Продукт знаходиться у кошику та не може бути видалений'));
+    if (productsInCartIds.length && productsInCartIds.includes(product.id)) {
+      throw new Error('Продукт знаходиться у кошику та не може бути видалений');
     } else {
-      yield call(apiDeleteProduct, id);
-      yield put(deleteProductSuccess(id));
+      if (charValues.length)
+        yield call(
+          apiDeleteChar,
+          { url: '/characteristics-values' },
+          { characteristicValuesIds: charValues }
+        );
+
+      yield call(apiDeleteProduct, product.id);
+      yield put(deleteProductSuccess(product.id));
       yield put(successSnackBar());
     }
   } catch (error) {

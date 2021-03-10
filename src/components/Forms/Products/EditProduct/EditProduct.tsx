@@ -8,10 +8,7 @@ import useCategories from '../../../../hooks/useCategories';
 import { IGetProductById, IUpdateProduct } from '../../../../interfaces/IProducts';
 import { AppDispatch, RootState } from '../../../../store/store';
 import { root } from '../../../../api/config';
-import {
-  deleteImageRequest,
-  updateProductRequest,
-} from '../../../../store/actions/products.actions';
+import { updateProductRequest } from '../../../../store/actions/products.actions';
 import { productValidationShema } from '../ProductForm/productFormHelpers';
 import { ICategoryResponse, ICharResponse } from '../../../../interfaces/ICategory';
 import { getEditCharValuesObject } from './getEditCharValuesObject';
@@ -37,6 +34,9 @@ const EditProduct: React.FC = () => {
   };
 
   const [validation, setValidation] = useState(productValidationShema);
+
+  // DELETE IMAGES
+  const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
 
   // FORMIK
   const initialValues = {
@@ -64,7 +64,8 @@ const EditProduct: React.FC = () => {
         updateProductRequest(
           product.id,
           productValues,
-          getEditCharValuesObject(chars, product, formik)
+          getEditCharValuesObject(chars, product, formik),
+          imagesToDelete
         )
       );
 
@@ -96,14 +97,11 @@ const EditProduct: React.FC = () => {
     }
   }, [product.files]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const fileList: File[] = Array.from(e.target.files);
-      setImages((prev) => prev.concat(fileList));
+  const handleImageChange = (fileList: File[]) => {
+    setImages((prev) => prev.concat(fileList));
 
-      const mappedFiles = fileList.map((file) => URL.createObjectURL(file));
-      setImagesPreview((prev) => prev.concat(mappedFiles));
-    }
+    const mappedFiles = fileList.map((file) => URL.createObjectURL(file));
+    setImagesPreview((prev) => prev.concat(mappedFiles));
   };
 
   const handleDeleteImg = (img, idx) => {
@@ -111,7 +109,7 @@ const EditProduct: React.FC = () => {
     const existingImg = imgName && product.files.filter((file) => file.name.includes(imgName));
 
     if (existingImg.length) {
-      existingImg.forEach((img) => dispatch(deleteImageRequest(img.name, product.id)));
+      setImagesToDelete(imagesToDelete.concat(existingImg.map((img) => img.name)));
     } else {
       setImages(images.filter((_, imgIdx) => imgIdx !== idx));
     }

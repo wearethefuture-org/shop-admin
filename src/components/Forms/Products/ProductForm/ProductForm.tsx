@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Field, Form, FormikProps, FormikProvider } from 'formik';
+import { useDropzone } from 'react-dropzone';
 import { Button, Card, DialogActions, MenuItem } from '@material-ui/core';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -10,15 +11,15 @@ import GoBackBtn from '../../../GoBackBtn/GoBackBtn';
 import FormProductCharacteristics from './FormProductCharacteristics/FormProductCharacteristics';
 import { formatKey } from './productFormHelpers';
 import { IGetCategoriesResponse } from '../../../../interfaces/ICategory';
-import styles from './ProductForm.module.scss';
 import { ErrorFocus, ErrorSubFormFocus } from '../../../ErrorFocus';
+import styles from './ProductForm.module.scss';
 
 export interface IProductFormProps {
   editMode: boolean;
   formik: FormikProps<any>;
   handleGoBack: () => void;
   categories: IGetCategoriesResponse[];
-  handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleImageChange: (fileList: File[]) => void;
   imagesPreview: string[];
   handleDeleteImg: (img: string, idx: number) => void;
   setValidation: (v: any) => void;
@@ -41,6 +42,16 @@ const ProductForm: React.FC<IProductFormProps> = ({
     expandedBlocks.includes(field)
       ? setExpandedBlocks(expandedBlocks.filter((block) => block !== field))
       : setExpandedBlocks([...expandedBlocks, field]);
+
+  // DROPZONE
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      handleImageChange(acceptedFiles);
+    },
+    [handleImageChange]
+  );
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
     <div className={styles['product-form-container']}>
@@ -146,8 +157,11 @@ const ProductForm: React.FC<IProductFormProps> = ({
                     id="file"
                     multiple
                     className={styles['file-input']}
-                    onChange={handleImageChange}
+                    onChange={onDrop}
+                    accept="image/png, image/jpeg, image/jpg, image/gif"
+                    {...getInputProps()}
                   />
+
                   <div className={styles.labelHolder}>
                     {imagesPreview.length ? (
                       <>
@@ -161,9 +175,10 @@ const ProductForm: React.FC<IProductFormProps> = ({
                         ))}
                       </>
                     ) : null}
-                    <label htmlFor="file" className={styles.label}>
+                    <div className={styles.label} {...getRootProps()}>
                       <AddAPhotoIcon />
-                    </label>
+                      <p>Виберіть файли або перетягніть їх сюди</p>
+                    </div>
                   </div>
                 </div>
               </div>

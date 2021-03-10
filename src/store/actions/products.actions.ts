@@ -26,9 +26,6 @@ import {
   UPLOAD_MAIN_IMG_REQUEST,
   UPLOAD_MAIN_IMG_SUCCESS,
   UPLOAD_MAIN_IMG_ERROR,
-  DELETE_IMAGE_REQUEST,
-  DELETE_IMAGE_ERROR,
-  DELETE_IMAGE_SUCCESS,
 } from '../types';
 
 // get all
@@ -97,22 +94,6 @@ export const uploadMainImgError = (message: string): IActions => ({
   data: message,
 });
 
-// delete image
-export const deleteImageRequest = (imgName: string, id: number): IActions => ({
-  type: DELETE_IMAGE_REQUEST,
-  data: { imgName, id },
-});
-
-export const deleteImageSuccess = (product: IGetProductById): IActions => ({
-  type: DELETE_IMAGE_SUCCESS,
-  data: product,
-});
-
-export const deleteImageError = (message: string): IActions => ({
-  type: DELETE_IMAGE_ERROR,
-  data: message,
-});
-
 // update product
 export const updateProductRequest = (
   id: number,
@@ -121,10 +102,11 @@ export const updateProductRequest = (
     charsToAdd: ICharValue[];
     charsToEdit: ICharValue[];
     charsToDelete: number[];
-  }
+  },
+  imagesToDelete: string[]
 ): IActions => ({
   type: UPDATE_PRODUCT_REQUEST,
-  data: { id, productValues, characteristicValues },
+  data: { id, productValues, characteristicValues, imagesToDelete },
 });
 
 export const updateProductSuccess = (product: IProductItem): IActions => ({
@@ -138,9 +120,9 @@ export const updateProductError = (message: string): IActions => ({
 });
 
 // delete product
-export const deleteProductRequest = (id: number): IActions => ({
+export const deleteProductRequest = (product: IGetProductById): IActions => ({
   type: DELETE_PRODUCT_REQUEST,
-  data: id,
+  data: product,
 });
 
 export const deleteProductSuccess = (id: number): IActions => ({

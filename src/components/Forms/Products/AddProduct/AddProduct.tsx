@@ -71,14 +71,11 @@ const AddProductForm: React.FC = () => {
     formik.values.files = [];
   }
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const fileList: File[] = Array.from(e.target.files);
-      setImages((prev) => prev.concat(fileList));
+  const handleImageChange = (fileList: File[]) => {
+    setImages((prev) => prev.concat(fileList));
 
-      const mappedFiles = fileList.map((file) => URL.createObjectURL(file));
-      setImagesPreview((prev) => prev.concat(mappedFiles));
-    }
+    const mappedFiles = fileList.map((file) => URL.createObjectURL(file));
+    setImagesPreview((prev) => prev.concat(mappedFiles));
   };
 
   const handleDeleteImg = (img: string, idx: number) => {
