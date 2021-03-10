@@ -67,7 +67,6 @@ const CategoryGroupModal: React.FC<IModalProps> = ({
           editedGroup: {
             id: groupToEdit.id && groupToEdit.id,
             name: groupName,
-            characteristics: [],
           },
         });
         categoryDisplayDispatch({

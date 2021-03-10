@@ -140,7 +140,11 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
         )
           ? state.characteristicGroups.map((group) =>
               group.id === action.prevGroup.id || group.name === action.prevGroup.name
-                ? action.editedGroup
+                ? {
+                    id: action.editedGroup.id && action.editedGroup.id,
+                    name: action.editedGroup.name,
+                    characteristics: group.characteristics && group.characteristics,
+                  }
                 : group
             )
           : state.characteristicGroups.concat(action.editedGroup),
@@ -189,19 +193,32 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
 
       return {
         ...state,
-        characteristicGroups: state.characteristicGroups.map((group) =>
-          group.name === action.group.name
-            ? {
-                ...group,
-                characteristics:
-                  group.characteristics &&
-                  group.characteristics.concat({
-                    ...action.newChar,
-                    categoryId: state.id,
-                  }),
-              }
-            : group
-        ),
+        characteristicGroups: state.characteristicGroups.find(
+          (group) => group.name === action.group.name
+        )
+          ? state.characteristicGroups.map((group) =>
+              group.name === action.group.name
+                ? {
+                    ...group,
+                    characteristics:
+                      group.characteristics &&
+                      group.characteristics.concat({
+                        ...action.newChar,
+                        categoryId: state.id,
+                      }),
+                  }
+                : group
+            )
+          : state.characteristicGroups?.concat({
+              id: action.group.id && action.group.id,
+              name: action.group.name,
+              characteristics: [
+                {
+                  ...action.newChar,
+                  categoryId: state.id,
+                },
+              ],
+            }),
       };
 
     case 'editChar':
