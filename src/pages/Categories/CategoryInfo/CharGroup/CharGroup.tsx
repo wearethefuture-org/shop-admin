@@ -10,7 +10,7 @@ import CharBlock from './CharBlock/CharBlock';
 import CategoryCharModal from '../../../../components/Modals/CategoryCharModal/CategoryCharModal';
 import { CategoryToDispalayAction, GroupToDisplay } from '../categoryToDisplayReducer';
 import { CategoryAction, Char } from '../categoryReducer';
-import { confirmDelete } from '../../../../components/confirmAlert/confirmAlert';
+import CustomConfirm from '../../../../components/CustomConfirm/CustomConfirm';
 import styles from './CharGroup.module.scss';
 
 interface IGroupProps {
@@ -35,29 +35,23 @@ const CharGroup: React.FC<IGroupProps> = ({
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
   // EDIT GROUP
-  const handleEditGroup = (group) => {
+  const handleEditGroup = () => {
     setOpenGroupModal(true);
     group && setGroupToEdit(group);
   };
 
   // DELETE GROUP
-  const handleDeleteGroup = (group) => {
-    const handleDelete = () => {
-      categoryDispatch({
-        type: 'deleteGroup',
-        prevGroup: group,
-      });
-      categoryDisplayDispatch({
-        type: 'deleteDisplayGroup',
-        groupName: group.name,
-      });
-    };
+  const [openDeleteGroupDialog, setOpenDeleteGroupDialog] = useState<boolean>(false);
 
-    confirmDelete(
-      group.name,
-      handleDelete,
-      'Група буде повністю видалена, включаючи пов`язані з нею характеристики та їх значення'
-    );
+  const handleDeleteGroup = () => {
+    categoryDispatch({
+      type: 'deleteGroup',
+      prevGroup: group,
+    });
+    categoryDisplayDispatch({
+      type: 'deleteDisplayGroup',
+      groupName: group.name ? group.name : '',
+    });
   };
 
   // EXPANDED GROUPS
@@ -74,31 +68,6 @@ const CharGroup: React.FC<IGroupProps> = ({
   // EDIT CHAR
   const [charToEdit, setCharToEdit] = useState<Char | null>(null);
 
-  // DELETE CHAR
-  const handleDeleteChar = (char) => {
-    const handleDelete = () => {
-      if (group.name) {
-        categoryDispatch({
-          type: 'deleteChar',
-          group: group,
-          char: char,
-        });
-        categoryDisplayDispatch({
-          type: 'deleteDisplayChar',
-          groupName: group.name,
-          charName: char.name,
-        });
-      }
-    };
-
-    group.name &&
-      confirmDelete(
-        group.name,
-        handleDelete,
-        'Характеристика та її значення будуть повністю видалені з усіх пов`язаних з нею продуктів'
-      );
-  };
-
   return (
     <>
       {group ? (
@@ -112,6 +81,16 @@ const CharGroup: React.FC<IGroupProps> = ({
               group={group}
               categoryDispatch={categoryDispatch}
               categoryDisplayDispatch={categoryDisplayDispatch}
+            />
+          )}
+
+          {openDeleteGroupDialog && group && (
+            <CustomConfirm
+              openDeleteDialog={openDeleteGroupDialog}
+              closeDeleteDialog={() => setOpenDeleteGroupDialog(false)}
+              name={group.name ? group.name : ''}
+              warning="Група буде повністю видалена, включаючи пов`язані з нею характеристики та їх значення"
+              handleDelete={handleDeleteGroup}
             />
           )}
 
@@ -135,7 +114,7 @@ const CharGroup: React.FC<IGroupProps> = ({
                   aria-label="edit"
                   color="default"
                   type="button"
-                  onClick={() => handleEditGroup(group)}
+                  onClick={() => handleEditGroup()}
                 >
                   <EditIcon />
                 </IconButton>
@@ -143,7 +122,7 @@ const CharGroup: React.FC<IGroupProps> = ({
                   aria-label="delete"
                   type="button"
                   color="secondary"
-                  onClick={() => group && handleDeleteGroup(group)}
+                  onClick={() => setOpenDeleteGroupDialog(true)}
                 >
                   <DeleteIcon />
                 </IconButton>
@@ -166,7 +145,8 @@ const CharGroup: React.FC<IGroupProps> = ({
               group={group}
               setOpenCharModal={setOpenCharModal}
               setCharToEdit={setCharToEdit}
-              handleDeleteChar={handleDeleteChar}
+              categoryDispatch={categoryDispatch}
+              categoryDisplayDispatch={categoryDisplayDispatch}
             />
           </div>
         </>

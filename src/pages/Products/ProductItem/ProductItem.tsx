@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import ArrowIcon from '@material-ui/icons/ArrowBackIos';
+import { Card } from '@material-ui/core';
 
 import { deleteProductRequest } from '../../../store/actions/products.actions';
 import { AppDispatch, RootState } from '../../../store/store';
@@ -11,11 +12,10 @@ import DeleteBtn from '../../../components/DeleteBtn/DeleteBtn';
 import GoBackBtn from '../../../components/GoBackBtn/GoBackBtn';
 import EditBtn from '../../../components/EditBtn/EditBtn';
 import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
-import { confirmDelete } from '../../../components/confirmAlert/confirmAlert';
 import ProductCharacteristics from './ProductCharacteristics/ProductCharacteristics';
 import { IGetProductById } from '../../../interfaces/IProducts';
+import CustomConfirm from '../../../components/CustomConfirm/CustomConfirm';
 import styles from './ProductItem.module.scss';
-import { Card } from '@material-ui/core';
 
 const ProductItem: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -30,17 +30,11 @@ const ProductItem: React.FC = () => {
   const goBack = () => history.push('/products');
 
   // DELETE PRODUCT
-  const handleDeleteProduct = () => {
-    const handleConfirm = () => {
-      dispatch(deleteProductRequest(product));
-      goBack();
-    };
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
-    confirmDelete(
-      product.name,
-      handleConfirm,
-      'Продукт та усі пов`язані з ним дані буде неможливо відновити'
-    );
+  const handleDeleteProduct = () => {
+    dispatch(deleteProductRequest(product));
+    goBack();
   };
 
   // ADDITIONAL INFO
@@ -48,6 +42,16 @@ const ProductItem: React.FC = () => {
 
   return (
     <div className={darkMode ? styles['itemCard-dark'] : styles.itemCard}>
+      {openDeleteDialog && (
+        <CustomConfirm
+          openDeleteDialog={openDeleteDialog}
+          closeDeleteDialog={() => setOpenDeleteDialog(false)}
+          name={product.name}
+          warning="Продукт та усі пов`язані з ним дані буде неможливо відновити"
+          handleDelete={handleDeleteProduct}
+        />
+      )}
+
       <div className={styles['btn-container']}>
         <GoBackBtn handleGoBack={() => goBack()} />
 
@@ -60,7 +64,7 @@ const ProductItem: React.FC = () => {
           >
             <EditBtn handleClick={() => {}} />
           </Link>
-          <DeleteBtn handleDelete={handleDeleteProduct} />
+          <DeleteBtn handleDelete={() => setOpenDeleteDialog(true)} />
         </div>
       </div>
 

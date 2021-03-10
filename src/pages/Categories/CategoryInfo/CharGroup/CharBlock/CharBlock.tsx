@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -7,22 +7,25 @@ import EditIcon from '@material-ui/icons/Edit';
 import { RootState } from '../../../../../store/store';
 import AsteriskIcon from '../../../../../assets/icons/AsteriskIcon';
 import { getIcon } from '../../../../../components/Modals/CategoryCharModal/categoryCharModalHelpers';
-import { Char } from '../../categoryReducer';
-import { GroupToDisplay } from '../../categoryToDisplayReducer';
+import { CategoryAction, Char } from '../../categoryReducer';
+import { CategoryToDispalayAction, GroupToDisplay } from '../../categoryToDisplayReducer';
+import CustomConfirm from '../../../../../components/CustomConfirm/CustomConfirm';
 import styles from './CharBlock.module.scss';
 
 interface ICharBlock {
   group: GroupToDisplay;
   setOpenCharModal: Dispatch<SetStateAction<boolean>>;
   setCharToEdit: Dispatch<SetStateAction<Char | null>>;
-  handleDeleteChar: (c: Char) => void;
+  categoryDispatch: Dispatch<CategoryAction>;
+  categoryDisplayDispatch: Dispatch<CategoryToDispalayAction>;
 }
 
 const CharBlock: React.FC<ICharBlock> = ({
   group,
   setOpenCharModal,
   setCharToEdit,
-  handleDeleteChar,
+  categoryDispatch,
+  categoryDisplayDispatch,
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
@@ -30,6 +33,25 @@ const CharBlock: React.FC<ICharBlock> = ({
   const handleEditChar = (char: Char) => {
     setOpenCharModal(true);
     char && setCharToEdit(char);
+  };
+
+  // DELETE CHAR
+  const [openDeleteCharDialog, setOpenDeleteCharDialog] = useState<boolean>(false);
+
+  const handleDeleteChar = (char) => {
+    if (group.name) {
+      categoryDispatch({
+        type: 'deleteChar',
+        group: group,
+        char: char,
+      });
+      categoryDisplayDispatch({
+        type: 'deleteDisplayChar',
+        groupName: group.name,
+        charName: char.name,
+      });
+    }
+
   };
 
   return (
@@ -42,6 +64,16 @@ const CharBlock: React.FC<ICharBlock> = ({
                   key={char.name}
                   className={darkMode ? styles['char-wrapper-dark'] : styles['char-wrapper']}
                 >
+                  {openDeleteCharDialog && (
+                    <CustomConfirm
+                      openDeleteDialog={openDeleteCharDialog}
+                      closeDeleteDialog={() => setOpenDeleteCharDialog(false)}
+                      name={char.name ? char.name : ''}
+                      warning="Група буде повністю видалена, включаючи пов`язані з нею характеристики та їх значення"
+                      handleDelete={() => handleDeleteChar(char)}
+                    />
+                  )}
+
                   <div className={styles['char-block']}>
                     <div className={styles['char-name-wrapper']}>
                       {char.type !== 'json' ? (
@@ -99,7 +131,7 @@ const CharBlock: React.FC<ICharBlock> = ({
                       aria-label="delete"
                       type="button"
                       color="secondary"
-                      onClick={() => handleDeleteChar(char)}
+                      onClick={() => setOpenDeleteCharDialog(true)}
                     >
                       <DeleteIcon />
                     </IconButton>
