@@ -26,17 +26,31 @@ const validationSchema = Yup.object({
 });
 
 const WidgetForm = withFormik<WidgetFormProps, IFormWidgetValues>({
-  mapPropsToValues: ({ parameters: { quantityNewArrivals, quantityPopularItems } }) => {
+  mapPropsToValues: ({ parameters: { newArrivals, popularItems } }) => {
     return {
-      quantityNewArrivals,
-      quantityPopularItems,
+      quantityNewArrivals: newArrivals.quantity,
+      quantityPopularItems: popularItems.quantity,
+      isWidgetActiveNewArrivals: newArrivals.isWidgetActive,
+      isWidgetActivePopularItems: popularItems.isWidgetActive,
     };
   },
   validationSchema: validationSchema,
   handleSubmit: (values: IFormWidgetValues, { setSubmitting, props }) => {
     setSubmitting(false);
     props.handleClick();
-    props.dispatch(fetchUpdateSettings(props.name, values));
+
+    const parameters: ISettingsParams = {
+      newArrivals: {
+        quantity: values.quantityNewArrivals,
+        isWidgetActive: values.isWidgetActiveNewArrivals,
+      },
+      popularItems: {
+        quantity: values.quantityPopularItems,
+        isWidgetActive: values.isWidgetActivePopularItems,
+      },
+    };
+
+    props.dispatch(fetchUpdateSettings(props.name, parameters));
   },
 })(InnerForm);
 
