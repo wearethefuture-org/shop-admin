@@ -97,7 +97,7 @@ const CategoryInfo: React.FC = () => {
       categoryDispatch({ type: 'resetCategory' });
 
       if (null !== ref.current) {
-        ref.current.scrollIntoView();
+        ref.current.scrollIntoView({ behavior: 'smooth' });
       }
 
       setEditBasicInfo(false);

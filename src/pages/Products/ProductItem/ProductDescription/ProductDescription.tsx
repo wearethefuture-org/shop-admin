@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Card } from '@material-ui/core';
 
 import { IGetProductById } from '../../../../interfaces/IProducts';
 import { RootState } from '../../../../store/store';

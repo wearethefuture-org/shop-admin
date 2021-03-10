@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card } from '@material-ui/core';
 
 import { AppDispatch, RootState } from '../../../../store/store';
 import { getCategoryByIdRequest } from '../../../../store/actions/categories.actions';
