@@ -70,18 +70,20 @@ const CategoryCharModal: React.FC<IModalProps> = ({
 
       const { defaultVal, ...charValues } = values;
 
-      const finalValues = Object.fromEntries(
-        Object.entries(charValues).filter(([key, value]) => {
-          let resultValue;
-          if (key === 'required') {
-            resultValue = value;
-          } else if (key === 'defaultValues' && value && value.values.length) {
-            resultValue = value;
-          } else if (value) resultValue = value;
-
-          return resultValue && [key, resultValue];
-        })
+      const filteredKeys = Object.keys(charValues).filter(
+        (key) =>
+          key === 'required' ||
+          (key === 'defaultValues' &&
+            charValues['defaultValues'] &&
+            charValues['defaultValues'].values &&
+            charValues['defaultValues'].values.length) ||
+          charValues[key]
       );
+
+      const finalValues: Char = filteredKeys.reduce((acc, key) => {
+        acc[key] = charValues[key];
+        return acc;
+      }, {});
 
       if (group.name) {
         if (char && char.name) {
@@ -99,7 +101,7 @@ const CategoryCharModal: React.FC<IModalProps> = ({
             type: 'editChar',
             group: group,
             prevChar: char,
-            editedChar: finalValues,
+            editedChar: { ...finalValues, id: char.id && char.id },
           });
           categoryDisplayDispatch({
             type: 'editDisplayChar',

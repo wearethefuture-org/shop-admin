@@ -216,11 +216,18 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
               group.name === action.group.name
                 ? {
                     ...group,
-                    characteristics: group.characteristics?.map((char) =>
-                      char.name === action.prevChar.name
-                        ? { ...action.editedChar, categoryId: state.id }
-                        : char
-                    ),
+                    characteristics: group.characteristics?.find(
+                      (char) => char.name === action.prevChar.name
+                    )
+                      ? group.characteristics.map((char) =>
+                          char.name === action.prevChar.name
+                            ? { ...action.editedChar, categoryId: state.id }
+                            : char
+                        )
+                      : group.characteristics?.concat({
+                          ...action.editedChar,
+                          categoryId: state.id,
+                        }),
                   }
                 : group
             )

@@ -11,12 +11,12 @@ const CategoriesContainer: React.FC = () => {
 
   return (
     <>
-      <CategoriesTable data={data} />
       <FormDialog
         dispatch={dispatch}
         categoriesLength={data?.length}
         modalData={categoriesCreateModalData}
       />
+      <CategoriesTable data={data} />
     </>
   );
 };
