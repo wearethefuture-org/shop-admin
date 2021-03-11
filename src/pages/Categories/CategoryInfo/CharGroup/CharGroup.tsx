@@ -52,6 +52,8 @@ const CharGroup: React.FC<IGroupProps> = ({
       type: 'deleteDisplayGroup',
       groupName: group.name ? group.name : '',
     });
+
+    setOpenDeleteGroupDialog(false);
   };
 
   // EXPANDED GROUPS

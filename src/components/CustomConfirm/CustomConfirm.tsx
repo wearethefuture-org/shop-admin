@@ -13,7 +13,7 @@ interface ConfirmProps {
   closeDeleteDialog: () => void;
   name: string;
   warning: string;
-  handleDelete: (arg: unknown) => void;
+  handleDelete: () => void;
 }
 
 const CustomConfirm: FC<ConfirmProps> = ({

@@ -37,20 +37,29 @@ const CharBlock: React.FC<ICharBlock> = ({
 
   // DELETE CHAR
   const [openDeleteCharDialog, setOpenDeleteCharDialog] = useState<boolean>(false);
+  const [charToDelete, setCharToDelete] = useState<Char | undefined>(undefined);
 
-  const handleDeleteChar = (char) => {
-    if (group.name) {
+  const openDeleteDialog = (char) => {
+    setCharToDelete(char);
+    setOpenDeleteCharDialog(true);
+  };
+
+  const handleDeleteChar = () => {
+    if (group.name && charToDelete) {
       categoryDispatch({
         type: 'deleteChar',
         group: group,
-        char: char,
+        char: charToDelete && charToDelete,
       });
       categoryDisplayDispatch({
         type: 'deleteDisplayChar',
         groupName: group.name,
-        charName: char.name,
+        charName: charToDelete.name ? charToDelete.name : '',
       });
     }
+
+    setOpenDeleteCharDialog(false);
+    setCharToDelete(undefined);
   };
 
   return (
@@ -63,13 +72,13 @@ const CharBlock: React.FC<ICharBlock> = ({
                   key={char.name}
                   className={darkMode ? styles['char-wrapper-dark'] : styles['char-wrapper']}
                 >
-                  {openDeleteCharDialog && (
+                  {openDeleteCharDialog && charToDelete && (
                     <CustomConfirm
                       openDeleteDialog={openDeleteCharDialog}
                       closeDeleteDialog={() => setOpenDeleteCharDialog(false)}
-                      name={char.name ? char.name : ''}
-                      warning="Група буде повністю видалена, включаючи пов`язані з нею характеристики та їх значення"
-                      handleDelete={() => handleDeleteChar(char)}
+                      name={charToDelete && charToDelete.name ? charToDelete.name : ''}
+                      warning="Характеристика та її значення будуть повністю видалені з усіх пов`язаних з нею продуктів"
+                      handleDelete={handleDeleteChar}
                     />
                   )}
 
@@ -130,7 +139,7 @@ const CharBlock: React.FC<ICharBlock> = ({
                       aria-label="delete"
                       type="button"
                       color="secondary"
-                      onClick={() => setOpenDeleteCharDialog(true)}
+                      onClick={() => openDeleteDialog(char)}
                     >
                       <DeleteIcon />
                     </IconButton>
