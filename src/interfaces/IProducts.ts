@@ -36,6 +36,10 @@ export interface IGetProductById extends IGetProducts {
   characteristicValue: ICharResponse[];
 }
 
+interface GroupChar extends Common {
+  name: string;
+}
+
 export interface IAddCharResponse extends Common {
   name: string;
   type: string;
@@ -46,12 +50,7 @@ export interface IAddCharResponse extends Common {
   jsonValue: object | null;
   dateValue: string | null;
   characteristic: ICharResponse;
-  group: {
-    createdAt: string;
-    id: number;
-    name: string;
-    updatedAt: string;
-  };
+  group: GroupChar;
   product: IBasicProduct;
 }
 
@@ -132,14 +131,4 @@ export enum Type {
   boolean = 'boolean',
   range = 'range',
   date = 'date',
-}
-
-export enum ProductCharValue {
-  stringValue = 'stringValue',
-  numberValue = 'numberValue',
-  enumValue = 'enumValue',
-  rangeValue = 'rangeValue',
-  booleanValue = 'booleanValue',
-  jsonValue = 'jsonValue',
-  dateValue = 'dateValue',
 }
