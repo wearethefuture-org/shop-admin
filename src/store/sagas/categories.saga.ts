@@ -23,7 +23,6 @@ export function* fetchCategoryWorker(): SagaIterator {
     yield put(loadCategories(categoriesData));
   } catch (error) {
     yield put(failSnackBar(error.message));
-    console.log(error);
   }
 }
 
@@ -33,7 +32,6 @@ export function* addCategoryWorker({ data }: IActions): SagaIterator {
     yield put(addCategory(newCategory));
   } catch (error) {
     yield put(failSnackBar(error.message));
-    console.dir(error);
   }
 }
 

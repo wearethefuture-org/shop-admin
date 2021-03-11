@@ -9,7 +9,6 @@ export const ErrorsAlert = () => {
   const dispatch: AppDispatch = useDispatch();
   const { isSubmitting, errors } = useFormikContext();
 
-  console.log('errors :>> ', errors);
   useEffect(() => {
     const fieldErrors = errors && Object.values(errors).length;
 
