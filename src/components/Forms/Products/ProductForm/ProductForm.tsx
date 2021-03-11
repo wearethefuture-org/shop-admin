@@ -185,7 +185,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
             handleExpand={() => handleExpand('additional')}
             disabled={!formik.values.categoryName}
           >
-            <h4>Додаткова інформація</h4>
+            <h4>Характеристики</h4>
           </ExpandBtn>
           <div className={expandedBlocks.includes('additional') ? 'expanded' : 'shrinked'}>
             <FormProductCharacteristics
