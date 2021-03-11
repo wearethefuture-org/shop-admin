@@ -4,7 +4,6 @@ import { Field, useFormikContext } from 'formik';
 import { Card } from '@material-ui/core';
 import TextFieldWrapped from '../../../../hocs/TextFieldHOC';
 import { formatKey } from '../../Products/ProductForm/productFormHelpers';
-import { ErrorFocus } from '../../../ErrorFocus';
 import styles from './CategoryEditForm.module.scss';
 
 const CategoryEditForm = () => {
@@ -45,7 +44,6 @@ const CategoryEditForm = () => {
           className={styles['edit-field']}
         />
       </div>
-      <ErrorFocus />
     </Card>
   );
 };

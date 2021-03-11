@@ -11,7 +11,7 @@ import GoBackBtn from '../../../GoBackBtn/GoBackBtn';
 import FormProductCharacteristics from './FormProductCharacteristics/FormProductCharacteristics';
 import { formatKey } from './productFormHelpers';
 import { IGetCategoriesResponse } from '../../../../interfaces/ICategory';
-import { ErrorFocus, ErrorSubFormFocus } from '../../../ErrorFocus';
+import { ErrorsAlert } from '../../../ErrorsAlert';
 import styles from './ProductForm.module.scss';
 
 export interface IProductFormProps {
@@ -215,9 +215,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
               Закрити
             </Button>
           </DialogActions>
-
-          <ErrorSubFormFocus />
-          <ErrorFocus />
+          <ErrorsAlert />
         </Form>
       </FormikProvider>
     </div>

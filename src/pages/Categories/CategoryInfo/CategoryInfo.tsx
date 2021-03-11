@@ -24,6 +24,7 @@ import {
   CategoryToDisplayActionTypes,
   GroupToDisplay,
 } from './categoryToDisplayReducer';
+import { ErrorsAlert } from '../../../components/ErrorsAlert';
 import styles from './CategoryInfo.module.scss';
 
 const CategoryInfo: React.FC = () => {
@@ -244,6 +245,7 @@ const CategoryInfo: React.FC = () => {
                   Скасувати
                 </Button>
               </div>
+              <ErrorsAlert />
             </Form>
           </FormikProvider>
         </div>
