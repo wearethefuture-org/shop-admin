@@ -14,6 +14,7 @@ import {
   GroupToDisplay,
 } from '../../categoryToDisplayReducer';
 import CustomConfirm from '../../../../../components/CustomConfirm/CustomConfirm';
+import { Type } from '../../../../../interfaces/IProducts';
 import styles from './CharBlock.module.scss';
 
 interface ICharBlock {
@@ -88,7 +89,7 @@ const CharBlock: React.FC<ICharBlock> = ({
 
                   <div className={styles['char-block']}>
                     <div className={styles['char-name-wrapper']}>
-                      {char.type !== 'json' ? (
+                      {char.type !== Type.json ? (
                         char.required ? (
                           <div className={styles['asterisk-icon-required']}>
                             <AsteriskIcon />
@@ -104,7 +105,7 @@ const CharBlock: React.FC<ICharBlock> = ({
                       <span key={char.id}>{char.name}</span>
                     </div>
 
-                    {char.type === 'string' || char.type === 'number'
+                    {char.type === Type.string || char.type === Type.number
                       ? char.defaultValues && (
                           <span className={styles['default-values']}>
                             {char.defaultValues.values[0]}
@@ -112,14 +113,14 @@ const CharBlock: React.FC<ICharBlock> = ({
                         )
                       : null}
 
-                    {char.type === 'enum' ? (
+                    {char.type === Type.enum ? (
                       <ul className={styles['enum-values']}>
                         {char.defaultValues &&
                           char.defaultValues.values.map((value) => <li key={value}>{value}</li>)}
                       </ul>
                     ) : null}
 
-                    {char.type === 'range' ? (
+                    {char.type === Type.range ? (
                       <div className={styles['range-values']}>
                         <p>
                           Від: <span>{char.minValue}</span>

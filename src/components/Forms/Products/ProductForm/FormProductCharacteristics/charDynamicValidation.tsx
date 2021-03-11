@@ -1,22 +1,34 @@
 import * as Yup from 'yup';
 
+import { Type } from '../../../../../interfaces/IProducts';
+
 const dataTypeValidation = ({ type, minValue, maxValue }, validationRule) => {
   let typeValidation = validationRule;
 
-  if (type === 'number') {
-    typeValidation = Yup.number().positive().nullable();
-  } else if (type === 'range') {
-    typeValidation = Yup.number()
-      .positive()
-      .min(minValue, 'Значення поза межами діапазону')
-      .max(maxValue, 'Значення поза межами діапазону')
-      .nullable();
-  } else if (type === 'date') {
-    typeValidation = Yup.date().nullable();
-  } else if (type === 'json') {
-    typeValidation = Yup.object().shape({});
-  } else {
-    typeValidation = Yup.string();
+  switch (type) {
+    case Type.number:
+      typeValidation = Yup.number().positive().nullable();
+      break;
+
+    case Type.range:
+      typeValidation = Yup.number()
+        .positive()
+        .min(minValue, 'Значення поза межами діапазону')
+        .max(maxValue, 'Значення поза межами діапазону')
+        .nullable();
+      break;
+
+    case Type.date:
+      typeValidation = Yup.date().nullable();
+      break;
+
+    case Type.json:
+      typeValidation = Yup.object().shape({});
+      break;
+
+    default:
+      typeValidation = Yup.string();
+      break;
   }
 
   return typeValidation;

@@ -8,6 +8,7 @@ import EventIcon from '@material-ui/icons/Event';
 import yesNoIcon from '../../../assets/icons/yesNo.svg';
 import jsonIcon from '../../../assets/icons/json.svg';
 import rangeIcon from '../../../assets/icons/range.svg';
+import { Type } from '../../../interfaces/IProducts';
 
 export const charValidationSchema = () =>
   Yup.object().shape({
@@ -25,33 +26,36 @@ export const charValidationSchema = () =>
     type: Yup.string().required('Обов`язкове поле'),
     minValue: Yup.number()
       .when('type', {
-        is: 'range',
+        is: Type.range,
         then: Yup.number().required('Обов`язкове поле'),
       })
       .nullable(),
     maxValue: Yup.number()
       .when('type', {
-        is: 'range',
+        is: Type.range,
         then: Yup.number().required('Обов`язкове поле'),
       })
       .nullable(),
     defaultVal: Yup.string()
       .trim()
       .when('type', {
-        is: 'enum',
+        is: Type.enum,
         then: Yup.string().required('Обов`язкове поле'),
       }),
   });
 
 export const getIcon = (type) => {
   switch (type) {
-    case 'enum':
+    case Type.enum:
       return <FormatListBulletedIcon />;
-    case 'string':
+
+    case Type.string:
       return <TextFieldsIcon />;
-    case 'number':
+
+    case Type.number:
       return <LooksOneIcon />;
-    case 'boolean':
+
+    case Type.boolean:
       return (
         <img
           src={yesNoIcon}
@@ -61,11 +65,14 @@ export const getIcon = (type) => {
           style={{ transform: 'translateY(-3px)' }}
         />
       );
-    case 'json':
+
+    case Type.json:
       return <img src={jsonIcon} alt="jsonIcon" width={20} height={20} />;
-    case 'date':
+
+    case Type.date:
       return <EventIcon />;
-    case 'range':
+
+    case Type.range:
       return (
         <img
           src={rangeIcon}

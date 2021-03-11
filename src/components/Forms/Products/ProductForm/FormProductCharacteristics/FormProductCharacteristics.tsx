@@ -13,6 +13,7 @@ import { charDynamicFields } from './charDynamicFields';
 import { getValidationSchema } from './charDynamicValidation';
 import { productValidationShema } from '../productFormHelpers';
 import { getIcon } from '../../../../Modals/CategoryCharModal/categoryCharModalHelpers';
+import { Type } from '../../../../../interfaces/IProducts';
 import styles from './FormProductCharacteristics.module.scss';
 
 interface IProductChar {
@@ -135,7 +136,7 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
                         <div className={styles['char-block']}>
                           <div className={styles['char-block-with-input']}>
                             <div className={styles['char-name-wrapper']}>
-                              {char.type !== 'json' ? (
+                              {char.type !== Type.json ? (
                                 <div
                                   className={
                                     !char.required
@@ -149,7 +150,7 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
 
                               <span className={styles['list-icon']}>{getIcon(char.type)}</span>
                               <span key={char.id}>{char.name}</span>
-                              {char.type === 'json' ? (
+                              {char.type === Type.json ? (
                                 <div className={styles['json-btns']}>
                                   <IconButton
                                     type="button"
@@ -211,7 +212,7 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
                                   </IconButton>
                                 </div>
                               ) : null}
-                              {char.type === 'range' ? (
+                              {char.type === Type.range ? (
                                 <div className={styles['range-values']}>
                                   <p>
                                     Від: <span>{char.minValue}</span>

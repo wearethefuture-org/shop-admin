@@ -17,6 +17,7 @@ import {
   GroupToDisplay,
 } from '../../../pages/Categories/CategoryInfo/categoryToDisplayReducer';
 import { RootState } from '../../../store/store';
+import { Type } from '../../../interfaces/IProducts';
 import styles from './CategoryCharModal.module.scss';
 
 interface IModalProps {
@@ -176,7 +177,7 @@ const CategoryCharModal: React.FC<IModalProps> = ({
               ))}
             </Field>
 
-            {formik.values.type !== 'json' ? (
+            {formik.values.type !== Type.json ? (
               <Field
                 select
                 fullWidth
@@ -192,15 +193,15 @@ const CategoryCharModal: React.FC<IModalProps> = ({
               </Field>
             ) : null}
 
-            {(formik.values.type === 'enum' ||
-              formik.values.type === 'string' ||
-              formik.values.type === 'number') && (
+            {(formik.values.type === Type.enum ||
+              formik.values.type === Type.string ||
+              formik.values.type === Type.number) && (
               <Field
                 as="textarea"
                 fullWidth
                 component={TextFieldWrapped}
                 label={
-                  formik.values.type === 'enum'
+                  formik.values.type === Type.enum
                     ? 'Значення (через кому) *'
                     : 'Значення за замовченням'
                 }
@@ -209,7 +210,7 @@ const CategoryCharModal: React.FC<IModalProps> = ({
               />
             )}
 
-            {formik.values.type === 'range' && (
+            {formik.values.type === Type.range && (
               <>
                 <Field
                   component={TextFieldWrapped}
