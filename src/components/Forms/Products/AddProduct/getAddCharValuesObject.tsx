@@ -1,5 +1,5 @@
 import { ICharResponse } from '../../../../interfaces/ICategory';
-import { ICharValue } from '../../../../interfaces/IProducts';
+import { ICharValue, Type } from '../../../../interfaces/IProducts';
 
 export const getAddCharValuesObject = (subForm, chars: ICharResponse[]) => {
   const characteristicValues: ICharValue[] = Object.entries(subForm).reduce(
@@ -15,25 +15,42 @@ export const getAddCharValuesObject = (subForm, chars: ICharResponse[]) => {
         characteristicId: id,
       };
 
-      if (type === 'number' || type === 'range') {
-        value && charArr.push({ ...basicValues, numberValue: value ? Number(value) : null });
-      } else if (type === 'enum') {
-        value.length && charArr.push({ ...basicValues, enumValue: value ? value : null });
-      } else if (type === 'boolean') {
-        value &&
-          charArr.push({
-            ...basicValues,
-            booleanValue: value ? (value === 'true' ? true : false) : null,
-          });
-      } else if (type === 'json') {
-        Object.values(value).length &&
-          charArr.push({ ...basicValues, jsonValue: value ? value : null });
-      } else if (type === 'date') {
-        value &&
-          charArr.push({ ...basicValues, dateValue: value ? new Date(value).toISOString() : null });
-      } else if (type === 'string') {
-        value.trim() && charArr.push({ ...basicValues, stringValue: value ? value : null });
+      switch (type) {
+        case Type.enum:
+          value.length && charArr.push({ ...basicValues, enumValue: value ? value : null });
+          break;
+
+        case Type.boolean:
+          value &&
+            charArr.push({
+              ...basicValues,
+              booleanValue: value ? (value === 'true' ? true : false) : null,
+            });
+          break;
+
+        case Type.json:
+          Object.values(value).length &&
+            charArr.push({ ...basicValues, jsonValue: value ? value : null });
+          break;
+
+        case Type.date:
+          value &&
+            charArr.push({
+              ...basicValues,
+              dateValue: value ? new Date(value).toISOString() : null,
+            });
+          break;
+
+        case Type.string:
+          value.trim() &&
+            charArr.push({ ...basicValues, stringValue: value ? value.trim() : null });
+          break;
+
+        default:
+          value && charArr.push({ ...basicValues, numberValue: value ? Number(value) : null });
+          break;
       }
+
       return charArr;
     },
     []

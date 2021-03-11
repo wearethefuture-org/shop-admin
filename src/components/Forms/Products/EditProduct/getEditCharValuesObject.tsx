@@ -6,6 +6,7 @@ import {
   IGetProductById,
   IProductCharResponse,
   IUpdateProduct,
+  Type,
 } from '../../../../interfaces/IProducts';
 
 const arrayEquals = (a: string[], b: string[]) => {
@@ -34,34 +35,49 @@ export const getEditCharValuesObject = (
           const basicValues = { name, characteristicId };
 
           if (!productChar && value) {
-            if (type === 'enum' && value && value.length) {
-              acc.push({ ...basicValues, enumValue: value });
-            } else if (type === 'json') {
-              const entries: [string, string][] = Object.entries(value);
+            switch (type) {
+              case Type.enum:
+                if (value && value.length) {
+                  acc.push({ ...basicValues, enumValue: value });
+                }
+                break;
 
-              if (value && entries.length) {
-                const filteredValue = entries.filter(([key, value]) => key && value.trim());
+              case Type.json:
+                const entries: [string, string][] = Object.entries(value);
 
-                const resultObject: object = Object.fromEntries(filteredValue);
+                if (value && entries.length) {
+                  const filteredValue = entries.filter(([key, value]) => key && value.trim());
 
-                if (resultObject && Object.values(resultObject).length) {
+                  const resultObject: object = Object.fromEntries(filteredValue);
+
+                  if (resultObject && Object.values(resultObject).length) {
+                    acc.push({
+                      ...basicValues,
+                      jsonValue: resultObject,
+                    });
+                  }
+                }
+                break;
+
+              case Type.string:
+                value.trim() && acc.push({ ...basicValues, stringValue: value.trim() });
+                break;
+
+              case Type.date:
+                value && acc.push({ ...basicValues, dateValue: value });
+                break;
+
+              case Type.boolean:
+                value &&
                   acc.push({
                     ...basicValues,
-                    jsonValue: resultObject,
+                    booleanValue: value === 'true' ? true : false,
                   });
-                }
-              }
-            } else if (type === 'string' && value.trim()) {
-              acc.push({ ...basicValues, stringValue: value.trim() });
-            } else if ((type === 'number' || type === 'range') && value.trim()) {
-              acc.push({ ...basicValues, numberValue: Number(value.trim()) });
-            } else if (type === 'date' && value) {
-              acc.push({ ...basicValues, dateValue: value });
-            } else if (type === 'boolean' && value) {
-              acc.push({
-                ...basicValues,
-                booleanValue: value === 'true' ? true : false,
-              });
+                break;
+
+              default:
+                value.trim() && acc.push({ ...basicValues, numberValue: Number(value.trim()) });
+                break;
             }
           }
 
@@ -90,52 +106,60 @@ export const getEditCharValuesObject = (
             const { id } = productChar;
             const basicValues = { id, name: characteristicName, characteristicId };
 
-            if (type === 'enum') {
-              const valuesEqual = arrayEquals(initialValue, value);
+            switch (type) {
+              case Type.enum:
+                const arraysEqual = arrayEquals(initialValue, value);
 
-              if (!valuesEqual && value && value.length) {
-                acc.push({ ...basicValues, enumValue: value });
-              }
-            } else if (type === 'json') {
-              const entries: [string, string][] = Object.entries(value);
+                if (!arraysEqual && value && value.length) {
+                  acc.push({ ...basicValues, enumValue: value });
+                }
+                break;
 
-              const filteredValue = entries.filter(([key, value]) => key && value.trim());
+              case Type.json:
+                const entries: [string, string][] = Object.entries(value);
 
-              const resultObject: object = Object.fromEntries(filteredValue);
+                const filteredValue = entries.filter(([key, value]) => key && value.trim());
 
-              const valuesEqual =
-                arrayEquals(Object.keys(initialValue), Object.keys(resultObject)) &&
-                arrayEquals(Object.values(initialValue), Object.values(resultObject));
+                const resultObject: object = Object.fromEntries(filteredValue);
 
-              if (!valuesEqual && resultObject && Object.values(resultObject).length) {
-                acc.push({
-                  ...basicValues,
-                  jsonValue: resultObject,
-                });
-              }
-            } else if (type === 'string') {
-              if (initialValue !== value && value.trim()) {
-                acc.push({ ...basicValues, stringValue: value });
-              }
-            } else if (type === 'number' && value) {
-              if (Number(initialValue) !== Number(value)) {
-                acc.push({ ...basicValues, numberValue: value });
-              }
-            } else if (type === 'range' && value) {
-              if (Number(initialValue) !== Number(value)) {
-                acc.push({ ...basicValues, numberValue: value });
-              }
-            } else if (type === 'date' && value) {
-              if (initialValue !== value) {
-                acc.push({ ...basicValues, dateValue: value });
-              }
-            } else if (type === 'boolean' && value) {
-              if (initialValue !== value) {
-                acc.push({
-                  ...basicValues,
-                  booleanValue: value === 'true' ? true : false,
-                });
-              }
+                const valuesEqual =
+                  arrayEquals(Object.keys(initialValue), Object.keys(resultObject)) &&
+                  arrayEquals(Object.values(initialValue), Object.values(resultObject));
+
+                if (!valuesEqual && resultObject && Object.values(resultObject).length) {
+                  acc.push({
+                    ...basicValues,
+                    jsonValue: resultObject,
+                  });
+                }
+                break;
+
+              case Type.string:
+                if (initialValue !== value && value.trim()) {
+                  acc.push({ ...basicValues, stringValue: value });
+                }
+                break;
+
+              case Type.date:
+                if (value && initialValue !== value) {
+                  acc.push({ ...basicValues, dateValue: value });
+                }
+                break;
+
+              case Type.boolean:
+                if (value && initialValue !== value) {
+                  acc.push({
+                    ...basicValues,
+                    booleanValue: value === 'true' ? true : false,
+                  });
+                }
+                break;
+
+              default:
+                if (value && Number(initialValue) !== Number(value)) {
+                  acc.push({ ...basicValues, numberValue: value });
+                }
+                break;
             }
           }
 

@@ -12,7 +12,7 @@ import DeleteBtn from '../../../components/DeleteBtn/DeleteBtn';
 import GoBackBtn from '../../../components/GoBackBtn/GoBackBtn';
 import EditBtn from '../../../components/EditBtn/EditBtn';
 import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
-import ProductCharacteristics from './ProductCharacteristics/ProductCharacteristics';
+import ProductCharGroups from './ProductCharacteristics/ProductCharGroups';
 import { IGetProductById } from '../../../interfaces/IProducts';
 import CustomConfirm from '../../../components/CustomConfirm/CustomConfirm';
 import styles from './ProductItem.module.scss';
@@ -101,7 +101,7 @@ const ProductItem: React.FC = () => {
           </ExpandBtn>
 
           <div className={expandBlock ? 'expanded' : 'shrinked'}>
-            <ProductCharacteristics categoryName={product.category?.name} />
+            <ProductCharGroups categoryName={product.category?.name} />
           </div>
         </div>
       </Card>

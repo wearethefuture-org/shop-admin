@@ -1,7 +1,7 @@
 import { IActions } from '../../interfaces/actions';
 import {
   IAddCategory,
-  IAddCategoryResponse,
+  GeneralCategory,
   ICategoryResponse,
   IGetCategoriesResponse,
 } from '../../interfaces/ICategory';
@@ -30,7 +30,7 @@ export const fetchAddCategories = (data: IAddCategory): IActions => ({
   data,
 });
 
-export const addCategory = (category: IAddCategoryResponse): IActions => ({
+export const addCategory = (category: GeneralCategory): IActions => ({
   type: ADD_CATEGORY,
   data: category,
 });

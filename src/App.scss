@@ -65,7 +65,7 @@ input[type='number'] {
 /* gallery */
 .image-gallery {
   min-width: 300px;
-  max-width: 32vw;
+  max-width: 33vw;
 
   .image-gallery-swipe {
     display: flex;
@@ -79,6 +79,14 @@ input[type='number'] {
       aspect-ratio: 1/1;
     }
   }
+}
+
+.image-gallery-left-nav {
+  left: -20px !important;
+}
+
+.image-gallery-right-nav {
+  right: -20px !important;
 }
 
 .image-gallery-icon {

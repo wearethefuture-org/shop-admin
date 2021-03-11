@@ -14,49 +14,60 @@ export interface CategoryToDisplay {
   characteristicGroup?: GroupToDisplay[];
 }
 
+export enum CategoryToDisplayActionTypes {
+  setCategory = 'setCategory',
+  editCategory = 'editCategory',
+  addGroup = 'addGroup',
+  editGroup = 'editGroup',
+  deleteGroup = 'deleteGroup',
+  addChar = 'addChar',
+  editChar = 'editChar',
+  deleteChar = 'deleteChar',
+}
+
 interface SetCategoryAction {
-  type: 'setDisplayCategory';
+  type: CategoryToDisplayActionTypes.setCategory;
   category: CategoryToDisplay;
 }
 
 interface EditCategoryAction {
-  type: 'editDisplayCategory';
+  type: CategoryToDisplayActionTypes.editCategory;
   name: string;
   key: string;
   description: string;
 }
 
 interface AddGroupAction {
-  type: 'addDisplayGroup';
+  type: CategoryToDisplayActionTypes.addGroup;
   groupName: string;
 }
 
 interface EditGroupAction {
-  type: 'editDisplayGroup';
+  type: CategoryToDisplayActionTypes.editGroup;
   prevGroupName: string;
   editedGroup: GroupToDisplay;
 }
 
 interface DeleteGroupAction {
-  type: 'deleteDisplayGroup';
+  type: CategoryToDisplayActionTypes.deleteGroup;
   groupName: string;
 }
 
 interface AddCharAction {
-  type: 'addDisplayChar';
+  type: CategoryToDisplayActionTypes.addChar;
   groupName: string;
   newChar: Char;
 }
 
 interface EditCharAction {
-  type: 'editDisplayChar';
+  type: CategoryToDisplayActionTypes.editChar;
   groupName: string;
   prevCharName: string;
   editedChar: Char;
 }
 
 interface DeleteCharAction {
-  type: 'deleteDisplayChar';
+  type: CategoryToDisplayActionTypes.deleteChar;
   groupName: string;
   charName: string;
 }
@@ -76,10 +87,10 @@ export const categoryDisplayReducer = (
   action: CategoryToDispalayAction
 ): CategoryToDisplay => {
   switch (action.type) {
-    case 'setDisplayCategory':
+    case CategoryToDisplayActionTypes.setCategory:
       return action.category;
 
-    case 'editDisplayCategory':
+    case CategoryToDisplayActionTypes.editCategory:
       return action.name || action.key || action.description
         ? {
             ...state,
@@ -89,7 +100,7 @@ export const categoryDisplayReducer = (
           }
         : state;
 
-    case 'addDisplayGroup':
+    case CategoryToDisplayActionTypes.addGroup:
       return state.characteristicGroup && action.groupName
         ? {
             ...state,
@@ -100,7 +111,7 @@ export const categoryDisplayReducer = (
           }
         : state;
 
-    case 'editDisplayGroup':
+    case CategoryToDisplayActionTypes.editGroup:
       return state.characteristicGroup
         ? {
             ...state,
@@ -110,7 +121,7 @@ export const categoryDisplayReducer = (
           }
         : state;
 
-    case 'deleteDisplayGroup':
+    case CategoryToDisplayActionTypes.deleteGroup:
       return state.characteristicGroup
         ? {
             ...state,
@@ -120,7 +131,7 @@ export const categoryDisplayReducer = (
           }
         : state;
 
-    case 'addDisplayChar':
+    case CategoryToDisplayActionTypes.addChar:
       return state.characteristicGroup
         ? {
             ...state,
@@ -135,7 +146,7 @@ export const categoryDisplayReducer = (
           }
         : state;
 
-    case 'editDisplayChar':
+    case CategoryToDisplayActionTypes.editChar:
       return state.characteristicGroup
         ? {
             ...state,
@@ -152,7 +163,7 @@ export const categoryDisplayReducer = (
           }
         : state;
 
-    case 'deleteDisplayChar':
+    case CategoryToDisplayActionTypes.deleteChar:
       return state.characteristicGroup
         ? {
             ...state,

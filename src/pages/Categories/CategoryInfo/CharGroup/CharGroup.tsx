@@ -8,8 +8,12 @@ import { Button, IconButton } from '@material-ui/core';
 import { RootState } from '../../../../store/store';
 import CharBlock from './CharBlock/CharBlock';
 import CategoryCharModal from '../../../../components/Modals/CategoryCharModal/CategoryCharModal';
-import { CategoryToDispalayAction, GroupToDisplay } from '../categoryToDisplayReducer';
-import { CategoryAction, Char } from '../categoryReducer';
+import {
+  CategoryToDispalayAction,
+  CategoryToDisplayActionTypes,
+  GroupToDisplay,
+} from '../categoryToDisplayReducer';
+import { CategoryAction, CategoryActionTypes, Char } from '../categoryReducer';
 import CustomConfirm from '../../../../components/CustomConfirm/CustomConfirm';
 import styles from './CharGroup.module.scss';
 
@@ -45,11 +49,11 @@ const CharGroup: React.FC<IGroupProps> = ({
 
   const handleDeleteGroup = () => {
     categoryDispatch({
-      type: 'deleteGroup',
+      type: CategoryActionTypes.deleteGroup,
       prevGroup: group,
     });
     categoryDisplayDispatch({
-      type: 'deleteDisplayGroup',
+      type: CategoryToDisplayActionTypes.deleteGroup,
       groupName: group.name ? group.name : '',
     });
 

@@ -1,12 +1,12 @@
-import { IBasicProduct } from './IProducts';
+import { Common, IBasicProduct } from './IProducts';
 
-export interface IGetCategoriesResponse {
-  id: number;
+export interface GeneralCategory extends Common {
   key: string;
-  createdAt: string;
-  updatedAt: string;
   name: string;
-  description: string;
+  description?: string;
+}
+
+export interface IGetCategoriesResponse extends GeneralCategory {
   products: IBasicProduct[];
 }
 
@@ -16,19 +16,7 @@ export interface IAddCategory {
   key: string;
 }
 
-export interface IAddCategoryResponse {
-  id: number;
-  key: string;
-  createdAt: string;
-  updatedAt: string;
-  name: string;
-  description: string;
-}
-
-export interface ICharResponse {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
+export interface ICharResponse extends Common {
   name: string;
   description: string;
   required: boolean;
@@ -38,20 +26,13 @@ export interface ICharResponse {
   defaultValues: null | { values: string[] };
 }
 
-export interface ICategoryResponse {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
+export interface IGroupResponse extends Common {
   name: string;
-  key: string;
-  description: string;
-  characteristicGroup: {
-    id: number;
-    name: string;
-    createdAt: string;
-    updatedAt: string;
-    characteristic: ICharResponse[];
-  }[];
+  characteristic: ICharResponse[];
+}
+
+export interface ICategoryResponse extends GeneralCategory {
+  characteristicGroup: IGroupResponse[];
 }
 
 export interface ICharToAdd {
@@ -66,12 +47,7 @@ export interface ICharToAdd {
   categoryId?: number;
 }
 
-export interface CategoryTableData {
-  id: number;
-  key: string;
-  createdAt: string;
-  updatedAt: string;
-  name: string;
+export interface CategoryTableData extends GeneralCategory {
   description?: string;
   products: number;
 }

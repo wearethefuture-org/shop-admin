@@ -6,9 +6,14 @@ import { Button, Dialog, MenuItem } from '@material-ui/core';
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import { ICategoryResponse, ICharToAdd } from '../../../interfaces/ICategory';
 import { charTypes, charValidationSchema, getIcon } from './categoryCharModalHelpers';
-import { CategoryAction, Char } from '../../../pages/Categories/CategoryInfo/categoryReducer';
+import {
+  CategoryAction,
+  CategoryActionTypes,
+  Char,
+} from '../../../pages/Categories/CategoryInfo/categoryReducer';
 import {
   CategoryToDispalayAction,
+  CategoryToDisplayActionTypes,
   GroupToDisplay,
 } from '../../../pages/Categories/CategoryInfo/categoryToDisplayReducer';
 import { RootState } from '../../../store/store';
@@ -92,13 +97,13 @@ const CategoryCharModal: React.FC<IModalProps> = ({
           }
 
           categoryDispatch({
-            type: 'editChar',
+            type: CategoryActionTypes.editChar,
             group: group,
             prevChar: char,
             editedChar: { ...finalValues, id: char.id && char.id },
           });
           categoryDisplayDispatch({
-            type: 'editDisplayChar',
+            type: CategoryToDisplayActionTypes.editChar,
             groupName: group.name,
             prevCharName: char.name,
             editedChar: finalValues,
@@ -115,12 +120,12 @@ const CategoryCharModal: React.FC<IModalProps> = ({
           }
 
           categoryDispatch({
-            type: 'addChar',
+            type: CategoryActionTypes.addChar,
             group: group,
             newChar: finalValues,
           });
           categoryDisplayDispatch({
-            type: 'addDisplayChar',
+            type: CategoryToDisplayActionTypes.addChar,
             groupName: group.name,
             newChar: finalValues,
           });

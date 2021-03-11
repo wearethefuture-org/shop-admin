@@ -6,9 +6,13 @@ import { Button, Dialog } from '@material-ui/core';
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import {
   CategoryToDispalayAction,
+  CategoryToDisplayActionTypes,
   GroupToDisplay,
 } from '../../../pages/Categories/CategoryInfo/categoryToDisplayReducer';
-import { CategoryAction } from '../../../pages/Categories/CategoryInfo/categoryReducer';
+import {
+  CategoryAction,
+  CategoryActionTypes,
+} from '../../../pages/Categories/CategoryInfo/categoryReducer';
 import styles from './CategoryGroupModal.module.scss';
 
 interface IModalProps {
@@ -62,7 +66,7 @@ const CategoryGroupModal: React.FC<IModalProps> = ({
         }
 
         categoryDispatch({
-          type: 'editGroup',
+          type: CategoryActionTypes.editGroup,
           prevGroup: groupToEdit,
           editedGroup: {
             id: groupToEdit.id && groupToEdit.id,
@@ -70,7 +74,7 @@ const CategoryGroupModal: React.FC<IModalProps> = ({
           },
         });
         categoryDisplayDispatch({
-          type: 'editDisplayGroup',
+          type: CategoryToDisplayActionTypes.editGroup,
           prevGroupName: groupToEdit.name,
           editedGroup: { ...groupToEdit, name: groupName },
         });
@@ -86,11 +90,11 @@ const CategoryGroupModal: React.FC<IModalProps> = ({
         }
 
         categoryDispatch({
-          type: 'addGroup',
+          type: CategoryActionTypes.addGroup,
           groupName,
         });
         categoryDisplayDispatch({
-          type: 'addDisplayGroup',
+          type: CategoryToDisplayActionTypes.addGroup,
           groupName,
         });
       }

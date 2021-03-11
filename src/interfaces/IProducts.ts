@@ -1,54 +1,42 @@
-import { IAddCategoryResponse, ICharResponse } from './ICategory';
+import { GeneralCategory, ICharResponse } from './ICategory';
 
-export interface IBasicProduct {
+export interface Common {
   id: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface IBasicProduct extends Common {
   name: string;
   key: string;
   description: string;
   price: number;
 }
 
-export interface IGetProducts {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
+export interface GeneralProductInfo {
   name: string;
-  key: string;
   description: string;
-  price: number;
-  category: IAddCategoryResponse;
+  price: number | string;
+  categoryName: string;
+  key: string;
+}
+
+export interface IGetProducts extends IBasicProduct {
+  category: GeneralCategory;
   files: IImg[];
   mainImg: IImg | null;
 }
 
-export interface IImg {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
+export interface IImg extends Common {
   name: string;
   url: string;
 }
 
-export interface IGetProductById {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  name: string;
-  key: string;
-  description: string;
-  price: number;
-  category: IAddCategoryResponse;
-  files: IImg[];
-  mainImg: IImg | null;
+export interface IGetProductById extends IGetProducts {
   characteristicValue: ICharResponse[];
 }
 
-export interface IAddCharResponse {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
+export interface IAddCharResponse extends Common {
   name: string;
   type: string;
   stringValue: string | null;
@@ -67,37 +55,20 @@ export interface IAddCharResponse {
   product: IBasicProduct;
 }
 
-export interface IAddProduct {
-  name: string;
-  description: string;
-  price: number | string;
-  categoryName: string;
-  key: string;
+export interface IAddProduct extends GeneralProductInfo {
   files?: [] | FormData;
   subForm?: object;
 }
 
 export interface IUpdateProduct {
   id?: number;
-  name: string;
-  description: string;
-  price: number | string;
-  categoryName: string;
-  key: string;
   files: IImg[] | {};
   subForm?: object;
 }
 
-export interface IProductItem {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  name: string;
-  price: number;
-  description: string;
-  category: IAddCategoryResponse;
+export interface IProductItem extends IBasicProduct {
+  category: GeneralCategory;
   files?: IImg[];
-  key: string;
   mainImg?: IImg;
 }
 
@@ -108,8 +79,7 @@ export interface IProductsData {
   error: string | null;
 }
 
-export interface ICharValue {
-  id?: number;
+export interface CharValues {
   name: string;
   stringValue?: string | null;
   numberValue?: number | null;
@@ -118,22 +88,15 @@ export interface ICharValue {
   booleanValue?: boolean | null;
   jsonValue?: object | null;
   dateValue?: string | null;
+}
+
+export interface ICharValue extends CharValues {
+  id?: number;
   characteristicId: number;
 }
 
-export interface IProductCharResponse {
-  id: number;
-  name: string;
-  stringValue?: string | null;
-  numberValue?: number | null;
-  enumValue?: string[] | null;
-  rangeValue?: number[] | null;
-  booleanValue?: boolean | null;
-  jsonValue?: object | null;
-  dateValue?: string | null;
+export interface IProductCharResponse extends Common, CharValues {
   type: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface IProductCharRequest {
@@ -141,19 +104,13 @@ export interface IProductCharRequest {
   characteristicValues: ICharValue[];
 }
 
-export interface IAddImgResponse {
+export interface IAddImgResponse extends Common {
   name: string;
   product: IBasicProduct;
   url: string;
-  id: number;
-  createdAt: string;
-  updatedAt: string;
 }
 
-export interface IProductsInCart {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
+export interface IProductsInCart extends Common {
   quantity: number;
   productId: number;
   ordersId: number;
@@ -165,4 +122,24 @@ export interface IProductsInCart {
     status: string;
   }[];
   product: IGetProducts;
+}
+
+export enum Type {
+  enum = 'enum',
+  json = 'json',
+  string = 'string',
+  number = 'number',
+  boolean = 'boolean',
+  range = 'range',
+  date = 'date',
+}
+
+export enum ProductCharValue {
+  stringValue = 'stringValue',
+  numberValue = 'numberValue',
+  enumValue = 'enumValue',
+  rangeValue = 'rangeValue',
+  booleanValue = 'booleanValue',
+  jsonValue = 'jsonValue',
+  dateValue = 'dateValue',
 }

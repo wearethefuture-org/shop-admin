@@ -8,6 +8,8 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 
+import styles from './CustomConfirm.module.scss';
+
 interface ConfirmProps {
   openDeleteDialog: boolean;
   closeDeleteDialog: () => void;
@@ -37,10 +39,15 @@ const CustomConfirm: FC<ConfirmProps> = ({
         <DialogContentText id="alert-dialog-description">{warning}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeDeleteDialog} color="primary">
+        <Button onClick={closeDeleteDialog} color="primary" className={styles['decline-btn']}>
           Ні
         </Button>
-        <Button onClick={handleDelete} color="secondary" autoFocus>
+        <Button
+          onClick={handleDelete}
+          color="secondary"
+          className={styles['confirm-btn']}
+          autoFocus
+        >
           Так
         </Button>
       </DialogActions>

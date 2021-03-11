@@ -4,21 +4,31 @@ import { Checkbox, FormControlLabel, IconButton, Radio, RadioGroup } from '@mate
 import ClearIcon from '@material-ui/icons/Clear';
 
 import TextFieldWrapped from '../../../../../hocs/TextFieldHOC';
+import { Type } from '../../../../../interfaces/IProducts';
 import styles from './FormProductCharacteristics.module.scss';
 
 export const charDynamicFields = (char, formik, product) => {
   if (!char) return;
   const { name, type, defaultValues } = char;
 
-  if (type === 'enum') {
-    formik.initialValues.subForm[name] = [];
-  } else if (type === 'string' || type === 'number') {
-    formik.initialValues.subForm[name] =
-      defaultValues && defaultValues.values ? defaultValues?.values[0] : '';
-  } else if (type === 'json') {
-    formik.initialValues.subForm[name] = { 'value-1': '' };
-  } else {
-    formik.initialValues.subForm[name] = '';
+  switch (type) {
+    case Type.enum:
+      formik.initialValues.subForm[name] = [];
+      break;
+
+    case Type.json:
+      formik.initialValues.subForm[name] = { 'value-1': '' };
+      break;
+
+    case Type.string:
+    case Type.number:
+      formik.initialValues.subForm[name] =
+        defaultValues && defaultValues.values ? defaultValues?.values[0] : '';
+      break;
+
+    default:
+      formik.initialValues.subForm[name] = '';
+      break;
   }
 
   product &&
@@ -34,22 +44,35 @@ export const charDynamicFields = (char, formik, product) => {
         jsonValue,
         defaultValues,
       }) => {
-        if (type === 'string') {
-          formik.initialValues.subForm[name] =
-            stringValue || (defaultValues && defaultValues.values ? defaultValues?.values[0] : '');
-        } else if (type === 'enum') {
-          formik.initialValues.subForm[name] = enumValue || [];
-        } else if (type === 'boolean') {
-          formik.initialValues.subForm[name] = String(booleanValue) || '';
-        } else if (type === 'date') {
-          formik.initialValues.subForm[name] = dateValue || '';
-        } else if (type === 'json') {
-          formik.initialValues.subForm[name] = jsonValue ? jsonValue : { 'value-1': '' };
-        } else {
-          formik.initialValues.subForm[name] =
-            numberValue ||
-            (defaultValues && defaultValues.values ? Number(defaultValues?.values[0]) : '') ||
-            '';
+        switch (type) {
+          case Type.string:
+            formik.initialValues.subForm[name] =
+              stringValue ||
+              (defaultValues && defaultValues.values ? defaultValues?.values[0] : '');
+            break;
+
+          case Type.enum:
+            formik.initialValues.subForm[name] = enumValue || [];
+            break;
+
+          case Type.boolean:
+            formik.initialValues.subForm[name] = String(booleanValue) || '';
+            break;
+
+          case Type.date:
+            formik.initialValues.subForm[name] = dateValue || '';
+            break;
+
+          case Type.json:
+            formik.initialValues.subForm[name] = jsonValue ? jsonValue : { 'value-1': '' };
+            break;
+
+          default:
+            formik.initialValues.subForm[name] =
+              numberValue ||
+              (defaultValues && defaultValues.values ? Number(defaultValues?.values[0]) : '') ||
+              '';
+            break;
         }
       }
     );
@@ -61,8 +84,8 @@ export const charDynamicFields = (char, formik, product) => {
     touched: formik.touched?.subForm,
   };
 
-  switch (char.type) {
-    case 'number':
+  switch (type) {
+    case Type.number:
       return (
         <div className={styles['field-wrapper']}>
           <Field>
@@ -102,7 +125,7 @@ export const charDynamicFields = (char, formik, product) => {
         </div>
       );
 
-    case 'range':
+    case Type.range:
       return (
         <div className={styles['field-wrapper']}>
           <Field>
@@ -142,7 +165,7 @@ export const charDynamicFields = (char, formik, product) => {
         </div>
       );
 
-    case 'enum':
+    case Type.enum:
       return (
         <>
           <div className={styles['field-wrapper']}>
@@ -203,7 +226,7 @@ export const charDynamicFields = (char, formik, product) => {
         </>
       );
 
-    case 'boolean':
+    case Type.boolean:
       return (
         <>
           <div className={styles['field-wrapper']}>
@@ -246,7 +269,7 @@ export const charDynamicFields = (char, formik, product) => {
         </>
       );
 
-    case 'date':
+    case Type.date:
       return (
         <div className={styles['field-wrapper']}>
           <Field>
@@ -289,7 +312,7 @@ export const charDynamicFields = (char, formik, product) => {
         </div>
       );
 
-    case 'json':
+    case Type.json:
       return (
         <>
           {formik.values.subForm[name] &&

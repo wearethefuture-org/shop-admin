@@ -32,53 +32,57 @@ interface RemovedChars {
   characteristicIDs?: number[];
 }
 
+export enum CategoryActionTypes {
+  resetCategory = 'resetCategory',
+  setCategoryId = 'setCategoryId',
+  addGroup = 'addGroup',
+  editGroup = 'editGroup',
+  deleteGroup = 'deleteGroup',
+  addChar = 'addChar',
+  editChar = 'editChar',
+  deleteChar = 'deleteChar',
+}
+
 interface ResetCategory {
-  type: 'resetCategory';
+  type: CategoryActionTypes.resetCategory;
 }
 
 interface SetCategoryId {
-  type: 'setCategoryId';
+  type: CategoryActionTypes.setCategoryId;
   id: number;
 }
 
-interface EditCategoryAction {
-  type: 'editCategory';
-  name: string;
-  key: string;
-  description: string;
-}
-
 interface AddGroupAction {
-  type: 'addGroup';
+  type: CategoryActionTypes.addGroup;
   groupName: string;
 }
 
 interface EditGroupAction {
-  type: 'editGroup';
+  type: CategoryActionTypes.editGroup;
   prevGroup: Group;
   editedGroup: Group;
 }
 
 interface DeleteGroupAction {
-  type: 'deleteGroup';
+  type: CategoryActionTypes.deleteGroup;
   prevGroup: GroupToDisplay;
 }
 
 interface AddCharAction {
-  type: 'addChar';
+  type: CategoryActionTypes.addChar;
   group: GroupToDisplay;
   newChar: Char;
 }
 
 interface EditCharAction {
-  type: 'editChar';
+  type: CategoryActionTypes.editChar;
   group: GroupToDisplay;
   prevChar: Char;
   editedChar: Char;
 }
 
 interface DeleteCharAction {
-  type: 'deleteChar';
+  type: CategoryActionTypes.deleteChar;
   group: GroupToDisplay;
   char: Char;
 }
@@ -86,7 +90,6 @@ interface DeleteCharAction {
 export type CategoryAction =
   | ResetCategory
   | SetCategoryId
-  | EditCategoryAction
   | AddGroupAction
   | EditGroupAction
   | DeleteGroupAction
@@ -96,10 +99,10 @@ export type CategoryAction =
 
 export const categoryReducer = (state: Category, action: CategoryAction): Category => {
   switch (action.type) {
-    case 'resetCategory':
+    case CategoryActionTypes.resetCategory:
       return {};
 
-    case 'setCategoryId':
+    case CategoryActionTypes.setCategoryId:
       if (!state.id) state.id = undefined;
 
       return {
@@ -107,17 +110,7 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
         id: action.id,
       };
 
-    case 'editCategory':
-      return action.name || action.key || action.description
-        ? {
-            ...state,
-            name: action.name,
-            key: action.key,
-            description: action.description,
-          }
-        : state;
-
-    case 'addGroup':
+    case CategoryActionTypes.addGroup:
       if (!state.characteristicGroups) state.characteristicGroups = [];
 
       return action.groupName
@@ -130,7 +123,7 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
           }
         : state;
 
-    case 'editGroup':
+    case CategoryActionTypes.editGroup:
       if (!state.characteristicGroups) state.characteristicGroups = [];
 
       return {
@@ -150,7 +143,7 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
           : state.characteristicGroups.concat(action.editedGroup),
       };
 
-    case 'deleteGroup': {
+    case CategoryActionTypes.deleteGroup: {
       if (action.prevGroup.id) {
         if (!state.removedCharacteristics) {
           state.removedCharacteristics = {};
@@ -192,7 +185,7 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
       };
     }
 
-    case 'addChar':
+    case CategoryActionTypes.addChar:
       if (!state.characteristicGroups) state.characteristicGroups = [];
 
       return {
@@ -225,7 +218,7 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
             }),
       };
 
-    case 'editChar':
+    case CategoryActionTypes.editChar:
       if (!state.characteristicGroups) state.characteristicGroups = [];
 
       return {
@@ -265,7 +258,7 @@ export const categoryReducer = (state: Category, action: CategoryAction): Catego
             }),
       };
 
-    case 'deleteChar':
+    case CategoryActionTypes.deleteChar:
       if (action.char.id) {
         if (!state.removedCharacteristics) {
           state.removedCharacteristics = {};

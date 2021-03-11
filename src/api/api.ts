@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 
 import {
   IAddCategory,
-  IAddCategoryResponse,
+  GeneralCategory,
   ICategoryResponse,
   IGetCategoriesResponse,
 } from '../interfaces/ICategory';
@@ -26,7 +26,7 @@ type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 type ApiFetchedDataType = {
   categories: {
     get: () => FetchedDataType<IGetCategoriesResponse>;
-    add: (category: IAddCategory) => FetchedDataType<IAddCategoryResponse>;
+    add: (category: IAddCategory) => FetchedDataType<GeneralCategory>;
     getById: (id: number) => FetchedDataType<ICategoryResponse>;
     update: (data: Category) => FetchedDataType<ICategoryResponse>;
   };

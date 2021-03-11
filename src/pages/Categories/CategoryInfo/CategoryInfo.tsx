@@ -17,10 +17,11 @@ import GoBackBtn from '../../../components/GoBackBtn/GoBackBtn';
 import CharGroup from './CharGroup/CharGroup';
 import { categoryValidationShema } from './categoryValidationShema';
 import AsteriskIcon from '../../../assets/icons/AsteriskIcon';
-import { Category, categoryReducer } from './categoryReducer';
+import { Category, CategoryActionTypes, categoryReducer } from './categoryReducer';
 import {
   categoryDisplayReducer,
   CategoryToDisplay,
+  CategoryToDisplayActionTypes,
   GroupToDisplay,
 } from './categoryToDisplayReducer';
 import styles from './CategoryInfo.module.scss';
@@ -48,8 +49,8 @@ const CategoryInfo: React.FC = () => {
   );
 
   useEffect(() => {
-    categoryDispatch({ type: 'setCategoryId', id: category.id });
-    categoryDisplayDispatch({ type: 'setDisplayCategory', category });
+    categoryDispatch({ type: CategoryActionTypes.setCategoryId, id: category.id });
+    categoryDisplayDispatch({ type: CategoryToDisplayActionTypes.setCategory, category });
 
     if (null !== ref.current) {
       ref.current.scrollIntoView({ behavior: 'smooth' });
@@ -95,10 +96,8 @@ const CategoryInfo: React.FC = () => {
         return;
       }
 
-      categoryDispatch({ type: 'editCategory', name, key, description });
-
-      dispatch(updateCategoryRequest(categoryState));
-      categoryDispatch({ type: 'resetCategory' });
+      dispatch(updateCategoryRequest({ ...categoryState, name, key, description }));
+      categoryDispatch({ type: CategoryActionTypes.resetCategory });
 
       setEditBasicInfo(false);
       formik.setSubmitting(false);

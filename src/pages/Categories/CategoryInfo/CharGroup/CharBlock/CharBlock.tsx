@@ -7,8 +7,12 @@ import EditIcon from '@material-ui/icons/Edit';
 import { RootState } from '../../../../../store/store';
 import AsteriskIcon from '../../../../../assets/icons/AsteriskIcon';
 import { getIcon } from '../../../../../components/Modals/CategoryCharModal/categoryCharModalHelpers';
-import { CategoryAction, Char } from '../../categoryReducer';
-import { CategoryToDispalayAction, GroupToDisplay } from '../../categoryToDisplayReducer';
+import { CategoryAction, CategoryActionTypes, Char } from '../../categoryReducer';
+import {
+  CategoryToDispalayAction,
+  CategoryToDisplayActionTypes,
+  GroupToDisplay,
+} from '../../categoryToDisplayReducer';
 import CustomConfirm from '../../../../../components/CustomConfirm/CustomConfirm';
 import styles from './CharBlock.module.scss';
 
@@ -47,12 +51,12 @@ const CharBlock: React.FC<ICharBlock> = ({
   const handleDeleteChar = () => {
     if (group.name && charToDelete) {
       categoryDispatch({
-        type: 'deleteChar',
+        type: CategoryActionTypes.deleteChar,
         group: group,
         char: charToDelete && charToDelete,
       });
       categoryDisplayDispatch({
-        type: 'deleteDisplayChar',
+        type: CategoryToDisplayActionTypes.deleteChar,
         groupName: group.name,
         charName: charToDelete.name ? charToDelete.name : '',
       });
