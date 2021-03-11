@@ -25,7 +25,7 @@ a:hover {
   overflow-x: hidden;
 }
 
-// input type number hide arrows
+/* input type number hide arrows */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -36,9 +36,10 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
-// scrollbar
+/* scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -46,7 +47,7 @@ input[type='number'] {
   border-radius: 10px;
 }
 
-// espandable blocks
+/* expandable blocks */
 .expanded {
   transform: scaleY(1);
   max-height: auto;
@@ -61,12 +62,7 @@ input[type='number'] {
   transition: all 0.1s ease;
 }
 
-// alert
-.react-confirm-alert-overlay {
-  background-color: transparent !important;
-}
-
-// gallery
+/* gallery */
 .image-gallery {
   min-width: 300px;
   max-width: 32vw;
