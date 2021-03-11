@@ -51,11 +51,10 @@ const CharBlock: React.FC<ICharBlock> = ({
         charName: char.name,
       });
     }
-
   };
 
   return (
-    <div>
+    <>
       {group ? (
         <>
           {group && group.characteristic && group.characteristic.length
@@ -141,7 +140,7 @@ const CharBlock: React.FC<ICharBlock> = ({
             : null}
         </>
       ) : null}
-    </div>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import { put, call } from 'redux-saga/effects';
+import { put, call, delay } from 'redux-saga/effects';
 
 import {
   addCategories,
@@ -52,6 +52,7 @@ export function* updateCategoryWorker({ data }: IActions): SagaIterator {
     const category = yield call(apiUpdateCategory, data);
 
     yield put(updateCategorySuccess(category));
+    yield delay(700);
     yield put(successSnackBar());
   } catch (error) {
     yield put(failSnackBar(error.message));
