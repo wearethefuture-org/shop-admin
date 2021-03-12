@@ -3,9 +3,7 @@ import { SagaIterator } from 'redux-saga';
 
 import {
   ADD_PRODUCT_REQUEST,
-  DELETE_IMAGE_REQUEST,
   DELETE_PRODUCT_REQUEST,
-  GET_CATEGORY_BY_ID_REQUEST,
   GET_PRODUCT_BY_ID_REQUEST,
   GET_PRODUCTS_REQUEST,
   REQUEST_ADD_CATEGORIES,
@@ -16,6 +14,11 @@ import {
   UPLOAD_MAIN_IMG_REQUEST,
   GET_CATEGORY_BY_ID_REQUEST,
   UPDATE_CATEGORY_REQUEST,
+  REQUEST_SLIDES,
+  REQUEST_UPDATE_SLIDES,
+  REQUEST_ADD_SLIDES,
+  REQUEST_DELETE_SLIDES,
+  REQUEST_UPDATE_SLIDE_VISIBILITY
 } from './types';
 import {
   fetchCategoryWorker,
@@ -23,20 +26,9 @@ import {
   getCategoryByIdWorker,
   updateCategoryWorker,
 } from './sagas/categories.saga';
-
-  REQUEST_SLIDES,
-  REQUEST_UPDATE_SLIDES,
-  REQUEST_ADD_SLIDES,
-  REQUEST_DELETE_SLIDES,
-  REQUEST_UPDATE_SLIDE_VISIBILITY
-} from './types';
-import { addCategoryWorker, fetchCategoryWorker, getCategoryByIdWorker } from './sagas/categories.saga';
-
-
 import { fetchSettingsWorker, updateSettingsWorker } from './sagas/settings.saga';
 import {
   addProductWorker,
-  deleteImgWorker,
   deleteProductWorker,
   getProductByIdWorker,
   getProductsWorker,
