@@ -70,24 +70,6 @@
       margin-left: 1rem;
     }
 
-    .asterisk-icon {
-      margin-right: 0.5rem;
-      width: 12px;
-      height: 12px;
-
-      svg {
-        transform: translateY(-4px);
-      }
-    }
-
-    .asterisk-icon-required {
-      @extend .asterisk-icon;
-
-      svg {
-        fill: red;
-      }
-    }
-
     .list-icon {
       display: inline-flex;
       margin-right: 1rem;
@@ -170,26 +152,4 @@
   color: red;
   font-size: 0.75rem;
   margin: 0.6rem 0 0 3rem;
-}
-
-.asterisk-indicator {
-  display: flex;
-  align-items: center;
-
-  span {
-    &:first-child {
-      margin-right: 0.5rem;
-      width: 12px;
-      height: 12px;
-
-      svg {
-        transform: translateY(-6px);
-        fill: red;
-      }
-    }
-
-    &:last-child {
-      font-size: 0.8rem;
-    }
-  }
 }

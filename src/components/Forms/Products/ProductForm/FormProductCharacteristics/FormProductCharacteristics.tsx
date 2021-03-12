@@ -4,8 +4,8 @@ import ArrowIcon from '@material-ui/icons/ArrowBackIos';
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 import { IconButton } from '@material-ui/core';
+import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
-import AsteriskIcon from '../../../../../assets/icons/AsteriskIcon';
 import { AppDispatch, RootState } from '../../../../../store/store';
 import { getCategoryByIdRequest } from '../../../../../store/actions/categories.actions';
 import { ICharResponse } from '../../../../../interfaces/ICategory';
@@ -102,12 +102,10 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
           {category?.characteristicGroup.some(
             (group) => group.characteristic && group.characteristic.length
           ) ? (
-            <div className={styles['asterisk-indicator']}>
-              <span>
-                <AsteriskIcon />
-              </span>
+            <>
+              <PriorityHighIcon style={{ color: 'red' }} />
               <span>Є обов`язковою характеристикою</span>
-            </div>
+            </>
           ) : null}
 
           <div className={darkMode ? styles['additional-info-block-dark'] : ''}>
@@ -136,16 +134,8 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
                         <div className={styles['char-block']}>
                           <div className={styles['char-block-with-input']}>
                             <div className={styles['char-name-wrapper']}>
-                              {char.type !== Type.json ? (
-                                <div
-                                  className={
-                                    !char.required
-                                      ? styles['asterisk-icon']
-                                      : styles['asterisk-icon-required']
-                                  }
-                                >
-                                  <AsteriskIcon />
-                                </div>
+                              {char.type !== Type.json && char.required ? (
+                                <PriorityHighIcon style={{ color: 'red' }} />
                               ) : null}
 
                               <span className={styles['list-icon']}>{getIcon(char.type)}</span>

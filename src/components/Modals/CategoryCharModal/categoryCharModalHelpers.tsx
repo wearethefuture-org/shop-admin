@@ -4,10 +4,10 @@ import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import LooksOneIcon from '@material-ui/icons/LooksOne';
 import EventIcon from '@material-ui/icons/Event';
+import CheckIcon from '@material-ui/icons/CheckCircleOutline';
+import NoteAddIcon from '@material-ui/icons/NoteAdd';
+import LinearScaleIcon from '@material-ui/icons/LinearScale';
 
-import yesNoIcon from '../../../assets/icons/yesNo.svg';
-import jsonIcon from '../../../assets/icons/json.svg';
-import rangeIcon from '../../../assets/icons/range.svg';
 import { Type } from '../../../interfaces/IProducts';
 
 export const charValidationSchema = () =>
@@ -56,32 +56,16 @@ export const getIcon = (type) => {
       return <LooksOneIcon />;
 
     case Type.boolean:
-      return (
-        <img
-          src={yesNoIcon}
-          alt="yesNoIcon"
-          width={30}
-          height={30}
-          style={{ transform: 'translateY(-3px)' }}
-        />
-      );
+      return <CheckIcon />;
 
     case Type.json:
-      return <img src={jsonIcon} alt="jsonIcon" width={20} height={20} />;
+      return <NoteAddIcon />;
 
     case Type.date:
       return <EventIcon />;
 
     case Type.range:
-      return (
-        <img
-          src={rangeIcon}
-          alt="jsonIcon"
-          width={30}
-          height={30}
-          style={{ transform: 'translateY(-2px)' }}
-        />
-      );
+      return <LinearScaleIcon />;
     default:
       return;
   }

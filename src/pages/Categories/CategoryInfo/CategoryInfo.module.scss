@@ -1,8 +1,11 @@
-.block-wrapper-main {
+.block-wrapper {
   padding: 1rem;
-  padding-bottom: 3rem;
   padding-top: 84px;
   margin-top: -54px;
+}
+
+.block-card {
+  padding: 1rem;
 }
 
 h1 {
@@ -32,27 +35,5 @@ h4 {
 
   button:first-child {
     margin-right: 4rem;
-  }
-}
-
-.asterisk-icon-required {
-  display: flex;
-  align-items: center;
-
-  span {
-    &:first-child {
-      margin-right: 0.5rem;
-      width: 12px;
-      height: 12px;
-
-      svg {
-        transform: translateY(-6px);
-        fill: red;
-      }
-    }
-
-    &:last-child {
-      font-size: 0.8rem;
-    }
   }
 }

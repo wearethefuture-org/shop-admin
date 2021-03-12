@@ -1,8 +1,9 @@
 import React, { useEffect, useReducer, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Button, IconButton, LinearProgress } from '@material-ui/core';
+import { Button, Card, IconButton, LinearProgress } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
+import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 import { updateCategoryRequest } from '../../../store/actions/categories.actions';
 import { AppDispatch, RootState } from '../../../store/store';
@@ -16,7 +17,6 @@ import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
 import GoBackBtn from '../../../components/GoBackBtn/GoBackBtn';
 import CharGroup from './CharGroup/CharGroup';
 import { categoryValidationShema } from './categoryValidationShema';
-import AsteriskIcon from '../../../assets/icons/AsteriskIcon';
 import { Category, CategoryActionTypes, categoryReducer } from './categoryReducer';
 import {
   categoryDisplayReducer,
@@ -151,103 +151,105 @@ const CategoryInfo: React.FC = () => {
       )}
 
       {category ? (
-        <div className={styles['block-wrapper-main']}>
-          <GoBackBtn handleGoBack={() => history.push('/categories')} />
-          <h1>{category.name}</h1>
+        <div className={styles['block-wrapper']}>
+          <Card className={styles['block-card']}>
+            <GoBackBtn handleGoBack={() => history.push('/categories')} />
+            <h1>{category.name}</h1>
 
-          <FormikProvider value={formik}>
-            <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
-              <div className={styles['expandable-field-wrapper']}>
+            <FormikProvider value={formik}>
+              <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
+                <div className={styles['expandable-field-wrapper']}>
+                  <ExpandBtn
+                    expandBlock={expandedBlocks.includes('main')}
+                    handleExpand={() => handleExpandedBlocks('main')}
+                    disabled={false}
+                  >
+                    <h4>Основна інформація</h4>
+                  </ExpandBtn>
+
+                  <IconButton
+                    aria-label="edit"
+                    color="default"
+                    type="button"
+                    onClick={() => setEditBasicInfo(true)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </div>
+                <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
+                  {editBasicInfo ? (
+                    <CategoryEditForm />
+                  ) : (
+                    <CategoryBasicInfo categoryDisplayState={categoryDisplayState} />
+                  )}
+                </div>
+
                 <ExpandBtn
-                  expandBlock={expandedBlocks.includes('main')}
-                  handleExpand={() => handleExpandedBlocks('main')}
+                  expandBlock={expandedBlocks.includes('characteristics')}
+                  handleExpand={() => handleExpandedBlocks('characteristics')}
                   disabled={false}
                 >
-                  <h4>Основна інформація</h4>
+                  <h4>Характеристики</h4>
                 </ExpandBtn>
 
-                <IconButton
-                  aria-label="edit"
-                  color="default"
-                  type="button"
-                  onClick={() => setEditBasicInfo(true)}
+                <div
+                  className={expandedBlocks.includes('characteristics') ? 'expanded' : 'shrinked'}
                 >
-                  <EditIcon />
-                </IconButton>
-              </div>
-              <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
-                {editBasicInfo ? (
-                  <CategoryEditForm />
-                ) : (
-                  <CategoryBasicInfo categoryDisplayState={categoryDisplayState} />
-                )}
-              </div>
-
-              <ExpandBtn
-                expandBlock={expandedBlocks.includes('characteristics')}
-                handleExpand={() => handleExpandedBlocks('characteristics')}
-                disabled={false}
-              >
-                <h4>Характеристики</h4>
-              </ExpandBtn>
-
-              <div className={expandedBlocks.includes('characteristics') ? 'expanded' : 'shrinked'}>
-                <div className={styles['add-btn-wrapper']}>
-                  <AddBtn
-                    title="Додати групу"
-                    handleAdd={() => {
-                      setOpenGroupModal(true);
-                    }}
-                  />
-                </div>
-                {charGroup &&
-                charGroup.some((group) => group.characteristic && group.characteristic.length) ? (
-                  <div className={styles['asterisk-icon-required']}>
-                    <span>
-                      <AsteriskIcon />
-                    </span>
-                    <span>Є обов`язковою характеристикою</span>
+                  <div className={styles['add-btn-wrapper']}>
+                    <AddBtn
+                      title="Додати групу"
+                      handleAdd={() => {
+                        setOpenGroupModal(true);
+                      }}
+                    />
                   </div>
-                ) : null}
+                  {charGroup &&
+                  charGroup.some((group) => group.characteristic && group.characteristic.length) ? (
+                    <>
+                      <PriorityHighIcon style={{ color: 'red' }} />
+                      <span>Є обов`язковою характеристикою</span>
+                    </>
+                  ) : null}
 
-                {charGroup && charGroup.length
-                  ? charGroup.map(
-                      (group) =>
-                        group && (
-                          <CharGroup
-                            key={group.name}
-                            group={group}
-                            expandedGroups={expandedGroups}
-                            setExpandedGroups={setExpandedGroups}
-                            setOpenGroupModal={setOpenGroupModal}
-                            setGroupToEdit={setGroupToEdit}
-                            categoryDispatch={categoryDispatch}
-                            categoryDisplayDispatch={categoryDisplayDispatch}
-                          />
-                        )
-                    )
-                  : null}
-              </div>
-              <div className={styles['form-btn-wrapper']}>
-                <Button
-                  variant="contained"
-                  color="default"
-                  disabled={formik.isSubmitting}
-                  type="submit"
-                >
-                  Зберегти
-                </Button>
-                <Button
-                  onClick={() => setEditBasicInfo(false)}
-                  color="secondary"
-                  variant="contained"
-                >
-                  Скасувати
-                </Button>
-              </div>
-              <ErrorsAlert />
-            </Form>
-          </FormikProvider>
+                  {charGroup && charGroup.length
+                    ? charGroup.map(
+                        (group) =>
+                          group && (
+                            <CharGroup
+                              key={group.name}
+                              group={group}
+                              expandedGroups={expandedGroups}
+                              setExpandedGroups={setExpandedGroups}
+                              setOpenGroupModal={setOpenGroupModal}
+                              setGroupToEdit={setGroupToEdit}
+                              categoryDispatch={categoryDispatch}
+                              categoryDisplayDispatch={categoryDisplayDispatch}
+                            />
+                          )
+                      )
+                    : null}
+                </div>
+                <div className={styles['form-btn-wrapper']}>
+                  <Button
+                    variant="contained"
+                    color="default"
+                    disabled={formik.isSubmitting}
+                    type="submit"
+                  >
+                    Зберегти
+                  </Button>
+                  <Button
+                    onClick={() => setEditBasicInfo(false)}
+                    color="secondary"
+                    variant="contained"
+                  >
+                    Скасувати
+                  </Button>
+                </div>
+                <ErrorsAlert />
+              </Form>
+            </FormikProvider>
+          </Card>
         </div>
       ) : null}
     </div>

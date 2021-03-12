@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import { IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 import { RootState } from '../../../../../store/store';
-import AsteriskIcon from '../../../../../assets/icons/AsteriskIcon';
 import { getIcon } from '../../../../../components/Modals/CategoryCharModal/categoryCharModalHelpers';
 import { CategoryAction, CategoryActionTypes, Char } from '../../categoryReducer';
 import {
@@ -89,16 +89,8 @@ const CharBlock: React.FC<ICharBlock> = ({
 
                   <div className={styles['char-block']}>
                     <div className={styles['char-name-wrapper']}>
-                      {char.type !== Type.json ? (
-                        char.required ? (
-                          <div className={styles['asterisk-icon-required']}>
-                            <AsteriskIcon />
-                          </div>
-                        ) : (
-                          <div className={styles['asterisk-icon']}>
-                            <AsteriskIcon />
-                          </div>
-                        )
+                      {char.type !== Type.json && char.required ? (
+                        <PriorityHighIcon style={{ color: 'red' }} />
                       ) : null}
 
                       <span className={styles['list-icon']}>{getIcon(char.type)}</span>
@@ -123,10 +115,12 @@ const CharBlock: React.FC<ICharBlock> = ({
                     {char.type === Type.range ? (
                       <div className={styles['range-values']}>
                         <p>
-                          Від: <span>{char.minValue}</span>
+                          <span>Від: </span>
+                          <span>{char.minValue}</span>
                         </p>
                         <p>
-                          До: <span>{char.maxValue}</span>
+                          <span>До: </span>
+                          <span>{char.maxValue}</span>
                         </p>
                       </div>
                     ) : null}
