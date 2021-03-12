@@ -1,6 +1,7 @@
 import { root } from './config';
 import axios, { AxiosResponse } from 'axios';
 
+
 import {
   IAddCategory,
   GeneralCategory,
@@ -20,6 +21,13 @@ import {
   IUpdateProduct,
 } from '../interfaces/IProducts';
 import { Category } from '../pages/Categories/CategoryInfo/categoryReducer';
+
+import { ICategoryItem } from '../interfaces/ICategory';
+import { IActions, IActionsImage } from '../interfaces/actions';
+import { ISettingsItem } from '../interfaces/ISettings';
+import { IProductItem } from '../interfaces/IProducts';
+import { ISlideItem, ISlideUpdateValues, ISlideVisibility } from '../interfaces/ISlides';
+
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -52,6 +60,15 @@ type ApiFetchedDataType = {
     get: () => FetchedDataType<ISettingsItem>;
     put: (settings: IActions) => FetchedDataType<ISettingsItem>;
   };
+
+  slides: {
+    get: () => FetchedDataType<ISlideItem>;
+    add: (slide: FormData) => FetchedDataType<ISlideItem>;
+    update: (slide: ISlideUpdateValues) => FetchedDataType<ISlideItem>;
+    updateVisibility: (slide: ISlideVisibility) => FetchedDataType<ISlideItem>;
+    delete: (slide: IActionsImage) => FetchedDataType<ISlideItem>;
+  };
+
 };
 
 export const api: ApiFetchedDataType = {
@@ -74,6 +91,14 @@ export const api: ApiFetchedDataType = {
     getProductsInCart: () => axios.get(`${root}/products-in-cart`),
     addProductCharValues: (data) => axios.post(`${root}/characteristics-values`, data),
     updateProductCharValues: (data) => axios.patch(`${root}/characteristics-values`, data),
+  },
+
+  slides: {
+    get: () => axios.get(`${root}/slide`),
+    add: (slide) =>  axios.post(`${root}/slide`, slide),
+    update: (slide) => axios.patch(`${root}/slide/${slide.id}`, slide.body),
+    updateVisibility: (slide) => axios.patch(`${root}/slide/visibility/${slide.id}`, {isShown: slide.isShown}),
+    delete: (slide) => axios.delete(`${root}/slide/${slide.id}`),
   },
 
   settings: {

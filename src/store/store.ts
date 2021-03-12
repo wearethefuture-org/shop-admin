@@ -9,6 +9,7 @@ import snackBar from './reducers/snackbar.reducer';
 import theme from './reducers/themeMode.reducer';
 import users from './reducers/users.reducer';
 import rootSaga from './rootSaga';
+import slides from './reducers/slides.reduser';
 
 const saga = createSagaMiddleware();
 
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   snackBar,
   theme,
   users,
+  slides,
 });
 
 const store = createStore(

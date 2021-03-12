@@ -8,6 +8,7 @@ import Categories from '../../pages/Categories/Categories';
 import Products from '../../pages/Products/ProductsPage';
 import Statistic from '../../pages/Statistic/Statistic';
 import Users from '../../pages/Users/Users';
+import Slides from "../../pages/Slides/Slides";
 import Settings from '../../pages/Settings/Settings';
 import HeaderBar from '../HeaderBar/HeaderBar';
 import Content from '../Content/Content';
@@ -35,6 +36,7 @@ const Router: React.FC = () => {
               <Route path="/products/" exact={true} component={Products} />
               <Route path="/statistic" render={() => <Statistic />} />
               <Route path="/users" render={() => <Users />} />
+              <Route path="/slides" render={() => <Slides />} />
               <Route path="/settings" render={() => <Settings />} />
               <Route
                 path="/product/add"
