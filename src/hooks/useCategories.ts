@@ -1,16 +1,18 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { IGetCategoriesResponse } from '../interfaces/ICategory';
 import { fetchCategories } from '../store/actions/categories.actions';
-import { RootState } from '../store/store';
+import { AppDispatch, RootState } from '../store/store';
 
 const useCategories = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  const { list: data } = useSelector((state: RootState) => state.categories);
+  const data: IGetCategoriesResponse[] = useSelector((state: RootState) => state.categories.list);
+
   return { data, dispatch };
 };
 

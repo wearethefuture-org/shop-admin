@@ -1,7 +1,7 @@
 .itemCard {
-  padding: 2rem;
+  padding: 1rem;
   height: max-content;
-  overflow-x: auto;
+  min-height: 100vh;
 
   h1 {
     margin-top: 20px;
@@ -26,37 +26,36 @@
   .breadcrumbs {
     font-size: 1rem;
     color: rgb(71, 57, 165);
+
+    svg {
+      transform: rotate(180deg) scale(0.6) translate(6px, 2px);
+    }
   }
 
   .item-main-info {
     display: flex;
-    margin-top: 1rem;
+    flex: 1;
+    flex-wrap: wrap;
+    padding: 1rem;
+    justify-content: space-between;
   }
 
   .item-additional-info {
     height: max-content;
     margin-top: 4rem;
+    padding: 0 2rem;
+    border-top: 1px solid #ddd;
 
-    .expand-field {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1rem;
-
-      span {
-        font-size: 1rem;
-        font-weight: bold;
-      }
+    h4 {
+      margin-bottom: 0;
     }
+  }
+}
 
-    .additional-info-block {
-      background-color: #fff;
-      padding: 1rem;
+.itemCard-dark {
+  @extend .itemCard;
 
-      ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-    }
+  .breadcrumbs {
+    color: #ddd;
   }
 }

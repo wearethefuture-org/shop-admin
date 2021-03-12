@@ -1,34 +1,55 @@
-export interface ICategoryItem {
-  id: number;
-  key: string;
-  createdAt: string;
-  updatedAt: string;
-  name: string;
-  description: string;
-  products: [];
-}
+import { Common, IBasicProduct } from './IProducts';
 
-export interface ICategoriesData {
-  list: Array<ICategoryItem>;
-  loading: boolean;
-  currentCategory: ICategoryItem | null;
-  error: string | null;
-}
-
-export interface CategoryTableData {
-  id: number;
+export interface GeneralCategory extends Common {
   key: string;
-  createdAt: string;
-  updatedAt: string;
   name: string;
   description?: string;
-  products: number;
 }
 
-export interface IFormValues {
+export interface IGetCategoriesResponse extends GeneralCategory {
+  products: IBasicProduct[];
+}
+
+export interface IAddCategory {
   name: string;
-  key: string;
   description: string;
+  key: string;
+}
+
+export interface ICharResponse extends Common {
+  name: string;
+  description: string;
+  required: boolean;
+  type: string;
+  minValue: number | null;
+  maxValue: number | null;
+  defaultValues: null | { values: string[] };
+}
+
+export interface IGroupResponse extends Common {
+  name: string;
+  characteristic: ICharResponse[];
+}
+
+export interface ICategoryResponse extends GeneralCategory {
+  characteristicGroup: IGroupResponse[];
+}
+
+export interface ICharToAdd {
+  name: string;
+  description?: string;
+  required?: boolean;
+  type?: string;
+  minValue?: number | string | null;
+  maxValue?: number | string | null;
+  defaultVal?: string;
+  defaultValues: null | { values: string[] };
+  categoryId?: number;
+}
+
+export interface CategoryTableData extends GeneralCategory {
+  description?: string;
+  products: number;
 }
 
 export interface InnerCategoryFormProps {

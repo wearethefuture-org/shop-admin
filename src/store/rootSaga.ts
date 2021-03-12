@@ -14,6 +14,16 @@ import {
   REQUEST_UPDATE_SETTINGS,
   UPDATE_PRODUCT_REQUEST,
   UPLOAD_MAIN_IMG_REQUEST,
+  GET_CATEGORY_BY_ID_REQUEST,
+  UPDATE_CATEGORY_REQUEST,
+} from './types';
+import {
+  fetchCategoryWorker,
+  addCategoryWorker,
+  getCategoryByIdWorker,
+  updateCategoryWorker,
+} from './sagas/categories.saga';
+
   REQUEST_SLIDES,
   REQUEST_UPDATE_SLIDES,
   REQUEST_ADD_SLIDES,
@@ -21,6 +31,7 @@ import {
   REQUEST_UPDATE_SLIDE_VISIBILITY
 } from './types';
 import { addCategoryWorker, fetchCategoryWorker, getCategoryByIdWorker } from './sagas/categories.saga';
+
 
 import { fetchSettingsWorker, updateSettingsWorker } from './sagas/settings.saga';
 import {
@@ -43,6 +54,7 @@ export function* sagaCategoriesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_CATEGORIES, fetchCategoryWorker);
   yield takeEvery(REQUEST_ADD_CATEGORIES, addCategoryWorker);
   yield takeEvery(GET_CATEGORY_BY_ID_REQUEST, getCategoryByIdWorker);
+  yield takeEvery(UPDATE_CATEGORY_REQUEST, updateCategoryWorker);
 }
 
 export function* sagaProductsWatcher(): SagaIterator {
@@ -51,7 +63,6 @@ export function* sagaProductsWatcher(): SagaIterator {
   yield takeEvery(ADD_PRODUCT_REQUEST, addProductWorker);
   yield takeEvery(UPLOAD_MAIN_IMG_REQUEST, uploadMainImgWorker);
   yield takeEvery(UPDATE_PRODUCT_REQUEST, updateProductWorker);
-  yield takeEvery(DELETE_IMAGE_REQUEST, deleteImgWorker);
   yield takeEvery(DELETE_PRODUCT_REQUEST, deleteProductWorker);
 }
 

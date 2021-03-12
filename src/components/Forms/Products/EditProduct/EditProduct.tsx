@@ -3,64 +3,89 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 
-import ProductForm, { productValidationShema } from '../ProductForm/ProductForm';
+import ProductForm from '../ProductForm/ProductForm';
 import useCategories from '../../../../hooks/useCategories';
-import { IProductFormData } from '../../../../interfaces/IProducts';
-import { RootState } from '../../../../store/store';
+import { IGetProductById, IUpdateProduct } from '../../../../interfaces/IProducts';
+import { AppDispatch, RootState } from '../../../../store/store';
 import { root } from '../../../../api/config';
-import {
-  deleteImageRequest,
-  updateProductRequest,
-} from '../../../../store/actions/products.actions';
+import { updateProductRequest } from '../../../../store/actions/products.actions';
+import { productValidationShema } from '../ProductForm/productFormHelpers';
+import { ICategoryResponse, ICharResponse } from '../../../../interfaces/ICategory';
+import { getEditCharValuesObject } from './getEditCharValuesObject';
 
-interface stateType {
+interface ILocation {
   from: { pathname: string };
 }
 
 const EditProduct: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation<stateType>();
+  const location = useLocation<ILocation>();
+
   const { data: categories } = useCategories();
 
-  const product = useSelector((state: RootState) => state.products.currentProduct);
+  const category: ICategoryResponse = useSelector(
+    (state: RootState) => state.categories.currentCategory
+  );
+  const product: IGetProductById = useSelector((state: RootState) => state.products.currentProduct);
 
   const handleGoBack = () => {
     history.push(location?.state?.from || '/products');
   };
 
+  const [validation, setValidation] = useState(productValidationShema);
+
+  // DELETE IMAGES
+  const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
+
   // FORMIK
-  const initialValues: IProductFormData = {
-    name: product.name ?? '',
-    price: product.price ?? '',
-    description: product.description ?? '',
-    categoryName: product.category?.name ?? '',
-    files: product.files ?? [],
-    key: product.key ?? '',
+  const initialValues = {
+    name: product ? product.name : '',
+    price: product.price ? product.price : '',
+    description: product ? product.description : '',
+    categoryName: product ? product.category?.name : '',
+    files: product ? product.files : {},
+    key: product ? product.key : '',
+    subForm: {},
   };
 
   const formik = useFormik({
     initialValues,
+    validateOnChange: false,
+    validateOnBlur: false,
+    validationSchema: validation,
+    onSubmit: (values: IUpdateProduct): void => {
+      const { subForm, ...productValues } = values;
 
-    validationSchema: productValidationShema,
-    onSubmit: (values: IProductFormData): void => {
-      const imagesFD = new FormData();
-      if (images.length) {
-        for (let image of images) {
-          imagesFD.append('images', image);
-        }
-        formik.values.files = imagesFD;
-      } else {
-        formik.values.files = product.files;
-      }
+      const chars: ICharResponse[] =
+        category && category.characteristicGroup.map((group) => group.characteristic).flat(1);
 
-      dispatch(updateProductRequest({ id: product.id, product: values }));
+      dispatch(
+        updateProductRequest(
+          product.id,
+          productValues,
+          getEditCharValuesObject(chars, product, formik),
+          imagesToDelete
+        )
+      );
+
       handleGoBack();
     },
   });
 
+  // HANDLE IMAGES
   const [images, setImages] = useState<File[]>([]);
   const [imagesPreview, setImagesPreview] = useState<string[]>([]);
+
+  const imagesFD = new FormData();
+  if (images.length) {
+    for (let image of images) {
+      imagesFD.append('images', image);
+    }
+    formik.values.files = imagesFD;
+  } else {
+    formik.values.files = product.files;
+  }
 
   useEffect(() => {
     if (product.files?.length) {
@@ -72,14 +97,11 @@ const EditProduct: React.FC = () => {
     }
   }, [product.files]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const fileList: File[] = Array.from(e.target.files);
-      setImages((prev) => prev.concat(fileList));
+  const handleImageChange = (fileList: File[]) => {
+    setImages((prev) => prev.concat(fileList));
 
-      const mappedFiles = fileList.map((file) => URL.createObjectURL(file));
-      setImagesPreview((prev) => prev.concat(mappedFiles));
-    }
+    const mappedFiles = fileList.map((file) => URL.createObjectURL(file));
+    setImagesPreview((prev) => prev.concat(mappedFiles));
   };
 
   const handleDeleteImg = (img, idx) => {
@@ -87,7 +109,7 @@ const EditProduct: React.FC = () => {
     const existingImg = imgName && product.files.filter((file) => file.name.includes(imgName));
 
     if (existingImg.length) {
-      existingImg.forEach((img) => dispatch(deleteImageRequest(img.name, product.id)));
+      setImagesToDelete(imagesToDelete.concat(existingImg.map((img) => img.name)));
     } else {
       setImages(images.filter((_, imgIdx) => imgIdx !== idx));
     }
@@ -104,6 +126,7 @@ const EditProduct: React.FC = () => {
       handleImageChange={handleImageChange}
       imagesPreview={imagesPreview}
       handleDeleteImg={handleDeleteImg}
+      setValidation={setValidation}
     />
   );
 };

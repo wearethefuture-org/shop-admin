@@ -2,8 +2,9 @@ import React from 'react';
 import { Button, DialogActions, LinearProgress } from '@material-ui/core';
 import { Field, Form, FormikProps } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-import { IFormValues, InnerCategoryFormProps } from '../../../interfaces/ICategory';
-import TextFieldWrapped from '../../../hocs/TextFieldHOC';
+
+import { IAddCategory, InnerCategoryFormProps } from '../../../../interfaces/ICategory';
+import TextFieldWrapped from '../../../../hocs/TextFieldHOC';
 
 const useStyles = makeStyles({
   customBtn: {
@@ -18,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IFormValues>> = (props) => {
+const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IAddCategory>> = (props) => {
   const { submitForm, handleClose, isSubmitting, dirty, isValid, touched, errors, status } = props;
 
   const classes = useStyles();

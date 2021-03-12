@@ -15,7 +15,7 @@ import Content from '../Content/Content';
 import styles from './Router.module.scss';
 import ViewProduct from '../../pages/Products/ProductRouter';
 import AddProduct from '../Forms/Products/AddProduct/AddProduct';
-import CategoryInfo from '../../pages/Categories/CategoryInfo/CategoryInfo';
+import CategoryRouter from '../../pages/Categories/CategoryRouter';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -27,13 +27,12 @@ const Router: React.FC = () => {
         <Sidebar isOpen={isOpenSidebar} onSidebarToggle={toggleSidebar} />
         <SnackBar />
 
-        <div className={styles.main}>
+        <div className={isOpenSidebar ? styles.main : styles['main-expanded']}>
           <HeaderBar onSidebarToggle={toggleSidebar} isShrink={isOpenSidebar} />
           <Content>
             <Switch>
               <Route path="/dashboard" render={() => <Dashboard />} />
               <Route path="/categories" render={() => <Categories />} />
-              <Route path="/category/:id" render={() => <CategoryInfo />} />
               <Route path="/products/" exact={true} component={Products} />
               <Route path="/statistic" render={() => <Statistic />} />
               <Route path="/users" render={() => <Users />} />
@@ -47,6 +46,10 @@ const Router: React.FC = () => {
               <Route
                 path="/product/:id"
                 render={({ match }) => <ViewProduct {...match.params} />}
+              />
+              <Route
+                path="/category/:id"
+                render={({ match }) => <CategoryRouter {...match.params} />}
               />
             </Switch>
           </Content>

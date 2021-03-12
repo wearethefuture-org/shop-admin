@@ -2,9 +2,9 @@ import { withFormik } from 'formik';
 import { Dispatch } from 'redux';
 import * as Yup from 'yup';
 
-import { fetchAddCategories } from '../../../store/actions/categories.actions';
+import { fetchAddCategories } from '../../../../store/actions/categories.actions';
 import InnerForm from './Inner-form';
-import { IFormValues } from '../../../interfaces/ICategory';
+import { IAddCategory } from '../../../../interfaces/ICategory';
 
 interface CategoryFormProps {
   dispatch: Dispatch;
@@ -24,7 +24,7 @@ const categoryValidationShema = Yup.object().shape({
   description: Yup.string().min(10, 'Minimum 10 symbols').max(360, 'Too long').required('Required'),
 });
 
-const CategoryForm = withFormik<CategoryFormProps, IFormValues>({
+const CategoryForm = withFormik<CategoryFormProps, IAddCategory>({
   mapPropsToValues: (props) => {
     return {
       name: props.initialName || '',
@@ -33,9 +33,11 @@ const CategoryForm = withFormik<CategoryFormProps, IFormValues>({
     };
   },
   validationSchema: categoryValidationShema,
-  handleSubmit: (values: IFormValues, { setSubmitting, props }) => {
+  handleSubmit: (values: IAddCategory, { setSubmitting, props }) => {
     setSubmitting(false);
-    props.dispatch(fetchAddCategories(values.name, values.key, values.description));
+
+    const { name, key, description } = values;
+    props.dispatch(fetchAddCategories({ name, key, description }));
     props.handleClose();
   },
 })(InnerForm);

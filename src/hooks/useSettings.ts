@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchSettings } from '../store/actions/settings.actions';
-import { RootState } from '../store/store';
+import { AppDispatch, RootState } from '../store/store';
 
 const useSettings = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchSettings());

@@ -1,3 +1,10 @@
+.expandable-field {
+  margin: 2rem 0 1rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
 .expand-btn {
   border-radius: 50%;
   background-color: #eee;

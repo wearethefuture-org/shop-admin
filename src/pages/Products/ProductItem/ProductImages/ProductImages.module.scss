@@ -1,62 +1,32 @@
 .gallery {
-  flex-shrink: 0;
-  margin-right: 20px;
-  width: 500px;
-}
-
-.img-large-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 500px;
-  height: 500px;
+  border-radius: 4px;
   position: relative;
-  background-color: #fff;
-  border-radius: 6px;
-}
+  width: 33vw;
 
-.img-large {
-  max-width: 500px;
-  max-height: 500px;
-  object-fit: contain;
-}
+  .placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 4px;
+    background: linear-gradient(75deg, #9a4354, #636363, #27524c);
 
-.placeholder {
-  @extend .img-large-wrapper;
-  background: linear-gradient(75deg, #9a4354, #636363, #27524c);
-
-  img {
-    height: 200px;
-    width: 200px;
+    img {
+      object-fit: contain;
+      height: 30%;
+      width: 30%;
+    }
   }
-}
 
-.cropped-img {
-  display: inline-flex;
-  object-fit: contain;
-  width: 100px;
-  height: 100px;
-  margin: 10px;
-  padding: 4px;
-
-  &:not(:last-child) {
-    margin-right: 10px;
+  .favIcon {
+    cursor: pointer;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    border-radius: 50%;
+    background-color: #fff;
+    color: orange;
+    padding: 2px;
   }
-}
-
-.cropped-img-active {
-  @extend .cropped-img;
-  padding: 2px;
-  border: 2px solid #01a701;
-}
-
-.favIcon {
-  cursor: pointer;
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  border-radius: 50%;
-  background-color: #fff;
-  color: orange;
-  padding: 2px;
 }

@@ -1,10 +1,7 @@
 .description {
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
   flex: 1;
-  background-color: #fff;
-  border-radius: 4px;
+  min-width: 300px;
+  max-width: 37vw;
 
   .field {
     display: flex;
@@ -20,7 +17,6 @@
       font-size: 1.1rem;
       font-weight: bold;
       margin-right: 10px;
-      color: #555;
     }
 
     .value {

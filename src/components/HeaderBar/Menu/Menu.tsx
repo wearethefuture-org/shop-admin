@@ -8,7 +8,7 @@ import Badge from '@material-ui/core/Badge';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../store/store';
+import { AppDispatch, RootState } from '../../../store/store';
 import { switchDarkMode } from '../../../store/actions/theme.actions';
 import MobileMenuList from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -53,7 +53,7 @@ const AppBarMenu: React.FC<HeaderBarProps> = (props) => {
   const isDark = useSelector((state: RootState) => state.theme.darkMode);
   const classes = useStyles(isDark);
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const themeToggle = () => dispatch(switchDarkMode());
 
   const mobileMenuList = [

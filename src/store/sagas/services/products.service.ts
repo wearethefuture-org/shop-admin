@@ -1,5 +1,8 @@
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+
 import { api } from '../../../api/api';
-import { IActions } from '../../../interfaces/actions';
+import { root } from '../../../api/config';
+import { IAddProduct, IProductCharRequest } from '../../../interfaces/IProducts';
 
 export async function apiGetProducts() {
   const products = await api.products.get();
@@ -11,15 +14,14 @@ export async function apiGetProductById(id: number) {
   return product.data;
 }
 
-export async function apiAddProduct(data: any) {
-  const product = await api.products.add(data);
+export async function apiAddProduct(productValues: IAddProduct) {
+  const product = await api.products.add(productValues);
   return product.data;
 }
 
-export async function apiUpdateProduct(data: any) {
-  const product = await api.products.update(data.id, data.product);
-
-  return product.data;
+export async function apiUpdateProduct(productValues: any) {
+  const updatedProduct = await api.products.update(productValues);
+  return updatedProduct && updatedProduct.data;
 }
 
 export async function apiUploadImages(formData: FormData) {
@@ -27,7 +29,7 @@ export async function apiUploadImages(formData: FormData) {
   return res;
 }
 
-export async function apiUploadMainImg(data: any) {
+export async function apiUploadMainImg(data: { productId: number; imgName: string }) {
   const res = await api.products.updateMainImg(data);
   return res.data;
 }
@@ -37,7 +39,34 @@ export async function apiDeleteImg(imgName: string) {
   return res.data;
 }
 
-export async function apiDeleteProduct(id: IActions) {
+export async function apiGetProductsInCart() {
+  const res = await api.products.getProductsInCart();
+  return res.data;
+}
+
+export async function apiDeleteProduct(id: number) {
   await api.products.deleteProduct(id);
   return id;
 }
+
+export async function apiAddProductCharValues(data: IProductCharRequest) {
+  const res = await api.products.addProductCharValues(data);
+  return res.data;
+}
+
+export async function apiUpdateProductCharValues(data: IProductCharRequest) {
+  const res = await api.products.updateProductCharValues(data);
+  return res.data;
+}
+
+export const apiDeleteChar = (
+  config: AxiosRequestConfig,
+  data: { characteristicValuesIds: string[] }
+): Promise<string> => {
+  return axios({
+    method: 'delete',
+    url: root && root + config.url,
+    headers: { 'Content-Type': 'application/json' },
+    data: JSON.stringify(data),
+  }).then((res: AxiosResponse) => res.data);
+};

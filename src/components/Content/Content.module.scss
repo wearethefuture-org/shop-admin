@@ -1,0 +1,12 @@
+.main {
+  flex-grow: 1;
+  width: 100%;
+  box-sizing: 'border-box';
+  padding: 1rem 0;
+  padding-top: 56px;
+  min-height: 100vh;
+
+  @media (min-width: 600px) {
+    padding-top: 64px;
+  }
+}

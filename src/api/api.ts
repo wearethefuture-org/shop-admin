@@ -1,30 +1,59 @@
 import { root } from './config';
 import axios, { AxiosResponse } from 'axios';
 
+
+import {
+  IAddCategory,
+  GeneralCategory,
+  ICategoryResponse,
+  IGetCategoriesResponse,
+} from '../interfaces/ICategory';
+import { IActions } from '../interfaces/actions';
+import { ISettingsItem } from '../interfaces/ISettings';
+import {
+  IAddCharResponse,
+  IAddImgResponse,
+  IAddProduct,
+  IGetProductById,
+  IGetProducts,
+  IProductCharRequest,
+  IProductsInCart,
+  IUpdateProduct,
+} from '../interfaces/IProducts';
+import { Category } from '../pages/Categories/CategoryInfo/categoryReducer';
+
 import { ICategoryItem } from '../interfaces/ICategory';
 import { IActions, IActionsImage } from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';
 import { IProductItem } from '../interfaces/IProducts';
 import { ISlideItem, ISlideUpdateValues, ISlideVisibility } from '../interfaces/ISlides';
 
+
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
 type ApiFetchedDataType = {
   categories: {
-    get: () => FetchedDataType<ICategoryItem>;
-    add: (category: IActions) => FetchedDataType<ICategoryItem>;
-    getById: (id: number) => FetchedDataType<ICategoryItem>;
+    get: () => FetchedDataType<IGetCategoriesResponse>;
+    add: (category: IAddCategory) => FetchedDataType<GeneralCategory>;
+    getById: (id: number) => FetchedDataType<ICategoryResponse>;
+    update: (data: Category) => FetchedDataType<ICategoryResponse>;
   };
 
   products: {
-    get: () => FetchedDataType<IProductItem>;
-    getById: (id: number) => FetchedDataType<IProductItem>;
-    add: (product: IActions) => FetchedDataType<IProductItem>;
-    update: (id: number, product: any) => FetchedDataType<IProductItem>;
-    updateImg: (data: any) => FetchedDataType<JSON>;
-    updateMainImg: (data: any) => FetchedDataType<JSON>;
-    deleteImg: (imgName: string) => FetchedDataType<IProductItem>;
-    deleteProduct: (id: IActions) => FetchedDataType<JSON>;
+    get: () => FetchedDataType<IGetProducts>;
+    getById: (id: number) => FetchedDataType<IGetProductById>;
+    add: (product: IAddProduct) => FetchedDataType<IGetProductById>;
+    update: (product: IUpdateProduct) => FetchedDataType<IGetProductById>;
+    updateImg: (data: FormData) => FetchedDataType<IAddImgResponse>;
+    updateMainImg: (data: {
+      productId: number;
+      imgName: string;
+    }) => FetchedDataType<IGetProductById>;
+    deleteImg: (imgName: string) => FetchedDataType<IGetProductById>;
+    deleteProduct: (id: number) => FetchedDataType<JSON>;
+    getProductsInCart: () => FetchedDataType<IProductsInCart>;
+    addProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
+    updateProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
   };
 
   settings: {
@@ -47,17 +76,21 @@ export const api: ApiFetchedDataType = {
     get: () => axios.get(`${root}/category`),
     add: (category) => axios.post(`${root}/category`, category),
     getById: (id) => axios.get(`${root}/category/${id}`),
+    update: (data) => axios.patch(`${root}/category`, data),
   },
 
   products: {
     get: () => axios.get(`${root}/product`),
     add: (product) => axios.post(`${root}/product`, product),
     getById: (id) => axios.get(`${root}/product/${id}`),
-    update: (id, product) => axios.patch(`${root}/product/${id}`, product),
+    update: ({ id, ...product }) => axios.patch(`${root}/product/${id}`, product),
     updateImg: (data) => axios.post(`${root}/product/multipleimages`, data),
     updateMainImg: (data) => axios.patch(`${root}/product/img/preview`, data),
     deleteImg: (imgName) => axios.delete(`${root}/product/img/${imgName}`),
     deleteProduct: (id) => axios.delete(`${root}/product/${id}`),
+    getProductsInCart: () => axios.get(`${root}/products-in-cart`),
+    addProductCharValues: (data) => axios.post(`${root}/characteristics-values`, data),
+    updateProductCharValues: (data) => axios.patch(`${root}/characteristics-values`, data),
   },
 
   slides: {

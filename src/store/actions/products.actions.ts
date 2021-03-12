@@ -1,5 +1,12 @@
 import { IActions } from '../../interfaces/actions';
-import { IProductItem, IProductFormData } from '../../interfaces/IProducts';
+import {
+  IProductItem,
+  ICharValue,
+  IGetProducts,
+  IAddProduct,
+  IUpdateProduct,
+  IGetProductById,
+} from '../../interfaces/IProducts';
 import {
   GET_PRODUCTS_REQUEST,
   GET_PRODUCTS_SUCCESS,
@@ -19,12 +26,6 @@ import {
   UPLOAD_MAIN_IMG_REQUEST,
   UPLOAD_MAIN_IMG_SUCCESS,
   UPLOAD_MAIN_IMG_ERROR,
-  UPLOAD_IMAGES_REQUEST,
-  UPLOAD_IMAGES_SUCCESS,
-  UPLOAD_IMAGES_ERROR,
-  DELETE_IMAGE_REQUEST,
-  DELETE_IMAGE_ERROR,
-  DELETE_IMAGE_SUCCESS,
 } from '../types';
 
 // get all
@@ -32,7 +33,7 @@ export const getProductsRequest = (): IActions => ({
   type: GET_PRODUCTS_REQUEST,
 });
 
-export const getProductsSuccess = (products: IProductItem[]): IActions => ({
+export const getProductsSuccess = (products: IGetProducts[]): IActions => ({
   type: GET_PRODUCTS_SUCCESS,
   data: products,
 });
@@ -59,9 +60,12 @@ export const getProductByIdError = (message: string): IActions => ({
 });
 
 // add product
-export const addProductRequest = (product: IProductFormData): IActions => ({
+export const addProductRequest = (
+  productValues: IAddProduct,
+  characteristicValues: ICharValue[]
+): IActions => ({
   type: ADD_PRODUCT_REQUEST,
-  data: product,
+  data: { productValues, characteristicValues },
 });
 
 export const addProductSuccess = (product: IProductItem): IActions => ({
@@ -80,9 +84,9 @@ export const uploadMainImgRequest = (productId: number, imgName: string): IActio
   data: { productId, imgName },
 });
 
-export const uploadMainImgSuccess = (mainImg: string): IActions => ({
+export const uploadMainImgSuccess = (product: IGetProductById): IActions => ({
   type: UPLOAD_MAIN_IMG_SUCCESS,
-  data: mainImg,
+  data: product,
 });
 
 export const uploadMainImgError = (message: string): IActions => ({
@@ -90,42 +94,19 @@ export const uploadMainImgError = (message: string): IActions => ({
   data: message,
 });
 
-// upload images
-export const uploadImagesRequest = (images: string[]): IActions => ({
-  type: UPLOAD_IMAGES_REQUEST,
-  data: images,
-});
-
-export const uploadImagesSuccess = (images: string): IActions => ({
-  type: UPLOAD_IMAGES_SUCCESS,
-  data: images,
-});
-
-export const uploadImagesError = (message: string): IActions => ({
-  type: UPLOAD_IMAGES_ERROR,
-  data: message,
-});
-
-// delete image
-export const deleteImageRequest = (imgName: string, id: string): IActions => ({
-  type: DELETE_IMAGE_REQUEST,
-  data: { imgName, id },
-});
-
-export const deleteImageSuccess = (product: IProductItem): IActions => ({
-  type: DELETE_IMAGE_SUCCESS,
-  data: product,
-});
-
-export const deleteImageError = (message: string): IActions => ({
-  type: DELETE_IMAGE_ERROR,
-  data: message,
-});
-
 // update product
-export const updateProductRequest = (data): IActions => ({
+export const updateProductRequest = (
+  id: number,
+  productValues: IUpdateProduct,
+  characteristicValues: {
+    charsToAdd: ICharValue[];
+    charsToEdit: ICharValue[];
+    charsToDelete: number[];
+  },
+  imagesToDelete: string[]
+): IActions => ({
   type: UPDATE_PRODUCT_REQUEST,
-  data,
+  data: { id, productValues, characteristicValues, imagesToDelete },
 });
 
 export const updateProductSuccess = (product: IProductItem): IActions => ({
@@ -139,14 +120,14 @@ export const updateProductError = (message: string): IActions => ({
 });
 
 // delete product
-export const deleteProductRequest = (id: number): IActions => ({
+export const deleteProductRequest = (product: IGetProductById): IActions => ({
   type: DELETE_PRODUCT_REQUEST,
-  data: id,
+  data: product,
 });
 
-export const deleteProductSuccess = (product: IProductItem): IActions => ({
+export const deleteProductSuccess = (id: number): IActions => ({
   type: DELETE_PRODUCT_SUCCESS,
-  data: product,
+  data: id,
 });
 
 export const deleteProductError = (message: string): IActions => ({

@@ -6,16 +6,17 @@ import {
   ThemeOptions,
 } from '@material-ui/core/styles';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.scss';
-import Router from './components/Router/Router';
 import { Paper } from '@material-ui/core';
-import { RootState } from './store/store';
 import { useSelector, useDispatch } from 'react-redux';
+
+import Router from './components/Router/Router';
+import { AppDispatch, RootState } from './store/store';
 import { switchDarkMode } from './store/actions/theme.actions';
+import './App.scss';
 
 export function App() {
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     const bool: string = localStorage.getItem('darkMode')!;

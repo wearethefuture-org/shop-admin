@@ -7,15 +7,15 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
+
 import AppBarMenu from './Menu/Menu';
 import AccountList from './AccountList/AccountMenuList';
 import MailList from './MailList/MailList';
 import NotificationList from './NotificationList/NotificationList';
 
-
 interface HeaderBarProps {
-  onSidebarToggle: () => void,
-  isShrink: boolean,
+  onSidebarToggle: () => void;
+  isShrink: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -23,10 +23,19 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   width: {
-    width: '100%'
+    width: '100%',
   },
   appBar: {
     backgroundColor: 'darkgreen',
+    paddingLeft: 0,
+    zIndex: 3,
+    transition: `all 0.3s ease-in-out`,
+  },
+  appBarShrinked: {
+    backgroundColor: 'darkgreen',
+    paddingLeft: '240px',
+    zIndex: 3,
+    transition: `all 0.3s ease-in-out`,
   },
   appBarShift: {
     flexShrink: 0,
@@ -65,12 +74,11 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       width: '20ch',
     },
-  }
+  },
 }));
 
-
 const HeaderBar: React.FC<HeaderBarProps> = (props) => {
-  const { onSidebarToggle, isShrink } = props
+  const { onSidebarToggle, isShrink } = props;
   const classes = useStyles(props);
 
   const [mailAnchorEl, setMailAnchorEl] = React.useState(null);
@@ -98,18 +106,16 @@ const HeaderBar: React.FC<HeaderBarProps> = (props) => {
     setAccountAnchorEl(null);
     setNoticeAnchorEl(null);
     setMobileMoreAnchorEl(null);
-    setMailAnchorEl(null)
+    setMailAnchorEl(null);
   };
 
-
   return (
-    <div className={clsx(classes.grow, classes.width, {
-      [classes.appBarShift]: !isShrink,
-    })}>
-      <AppBar
-        position="static"
-        className={classes.appBar}
-      >
+    <div
+      className={clsx(classes.grow, classes.width, {
+        [classes.appBarShift]: !isShrink,
+      })}
+    >
+      <AppBar position="fixed" className={isShrink ? classes.appBarShrinked : classes.appBar}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -145,22 +151,13 @@ const HeaderBar: React.FC<HeaderBarProps> = (props) => {
         </Toolbar>
       </AppBar>
 
-      <MailList
-        mailAnchorEl={mailAnchorEl}
-        onMailListClose={allDropdownsClose}
-      />
+      <MailList mailAnchorEl={mailAnchorEl} onMailListClose={allDropdownsClose} />
 
-      <NotificationList
-        noticeAnchorEl={noticeAnchorEl}
-        onNoticeListClose={allDropdownsClose}
-      />
+      <NotificationList noticeAnchorEl={noticeAnchorEl} onNoticeListClose={allDropdownsClose} />
 
-      <AccountList
-        accountAnchorEl={accountAnchorEl}
-        onAccountListClose={allDropdownsClose}
-      />
+      <AccountList accountAnchorEl={accountAnchorEl} onAccountListClose={allDropdownsClose} />
     </div>
   );
-}
+};
 
-export default HeaderBar
+export default HeaderBar;

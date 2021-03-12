@@ -1,13 +1,14 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
-import { IProductItem } from '../../../../interfaces/IProducts';
+import { IGetProductById } from '../../../../interfaces/IProducts';
+import { RootState } from '../../../../store/store';
+import { formatISODate } from '../../../../utils/formatISODate';
 import styles from './ProductDescription.module.scss';
 
-interface IDescrProps {
-  product: IProductItem;
-}
+const ProductDescription: React.FC = () => {
+  const product: IGetProductById = useSelector((state: RootState) => state.products.currentProduct);
 
-const ProductDescription: React.FC<IDescrProps> = ({ product }) => {
   return (
     <div className={styles.description}>
       <div className={styles.field}>
@@ -36,11 +37,11 @@ const ProductDescription: React.FC<IDescrProps> = ({ product }) => {
       </div>
       <div className={styles.field}>
         <p className={styles.title}>Створено:</p>
-        <p className={styles.value}>{product.createdAt}</p>
+        <p className={styles.value}>{formatISODate(product.createdAt)}</p>
       </div>
       <div className={styles.field}>
         <p className={styles.title}>Оновлено:</p>
-        <p className={styles.value}>{product.updatedAt}</p>
+        <p className={styles.value}>{formatISODate(product.updatedAt)}</p>
       </div>
     </div>
   );

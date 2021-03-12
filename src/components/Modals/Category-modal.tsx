@@ -8,7 +8,8 @@ import AddIcon from '@material-ui/icons/Add';
 import { Dispatch } from 'redux';
 
 import { ICategoriesModal } from '../../interfaces/modals';
-import CategoryForm from '../Forms/Category-form/Category-form';
+import CategoryForm from '../Forms/Category-form/CategoryAddForm/Category-form';
+import styles from './Category-modal.module.scss';
 
 interface FormDialogProps {
   dispatch: Dispatch;
@@ -21,9 +22,11 @@ const FormDialog: React.FC<FormDialogProps> = ({ dispatch, modalData }) => {
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        <AddIcon /> New Category
-      </Button>
+      <div className={styles['add-category-btn']}>
+        <Button variant="contained" color="primary" onClick={handleClickOpen}>
+          <AddIcon /> New Category
+        </Button>
+      </div>
       <Dialog
         open={isOpened}
         onClose={handleClose}
