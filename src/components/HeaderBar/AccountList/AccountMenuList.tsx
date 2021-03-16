@@ -10,23 +10,23 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { makeStyles } from '@material-ui/core/styles';
 
 interface AccountListProps {
-  accountAnchorEl: null | Element,
-  onAccountListClose: () => void,
+  accountAnchorEl: null | Element;
+  onAccountListClose: () => void;
 }
 
 const useStyles = makeStyles({
   menuItem: {
-    fontSize: '15px'
+    fontSize: '15px',
   },
   iconItem: {
     marginRight: '0.5rem',
-    minWidth: 'auto'
+    minWidth: 'auto',
   },
-})
+});
 
 const AccountList: React.FC<AccountListProps> = (props) => {
-  const { accountAnchorEl, onAccountListClose } = props
-  const classes = useStyles()
+  const { accountAnchorEl, onAccountListClose } = props;
+  const classes = useStyles();
 
   return (
     <AccountListMenu
@@ -38,24 +38,32 @@ const AccountList: React.FC<AccountListProps> = (props) => {
       onClose={onAccountListClose}
     >
       <MenuItem className={classes.menuItem} onClick={onAccountListClose}>
-        <ListItemIcon className={classes.iconItem}><PersonIcon fontSize="small" /></ListItemIcon>
-        View Profile
+        <ListItemIcon className={classes.iconItem}>
+          <PersonIcon fontSize="small" />
+        </ListItemIcon>
+        Профіль
       </MenuItem>
       <MenuItem className={classes.menuItem} onClick={onAccountListClose}>
-        <ListItemIcon className={classes.iconItem}><QuestionAnswerIcon fontSize="small" /></ListItemIcon>
-        Contacts
+        <ListItemIcon className={classes.iconItem}>
+          <QuestionAnswerIcon fontSize="small" />
+        </ListItemIcon>
+        Контакти
       </MenuItem>
       <MenuItem className={classes.menuItem} onClick={onAccountListClose}>
-        <ListItemIcon className={classes.iconItem}><PieChartIcon fontSize="small" /></ListItemIcon>
-        Analytics
+        <ListItemIcon className={classes.iconItem}>
+          <PieChartIcon fontSize="small" />
+        </ListItemIcon>
+        Аналітика
       </MenuItem>
       <Divider />
       <MenuItem className={classes.menuItem} onClick={onAccountListClose}>
-        <ListItemIcon className={classes.iconItem}><ExitToAppIcon fontSize="small" /></ListItemIcon>
-        Sign out
+        <ListItemIcon className={classes.iconItem}>
+          <ExitToAppIcon fontSize="small" />
+        </ListItemIcon>
+        Вийти
       </MenuItem>
     </AccountListMenu>
-  )
-}
+  );
+};
 
-export default AccountList
+export default AccountList;

@@ -131,7 +131,7 @@ const HeaderBar: React.FC<HeaderBarProps> = (props) => {
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search…"
+              placeholder="Пошук…"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,

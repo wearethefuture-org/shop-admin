@@ -20,7 +20,7 @@ const useStyles = makeStyles({
 });
 
 const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IAddCategory>> = (props) => {
-  const { submitForm, handleClose, isSubmitting, dirty, isValid, touched, errors, status } = props;
+  const { submitForm, handleClose, isSubmitting, dirty, isValid } = props;
 
   const classes = useStyles();
 
@@ -30,25 +30,17 @@ const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IAddCategory>> = 
         fullWidth
         component={TextFieldWrapped}
         className={classes.input}
-        type="text"
-        label="URL key *"
-        name="key"
-        placeholder="url-example"
+        label="Назва *"
+        name="name"
         makegreen="true"
       />
-      {status && status.key && !(touched.key && errors.key) && (
-        <div className={classes.hint}>
-          Підказка: це варіант імені для URL-адреси. Можна використовувати латинські літери в
-          нижньому регістрі та дефіс
-        </div>
-      )}
       <Field
         fullWidth
         component={TextFieldWrapped}
         className={classes.input}
-        type="name"
-        label="Name *"
-        name="name"
+        label="URL ключ *"
+        name="key"
+        placeholder="url-example"
         makegreen="true"
       />
       <Field
@@ -57,8 +49,7 @@ const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IAddCategory>> = 
         rowsMax={6}
         component={TextFieldWrapped}
         className={classes.input}
-        type="description"
-        label="Description *"
+        label="Опис *"
         name="description"
         makegreen="true"
       />
@@ -66,11 +57,11 @@ const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IAddCategory>> = 
       <DialogActions>
         <Button
           onClick={handleClose}
-          color="primary"
+          color="secondary"
           variant="contained"
           className={classes.customBtn}
         >
-          Cancel
+          Закрити
         </Button>
         <Button
           className={classes.customBtn}
@@ -79,7 +70,7 @@ const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IAddCategory>> = 
           disabled={isSubmitting || !(dirty && isValid)}
           onClick={submitForm}
         >
-          Create
+          Створити
         </Button>
       </DialogActions>
     </Form>

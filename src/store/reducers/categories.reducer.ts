@@ -29,7 +29,7 @@ const categories = (state = initialState, { type, data }: IActions) => {
   switch (type) {
     case LOAD_CATEGORIES: {
       return {
-        loading: true,
+        loading: false,
         list: data,
         currentCategory: null,
         error: null,

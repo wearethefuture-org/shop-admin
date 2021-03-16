@@ -50,21 +50,29 @@ const CategoryInfo: React.FC = () => {
   );
 
   useEffect(() => {
-    categoryDispatch({ type: CategoryActionTypes.setCategoryId, id: category.id });
-    categoryDisplayDispatch({ type: CategoryToDisplayActionTypes.setCategory, category });
-
-    if (null !== ref.current) {
-      ref.current.scrollIntoView({ behavior: 'smooth' });
+    if (category) {
+      categoryDispatch({ type: CategoryActionTypes.setCategoryId, id: category.id });
+      categoryDisplayDispatch({ type: CategoryToDisplayActionTypes.setCategory, category });
     }
   }, [category]);
 
-  const charGroup = categoryDisplayState.characteristicGroup;
+  const charGroup = categoryDisplayState && categoryDisplayState.characteristicGroup;
+
+  const finishOperation = () => {
+    setEditBasicInfo(false);
+    if (null !== ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   // FORMIK;
   const initialValues: IAddCategory = {
-    name: categoryDisplayState.name ? categoryDisplayState.name : '',
-    description: categoryDisplayState.description ? categoryDisplayState.description : '',
-    key: categoryDisplayState.key ? categoryDisplayState.key : '',
+    name: (categoryDisplayState && categoryDisplayState?.name) || (category && category.name) || '',
+    description:
+      (categoryDisplayState && categoryDisplayState?.description) ||
+      (category && category.description) ||
+      '',
+    key: (categoryDisplayState && categoryDisplayState?.key) || (category && category.key) || '',
   };
 
   const formik = useFormik({
@@ -99,8 +107,7 @@ const CategoryInfo: React.FC = () => {
 
       dispatch(updateCategoryRequest({ ...categoryState, name, key, description }));
       categoryDispatch({ type: CategoryActionTypes.resetCategory });
-
-      setEditBasicInfo(false);
+      finishOperation();
       formik.setSubmitting(false);
     },
   });
@@ -177,11 +184,13 @@ const CategoryInfo: React.FC = () => {
                   </IconButton>
                 </div>
                 <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
-                  {editBasicInfo ? (
-                    <CategoryEditForm />
-                  ) : (
-                    <CategoryBasicInfo categoryDisplayState={categoryDisplayState} />
-                  )}
+                  {categoryDisplayState ? (
+                    editBasicInfo ? (
+                      <CategoryEditForm />
+                    ) : (
+                      <CategoryBasicInfo categoryDisplayState={categoryDisplayState} />
+                    )
+                  ) : null}
                 </div>
 
                 <ExpandBtn
@@ -238,11 +247,7 @@ const CategoryInfo: React.FC = () => {
                   >
                     Зберегти
                   </Button>
-                  <Button
-                    onClick={() => setEditBasicInfo(false)}
-                    color="secondary"
-                    variant="contained"
-                  >
+                  <Button onClick={finishOperation} color="secondary" variant="contained">
                     Скасувати
                   </Button>
                 </div>

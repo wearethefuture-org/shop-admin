@@ -17,7 +17,7 @@ export const getAddCharValuesObject = (subForm, chars: ICharResponse[]) => {
 
       switch (type) {
         case Type.enum:
-          value.length && charArr.push({ ...basicValues, enumValue: value ? value : null });
+          value && charArr.push({ ...basicValues, enumValue: value ? value : null });
           break;
 
         case Type.boolean:
