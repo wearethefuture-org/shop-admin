@@ -51,7 +51,10 @@ const ProductForm: React.FC<IProductFormProps> = ({
     [handleImageChange]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
+    onDrop,
+    accept: 'image/png, image/jpeg, image/jpg, image/gif',
+  });
 
   return (
     <div className={styles['product-form-container']}>
@@ -144,15 +147,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
             <Card>
               <div className={styles['block-wrapper']}>
                 <div>
-                  <input
-                    type="file"
-                    id="file"
-                    multiple
-                    className={styles['file-input']}
-                    onChange={onDrop}
-                    accept="image/png, image/jpeg, image/jpg, image/gif"
-                    {...getInputProps()}
-                  />
+                  <input className={styles['file-input']} onChange={onDrop} {...getInputProps()} />
 
                   <div className={styles.labelHolder}>
                     {imagesPreview.length ? (
@@ -171,7 +166,13 @@ const ProductForm: React.FC<IProductFormProps> = ({
                       className={isDragActive ? styles['dropzone-active'] : styles.dropzone}
                       {...getRootProps()}
                     >
-                      <div className={styles['dropzone-border']}></div>
+                      <div
+                        className={
+                          isDragReject
+                            ? styles['dropzone-border-reject']
+                            : styles['dropzone-border']
+                        }
+                      ></div>
                       <AddAPhotoIcon />
                       <p>Виберіть файли або перетягніть їх сюди</p>
                     </div>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
 import AppDataTable from '../../../AppDataTable/AppDataTable';
 import { IGetProducts } from '../../../../interfaces/IProducts';
@@ -112,7 +112,26 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
     },
   ];
 
-  return <AppDataTable data={list} columns={productsColumns} title="Продукти" />;
+  const history = useHistory();
+  const [sortedList, setSortedList] = useState<IGetProducts[]>([]);
+
+  useEffect(() => {
+    const sortedList: IGetProducts[] = list.length ? list.sort((a, b) => b.id - a.id) : [];
+    setSortedList(sortedList);
+  }, [list]);
+
+  const onRowClicked = (id) => {
+    history.push(`/product/${id}`);
+  };
+
+  return (
+    <AppDataTable
+      data={sortedList}
+      columns={productsColumns}
+      title="Продукти"
+      onRowClicked={(row) => onRowClicked(row.id)}
+    />
+  );
 };
 
 export default ProductsTable;

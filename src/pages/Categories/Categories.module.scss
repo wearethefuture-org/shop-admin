@@ -1,0 +1,13 @@
+.btns-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem;
+
+  button:first-child {
+    margin-right: 1rem;
+  }
+}
+
+.content-wrapper {
+  padding: 1rem;
+}

@@ -9,11 +9,11 @@ import DeviceUnknownIcon from '@material-ui/icons/DeviceUnknown';
 import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
 
 interface NotificationListProps {
-  noticeAnchorEl: null | Element,
-  onNoticeListClose: () => void
+  noticeAnchorEl: null | Element;
+  onNoticeListClose: () => void;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   dropdown: {
     width: '20rem',
     fontSize: '15px',
@@ -40,61 +40,64 @@ const useStyles = makeStyles(theme => ({
   },
   iconContainer: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   content: {
-    paddingLeft: '0.5rem'
+    paddingLeft: '0.5rem',
   },
   name: {
     color: theme.palette.text.primary,
-    fontWeight: theme.typography.fontWeightRegular
+    fontWeight: theme.typography.fontWeightRegular,
   },
   text: {
     margin: '4px 0 0',
     fontSize: '12px',
     color: theme.palette.text.secondary,
-    whiteSpace: 'pre-wrap'
+    whiteSpace: 'pre-wrap',
   },
   footer: {
     textAlign: 'center',
     padding: '8px',
     fontSize: '12px',
-    borderBottom: '1px solid rgba(0, 0, 0, 0.125)'
+    borderBottom: '1px solid rgba(0, 0, 0, 0.125)',
   },
   orange: {
-    backgroundColor: 'orange'
-  }
-}))
+    backgroundColor: 'orange',
+  },
+}));
 
-const NotificationList: React.FC<NotificationListProps> = ({ noticeAnchorEl, onNoticeListClose }) => {
-  const classes = useStyles()
+const NotificationList: React.FC<NotificationListProps> = ({
+  noticeAnchorEl,
+  onNoticeListClose,
+}) => {
+  const classes = useStyles();
 
   const messageList = [
     {
       icon: <NotificationsIcon fontSize="small" style={{ color: '#ff4081' }} />,
       name: 'Update completed',
       message: 'Restart server 12 to complete the update',
-      timeLeft: '2h'
+      timeLeft: '2h',
     },
     {
       icon: <DraftsIcon fontSize="small" style={{ color: '#ff9800' }} />,
       name: 'Lorem ipsum',
       message: 'Aliquam ex eros, imperdiet vulputate hendrerit et.',
-      timeLeft: '6h'
+      timeLeft: '6h',
     },
     {
       icon: <DeviceUnknownIcon fontSize="small" style={{ color: '#3f51b5' }} />,
       name: 'Login from 192.186.1.1',
       message: '',
-      timeLeft: '8h'
+      timeLeft: '8h',
     },
     {
       icon: <NotificationsOffIcon fontSize="small" style={{ color: '#4caf50' }} />,
       name: 'New connection',
       message: 'Anna accepted your request.',
-      timeLeft: '12h'
+      timeLeft: '12h',
     },
-  ]
+  ];
 
   return (
     <Menu
@@ -106,7 +109,9 @@ const NotificationList: React.FC<NotificationListProps> = ({ noticeAnchorEl, onN
       open={!!noticeAnchorEl}
       onClose={onNoticeListClose}
     >
-      <Typography className={classes.header}>{`${messageList.length} New Messages`}</Typography>
+      <Typography
+        className={classes.header}
+      >{`${messageList.length} нових повідомлень`}</Typography>
 
       {messageList.map(({ icon, name, message, timeLeft }) => (
         <MenuItem className={classes.messageItem} onClick={onNoticeListClose} key={name}>
@@ -117,15 +122,15 @@ const NotificationList: React.FC<NotificationListProps> = ({ noticeAnchorEl, onN
             <Grid item xs={10} className={classes.content}>
               <Typography className={classes.name}>{name}</Typography>
               <Typography className={classes.text}>{message}</Typography>
-              <Typography className={classes.text}>{`${timeLeft} ago`}</Typography>
+              <Typography className={classes.text}>{`${timeLeft} тому`}</Typography>
             </Grid>
           </Grid>
         </MenuItem>
       ))}
 
-      <Typography className={classes.footer}>{`Show all messages`}</Typography>
+      <Typography className={classes.footer}>{`Показати всі повідомлення`}</Typography>
     </Menu>
-  )
-}
+  );
+};
 
-export default NotificationList
+export default NotificationList;

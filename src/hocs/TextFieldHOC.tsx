@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 const TextFieldWrapped: React.FC<TextFieldProps & TextFieldHOCProps> = (props) => {
   const {
     field: { name },
-    form: { status, errors, dirty, setStatus, setTouched, handleBlur, setErrors },
+    form: { status, errors, dirty, setStatus, setTouched, handleBlur },
     makegreen,
   } = props;
 
@@ -37,7 +37,6 @@ const TextFieldWrapped: React.FC<TextFieldProps & TextFieldHOCProps> = (props) =
       [name]: true,
       everTouched: { ...(status?.everTouched || {}), [name]: true },
     });
-    setErrors({});
   };
 
   const ownHandleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
