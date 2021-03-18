@@ -38,11 +38,9 @@ const CategoryInfo: React.FC = () => {
   const categoryList: ICategoryResponse[] = useSelector(
     (state: RootState) => state.categories.list
   );
-  const category: ICategoryResponse = useSelector(
+  const category: CategoryToDisplay = useSelector(
     (state: RootState) => state.categories.currentCategory
   );
-
-  console.log('category :>> ', category);
 
   const [categoryState, categoryDispatch] = useReducer(categoryReducer, {} as Category);
 
@@ -51,8 +49,6 @@ const CategoryInfo: React.FC = () => {
     category as CategoryToDisplay
   );
 
-  console.log('categoryDisplayState :>> ', categoryDisplayState);
-
   useEffect(() => {
     if (category) {
       categoryDispatch({ type: CategoryActionTypes.setCategoryId, id: category.id });
@@ -60,7 +56,11 @@ const CategoryInfo: React.FC = () => {
     }
   }, [category]);
 
-  const charGroup = categoryDisplayState && categoryDisplayState.characteristicGroup;
+  const charGroup = categoryDisplayState
+    ? categoryDisplayState.characteristicGroup
+    : category
+    ? category.characteristicGroup
+    : [];
 
   const finishOperation = () => {
     setEditBasicInfo(false);
@@ -161,11 +161,11 @@ const CategoryInfo: React.FC = () => {
         />
       )}
 
-      {categoryDisplayState ? (
+      {category ? (
         <div className={styles['block-wrapper']}>
           <Card className={styles['block-card']}>
             <GoBackBtn handleGoBack={() => history.push('/categories')} />
-            <h1>{categoryDisplayState.name}</h1>
+            <h1>{categoryDisplayState ? categoryDisplayState.name : category.name}</h1>
 
             <FormikProvider value={formik}>
               <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
@@ -188,11 +188,15 @@ const CategoryInfo: React.FC = () => {
                   </IconButton>
                 </div>
                 <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
-                  {categoryDisplayState ? (
+                  {category ? (
                     editBasicInfo ? (
                       <CategoryEditForm />
                     ) : (
-                      <CategoryBasicInfo categoryDisplayState={categoryDisplayState} />
+                      <CategoryBasicInfo
+                        categoryDisplayState={
+                          categoryDisplayState ? categoryDisplayState : category
+                        }
+                      />
                     )
                   ) : null}
                 </div>
