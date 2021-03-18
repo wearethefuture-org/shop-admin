@@ -42,12 +42,16 @@ const CategoryInfo: React.FC = () => {
     (state: RootState) => state.categories.currentCategory
   );
 
+  console.log('category :>> ', category);
+
   const [categoryState, categoryDispatch] = useReducer(categoryReducer, {} as Category);
 
   const [categoryDisplayState, categoryDisplayDispatch] = useReducer(
     categoryDisplayReducer,
     category as CategoryToDisplay
   );
+
+  console.log('categoryDisplayState :>> ', categoryDisplayState);
 
   useEffect(() => {
     if (category) {
@@ -157,11 +161,11 @@ const CategoryInfo: React.FC = () => {
         />
       )}
 
-      {category ? (
+      {categoryDisplayState ? (
         <div className={styles['block-wrapper']}>
           <Card className={styles['block-card']}>
             <GoBackBtn handleGoBack={() => history.push('/categories')} />
-            <h1>{category.name}</h1>
+            <h1>{categoryDisplayState.name}</h1>
 
             <FormikProvider value={formik}>
               <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
