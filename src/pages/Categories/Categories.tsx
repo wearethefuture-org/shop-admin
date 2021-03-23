@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, LinearProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 import AddCategoryModal from '../../components/Modals/AddCategoryModal/AddCategoryModal';
 import CategoriesTable from '../../components/Tables/Categories/CategoriesTable';
-import { RootState } from '../../store/store';
+import { AppDispatch, RootState } from '../../store/store';
 import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
-import styles from './Categories.module.scss';
 import useCategories from '../../hooks/useCategories';
+import { clearCurrentCategory } from '../../store/actions/categories.actions';
+import styles from './Categories.module.scss';
 
 enum cols {
   id = 'ID',
@@ -22,6 +23,12 @@ enum cols {
 }
 
 const Categories: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearCurrentCategory());
+  }, [dispatch]);
+
   const [openAddModal, setOpenAddModal] = useState(false);
 
   const { data: list } = useCategories();
