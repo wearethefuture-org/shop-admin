@@ -1,0 +1,19 @@
+.form-field {
+  &:not(:first-child) {
+    margin-top: 1rem;
+  }
+
+  &:last-child {
+    margin-bottom: 1rem;
+  }
+}
+
+.form-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0 1rem;
+
+  button:first-child {
+    margin-right: 2rem;
+  }
+}

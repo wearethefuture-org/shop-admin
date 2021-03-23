@@ -2,8 +2,8 @@ import React from 'react';
 import { Field, useFormikContext } from 'formik';
 
 import { Card } from '@material-ui/core';
-import TextFieldWrapped from '../../../../hocs/TextFieldHOC';
-import { formatKey } from '../../Products/ProductForm/productFormHelpers';
+import TextFieldWrapped from '../../../hocs/TextFieldHOC';
+import { formatKey } from '../Products/ProductForm/productFormHelpers';
 import styles from './CategoryEditForm.module.scss';
 
 const CategoryEditForm = () => {
@@ -20,6 +20,7 @@ const CategoryEditForm = () => {
           makegreen="true"
           className={styles['edit-field']}
         />
+
         <Field
           fullWidth
           component={TextFieldWrapped}
@@ -32,6 +33,7 @@ const CategoryEditForm = () => {
             onChange: (e) => formik.setFieldValue('key', formatKey(e.target.value)),
           }}
         />
+
         <Field
           fullWidth
           multiline

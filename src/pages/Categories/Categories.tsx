@@ -3,14 +3,13 @@ import { useSelector } from 'react-redux';
 import { Button, LinearProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
-import useCategories from '../../hooks/useCategories';
-import FormDialog from '../../components/Modals/Category-modal';
-import useCategoriesModal from '../../hooks/useCategoriesModal';
+import AddCategoryModal from '../../components/Modals/AddCategoryModal/AddCategoryModal';
 import CategoriesTable from '../../components/Tables/Categories/CategoriesTable';
 import { RootState } from '../../store/store';
 import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
 import styles from './Categories.module.scss';
+import useCategories from '../../hooks/useCategories';
 
 enum cols {
   id = 'ID',
@@ -23,10 +22,10 @@ enum cols {
 }
 
 const Categories: React.FC = () => {
-  const { data, dispatch } = useCategories();
-  const categoriesCreateModalData = useCategoriesModal();
+  const [openAddModal, setOpenAddModal] = useState(false);
 
-  const list = useSelector((state: RootState) => state.categories.list);
+  const { data: list } = useCategories();
+
   const loading = useSelector((state: RootState) => state.categories.loading);
 
   // ACTIVE COLUMNS
@@ -59,22 +58,14 @@ const Categories: React.FC = () => {
       )}
 
       <div className={styles['btns-wrapper']}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={categoriesCreateModalData.handleClickOpen}
-        >
+        <Button variant="contained" color="primary" onClick={() => setOpenAddModal(true)}>
           <AddIcon /> Додати
         </Button>
         <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
       </div>
 
       <div className={styles['content-wrapper']}>
-        <FormDialog
-          dispatch={dispatch}
-          categoriesLength={data?.length}
-          modalData={categoriesCreateModalData}
-        />
+        <AddCategoryModal openAddModal={openAddModal} setOpenAddModal={setOpenAddModal} />
 
         {list ? <CategoriesTable list={list} activeColumns={activeColumns} /> : null}
       </div>

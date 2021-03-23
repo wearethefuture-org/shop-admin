@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState, useRef } from 'react';
+import React, { useEffect, useReducer, useState, useRef, Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, Card, IconButton, LinearProgress } from '@material-ui/core';
@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from '../../../store/store';
 import AddBtn from '../../../components/AddBtn/AddBtn';
 import CategoryGroupModal from '../../../components/Modals/CategoryGroupModal/CategoryGroupModal';
 import { IAddCategory, ICategoryResponse } from '../../../interfaces/ICategory';
-import CategoryEditForm from '../../../components/Forms/Category-form/CategoryEditForm/CategoryEditForm';
+import CategoryEditForm from '../../../components/Forms/CategoryEditForm/CategoryEditForm';
 import CategoryBasicInfo from './CategoryBasicInfo/CategoryBasicInfo';
 import { Form, FormikProvider, useFormik } from 'formik';
 import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
@@ -71,17 +71,15 @@ const CategoryInfo: React.FC = () => {
 
   // FORMIK;
   const initialValues: IAddCategory = {
-    name: (categoryDisplayState && categoryDisplayState?.name) || (category && category.name) || '',
-    description:
-      (categoryDisplayState && categoryDisplayState?.description) ||
-      (category && category.description) ||
-      '',
-    key: (categoryDisplayState && categoryDisplayState?.key) || (category && category.key) || '',
+    name: category && category.name ? category.name : '',
+    description: category && category.description ? category.description : '',
+    key: category && category.key ? category.key : '',
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema: categoryValidationShema,
+    enableReinitialize: true,
     onSubmit: (values): void => {
       const { name, key, description } = values;
 
@@ -149,23 +147,24 @@ const CategoryInfo: React.FC = () => {
     <div ref={ref}>
       {loading && <LinearProgress />}
 
-      {openGroupModal && charGroup && (
-        <CategoryGroupModal
-          openGroupModal={openGroupModal}
-          setOpenGroupModal={setOpenGroupModal}
-          categoryDispatch={categoryDispatch}
-          categoryDisplayDispatch={categoryDisplayDispatch}
-          charGroup={charGroup}
-          groupToEdit={groupToEdit}
-          setGroupToEdit={setGroupToEdit}
-        />
-      )}
-
-      {category ? (
+      <Suspense fallback={null}>
+        {openGroupModal && charGroup && (
+          <CategoryGroupModal
+            openGroupModal={openGroupModal}
+            setOpenGroupModal={setOpenGroupModal}
+            categoryDispatch={categoryDispatch}
+            categoryDisplayDispatch={categoryDisplayDispatch}
+            charGroup={charGroup}
+            groupToEdit={groupToEdit}
+            setGroupToEdit={setGroupToEdit}
+          />
+        )}
         <div className={styles['block-wrapper']}>
           <Card className={styles['block-card']}>
             <GoBackBtn handleGoBack={() => history.push('/categories')} />
-            <h1>{categoryDisplayState ? categoryDisplayState.name : category.name}</h1>
+            <h1>
+              {categoryDisplayState ? categoryDisplayState.name : category ? category.name : ''}
+            </h1>
 
             <FormikProvider value={formik}>
               <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
@@ -264,7 +263,7 @@ const CategoryInfo: React.FC = () => {
             </FormikProvider>
           </Card>
         </div>
-      ) : null}
+      </Suspense>
     </div>
   );
 };

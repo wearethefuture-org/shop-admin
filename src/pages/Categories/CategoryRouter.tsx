@@ -5,7 +5,6 @@ import { useRouteMatch, Switch, Route } from 'react-router-dom';
 
 import { fetchCategories, getCategoryByIdRequest } from '../../store/actions/categories.actions';
 import { AppDispatch, RootState } from '../../store/store';
-import { ICategoryResponse } from '../../interfaces/ICategory';
 
 interface MatchParams {
   id: string;
@@ -25,22 +24,17 @@ const CategoryRouter: React.FC = () => {
     match.params.id && dispatch(getCategoryByIdRequest(Number(match.params.id)));
   }, [dispatch, match.params.id]);
 
-  const category: ICategoryResponse = useSelector(
-    (state: RootState) => state.categories.currentCategory
-  );
   const loading = useSelector((state: RootState) => state.categories.loading);
 
   return (
     <>
       {loading && <LinearProgress />}
 
-      {category ? (
-        <Suspense fallback={null}>
-          <Switch>
-            <Route path={`${match.url}`} component={CategoryInfoLazy} />
-          </Switch>
-        </Suspense>
-      ) : null}
+      <Suspense fallback={null}>
+        <Switch>
+          <Route path={`${match.url}`} component={CategoryInfoLazy} />
+        </Switch>
+      </Suspense>
     </>
   );
 };
