@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, LinearProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
-import useCategories from '../../hooks/useCategories';
-import FormDialog from '../../components/Modals/Category-modal';
-import useCategoriesModal from '../../hooks/useCategoriesModal';
+import AddCategoryModal from '../../components/Modals/AddCategoryModal/AddCategoryModal';
 import CategoriesTable from '../../components/Tables/Categories/CategoriesTable';
-import { RootState } from '../../store/store';
+import { AppDispatch, RootState } from '../../store/store';
 import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
+import useCategories from '../../hooks/useCategories';
+import { clearCurrentCategory } from '../../store/actions/categories.actions';
 import styles from './Categories.module.scss';
 
 enum cols {
@@ -23,10 +23,16 @@ enum cols {
 }
 
 const Categories: React.FC = () => {
-  const { data, dispatch } = useCategories();
-  const categoriesCreateModalData = useCategoriesModal();
+  const dispatch: AppDispatch = useDispatch();
 
-  const list = useSelector((state: RootState) => state.categories.list);
+  useEffect(() => {
+    dispatch(clearCurrentCategory());
+  }, [dispatch]);
+
+  const [openAddModal, setOpenAddModal] = useState(false);
+
+  const { data: list } = useCategories();
+
   const loading = useSelector((state: RootState) => state.categories.loading);
 
   // ACTIVE COLUMNS
@@ -59,22 +65,14 @@ const Categories: React.FC = () => {
       )}
 
       <div className={styles['btns-wrapper']}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={categoriesCreateModalData.handleClickOpen}
-        >
+        <Button variant="contained" color="primary" onClick={() => setOpenAddModal(true)}>
           <AddIcon /> Додати
         </Button>
         <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
       </div>
 
       <div className={styles['content-wrapper']}>
-        <FormDialog
-          dispatch={dispatch}
-          categoriesLength={data?.length}
-          modalData={categoriesCreateModalData}
-        />
+        <AddCategoryModal openAddModal={openAddModal} setOpenAddModal={setOpenAddModal} />
 
         {list ? <CategoriesTable list={list} activeColumns={activeColumns} /> : null}
       </div>

@@ -1,11 +1,11 @@
-import { LinearProgress } from '@material-ui/core';
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch, Switch, Route } from 'react-router-dom';
+import { LinearProgress } from '@material-ui/core';
 
 import { fetchCategories, getCategoryByIdRequest } from '../../store/actions/categories.actions';
 import { AppDispatch, RootState } from '../../store/store';
-import { ICategoryResponse } from '../../interfaces/ICategory';
+import { CategoryToDisplay } from './CategoryInfo/categoryToDisplayReducer';
 
 interface MatchParams {
   id: string;
@@ -17,17 +17,20 @@ const CategoryRouter: React.FC = () => {
   const match = useRouteMatch<MatchParams>();
   const dispatch: AppDispatch = useDispatch();
 
+  const memoId = useMemo(() => match.params.id, [match.params.id]);
+
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
   useEffect(() => {
-    match.params.id && dispatch(getCategoryByIdRequest(Number(match.params.id)));
-  }, [dispatch, match.params.id]);
+    memoId && dispatch(getCategoryByIdRequest(Number(memoId)));
+  }, [dispatch, memoId]);
 
-  const category: ICategoryResponse = useSelector(
+  const category: CategoryToDisplay = useSelector(
     (state: RootState) => state.categories.currentCategory
   );
+
   const loading = useSelector((state: RootState) => state.categories.loading);
 
   return (
