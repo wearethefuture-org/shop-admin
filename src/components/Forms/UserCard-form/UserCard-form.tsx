@@ -44,7 +44,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({isNew, user, closeModal}) => {
             Yup.string().min(6, 'Пароль занадто короткий!'),
         confirmPassword: Yup.string().oneOf([Yup.ref('password')], 'Пароль не співпадає')
     });
-    const [isEdit, setIsEdt] = useState(isNew );
+    const [isEdit, setIsEdt] = useState(isNew);
     const dispatch: AppDispatch = useDispatch();
     const initialValues = {
         firstName: isNew ? '' : user?.firstName,
