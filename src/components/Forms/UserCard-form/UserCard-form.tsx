@@ -15,6 +15,7 @@ import classes from './UserCard-form.module.scss'
 import {useDispatch} from "react-redux";
 import {addUserRequest, getUsersRequest, updateUserRequest} from "../../../store/actions/users.actions";
 import {IUserItem} from "../../../interfaces/IUsers";
+import {failSnackBar} from "../../../store/actions/snackbar.actions";
 
 
 interface FormDialogProps {
@@ -44,7 +45,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({isNew, user, closeModal}) => {
             Yup.string().min(6, 'Пароль занадто короткий!'),
         confirmPassword: Yup.string().oneOf([Yup.ref('password')], 'Пароль не співпадає')
     });
-    const [isEdit, setIsEdt] = useState(isNew);
+    const [isEdit, setIsEdit] = useState(isNew);
     const dispatch: AppDispatch = useDispatch();
     const initialValues = {
         firstName: isNew ? '' : user?.firstName,
@@ -60,36 +61,41 @@ const UserCardForm: React.FC<FormDialogProps> = ({isNew, user, closeModal}) => {
         initialValues: initialValues,
         validationSchema,
         onSubmit: async (_values, {setSubmitting}) => {
-            setSubmitting(false);
-            isNew ? dispatch(addUserRequest({
-                firstName: _values.firstName ? _values.firstName : '',
-                lastName: _values.lastName ? _values.lastName : '',
-                creditCard: _values.creditCard ? _values.creditCard : '',
-                tel: _values.tel ? _values.tel : '',
-                role_id: _values.role_id ? _values.role_id : 0,
-                password: _values.password ? _values.password : '',
-                email: _values.email ? _values.email : '',
+            if (!isEdit) {
+                setIsEdit(true);
+                return;
+            }
+            setSubmitting(true);
 
-
-            })) : dispatch(updateUserRequest(user?.id ? user?.id : 0, {
-                id: user?.id?user?.id:0,
-                firstName: _values.firstName ? _values.firstName : '',
-                lastName: _values.lastName ? _values.lastName : '',
-                creditCard: _values.creditCard ? _values.creditCard : '',
-                tel: _values.tel ? _values.tel : '',
-                role_id: _values.role_id ? _values.role_id : 0,
-                password: _values.password ? _values.password : '',
-                email: _values.email ? _values.email : '',
-
-
-            }));
-            dispatch(getUsersRequest());
+            if (isNew) {
+                dispatch(addUserRequest({
+                    firstName: _values.firstName ? _values.firstName : '',
+                    lastName: _values.lastName ? _values.lastName : '',
+                    creditCard: _values.creditCard ? _values.creditCard : '',
+                    tel: _values.tel ? _values.tel : '',
+                    role_id: _values.role_id ? _values.role_id : 0,
+                    password: _values.password ? _values.password : '',
+                    email: _values.email ? _values.email : '',
+                }))
+            } else if (user) {
+                let sendData: { id: number, [key: string]: any } = {id: user.id}
+                for (let key in _values) {
+                    if (_values[key] && _values[key] !== initialValues[key]) {
+                        sendData[key] = _values[key]
+                    }
+                }
+                if(Object.keys(sendData).length>1){
+                    dispatch(updateUserRequest(user.id, sendData));
+                }
+                else{
+                    dispatch(failSnackBar('Ви нічого не змінили'))
+                }
+            }
+           dispatch(getUsersRequest());
             closeModal();
         }
     });
-    const edit = () => {
-        setIsEdt(true);
-    }
+
 
     return (
         <Form onSubmit={formik.handleSubmit} className={classes.form}>
@@ -228,20 +234,15 @@ const UserCardForm: React.FC<FormDialogProps> = ({isNew, user, closeModal}) => {
                 </FormFeedback>
             </FormGroup>
             <Row>
-                {isEdit ?
-                    <Button
-                        className={classes.form__register}
-                        type="submit"
-                        disabled={formik.isSubmitting}>
-                        Змінити
-                    </Button> :
-                    <Button
-                        className={classes.form__register}
-                        onClick={edit}
-                    >
-                        Редагувати
-                    </Button>
-                }
+
+                <Button
+                    className={classes.form__register}
+                    type="submit"
+                    disabled={formik.isSubmitting}>
+                    {isEdit ? "Змінити" : "Редагувати"}
+                </Button>
+
+
             </Row>
         </Form>
     )
