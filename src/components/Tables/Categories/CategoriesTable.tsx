@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 
-import { IGetCategoriesResponse } from '../../../interfaces/ICategory';
+import { CategoriesTableProps, IGetCategoriesResponse } from '../../../interfaces/ICategory';
 import AppDataTable from '../../AppDataTable/AppDataTable';
 import DateMoment from '../../Common/Date-moment';
 
-interface CategoriesDataProps {
-  list: IGetCategoriesResponse[];
-  activeColumns: string[];
-}
-
-const CategoriesTable: React.FC<CategoriesDataProps> = ({ list, activeColumns }) => {
+const CategoriesTable: React.FC<CategoriesTableProps> = ({ list, activeColumns }) => {
   const categoriesColumns = [
     {
       name: 'ID',

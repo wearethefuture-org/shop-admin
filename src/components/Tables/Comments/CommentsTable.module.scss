@@ -1,0 +1,22 @@
+.comment {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 0.3rem;
+
+  span {
+    display: inline-flex;
+  }
+
+  .expand-btn {
+    padding: 0;
+    text-decoration: underline;
+    font-size: 0.8rem;
+    color: blue;
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: darkblue;
+    }
+  }
+}

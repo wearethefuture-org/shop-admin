@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IGetProducts } from '../interfaces/IProducts';
+import { IProductsData } from '../interfaces/IProducts';
 import { getProductsRequest } from '../store/actions/products.actions';
 import { AppDispatch, RootState } from '../store/store';
 
@@ -11,9 +11,11 @@ const useProducts = () => {
     dispatch(getProductsRequest());
   }, [dispatch]);
 
-  const list: IGetProducts[] = useSelector((state: RootState) => state.products.list);
+  const { list, loading }: Partial<IProductsData> = useSelector(
+    (state: RootState) => state.products
+  );
 
-  return { list, dispatch };
+  return { list, loading };
 };
 
 export default useProducts;
