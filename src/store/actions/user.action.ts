@@ -1,6 +1,5 @@
 import { IActions } from '../../interfaces/actions';
 import {
-  USER_REINITIALIZATION,
   USER_SIGN_IN_ERROR,
   USER_SIGN_IN_FETCHING,
   USER_SIGN_IN_SUCCESS,
@@ -26,13 +25,6 @@ export const signInUserError = (message: string): IActions => ({
   type: USER_SIGN_IN_ERROR,
   data: message,
 });
-
-export const userReinitialization = (user): IActions => {
-  return {
-    type: USER_REINITIALIZATION,
-    data: { user: user },
-  };
-};
 
 export const signOutUser = (): IActions => {
   return {

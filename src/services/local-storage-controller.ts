@@ -1,3 +1,5 @@
+import { IUserItem } from '../interfaces/IUsers';
+
 export const getToken = (): string | null => {
   return localStorage.getItem('TOKEN');
 };
@@ -18,9 +20,9 @@ export const removeUser = () => {
   localStorage.removeItem('USER');
 };
 
-export const getUser = (): {} => {
+export const getUser = (): IUserItem | null => {
   const user = localStorage.getItem('USER');
-  return user ? JSON.parse(user) : {};
+  return user ? JSON.parse(user) : null;
 };
 export const clearStorage = () => {
   localStorage.clear();

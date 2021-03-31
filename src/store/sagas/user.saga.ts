@@ -6,7 +6,6 @@ import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 import { signInUserError, signInUserSuccess } from '../actions/user.action';
 import { apiSignIn } from './services/user.service';
 import { clearStorage, setToken, setUser } from '../../services/local-storage-controller';
-import { routingTo } from '../actions/routing.actions';
 
 export function* sigInUser(userValues: IActions): SagaIterator {
   try {
@@ -18,7 +17,6 @@ export function* sigInUser(userValues: IActions): SagaIterator {
 
     yield put(signInUserSuccess(user));
     yield put(successSnackBar());
-    yield put(routingTo('/dashboard'));
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(signInUserError(error.message));
@@ -28,6 +26,6 @@ export function* sigInUser(userValues: IActions): SagaIterator {
 export function* signOutUser(): SagaIterator {
   try {
     clearStorage();
-    yield put(routingTo('/home'));
+    yield put(successSnackBar());
   } catch (error) {}
 }

@@ -33,6 +33,7 @@ export interface IUserState {
   user: IUserItem | null;
   isFetching: boolean;
   isLoggedIn: boolean;
+  isLoggedNow: boolean;
   error: IError | null;
 }
 

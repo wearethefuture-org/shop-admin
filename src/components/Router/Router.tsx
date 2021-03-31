@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter, Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Route, Switch, Redirect, useHistory, useLocation } from 'react-router-dom';
 
 import Sidebar from '../Sidebar/Sidebar';
 import SnackBar from '../Common/SnackBar';
@@ -17,36 +17,63 @@ import ViewProduct from '../../pages/Products/ProductRouter';
 import AddProduct from '../Forms/Products/AddProduct/AddProduct';
 import CategoryRouter from '../../pages/Categories/CategoryRouter';
 import Home from '../../pages/Home/Home';
-import { getToken, getUser } from '../../services/local-storage-controller';
-import { userReinitialization } from '../../store/actions/user.action';
-import { AppDispatch } from '../../store/store';
-import { useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
+import { useDispatch, useSelector } from 'react-redux';
 import AxiosInitiation from '../../api/axios-interceptors';
 import { initRouting } from '../../store/actions/routing.actions';
 
 const Init: React.FC = () => {
   const history = useHistory();
   const dispatch: AppDispatch = useDispatch();
-  useEffect(() => {
-    AxiosInitiation(history);
-    dispatch(initRouting(history));
+  const userState = useSelector((state: RootState) => {
+    return state.user;
   });
-  return <></>;
+  const existPath = [
+    '/dashboard',
+    '/categories',
+    '/products',
+    '/statistic',
+    '/users',
+    '/slides',
+    '/settings',
+    '/settings',
+    '/product/add',
+    '/product/\\d\\*',
+    '/category/\\d\\*',
+  ];
+  const location = useLocation();
+  const [user, setUser] = useState(userState);
+
+  useEffect(() => {
+    const initState = () => {
+      AxiosInitiation(history);
+      dispatch(initRouting(history));
+      setUser(userState);
+    };
+    initState();
+  });
+
+  return (
+    <Redirect
+      to={
+        !user.isLoggedIn
+          ? '/home'
+          : user.isLoggedIn && user.isLoggedNow
+          ? '/dashboard'
+          : location.pathname === '/home' ||
+            existPath.findIndex((path) => path === location.pathname) < 0
+          ? '/dashboard'
+          : location.pathname
+      }
+    />
+  );
 };
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
   const toggleSidebar = () => setOpenSidebar(!isOpenSidebar);
-  const dispatch: AppDispatch = useDispatch();
-
-  useEffect(() => {
-    if (getToken() && getUser()) {
-      dispatch(userReinitialization(getUser()));
-    }
-  });
   return (
     <BrowserRouter>
-      {!getToken() || !getUser() ? <Redirect to="/home" /> : <></>}
       <Init />
       <div className={styles.container}>
         <Sidebar isOpen={isOpenSidebar} onSidebarToggle={toggleSidebar} />
@@ -76,7 +103,6 @@ const Router: React.FC = () => {
                 path="/category/:id"
                 render={({ match }) => <CategoryRouter {...match.params} />}
               />
-              <Route path="/*" render={() => <Home />} />
             </Switch>
           </Content>
         </div>

@@ -3,15 +3,16 @@ import {
   USER_SIGN_IN_FETCHING,
   USER_SIGN_IN_SUCCESS,
   USER_SIGN_OUT,
-  USER_REINITIALIZATION,
 } from '../types';
 import { IActions } from '../../interfaces/actions';
 import { IUserState } from '../../interfaces/IUsers';
+import { getUser } from '../../services/local-storage-controller';
 
 const initialState: IUserState = {
-  user: null,
+  user: getUser(),
   isFetching: false,
-  isLoggedIn: false,
+  isLoggedIn: !!getUser(),
+  isLoggedNow: false,
   error: null,
 };
 
@@ -23,15 +24,10 @@ export const userReducer = (state = initialState, { type, data }: IActions): IUs
         isFetching: true,
         error: null,
       };
-    case USER_REINITIALIZATION:
-      return {
-        ...state,
-        user: data.user,
-        isLoggedIn: true,
-      };
     case USER_SIGN_IN_SUCCESS:
       return {
         ...state,
+        isLoggedNow: true,
         isFetching: false,
         user: data.user,
         isLoggedIn: true,
@@ -46,7 +42,10 @@ export const userReducer = (state = initialState, { type, data }: IActions): IUs
       return {
         ...state,
         user: null,
+        isFetching: false,
         isLoggedIn: false,
+        isLoggedNow: false,
+        error: null,
       };
     default:
       return state;
