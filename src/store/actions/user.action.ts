@@ -1,35 +1,41 @@
-import {IActions} from "../../interfaces/actions";
+import { IActions } from '../../interfaces/actions';
 import {
+  USER_REINITIALIZATION,
+  USER_SIGN_IN_ERROR,
+  USER_SIGN_IN_FETCHING,
+  USER_SIGN_IN_SUCCESS,
+  USER_SIGN_OUT,
+} from '../types';
+import { IUserCreeds, IUserItem } from '../../interfaces/IUsers';
 
-    USER_SIGN_IN_ERROR,
-    USER_SIGN_IN_FETCHING,
-    USER_SIGN_IN_SUCCESS,
-    USER_SIGN_OUT,
-} from "../types";
-import {IUserCreeds, IUserItem} from "../../interfaces/IUsers";
-
-export const signInUserRequest = (creeds: IUserCreeds, route): IActions => {
-    return {
-        type: USER_SIGN_IN_FETCHING,
-        data: {payload: creeds, redirect: route},
-    };
+export const signInUserRequest = (creeds: IUserCreeds): IActions => {
+  return {
+    type: USER_SIGN_IN_FETCHING,
+    data: { payload: creeds },
+  };
 };
 
-
 export const signInUserSuccess = (user: IUserItem): IActions => {
-    return ({
-        type: USER_SIGN_IN_SUCCESS,
-        data: user,
-    });
+  return {
+    type: USER_SIGN_IN_SUCCESS,
+    data: user,
+  };
 };
 
 export const signInUserError = (message: string): IActions => ({
-    type: USER_SIGN_IN_ERROR,
-    data: message,
+  type: USER_SIGN_IN_ERROR,
+  data: message,
 });
 
+export const userReinitialization = (user): IActions => {
+  return {
+    type: USER_REINITIALIZATION,
+    data: { user: user },
+  };
+};
+
 export const signOutUser = (): IActions => {
-    return {
-        type: USER_SIGN_OUT,
-    };
+  return {
+    type: USER_SIGN_OUT,
+  };
 };
