@@ -75,7 +75,7 @@ const UsersTableBody: React.FC<TableBodyProps> = ({ rows, rowsPerPage, page, emp
             <Box display="flex">
               <Box>
                 <Button variant="contained" size="small" value={key} onClick={openDialogUserCard}>
-                  Edit
+                  Редагувати
                 </Button>
               </Box>
               <Box pl={1}>
@@ -86,7 +86,7 @@ const UsersTableBody: React.FC<TableBodyProps> = ({ rows, rowsPerPage, page, emp
                   value={key}
                   onClick={openDialogRemoveUser}
                 >
-                  Delete
+                  Видалити
                 </Button>
               </Box>
             </Box>
@@ -106,7 +106,7 @@ const UsersTableBody: React.FC<TableBodyProps> = ({ rows, rowsPerPage, page, emp
             color="primary"
             startIcon={<AddIcon />}
           >
-            Add user
+            Створити
           </Button>
           {userDialogIsOpen && <UserDialog {...modalParams} />}
           {removeUserDialogIsOpen && <UserRemoveDialog {...modalRemoveParams} />}

@@ -63,7 +63,7 @@ const AccountList: React.FC<AccountListProps> = (props) => {
         <ListItemIcon className={classes.iconItem}>
           <PersonIcon fontSize="small" />
         </ListItemIcon>
-        View Profile
+        Профіль
       </MenuItem>
       <MenuItem className={classes.menuItem} onClick={onAccountListClose}>
         <ListItemIcon className={classes.iconItem}>
