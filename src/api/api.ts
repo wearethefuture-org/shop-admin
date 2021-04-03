@@ -1,5 +1,5 @@
 import { root } from './config';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 
 import {
   IAddCategory,
@@ -30,6 +30,7 @@ import {
   IUserItem,
   IUsersData,
 } from '../interfaces/IUsers';
+import instance from './axios-interceptors';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -84,49 +85,49 @@ type ApiFetchedDataType = {
 
 export const api: ApiFetchedDataType = {
   categories: {
-    get: () => axios.get(`${root}/category`),
-    add: (category) => axios.post(`${root}/category`, category),
-    getById: (id) => axios.get(`${root}/category/${id}`),
-    update: (data) => axios.patch(`${root}/category`, data),
+    get: () => instance.get(`${root}/category`),
+    add: (category) => instance.post(`${root}/category`, category),
+    getById: (id) => instance.get(`${root}/category/${id}`),
+    update: (data) => instance.patch(`${root}/category`, data),
   },
 
   products: {
-    get: () => axios.get(`${root}/product`),
-    add: (product) => axios.post(`${root}/product`, product),
-    getById: (id) => axios.get(`${root}/product/${id}`),
-    update: ({ id, ...product }) => axios.patch(`${root}/product/${id}`, product),
-    updateImg: (data) => axios.post(`${root}/product/multipleimages`, data),
-    updateMainImg: (data) => axios.patch(`${root}/product/img/preview`, data),
-    deleteImg: (imgName) => axios.delete(`${root}/product/img/${imgName}`),
-    deleteProduct: (id) => axios.delete(`${root}/product/${id}`),
-    getProductsInCart: () => axios.get(`${root}/products-in-cart`),
-    addProductCharValues: (data) => axios.post(`${root}/characteristics-values`, data),
-    updateProductCharValues: (data) => axios.patch(`${root}/characteristics-values`, data),
+    get: () => instance.get(`${root}/product`),
+    add: (product) => instance.post(`${root}/product`, product),
+    getById: (id) => instance.get(`${root}/product/${id}`),
+    update: ({ id, ...product }) => instance.patch(`${root}/product/${id}`, product),
+    updateImg: (data) => instance.post(`${root}/product/multipleimages`, data),
+    updateMainImg: (data) => instance.patch(`${root}/product/img/preview`, data),
+    deleteImg: (imgName) => instance.delete(`${root}/product/img/${imgName}`),
+    deleteProduct: (id) => instance.delete(`${root}/product/${id}`),
+    getProductsInCart: () => instance.get(`${root}/products-in-cart`),
+    addProductCharValues: (data) => instance.post(`${root}/characteristics-values`, data),
+    updateProductCharValues: (data) => instance.patch(`${root}/characteristics-values`, data),
   },
 
   slides: {
-    get: () => axios.get(`${root}/slide`),
-    add: (slide) => axios.post(`${root}/slide`, slide),
-    update: (slide) => axios.patch(`${root}/slide/${slide.id}`, slide.body),
+    get: () => instance.get(`${root}/slide`),
+    add: (slide) => instance.post(`${root}/slide`, slide),
+    update: (slide) => instance.patch(`${root}/slide/${slide.id}`, slide.body),
     updateVisibility: (slide) =>
-      axios.patch(`${root}/slide/visibility/${slide.id}`, { isShown: slide.isShown }),
-    delete: (slide) => axios.delete(`${root}/slide/${slide.id}`),
+      instance.patch(`${root}/slide/visibility/${slide.id}`, { isShown: slide.isShown }),
+    delete: (slide) => instance.delete(`${root}/slide/${slide.id}`),
   },
 
   settings: {
-    get: () => axios.get(`${root}/parameters`),
-    put: (settings) => axios.put(`${root}/parameters`, settings),
+    get: () => instance.get(`${root}/parameters`),
+    put: (settings) => instance.put(`${root}/parameters`, settings),
   },
 
   users: {
-    get: () => axios.get(`${root}/users`),
+    get: () => instance.get(`${root}/users`),
   },
 
   user: {
-    auth: (user) => axios.post(`${root}/auth/login/admin`, user),
-    get: (id) => axios.get(`${root}/users/${id}`),
-    update: ({ id, ...user }) => axios.patch(`${root}/users/${id}`, user),
-    delete: (id) => axios.delete(`${root}/users/${id}`),
-    add: (user) => axios.post(`${root}/auth/register`, user),
+    auth: (user) => instance.post(`${root}/auth/login/admin`, user),
+    get: (id) => instance.get(`${root}/users/${id}`),
+    update: ({ id, ...user }) => instance.patch(`${root}/users/${id}`, user),
+    delete: (id) => instance.delete(`${root}/users/${id}`),
+    add: (user) => instance.post(`${root}/auth/register`, user),
   },
 };

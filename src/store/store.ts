@@ -11,7 +11,6 @@ import users from './reducers/users.reducer';
 import rootSaga from './rootSaga';
 import slides from './reducers/slides.reduser';
 import user from './reducers/user.reducer';
-import routing from './reducers/routing.reducer';
 
 const saga = createSagaMiddleware();
 
@@ -24,7 +23,6 @@ const rootReducer = combineReducers({
   users,
   slides,
   user,
-  routing,
 });
 
 const store = createStore(

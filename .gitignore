@@ -25,3 +25,4 @@ yarn-error.log*
 .idea
 .directory
 package-lock.json
+yarn.lock
