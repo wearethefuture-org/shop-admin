@@ -11,6 +11,7 @@ export interface CategoryToDisplay {
   name?: string;
   key?: string;
   description?: string;
+  mainCategory?: any,
   characteristicGroup?: GroupToDisplay[];
 }
 
@@ -35,6 +36,7 @@ interface EditCategoryAction {
   name: string;
   key: string;
   description: string;
+  mainCategories: any;
 }
 
 interface AddGroupAction {
@@ -91,12 +93,13 @@ export const categoryDisplayReducer = (
       return action.category;
 
     case CategoryToDisplayActionTypes.editCategory:
-      return action.name || action.key || action.description
+      return action.name || action.key || action.description || action.mainCategories
         ? {
             ...state,
             name: action.name,
             key: action.key,
             description: action.description,
+            mainCategory: action.mainCategories,
           }
         : state;
 

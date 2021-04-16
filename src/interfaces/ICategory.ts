@@ -4,16 +4,22 @@ export interface GeneralCategory extends Common {
   key: string;
   name: string;
   description?: string;
+  mainCategory: any;
+  
 }
 
 export interface IGetCategoriesResponse extends GeneralCategory {
   products: IBasicProduct[];
+  
+  
+  
 }
 
 export interface IAddCategory {
   name: string;
   description: string;
   key: string;
+  mainCategory: any;
 }
 
 export interface ICharResponse extends Common {
@@ -24,6 +30,7 @@ export interface ICharResponse extends Common {
   minValue: number | null;
   maxValue: number | null;
   defaultValues: null | { values: string[] };
+  
 }
 
 export interface IGroupResponse extends Common {
@@ -33,6 +40,9 @@ export interface IGroupResponse extends Common {
 
 export interface ICategoryResponse extends GeneralCategory {
   characteristicGroup: IGroupResponse[];
+  
+  
+  
 }
 
 export interface ICharToAdd {
@@ -50,6 +60,9 @@ export interface ICharToAdd {
 export interface CategoryTableData extends GeneralCategory {
   description?: string;
   products: number;
+  
+  
+  
 }
 
 export interface InnerCategoryFormProps {

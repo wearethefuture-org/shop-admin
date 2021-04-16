@@ -17,6 +17,7 @@ enum cols {
   name = 'Назва',
   description = 'Опис',
   key = 'URL ключ',
+  mainCategory = 'Головна категорія',
   createdAt = 'Створено',
   updatedAt = 'Оновлено',
   products = 'Кількість продуктів',
@@ -25,6 +26,7 @@ enum cols {
 const Categories: React.FC = () => {
   const { data, dispatch } = useCategories();
   const categoriesCreateModalData = useCategoriesModal();
+  
 
   const list = useSelector((state: RootState) => state.categories.list);
   const loading = useSelector((state: RootState) => state.categories.loading);
@@ -35,8 +37,9 @@ const Categories: React.FC = () => {
     cols.id,
     cols.name,
     cols.description,
+    cols.mainCategory,
     cols.key,
-    cols.products,
+    cols.products,    
   ]);
 
   const handleColumns = (column: string) =>

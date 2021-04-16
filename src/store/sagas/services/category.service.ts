@@ -3,7 +3,7 @@ import { IAddCategory } from '../../../interfaces/ICategory';
 import { Category } from '../../../pages/Categories/CategoryInfo/categoryReducer';
 
 export async function fetchedCategories() {
-  const categories = await api.categories.get();
+  const categories = await api.categories.get();  
   return categories.data;
 }
 

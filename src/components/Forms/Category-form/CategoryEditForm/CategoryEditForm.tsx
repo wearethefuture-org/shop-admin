@@ -34,6 +34,14 @@ const CategoryEditForm = () => {
         />
         <Field
           fullWidth
+          component={TextFieldWrapped}
+          label="Головна категорія *"
+          name="mainCategory"
+          makegreen="true"
+          className={styles['edit-field']}
+        />
+        <Field
+          fullWidth
           multiline
           rowsMax={6}
           component={TextFieldWrapped}

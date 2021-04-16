@@ -45,6 +45,14 @@ const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IAddCategory>> = 
       />
       <Field
         fullWidth
+        component={TextFieldWrapped}
+        className={classes.input}
+        label="Головна категорія *"
+        name="mainCategory"
+        makegreen="true"
+      />
+      <Field
+        fullWidth
         multiline
         rowsMax={6}
         component={TextFieldWrapped}
@@ -52,7 +60,7 @@ const InnerForm: React.FC<InnerCategoryFormProps & FormikProps<IAddCategory>> = 
         label="Опис *"
         name="description"
         makegreen="true"
-      />
+      />      
       {isSubmitting && <LinearProgress />}
       <DialogActions>
         <Button

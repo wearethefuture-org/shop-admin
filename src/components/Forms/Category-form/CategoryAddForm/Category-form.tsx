@@ -12,6 +12,7 @@ interface CategoryFormProps {
   initialName?: string;
   initialKeyLink?: string;
   initialDescription?: string;
+  initialMainCategory?: any;
 }
 
 const CategoryForm = withFormik<CategoryFormProps, IAddCategory>({
@@ -20,14 +21,15 @@ const CategoryForm = withFormik<CategoryFormProps, IAddCategory>({
       name: props.initialName || '',
       key: props.initialKeyLink || '',
       description: props.initialDescription || '',
+      mainCategory: props.initialMainCategory || '',
     };
   },
   validationSchema: categoryValidationShema,
   handleSubmit: (values: IAddCategory, { setSubmitting, props }) => {
     setSubmitting(false);
 
-    const { name, key, description } = values;
-    props.dispatch(fetchAddCategories({ name, key, description }));
+    const { name, key, description, mainCategory } = values;
+    props.dispatch(fetchAddCategories({ name, key, description, mainCategory }));
     props.handleClose();
   },
 })(InnerForm);
