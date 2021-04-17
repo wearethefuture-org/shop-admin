@@ -17,7 +17,7 @@ interface ILocation {
   from: { pathname: string };
 }
 
-const EditProduct: React.FC = () => {
+const EditProduct: React.FC = () => { 
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
   const location = useLocation<ILocation>();

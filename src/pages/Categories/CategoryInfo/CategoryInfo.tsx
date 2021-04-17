@@ -73,18 +73,16 @@ const CategoryInfo: React.FC = () => {
   const initialValues: IAddCategory = {
     name: (categoryDisplayState && categoryDisplayState?.name) || (category && category.name) || '',
     description:
-      (categoryDisplayState && categoryDisplayState?.description) ||
-      (category && category.description) ||
-      '',
+      (categoryDisplayState && categoryDisplayState?.description) || (category && category.description) || '',
     key: (categoryDisplayState && categoryDisplayState?.key) || (category && category.key) || '',
-    mainCategory: (categoryDisplayState && categoryDisplayState?.mainCategory) || (category && category.mainCategory) || '',
+    mainCategory: (categoryDisplayState && categoryDisplayState?.mainCategory.name) || (category && category.mainCategory.name) || '',
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema: categoryValidationShema,
     onSubmit: (values): void => {
-      const { name, key, description } = values;
+      const { name, key, description, mainCategory } = values;
 
       const existingName =
         categoryList.length &&
@@ -98,6 +96,13 @@ const CategoryInfo: React.FC = () => {
           .filter((cat) => cat.id !== category.id)
           .find((cat) => cat.key.toLowerCase() === key.trim().toLowerCase());
 
+      const existingMainCategory =
+        categoryList.length &&
+        categoryList
+          .filter((cat) => cat.id !== category.id)
+          .find((cat) => cat.mainCategory.name.toLowerCase() === mainCategory.name.trim().toLowerCase());
+
+
       if (existingName) {
         formik.setFieldError('name', 'Така категорія вже існує');
         formik.setSubmitting(false);
@@ -110,7 +115,12 @@ const CategoryInfo: React.FC = () => {
         return;
       }
 
-      dispatch(updateCategoryRequest({ ...categoryState, name, key, description }));
+      if (existingMainCategory) {
+        formik.setFieldError('mainCategory', 'Така категорія вже існує');
+        formik.setSubmitting(false);
+        return;
+      }
+      dispatch(updateCategoryRequest({ ...categoryState, name, key, description, mainCategory }));
       categoryDispatch({ type: CategoryActionTypes.resetCategory });
       finishOperation();
       formik.setSubmitting(false);
