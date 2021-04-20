@@ -10,7 +10,7 @@ export interface GeneralMainCategory extends Common {
 
 export interface IGetMainCategoriesResponse extends GeneralMainCategory {
   //products: IBasicProduct[];
-  
+  category: any;
   
 }
 
@@ -39,7 +39,7 @@ export interface IGroupResponse extends Common {
 
 export interface IMainCategoryResponse extends GeneralMainCategory {
  // characteristicGroup: IGroupResponse[];
-  
+ category: any;
   
   
 }

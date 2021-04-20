@@ -27,10 +27,11 @@ const MainCategoriesTable: React.FC<MainCategoriesDataProps> = ({ list, activeCo
       omit: !activeColumns.includes('Назва'),
     },
     {
-      name: 'Під-категорія',
-      selector: (row) => row.category.name,
+      name: 'Кількість Під-категорій',
+      selector: (row) => row.category,
       sortable: true,
-      omit: !activeColumns.includes('Під-категорія'),
+      format: (row) => <span>{row?.category?.length ? row?.category?.length : 0}</span>,
+      omit: !activeColumns.includes('Кількість Під-категорій'),
     },
     {
       name: 'Опис',

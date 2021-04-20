@@ -17,7 +17,7 @@ enum cols {
   name = 'Назва',
   description = 'Опис',
   key = 'URL ключ',
-  Category = 'Кількість Під-категорій',
+  category = 'Кількість Під-категорій',
   createdAt = 'Створено',
   updatedAt = 'Оновлено',
 }
@@ -36,7 +36,7 @@ const MainCategories: React.FC = () => {
     cols.id,
     cols.name,
     cols.description,
-    cols.Category,
+    cols.category,
     cols.key,    
   ]);
 
