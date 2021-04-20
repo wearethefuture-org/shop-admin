@@ -2,6 +2,13 @@ import { root } from './config';
 import axios, { AxiosResponse } from 'axios';
 
 import {
+  IAddMainCategory,
+  GeneralMainCategory,
+  IMainCategoryResponse,
+  IGetMainCategoriesResponse,
+} from '../interfaces/IMainCategory';
+
+import {
   IAddCategory,
   GeneralCategory,
   ICategoryResponse,
@@ -18,6 +25,8 @@ import {
   IProductsInCart,
   IUpdateProduct,
 } from '../interfaces/IProducts';
+
+import { MainCategory } from '../pages/MainCategories/MainCategoryInfo/mainCategoryReducer';
 import { Category } from '../pages/Categories/CategoryInfo/categoryReducer';
 
 import { IActions, IActionsImage } from '../interfaces/actions';
@@ -28,6 +37,13 @@ import { ISlideItem, ISlideUpdateValues, ISlideVisibility } from '../interfaces/
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
 type ApiFetchedDataType = {
+  mainCategories: {
+    get: () => FetchedDataType<IGetMainCategoriesResponse>;
+    add: (mainCategory: IAddMainCategory) => FetchedDataType<GeneralMainCategory>;
+    getById: (id: number) => FetchedDataType<IMainCategoryResponse>;
+    update: (data: MainCategory) => FetchedDataType<IMainCategoryResponse>;
+  };
+
   categories: {
     get: () => FetchedDataType<IGetCategoriesResponse>;
     add: (category: IAddCategory) => FetchedDataType<GeneralCategory>;
@@ -68,6 +84,13 @@ type ApiFetchedDataType = {
 };
 
 export const api: ApiFetchedDataType = {
+  mainCategories: {
+    get: () => axios.get(`${ root }/mainCategory`),
+    add: (mainCategory) => axios.post(`${ root }/mainCategory`, mainCategory),
+    getById: (id) => axios.get(`${ root }/mainCategory/${ id }`),
+    update: (data) => axios.patch(`${ root }/mainCategory`, data),
+  },
+
   categories: {
     get: () => axios.get(`${ root }/category`),
     add: (category) => axios.post(`${ root }/category`, category),
