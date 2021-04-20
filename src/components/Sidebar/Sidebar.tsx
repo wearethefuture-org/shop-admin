@@ -89,8 +89,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
       itemIcon: <HouseIcon fontSize="small" className={styles.icon} />,
     },
     {
+      pageURL: '/mainCategories',
+      title: 'Головні Категорії',
+      itemIcon: <CategoryIcon fontSize="small" className={styles.icon} />,
+    },
+    {
       pageURL: '/categories',
-      title: 'Категорії',
+      title: 'Під-Категорії',
       itemIcon: <CategoryIcon fontSize="small" className={styles.icon} />,
     },
     {
