@@ -2,6 +2,8 @@
   display: flex;
   flex-wrap: wrap;
   padding-top: 0.3rem;
+  white-space: pre-line;
+  flex-direction: column;
 
   span {
     display: inline-flex;

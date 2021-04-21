@@ -41,7 +41,7 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
       wrap: true,
       format: (row) =>
         row.text.length <= 100 ? (
-          <p>{row.text}</p>
+          <p className={styles.comment}>{row.text}</p>
         ) : (
           <p className={styles.comment}>
             {!expandedComments.includes(row.id) ? (
