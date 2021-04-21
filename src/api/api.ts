@@ -109,6 +109,6 @@ export const api: ApiFetchedDataType = {
 
   comments: {
     get: (page, limit) => axios.get(`${root}/comments?page=${page}&limit=${limit}`),
-    delete: (id) => axios.delete(`${root}/comments/${id}`),
+    delete: (id) => axios.delete(`${root}/comments/admin/${id}`),
   },
 };
