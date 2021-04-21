@@ -101,14 +101,14 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) =>
       name: 'Створено',
       selector: (row) => row.createdAt,
       sortable: true,
-      format: (row) => <DateMoment date={row.createdAt} />,
+      format: (row) => <DateMoment date={row.createdAt} column />,
       omit: !activeColumns.includes('Створено'),
     },
     {
       name: 'Оновлено',
       selector: (row) => row.updatedAt,
       sortable: true,
-      format: (row) => <DateMoment date={row.updatedAt} />,
+      format: (row) => <DateMoment date={row.updatedAt} column />,
       omit: !activeColumns.includes('Оновлено'),
     },
   ];

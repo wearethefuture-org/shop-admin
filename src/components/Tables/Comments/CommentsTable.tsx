@@ -76,7 +76,7 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
       selector: (row) => row.createdAt,
       sortable: true,
       maxWidth: '10%',
-      format: (row) => <DateMoment date={row.createdAt} />,
+      format: (row) => <DateMoment date={row.createdAt} column />,
       omit: !activeColumns.includes('Створено'),
     },
     {
@@ -84,7 +84,7 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
       selector: (row) => row.updatedAt,
       sortable: true,
       maxWidth: '10%',
-      format: (row) => <DateMoment date={row.updatedAt} />,
+      format: (row) => <DateMoment date={row.updatedAt} column />,
       omit: !activeColumns.includes('Оновлено'),
     },
     {
