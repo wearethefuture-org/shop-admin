@@ -23,7 +23,7 @@ import { Category } from '../pages/Categories/CategoryInfo/categoryReducer';
 import { IActions, IActionsImage } from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';
 import { ISlideItem, ISlideUpdateValues, ISlideVisibility } from '../interfaces/ISlides';
-
+import { ICommentResponse } from '../interfaces/IComment';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -65,40 +65,50 @@ type ApiFetchedDataType = {
     delete: (slide: IActionsImage) => FetchedDataType<ISlideItem>;
   };
 
+  comments: {
+    get: (page: number, limit: number) => FetchedDataType<ICommentResponse>;
+    delete: (id: number) => FetchedDataType<JSON>;
+  };
 };
 
 export const api: ApiFetchedDataType = {
   categories: {
-    get: () => axios.get(`${ root }/category`),
-    add: (category) => axios.post(`${ root }/category`, category),
-    getById: (id) => axios.get(`${ root }/category/${ id }`),
-    update: (data) => axios.patch(`${ root }/category`, data),
+    get: () => axios.get(`${root}/category`),
+    add: (category) => axios.post(`${root}/category`, category),
+    getById: (id) => axios.get(`${root}/category/${id}`),
+    update: (data) => axios.patch(`${root}/category`, data),
   },
 
   products: {
-    get: () => axios.get(`${ root }/product`),
-    add: (product) => axios.post(`${ root }/product`, product),
-    getById: (id) => axios.get(`${ root }/product/${ id }`),
-    update: ({ id, ...product }) => axios.patch(`${ root }/product/${ id }`, product),
-    updateImg: (data) => axios.post(`${ root }/product/multipleimages`, data),
-    updateMainImg: (data) => axios.patch(`${ root }/product/img/preview`, data),
-    deleteImg: (imgName) => axios.delete(`${ root }/product/img/${ imgName }`),
-    deleteProduct: (id) => axios.delete(`${ root }/product/${ id }`),
-    getProductsInCart: () => axios.get(`${ root }/products-in-cart`),
-    addProductCharValues: (data) => axios.post(`${ root }/characteristics-values`, data),
-    updateProductCharValues: (data) => axios.patch(`${ root }/characteristics-values`, data),
+    get: () => axios.get(`${root}/product`),
+    add: (product) => axios.post(`${root}/product`, product),
+    getById: (id) => axios.get(`${root}/product/${id}`),
+    update: ({ id, ...product }) => axios.patch(`${root}/product/${id}`, product),
+    updateImg: (data) => axios.post(`${root}/product/multipleimages`, data),
+    updateMainImg: (data) => axios.patch(`${root}/product/img/preview`, data),
+    deleteImg: (imgName) => axios.delete(`${root}/product/img/${imgName}`),
+    deleteProduct: (id) => axios.delete(`${root}/product/${id}`),
+    getProductsInCart: () => axios.get(`${root}/products-in-cart`),
+    addProductCharValues: (data) => axios.post(`${root}/characteristics-values`, data),
+    updateProductCharValues: (data) => axios.patch(`${root}/characteristics-values`, data),
   },
 
   slides: {
-    get: () => axios.get(`${ root }/slide`),
-    add: (slide) => axios.post(`${ root }/slide`, slide),
-    update: (slide) => axios.patch(`${ root }/slide/${ slide.id }`, slide.body),
-    updateVisibility: (slide) => axios.patch(`${ root }/slide/visibility/${ slide.id }`, { isShown: slide.isShown }),
-    delete: (slide) => axios.delete(`${ root }/slide/${ slide.id }`),
+    get: () => axios.get(`${root}/slide`),
+    add: (slide) => axios.post(`${root}/slide`, slide),
+    update: (slide) => axios.patch(`${root}/slide/${slide.id}`, slide.body),
+    updateVisibility: (slide) =>
+      axios.patch(`${root}/slide/visibility/${slide.id}`, { isShown: slide.isShown }),
+    delete: (slide) => axios.delete(`${root}/slide/${slide.id}`),
   },
 
   settings: {
-    get: () => axios.get(`${ root }/parameters`),
-    put: (settings) => axios.put(`${ root }/parameters`, settings),
+    get: () => axios.get(`${root}/parameters`),
+    put: (settings) => axios.put(`${root}/parameters`, settings),
+  },
+
+  comments: {
+    get: (page, limit) => axios.get(`${root}/comments?page=${page}&limit=${limit}`),
+    delete: (id) => axios.delete(`${root}/comments/admin/${id}`),
   },
 };

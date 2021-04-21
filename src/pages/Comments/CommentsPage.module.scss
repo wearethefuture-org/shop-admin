@@ -2,12 +2,8 @@
   padding: 1rem;
 
   .header-btn-wrapper {
-    margin: 1rem 0;
     display: flex;
     justify-content: flex-end;
-
-    & button:first-of-type {
-      margin-right: 1rem;
-    }
+    margin-bottom: 1rem;
   }
 }

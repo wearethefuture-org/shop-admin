@@ -16,8 +16,8 @@ import GroupIcon from '@material-ui/icons/Group';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
+import MessageIcon from '@material-ui/icons/Message';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
 import useDidUpdate from '../../hooks/useDidUpdate';
 import styles from './Sidebar.module.scss';
 
@@ -112,6 +112,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
       pageURL: '/slides',
       title: 'Слайди',
       itemIcon: <AmpStoriesIcon fontSize="small" className={styles.icon} />,
+    },
+    {
+      pageURL: '/comments',
+      title: 'Відгуки',
+      itemIcon: <MessageIcon fontSize="small" className={styles.icon} />,
     },
   ];
 
