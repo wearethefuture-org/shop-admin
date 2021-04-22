@@ -112,21 +112,15 @@ const orders = (state = initialState, { type, data }: IActions) => {
     }
 
     case UPDATE_ORDER_QUANTITY_SUCCESS: {
-      const idxProductToOrder = state.currentOrder.productToOrder.findIndex(
-        (item) => item.product.id === data.product.id
-      );
-      const curentProductToOrder = state.currentOrder.productToOrder[idxProductToOrder];
       return {
         ...state,
         loading: false,
         error: null,
         currentOrder: {
           ...state.currentOrder,
-          productToOrder: [
-            ...state.currentOrder.productToOrder.slice(0, idxProductToOrder),
-            { ...curentProductToOrder, quantity: data.quantity, amount: data.amount },
-            ...state.currentOrder.productToOrder.slice(idxProductToOrder + 1),
-          ],
+          productToOrder: state.currentOrder.productToOrder.map((item) =>
+            item.id === data.id ? data : item
+          ),
         },
       };
     }

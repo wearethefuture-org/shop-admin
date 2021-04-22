@@ -2,9 +2,9 @@ import React from 'react';
 
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import OrdersEditQuantity from '../../../components/Tables/Orders/OrdersEditQuantity';
+import OrdersItemTableHeader from './OrdersItemTableHeader';
 
-const OrdersItemTable = ({order}) => {
-
+const OrdersItemTable = ({ order }) => {
   const columns = [
     {
       name: 'productID',
@@ -43,6 +43,11 @@ const OrdersItemTable = ({order}) => {
       sortable: true,
     },
     {
+      name: 'Група',
+      selector: (row) => row.product.category.name,
+      sortable: true,
+    },
+    {
       name: 'Ціна',
       selector: (row) => row.product.price,
       sortable: true,
@@ -66,7 +71,7 @@ const OrdersItemTable = ({order}) => {
     <AppDataTable
       data={order.productToOrder}
       columns={columns}
-      title={`Рахунок № ${order.id}`}
+      title={<OrdersItemTableHeader order={order} />}
       onRowClicked={() => {}}
     />
   );
