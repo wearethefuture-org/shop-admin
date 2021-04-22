@@ -8,7 +8,7 @@ import { RootState } from '../../store/store';
 interface DataTableProps {
   columns: any[];
   data: any[];
-  title: string;
+  title: any;
   onRowClicked: (row: any) => void;
 }
 

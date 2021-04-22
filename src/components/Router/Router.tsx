@@ -16,6 +16,8 @@ import styles from './Router.module.scss';
 import ViewProduct from '../../pages/Products/ProductRouter';
 import AddProduct from '../Forms/Products/AddProduct/AddProduct';
 import CategoryRouter from '../../pages/Categories/CategoryRouter';
+import OrdersPage from '../../pages/Orders/OrdersPage';
+import OrderRouter from '../../pages/Orders/OrderRouter';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -38,6 +40,7 @@ const Router: React.FC = () => {
               <Route path="/users" render={() => <Users />} />
               <Route path="/slides" render={() => <Slides />} />
               <Route path="/settings" render={() => <Settings />} />
+              <Route path="/orders" render={() => <OrdersPage />} />
               <Route
                 path="/product/add"
                 exact={true}
@@ -50,6 +53,10 @@ const Router: React.FC = () => {
               <Route
                 path="/category/:id"
                 render={({ match }) => <CategoryRouter {...match.params} />}
+              />
+              <Route
+                path="/order/:id"
+                render={({ match }) => <OrderRouter {...match.params} />}
               />
             </Switch>
           </Content>

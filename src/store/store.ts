@@ -10,6 +10,7 @@ import theme from './reducers/themeMode.reducer';
 import users from './reducers/users.reducer';
 import rootSaga from './rootSaga';
 import slides from './reducers/slides.reduser';
+import orders from './reducers/orders.reducer';
 
 const saga = createSagaMiddleware();
 
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   theme,
   users,
   slides,
+  orders
 });
 
 const store = createStore(
