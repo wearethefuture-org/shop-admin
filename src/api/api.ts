@@ -24,6 +24,7 @@ import { Category } from '../pages/Categories/CategoryInfo/categoryReducer';
 import { IActions, IActionsImage } from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';
 import { ISlideItem, ISlideUpdateValues, ISlideVisibility } from '../interfaces/ISlides';
+import { ICommentResponse } from '../interfaces/IComment';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -74,8 +75,12 @@ type ApiFetchedDataType = {
       quantity: number
     ) => FetchedDataType<IBasicOrder>;
     getById: (id: number) => FetchedDataType<IBasicOrder>;
+   };
+  
+  comments: {
+    get: (page: number, limit: number) => FetchedDataType<ICommentResponse>;
+    delete: (id: number) => FetchedDataType<JSON>;
   };
-};
 
 export const api: ApiFetchedDataType = {
   categories: {
@@ -119,5 +124,9 @@ export const api: ApiFetchedDataType = {
     updateStatus: (id, status) => axios.patch(`${root}/orders/status/${id}`, status),
     updateQuantity: (orderId, productId, quantity) =>
       axios.put(`${root}/orders/${orderId}/${productId}`, quantity),
+  },
+  comments: {
+    get: (page, limit) => axios.get(`${root}/comments?page=${page}&limit=${limit}`),
+    delete: (id) => axios.delete(`${root}/comments/admin/${id}`),
   },
 };

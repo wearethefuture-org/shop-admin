@@ -8,7 +8,7 @@ import Categories from '../../pages/Categories/Categories';
 import Products from '../../pages/Products/ProductsPage';
 import Statistic from '../../pages/Statistic/Statistic';
 import Users from '../../pages/Users/Users';
-import Slides from "../../pages/Slides/Slides";
+import Slides from '../../pages/Slides/Slides';
 import Settings from '../../pages/Settings/Settings';
 import HeaderBar from '../HeaderBar/HeaderBar';
 import Content from '../Content/Content';
@@ -18,6 +18,7 @@ import AddProduct from '../Forms/Products/AddProduct/AddProduct';
 import CategoryRouter from '../../pages/Categories/CategoryRouter';
 import OrdersPage from '../../pages/Orders/OrdersPage';
 import OrderRouter from '../../pages/Orders/OrderRouter';
+import CommentsPage from '../../pages/Comments/CommentsPage';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -39,6 +40,7 @@ const Router: React.FC = () => {
               <Route path="/statistic" render={() => <Statistic />} />
               <Route path="/users" render={() => <Users />} />
               <Route path="/slides" render={() => <Slides />} />
+              <Route path="/comments" render={() => <CommentsPage />} />
               <Route path="/settings" render={() => <Settings />} />
               <Route path="/orders" render={() => <OrdersPage />} />
               <Route

@@ -22,7 +22,9 @@ import {
   GET_ORDERS_REQUEST,
   GET_ORDER_BY_ID_REQUEST,
   UPDATE_ORDER_QUANTITY_REQUEST,
-  UPDATE_ORDER_STATUS_REQUEST
+  UPDATE_ORDER_STATUS_REQUEST,
+  GET_COMMENTS_REQUEST,
+  DELETE_COMMENT_REQUEST,
 } from './types';
 import {
   fetchCategoryWorker,
@@ -51,7 +53,9 @@ import {
   updateOrderQuantityWorker,
   updateOrderStatusWorker
 } from './sagas/orders.saga';
+import { deleteCommentWorker, getCommentsWorker } from './sagas/comments.saga';
 
+// Categories
 export function* sagaCategoriesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_CATEGORIES, fetchCategoryWorker);
   yield takeEvery(REQUEST_ADD_CATEGORIES, addCategoryWorker);
@@ -59,6 +63,7 @@ export function* sagaCategoriesWatcher(): SagaIterator {
   yield takeEvery(UPDATE_CATEGORY_REQUEST, updateCategoryWorker);
 }
 
+// Products
 export function* sagaProductsWatcher(): SagaIterator {
   yield takeEvery(GET_PRODUCTS_REQUEST, getProductsWorker);
   yield takeEvery(GET_PRODUCT_BY_ID_REQUEST, getProductByIdWorker);
@@ -80,7 +85,13 @@ function* sagaSlidesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_SLIDES, fetchSlideWorker);
   yield takeEvery(REQUEST_UPDATE_SLIDES, updateSlideWorker);
   yield takeEvery(REQUEST_DELETE_SLIDES, deleteSlideWorker);
-  yield takeEvery(REQUEST_UPDATE_SLIDE_VISIBILITY,updateSlideVisibilityWorker);
+  yield takeEvery(REQUEST_UPDATE_SLIDE_VISIBILITY, updateSlideVisibilityWorker);
+}
+
+// Comments
+export function* sagaCommentsWatcher(): SagaIterator {
+  yield takeEvery(GET_COMMENTS_REQUEST, getCommentsWorker);
+  yield takeEvery(DELETE_COMMENT_REQUEST, deleteCommentWorker);
 }
 
 //Orders
@@ -93,5 +104,12 @@ function* sagaOrdersWatcher(): SagaIterator {
 
 // RootSaga
 export default function* rootSaga(): SagaIterator {
-  yield all([fork(sagaCategoriesWatcher), fork(sagaProductsWatcher), fork(sagaSettingsWatcher),fork(sagaSlidesWatcher), fork(sagaOrdersWatcher) ]);
+  yield all([
+    fork(sagaCategoriesWatcher),
+    fork(sagaProductsWatcher),
+    fork(sagaSettingsWatcher),
+    fork(sagaSlidesWatcher),
+    fork(sagaOrdersWatcher),
+    fork(sagaCommentsWatcher),
+  ]);
 }

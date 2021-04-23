@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useSelector } from 'react-redux';
 import DataTable from 'react-data-table-component';
 import Card from '@material-ui/core/Card';
@@ -9,10 +9,25 @@ interface DataTableProps {
   columns: any[];
   data: any[];
   title: any;
-  onRowClicked: (row: any) => void;
+  onRowClicked?: (row: any) => void;
+  count?: number;
+  limit?: number;
+  setLimit?: Dispatch<SetStateAction<number>>;
+  paginationServer?: boolean;
+  setPage?: Dispatch<SetStateAction<number>>;
 }
 
-const AppDataTable: React.FC<DataTableProps> = ({ data, columns, title, onRowClicked }) => {
+const AppDataTable: React.FC<DataTableProps> = ({
+  data,
+  columns,
+  title,
+  onRowClicked = () => {},
+  count,
+  setPage = () => {},
+  limit,
+  setLimit = () => {},
+  paginationServer = false,
+}) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
   return (
@@ -20,13 +35,18 @@ const AppDataTable: React.FC<DataTableProps> = ({ data, columns, title, onRowCli
       <DataTable
         data={data}
         columns={columns}
-        pagination
         title={title}
-        paginationRowsPerPageOptions={[10, 30, 50, 100]}
         theme={darkMode ? 'dark' : 'default'}
         highlightOnHover={true}
         onRowClicked={onRowClicked}
         pointerOnHover={true}
+        pagination
+        paginationTotalRows={count}
+        paginationRowsPerPageOptions={[10, 30, 50, 100]}
+        paginationServer={paginationServer}
+        paginationPerPage={limit}
+        onChangePage={(p) => setPage(p)}
+        onChangeRowsPerPage={(l) => setLimit(l)}
         paginationComponentOptions={{
           rowsPerPageText: 'Рядків на сторінці:',
           rangeSeparatorText: 'з',
