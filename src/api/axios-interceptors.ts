@@ -18,7 +18,7 @@ instance.interceptors.request.use(
     return config;
   },
   (error) => {
-    return error;
+    return error.data.message;
   }
 );
 
@@ -29,9 +29,9 @@ instance.interceptors.response.use(
   (err) => {
     if (err.response.status === 401) {
       clearStorage();
-      throw err;
     }
-    throw err;
+
+    throw new Error(err.response.data.message);
   }
 );
 

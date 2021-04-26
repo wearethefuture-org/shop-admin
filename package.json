@@ -67,6 +67,7 @@
     ]
   },
   "devDependencies": {
+    "prettier": "2.2.1",
     "ts-loader": "^8.0.11"
   }
 }
