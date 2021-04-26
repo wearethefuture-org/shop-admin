@@ -12,11 +12,10 @@ const initialState: IUserState = {
   user: getUser(),
   isFetching: false,
   isLoggedIn: !!getUser(),
-  isLoggedNow: false,
   error: null,
 };
 
-export const userReducer = (state = initialState, { type, data }: IActions): IUserState => {
+const user = (state = initialState, { type, data }: IActions): IUserState => {
   switch (type) {
     case USER_SIGN_IN_FETCHING:
       return {
@@ -27,7 +26,6 @@ export const userReducer = (state = initialState, { type, data }: IActions): IUs
     case USER_SIGN_IN_SUCCESS:
       return {
         ...state,
-        isLoggedNow: true,
         isFetching: false,
         user: data.user,
         isLoggedIn: true,
@@ -44,11 +42,10 @@ export const userReducer = (state = initialState, { type, data }: IActions): IUs
         user: null,
         isFetching: false,
         isLoggedIn: false,
-        isLoggedNow: false,
         error: null,
       };
     default:
       return state;
   }
 };
-export default userReducer;
+export default user;
