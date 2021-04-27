@@ -7,7 +7,7 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles, ThemeOptions } from '@material-ui/core/styles';
 
 import { IUserItem } from '../../../../interfaces/IUsers';
 
@@ -26,7 +26,7 @@ interface TablePaginationActionsProps {
   onChangePage: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
 }
 
-const useFooterStyles = makeStyles((theme: Theme) =>
+const useFooterStyles = makeStyles((theme: Theme): ThemeOptions =>
   createStyles({
     root: {
       flexShrink: 0,

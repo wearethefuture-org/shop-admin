@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import {
+  ThemeOptions,
   ThemeProvider,
   unstable_createMuiStrictModeTheme as createMuiTheme,
-  ThemeOptions,
 } from '@material-ui/core/styles';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Paper } from '@material-ui/core';
@@ -14,6 +14,12 @@ import { AppDispatch, RootState } from './store/store';
 import { switchDarkMode } from './store/actions/theme.actions';
 import './App.scss';
 import { fetchUserRequest } from './store/actions/user.action';
+
+declare module '@material-ui/core/styles/createMuiTheme' {
+  interface ThemeOptions {
+    [key: string]: any;
+  }
+}
 
 export function App() {
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);

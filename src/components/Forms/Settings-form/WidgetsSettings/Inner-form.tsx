@@ -1,12 +1,12 @@
 import React from 'react';
 import { Field, Form, FormikProps } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, ThemeOptions } from '@material-ui/core/styles';
 import { Button, createStyles, DialogActions, Switch, Theme, Typography } from '@material-ui/core';
 
 import { IFormWidgetValues } from '../../../../interfaces/widget-form';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme: Theme): ThemeOptions =>
   createStyles({
     form: {
       width: '100%',

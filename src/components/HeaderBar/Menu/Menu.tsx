@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, ThemeOptions } from '@material-ui/core/styles';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Brightness2Icon from '@material-ui/icons/Brightness2';
@@ -23,7 +23,7 @@ interface HeaderBarProps {
   allDropdownsClose: () => void;
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme): ThemeOptions => ({
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
