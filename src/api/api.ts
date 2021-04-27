@@ -7,6 +7,7 @@ import {
   ICategoryResponse,
   IGetCategoriesResponse,
 } from '../interfaces/ICategory';
+
 import {
   IAddCharResponse,
   IAddImgResponse,
@@ -22,6 +23,7 @@ import { Category } from '../pages/Categories/CategoryInfo/categoryReducer';
 import { IActions, IActionsImage } from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';
 import { ISlideItem, ISlideUpdateValues, ISlideVisibility } from '../interfaces/ISlides';
+import { ICommentResponse } from '../interfaces/IComment';
 import {
   IUserReqAdd,
   IAuthResponse,
@@ -70,6 +72,11 @@ type ApiFetchedDataType = {
     update: (slide: ISlideUpdateValues) => FetchedDataType<ISlideItem>;
     updateVisibility: (slide: ISlideVisibility) => FetchedDataType<ISlideItem>;
     delete: (slide: IActionsImage) => FetchedDataType<ISlideItem>;
+  };
+
+  comments: {
+    get: (page: number, limit: number) => FetchedDataType<ICommentResponse>;
+    delete: (id: number) => FetchedDataType<JSON>;
   };
   users: {
     get: () => FetchedDataType<IUsersData>;
@@ -129,5 +136,9 @@ export const api: ApiFetchedDataType = {
     update: ({ id, ...user }) => instance.patch(`${root}/users/${id}`, user),
     delete: (id) => instance.delete(`${root}/users/${id}`),
     add: (user) => instance.post(`${root}/auth/register`, user),
+  },
+  comments: {
+    get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),
+    delete: (id) => instance.delete(`${root}/comments/admin/${id}`),
   },
 };

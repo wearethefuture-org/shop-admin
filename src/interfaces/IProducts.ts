@@ -132,3 +132,8 @@ export enum Type {
   range = 'range',
   date = 'date',
 }
+
+export interface ProductsTableProps {
+  list: IGetProducts[];
+  activeColumns: string[];
+}

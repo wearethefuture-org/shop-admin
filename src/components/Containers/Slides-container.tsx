@@ -6,15 +6,12 @@ import FormDialog from '../Modals/Slide-modal';
 import useSlidesModal from '../../hooks/useSlidesModal';
 
 const SlidesContainer: React.FC = () => {
-  const {data, dispatch} = useSlides();
+  const { data, dispatch } = useSlides();
   const slidesCreateModalData = useSlidesModal();
 
   return (
     <>
-      <SlideTable
-        data={data}
-        dispatch={dispatch}
-        modalData={slidesCreateModalData}/>
+      <SlideTable data={data} dispatch={dispatch} modalData={slidesCreateModalData} />
       <FormDialog
         dispatch={dispatch}
         slidesLength={data.length}
@@ -22,6 +19,6 @@ const SlidesContainer: React.FC = () => {
       />
     </>
   );
-}
+};
 
 export default SlidesContainer;

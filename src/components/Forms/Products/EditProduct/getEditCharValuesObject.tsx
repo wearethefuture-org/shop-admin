@@ -37,7 +37,7 @@ export const getEditCharValuesObject = (
           if (!productChar && value) {
             switch (type) {
               case Type.enum:
-                if (value && value.length) {
+                if (value) {
                   acc.push({ ...basicValues, enumValue: value });
                 }
                 break;
@@ -108,9 +108,7 @@ export const getEditCharValuesObject = (
 
             switch (type) {
               case Type.enum:
-                const arraysEqual = arrayEquals(initialValue, value);
-
-                if (!arraysEqual && value && value.length) {
+                if (value) {
                   acc.push({ ...basicValues, enumValue: value });
                 }
                 break;

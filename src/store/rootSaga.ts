@@ -18,6 +18,8 @@ import {
   REQUEST_UPDATE_SLIDES,
   REQUEST_ADD_SLIDES,
   REQUEST_DELETE_SLIDES,
+  GET_COMMENTS_REQUEST,
+  DELETE_COMMENT_REQUEST,
   REQUEST_UPDATE_SLIDE_VISIBILITY,
   GET_USERS_REQUEST,
   ADD_USER_REQUEST,
@@ -49,6 +51,7 @@ import {
   updateSlideVisibilityWorker,
   updateSlideWorker,
 } from './sagas/slides.saga';
+import { deleteCommentWorker, getCommentsWorker } from './sagas/comments.saga';
 import {
   addUserWorker,
   deleteUserWorker,
@@ -88,6 +91,12 @@ function* sagaSlidesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_UPDATE_SLIDE_VISIBILITY, updateSlideVisibilityWorker);
 }
 
+// Comments
+export function* sagaCommentsWatcher(): SagaIterator {
+  yield takeEvery(GET_COMMENTS_REQUEST, getCommentsWorker);
+  yield takeEvery(DELETE_COMMENT_REQUEST, deleteCommentWorker);
+}
+
 export function* sagaUsersWatcher(): SagaIterator {
   yield takeEvery(GET_USERS_REQUEST, getUsersWorker);
   yield takeEvery(ADD_USER_REQUEST, addUserWorker);
@@ -108,6 +117,7 @@ export default function* rootSaga(): SagaIterator {
     fork(sagaProductsWatcher),
     fork(sagaSettingsWatcher),
     fork(sagaSlidesWatcher),
+    fork(sagaCommentsWatcher),
     fork(sagaUsersWatcher),
     fork(sagaUserWatcher),
   ]);

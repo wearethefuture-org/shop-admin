@@ -17,6 +17,7 @@ import {
   UPDATE_CATEGORY_REQUEST,
   UPDATE_CATEGORY_SUCCESS,
   UPDATE_CATEGORY_ERROR,
+  CLEAR_CURRENT_CATEGORY,
 } from '../types';
 
 export const loadCategories = (categories: IGetCategoriesResponse[]): IActions => ({
@@ -65,4 +66,8 @@ export const updateCategorySuccess = (category: ICategoryResponse): IActions => 
 export const updateCategoryError = (message: string): IActions => ({
   type: UPDATE_CATEGORY_ERROR,
   data: message,
+});
+
+export const clearCurrentCategory = () => ({
+  type: CLEAR_CURRENT_CATEGORY,
 });

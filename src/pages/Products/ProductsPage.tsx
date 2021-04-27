@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { LinearProgress } from '@material-ui/core';
 
-import ProductsTable from '../../components/Tables/Products/ProductsTable/ProductsTable';
+import ProductsTable from '../../components/Tables/Products/ProductsTable';
 import AddBtn from '../../components/AddBtn/AddBtn';
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
-import { RootState } from '../../store/store';
 import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
 import useProducts from '../../hooks/useProducts';
 import styles from './ProductsPage.module.scss';
@@ -19,7 +17,7 @@ enum cols {
   description = 'Опис',
   categoryName = 'Категорія',
   key = 'URL ключ',
-  files = 'Зображення продукта',
+  files = 'Зображення',
   createdAt = 'Створено',
   updatedAt = 'Оновлено',
 }
@@ -27,9 +25,7 @@ enum cols {
 const Products: React.FC = () => {
   const location = useLocation();
 
-  const { list } = useProducts();
-
-  const loading = useSelector((state: RootState) => state.products.loading);
+  const { list, loading } = useProducts();
 
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [activeColumns, setActiveColumns] = useState<string[]>([
@@ -39,7 +35,10 @@ const Products: React.FC = () => {
     cols.price,
     cols.description,
     cols.categoryName,
+    cols.key,
     cols.files,
+    cols.createdAt,
+    cols.updatedAt,
   ]);
 
   const handleColumns = (column: string) =>
@@ -74,7 +73,7 @@ const Products: React.FC = () => {
           <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
         </div>
         <div className={styles['table-wrapper']}>
-          <ProductsTable list={list} activeColumns={activeColumns} />
+          {list && <ProductsTable list={list} activeColumns={activeColumns} />}
         </div>
       </div>
     </>

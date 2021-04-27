@@ -20,6 +20,7 @@ import CategoryRouter from '../../pages/Categories/CategoryRouter';
 import Home from '../../pages/Home/Home';
 import PrivateRoute from './PrivateRoute';
 import { RootState } from '../../store/store';
+import CommentsPage from '../../pages/Comments/CommentsPage';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -46,6 +47,7 @@ const Router: React.FC = () => {
               <PrivateRoute path="/statistic" component={Statistic} />
               <PrivateRoute path="/users" component={Users} />
               <PrivateRoute path="/slides" component={Slides} />
+              <PrivateRoute path="/comments" component={CommentsPage} />
               <PrivateRoute path="/settings" component={Settings} />
               <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
               <PrivateRoute component={ViewProduct} path="/product/:id" />
@@ -55,6 +57,7 @@ const Router: React.FC = () => {
               ) : (
                 <Redirect to="/dashboard" />
               )}
+
             </Switch>
           </Content>
         </div>

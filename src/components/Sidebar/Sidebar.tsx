@@ -16,9 +16,8 @@ import GroupIcon from '@material-ui/icons/Group';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
+import MessageIcon from '@material-ui/icons/Message';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
-import { firstCharToUpperCase as charToUp } from '../../utils/firstCharToUpperCase';
 import useDidUpdate from '../../hooks/useDidUpdate';
 import styles from './Sidebar.module.scss';
 
@@ -86,28 +85,44 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
   const sidebarItems = [
     {
       pageURL: '/dashboard',
+      title: 'Дошка',
       itemIcon: <HouseIcon fontSize="small" className={styles.icon} />,
     },
     {
       pageURL: '/categories',
+      title: 'Категорії',
       itemIcon: <CategoryIcon fontSize="small" className={styles.icon} />,
     },
     {
       pageURL: '/products',
+      title: 'Продукти',
       itemIcon: <ShoppingCartIcon fontSize="small" className={styles.icon} />,
     },
     {
       pageURL: '/statistic',
+      title: 'Статистика',
       itemIcon: <EqualizerIcon fontSize="small" className={styles.icon} />,
     },
     {
       pageURL: '/users',
+      title: 'Користувачі',
       itemIcon: <GroupIcon fontSize="small" className={styles.icon} />,
     },
     {
       pageURL: '/slides',
-      itemIcon: <AmpStoriesIcon fontSize="small" className={styles.icon} />
+      title: 'Слайди',
+      itemIcon: <AmpStoriesIcon fontSize="small" className={styles.icon} />,
     },
+    {
+      pageURL: '/comments',
+      title: 'Відгуки',
+      itemIcon: <MessageIcon fontSize="small" className={styles.icon} />,
+    },
+  ];
+
+  const extraSidebarItems = [
+    { pageURL: '/invoice', title: 'Рахунки' },
+    { pageURL: '/settings', title: 'Налаштування' },
   ];
 
   return (
@@ -121,13 +136,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
       }}
     >
       <div className="sidebar-header">
-        <div className={classes.sidebarTitle}>Shop Admin Panel</div>
+        <div className={classes.sidebarTitle}>BuyAll Адмін панель</div>
         <Divider />
       </div>
       <div className="sidebar-nav">
         <List component="nav" className={classes.mainNav}>
-          {sidebarItems.map(({ pageURL, itemIcon }) => (
-            <NavLink to={pageURL} key={charToUp(pageURL)}>
+          {sidebarItems.map(({ pageURL, itemIcon, title }) => (
+            <NavLink to={pageURL} key={pageURL}>
               <ListItem
                 button
                 className={classes.listButton}
@@ -136,21 +151,21 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
                 }}
               >
                 <ListItemIcon className={classes.itemIcon}>{itemIcon}</ListItemIcon>
-                <ListItemText className={classes.itemText} primary={charToUp(pageURL)} />
+                <ListItemText className={classes.itemText} primary={title} />
               </ListItem>
             </NavLink>
           ))}
         </List>
         <Divider />
         <List className={classes.mainNav}>
-          {['/invoice', '/settings'].map((pageURL, index) => (
-            <NavLink to={pageURL} key={charToUp(pageURL)}>
+          {extraSidebarItems.map((item, index) => (
+            <NavLink to={item.pageURL} key={item.pageURL}>
               <ListItem
                 button
-                key={pageURL}
+                key={item.pageURL}
                 className={classes.listButton}
                 classes={{
-                  root: charToUp(pageURL) === activePath ? classes.activeButton : void 0,
+                  root: item.pageURL === activePath ? classes.activeButton : void 0,
                 }}
               >
                 <ListItemIcon className={classes.itemIcon}>
@@ -160,7 +175,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
                     <SettingsIcon fontSize="small" className={styles.icon} />
                   )}
                 </ListItemIcon>
-                <ListItemText className={classes.itemText} primary={charToUp(pageURL)} />
+                <ListItemText className={classes.itemText} primary={item.title} />
               </ListItem>
             </NavLink>
           ))}

@@ -2,6 +2,7 @@ import { IActions } from '../../interfaces/actions';
 import { ICategoryResponse, IGetCategoriesResponse } from '../../interfaces/ICategory';
 import {
   ADD_CATEGORY,
+  CLEAR_CURRENT_CATEGORY,
   GET_CATEGORY_BY_ID_ERROR,
   GET_CATEGORY_BY_ID_REQUEST,
   GET_CATEGORY_BY_ID_SUCCESS,
@@ -29,9 +30,9 @@ const categories = (state = initialState, { type, data }: IActions) => {
   switch (type) {
     case LOAD_CATEGORIES: {
       return {
-        loading: true,
+        ...state,
+        loading: false,
         list: data,
-        currentCategory: null,
         error: null,
       };
     }
@@ -88,6 +89,15 @@ const categories = (state = initialState, { type, data }: IActions) => {
     case UPDATE_CATEGORY_ERROR: {
       return {
         ...state,
+        loading: false,
+        error: data,
+      };
+    }
+
+    case CLEAR_CURRENT_CATEGORY: {
+      return {
+        ...state,
+        currentCategory: null,
         loading: false,
         error: data,
       };

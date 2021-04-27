@@ -84,18 +84,13 @@
   .dropzone-active {
     @extend .dropzone;
     position: relative;
-    height: 100px;
-    width: 100px;
     border: 2px dashed transparent;
 
     .dropzone-border {
       position: absolute;
-      left: -2px;
-      top: -2px;
-      width: 100px;
-      height: 100px;
+      width: 99px;
+      height: 99px;
       border-radius: 4px;
-
       background: linear-gradient(90deg, #ccc 50%, transparent 50%),
         linear-gradient(0deg, #ccc 50%, transparent 50%),
         linear-gradient(90deg, #ccc 50%, transparent 50%),
@@ -104,6 +99,17 @@
       background-size: 8px 1.5px, 1.5px 8px, 8px 1.5px, 1.5px 8px;
       background-position: left top, right top, left bottom, left top;
       animation: border-dance 4s infinite linear;
+    }
+
+    .dropzone-border-reject {
+      @extend .dropzone-border;
+      background: linear-gradient(90deg, red 50%, transparent 50%),
+        linear-gradient(0deg, red 50%, transparent 50%),
+        linear-gradient(90deg, red 50%, transparent 50%),
+        linear-gradient(0deg, red 50%, transparent 50%);
+      background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
+      background-size: 8px 1.5px, 1.5px 8px, 8px 1.5px, 1.5px 8px;
+      background-position: left top, right top, left bottom, left top;
     }
 
     @keyframes border-dance {

@@ -51,8 +51,6 @@ const EditProduct: React.FC = () => {
 
   const formik = useFormik({
     initialValues,
-    validateOnChange: false,
-    validateOnBlur: false,
     validationSchema: validation,
     onSubmit: (values: IUpdateProduct): void => {
       const { subForm, ...productValues } = values;

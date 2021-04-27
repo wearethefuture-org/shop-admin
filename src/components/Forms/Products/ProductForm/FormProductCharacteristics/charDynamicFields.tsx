@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from 'formik';
-import { Checkbox, FormControlLabel, IconButton, Radio, RadioGroup } from '@material-ui/core';
+import { FormControlLabel, IconButton, Radio, RadioGroup } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 
 import TextFieldWrapped from '../../../../../hocs/TextFieldHOC';
@@ -13,7 +13,7 @@ export const charDynamicFields = (char, formik, product) => {
 
   switch (type) {
     case Type.enum:
-      formik.initialValues.subForm[name] = [];
+      formik.initialValues.subForm[name] = '';
       break;
 
     case Type.json:
@@ -178,46 +178,32 @@ export const charDynamicFields = (char, formik, product) => {
               onClick={() =>
                 formik.setValues({
                   ...formik.values,
-                  subForm: { ...formik.values.subForm, [name]: [] },
+                  subForm: { ...formik.values.subForm, [name]: '' },
                 })
               }
             >
               <ClearIcon />
             </IconButton>
-            <div role="group" aria-labelledby="checkbox-group">
+            <RadioGroup
+              name={name}
+              value={formik.values.subForm[name][0] || ''}
+              onChange={(e) =>
+                formik.setValues({
+                  ...formik.values,
+                  subForm: {
+                    ...formik.values.subForm,
+                    [name]: [e.target.value],
+                  },
+                })
+              }
+            >
               {char.defaultValues &&
                 char.defaultValues.values &&
                 char.defaultValues.values.length &&
                 char.defaultValues.values.map((value) => (
-                  <div key={value}>
-                    <Field
-                      component={Checkbox}
-                      type="checkbox"
-                      name={name}
-                      value={value}
-                      checked={!!formik.values.subForm[name].includes(value)}
-                      onChange={(e: { target: { value } }) => {
-                        formik.values.subForm[name].includes(value)
-                          ? formik.setValues({
-                              ...formik.values,
-                              subForm: {
-                                ...formik.values.subForm,
-                                [name]: formik.values.subForm[name].filter((val) => val !== value),
-                              },
-                            })
-                          : formik.setValues({
-                              ...formik.values,
-                              subForm: {
-                                ...formik.values.subForm,
-                                [name]: formik.values.subForm[name].concat(value),
-                              },
-                            });
-                      }}
-                    />
-                    {value}
-                  </div>
+                  <FormControlLabel key={value} value={value} control={<Radio />} label={value} />
                 ))}
-            </div>
+            </RadioGroup>
           </div>
 
           {formik.errors.subForm && formik.errors.subForm[name] ? (
