@@ -13,6 +13,7 @@ import Router from './components/Router/Router';
 import { AppDispatch, RootState } from './store/store';
 import { switchDarkMode } from './store/actions/theme.actions';
 import './App.scss';
+import { fetchUserRequest } from './store/actions/user.action';
 
 export function App() {
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);
@@ -32,6 +33,10 @@ export function App() {
       },
     },
   });
+
+  useEffect(() => {
+    window.location.pathname !== '/home' && dispatch(fetchUserRequest());
+  }, []);
 
   return (
     <ThemeProvider theme={darkTheme}>

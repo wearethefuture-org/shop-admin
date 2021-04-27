@@ -1,4 +1,7 @@
 import {
+  USER_FETCH_ERROR,
+  USER_FETCH_REQUEST,
+  USER_FETCH_SUCCESS,
   USER_SIGN_IN_ERROR,
   USER_SIGN_IN_FETCHING,
   USER_SIGN_IN_SUCCESS,
@@ -9,8 +12,8 @@ import { IUserState } from '../../interfaces/IUsers';
 import { getUser } from '../../services/local-storage-controller';
 
 const initialState: IUserState = {
-  user: getUser(),
-  isFetching: false,
+  user: null,
+  isFetching: true,
   isLoggedIn: !!getUser(),
   error: null,
 };
@@ -43,6 +46,26 @@ const user = (state = initialState, { type, data }: IActions): IUserState => {
         isFetching: false,
         isLoggedIn: false,
         error: null,
+      };
+    case USER_FETCH_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        error: null,
+      };
+    case USER_FETCH_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        user: data,
+        isLoggedIn: true,
+        error: null,
+      };
+    case USER_FETCH_ERROR:
+      return {
+        ...state,
+        isFetching: false,
+        error: data,
       };
     default:
       return state;

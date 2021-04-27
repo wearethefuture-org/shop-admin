@@ -6,49 +6,7 @@ import { AppDispatch } from '../../store/store';
 
 import { useDispatch } from 'react-redux';
 import { signInUserRequest } from '../../store/actions/user.action';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-  input: {
-    width: '270px',
-    height: '44px',
-    border: '1px solid #e2e6e7',
-    boxSizing: 'border-box',
-    borderRadius: ' 60px',
-    padding: '11px',
-    outline: 'none',
-    margin: '10px',
-  },
-  row: {
-    margin: '10px',
-  },
-  login: {
-    background: '#424D52',
-    borderRadius: ' 60px',
-    color: ' #fff',
-    border: ' none',
-    width: '270px',
-    height: '44px',
-    margin: '10px',
-  },
-  home_div: {
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    background: 'white',
-    maxHeight: '100%',
-    minHeight: '100%',
-    minWidth: '100%',
-    maxWidth: '100%',
-    verticalAlign: 'middle',
-    zIndex: 50,
-    position: 'absolute',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+import styles from './Home.module.scss';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
@@ -59,7 +17,6 @@ const validationSchema = Yup.object().shape({
 
 const Home: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const classes = useStyles();
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -71,44 +28,47 @@ const Home: React.FC = () => {
   });
 
   return (
-    <div className={classes.home_div}>
-      <form onSubmit={formik.handleSubmit}>
-        <div className={classes.row}>
+    <div className={styles.backDrop}>
+      <form onSubmit={formik.handleSubmit} className={styles.form}>
+        <div className={styles.group}>
           <TextField
-            className={classes.input}
+            className={styles.input}
             type="email"
             name="email"
             id="email-field"
-            placeholder="Введіть електронну пошту"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.email}
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
+            label="Електронна пошта"
+            fullWidth={true}
           />
         </div>
-        <div className={classes.row}>
+        <div className={styles.group}>
           <TextField
-            className={classes.input}
+            className={styles.input}
             autoComplete={'false'}
             type="password"
             name="password"
             id="password-field"
-            placeholder="Введіть пароль"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.password}
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
+            label="Пароль"
+            fullWidth={true}
           />
         </div>
-        <div className={classes.row}>
+        <div className={styles.btn_group}>
           <Button
-            className={classes.login}
+            className={styles.login}
             variant="contained"
             type={'submit'}
             color="primary"
             disabled={formik.isSubmitting}
+            fullWidth={true}
           >
             Увійти
           </Button>

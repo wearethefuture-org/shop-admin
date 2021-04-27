@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import Sidebar from '../Sidebar/Sidebar';
 import SnackBar from '../Common/SnackBar';
@@ -18,7 +19,6 @@ import AddProduct from '../Forms/Products/AddProduct/AddProduct';
 import CategoryRouter from '../../pages/Categories/CategoryRouter';
 import Home from '../../pages/Home/Home';
 import PrivateRoute from './PrivateRoute';
-import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
 const Router: React.FC = () => {
@@ -26,11 +26,12 @@ const Router: React.FC = () => {
   const toggleSidebar = () => setOpenSidebar(!isOpenSidebar);
 
   const user = useSelector<RootState>((state) => state.user.user);
+  const token = localStorage.getItem('TOKEN');
 
   return (
     <BrowserRouter>
       <Route exact path="/">
-        {user ? <Redirect to="/dashboard" /> : null}
+        {user ? <Redirect to="/dashboard" /> : <Redirect to="/home" />}
       </Route>
       <div className={styles.container}>
         <Sidebar isOpen={isOpenSidebar} onSidebarToggle={toggleSidebar} />
@@ -49,7 +50,11 @@ const Router: React.FC = () => {
               <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
               <PrivateRoute component={ViewProduct} path="/product/:id" />
               <PrivateRoute component={CategoryRouter} path="/category/:id" />
-              {!user ? <Route path="/home" component={Home} /> : <Redirect to="/dashboard" />}
+              {!user && !token ? (
+                <Route path="/home" component={Home} />
+              ) : (
+                <Redirect to="/dashboard" />
+              )}
             </Switch>
           </Content>
         </div>

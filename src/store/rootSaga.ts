@@ -25,6 +25,7 @@ import {
   DELETE_USER_REQUEST,
   USER_SIGN_IN_FETCHING,
   USER_SIGN_OUT,
+  USER_FETCH_REQUEST,
 } from './types';
 import {
   fetchCategoryWorker,
@@ -54,7 +55,7 @@ import {
   getUsersWorker,
   updateUserWorker,
 } from './sagas/users.saga';
-import { sigInUser, signOutUser } from './sagas/user.saga';
+import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
 
 export function* sagaCategoriesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_CATEGORIES, fetchCategoryWorker);
@@ -97,6 +98,7 @@ export function* sagaUsersWatcher(): SagaIterator {
 export function* sagaUserWatcher(): SagaIterator {
   yield takeEvery(USER_SIGN_IN_FETCHING, sigInUser);
   yield takeEvery(USER_SIGN_OUT, signOutUser);
+  yield takeEvery(USER_FETCH_REQUEST, fetchUser);
 }
 
 // RootSaga

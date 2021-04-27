@@ -7,6 +7,7 @@ export async function apiGetUsers() {
 }
 
 export async function apiGetUser(id) {
+  // @ts-ignore
   const users = await api.user.get(id);
   return users.data;
 }

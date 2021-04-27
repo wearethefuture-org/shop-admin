@@ -3,8 +3,13 @@ import { SagaIterator } from 'redux-saga';
 import { IActions } from '../../interfaces/actions';
 
 import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
-import { signInUserError, signInUserSuccess } from '../actions/user.action';
-import { apiSignIn } from './services/user.service';
+import {
+  fetchUserError,
+  fetchUserSuccess,
+  signInUserError,
+  signInUserSuccess,
+} from '../actions/user.action';
+import { apiSignIn, userFetch } from './services/user.service';
 import { clearStorage, setToken, setUser } from '../../services/local-storage-controller';
 
 export function* sigInUser(userValues: IActions): SagaIterator {
@@ -28,4 +33,15 @@ export function* signOutUser(): SagaIterator {
     clearStorage();
     yield put(successSnackBar());
   } catch (error) {}
+}
+
+export function* fetchUser(): SagaIterator {
+  try {
+    const user = yield call(userFetch);
+    setUser(user);
+    yield put(fetchUserSuccess(user));
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(fetchUserError(error.message));
+  }
 }

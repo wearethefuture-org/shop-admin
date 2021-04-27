@@ -1,4 +1,5 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Brightness2Icon from '@material-ui/icons/Brightness2';
@@ -6,12 +7,12 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { makeStyles } from '@material-ui/core/styles';
+import MobileMenuList from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/store';
 import { switchDarkMode } from '../../../store/actions/theme.actions';
-import MobileMenuList from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 
 interface HeaderBarProps {
   onMailListOpen: (evt: any) => void;

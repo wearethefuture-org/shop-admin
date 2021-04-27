@@ -19,13 +19,17 @@ const useStyles = makeStyles({
     'text-align': 'center',
   },
   logout: {
-    'background': '#424D52',
-    'border-radius': '60px',
+    '&:hover': {
+      background: '#fff',
+      color: '#006A00',
+    },
+    'background': '#006A00',
+    'border-radius': '10px',
     'color': '#fff',
-    'border': ' none',
     'width': '200px',
     'height': '44px',
     'margin': '10px',
+    'border': '2px solid #006A00',
   },
 });
 
@@ -57,7 +61,7 @@ const LogoutDialog: React.FC<LogoutProps> = ({ closeModal }) => {
       </DialogContent>
       <div>
         <Button className={classes.logout} onClick={handleClose}>
-          Відміна
+          Залишитись
         </Button>
         <Button className={classes.logout} onClick={logoutIvent}>
           Вийти

@@ -7,10 +7,13 @@ import PersonIcon from '@material-ui/icons/Person';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import { makeStyles } from '@material-ui/core/styles';
-import LogoutDialog from '../../Modals/LogoutDialog/LogoutDialog';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
+import LogoutDialog from '../../Modals/LogoutDialog/LogoutDialog';
 import UserDialog from '../../Modals/UserDialog/UserDialog';
-import { getUser } from '../../../services/local-storage-controller';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { IUserItem } from '../../../interfaces/IUsers';
 
 interface AccountListProps {
   accountAnchorEl: null | Element;
@@ -27,18 +30,17 @@ const useStyles = makeStyles({
   },
 });
 
-const AccountList: React.FC<AccountListProps> = (props) => {
-  const { accountAnchorEl, onAccountListClose } = props;
+const AccountList: React.FC<AccountListProps> = ({ accountAnchorEl, onAccountListClose }) => {
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
   const [userDialogIsOpen, setUserDialogIsOpen] = useState(false);
-  const [user, setUser] = useState();
+
+  const user = useSelector<RootState, IUserItem | null>((state) => state.user.user);
+
   const classes = useStyles();
   const userDialogClose = () => {
     setUserDialogIsOpen(false);
   };
   const openDialogUser = () => {
-    let tmp = getUser();
-    setUser(tmp);
     setUserDialogIsOpen(true);
   };
 

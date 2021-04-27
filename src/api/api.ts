@@ -76,7 +76,7 @@ type ApiFetchedDataType = {
   };
   user: {
     auth: (user: IUserCreeds) => FetchedDataType<IAuthResponse>;
-    get: (id: number) => FetchedDataType<IUsersData>;
+    get: () => FetchedDataType<IUsersData>;
     add: (user: IUserReqAdd) => FetchedDataType<IUserItem>;
     update: (user: IUserReqUp) => FetchedDataType<IUserItem>;
     delete: (id: number) => FetchedDataType<JSON>;
@@ -125,7 +125,7 @@ export const api: ApiFetchedDataType = {
 
   user: {
     auth: (user) => instance.post(`${root}/auth/admin/login`, user),
-    get: (id) => instance.get(`${root}/users/${id}`),
+    get: () => instance.get(`${root}/users/profile`),
     update: ({ id, ...user }) => instance.patch(`${root}/users/${id}`, user),
     delete: (id) => instance.delete(`${root}/users/${id}`),
     add: (user) => instance.post(`${root}/auth/register`, user),
