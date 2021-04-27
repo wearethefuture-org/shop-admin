@@ -18,9 +18,16 @@ import {
   REQUEST_UPDATE_SLIDES,
   REQUEST_ADD_SLIDES,
   REQUEST_DELETE_SLIDES,
-  REQUEST_UPDATE_SLIDE_VISIBILITY,
   GET_COMMENTS_REQUEST,
   DELETE_COMMENT_REQUEST,
+  REQUEST_UPDATE_SLIDE_VISIBILITY,
+  GET_USERS_REQUEST,
+  ADD_USER_REQUEST,
+  UPDATE_USER_REQUEST,
+  DELETE_USER_REQUEST,
+  USER_SIGN_IN_FETCHING,
+  USER_SIGN_OUT,
+  USER_FETCH_REQUEST,
 } from './types';
 import {
   fetchCategoryWorker,
@@ -45,8 +52,14 @@ import {
   updateSlideWorker,
 } from './sagas/slides.saga';
 import { deleteCommentWorker, getCommentsWorker } from './sagas/comments.saga';
+import {
+  addUserWorker,
+  deleteUserWorker,
+  getUsersWorker,
+  updateUserWorker,
+} from './sagas/users.saga';
+import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
 
-// Categories
 export function* sagaCategoriesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_CATEGORIES, fetchCategoryWorker);
   yield takeEvery(REQUEST_ADD_CATEGORIES, addCategoryWorker);
@@ -54,7 +67,6 @@ export function* sagaCategoriesWatcher(): SagaIterator {
   yield takeEvery(UPDATE_CATEGORY_REQUEST, updateCategoryWorker);
 }
 
-// Products
 export function* sagaProductsWatcher(): SagaIterator {
   yield takeEvery(GET_PRODUCTS_REQUEST, getProductsWorker);
   yield takeEvery(GET_PRODUCT_BY_ID_REQUEST, getProductByIdWorker);
@@ -85,6 +97,19 @@ export function* sagaCommentsWatcher(): SagaIterator {
   yield takeEvery(DELETE_COMMENT_REQUEST, deleteCommentWorker);
 }
 
+export function* sagaUsersWatcher(): SagaIterator {
+  yield takeEvery(GET_USERS_REQUEST, getUsersWorker);
+  yield takeEvery(ADD_USER_REQUEST, addUserWorker);
+  yield takeEvery(UPDATE_USER_REQUEST, updateUserWorker);
+  yield takeEvery(DELETE_USER_REQUEST, deleteUserWorker);
+}
+
+export function* sagaUserWatcher(): SagaIterator {
+  yield takeEvery(USER_SIGN_IN_FETCHING, sigInUser);
+  yield takeEvery(USER_SIGN_OUT, signOutUser);
+  yield takeEvery(USER_FETCH_REQUEST, fetchUser);
+}
+
 // RootSaga
 export default function* rootSaga(): SagaIterator {
   yield all([
@@ -93,5 +118,7 @@ export default function* rootSaga(): SagaIterator {
     fork(sagaSettingsWatcher),
     fork(sagaSlidesWatcher),
     fork(sagaCommentsWatcher),
+    fork(sagaUsersWatcher),
+    fork(sagaUserWatcher),
   ]);
 }
