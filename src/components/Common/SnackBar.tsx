@@ -2,11 +2,11 @@ import React from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { Theme, makeStyles } from '@material-ui/core/styles';
+import { Theme, makeStyles, ThemeOptions } from '@material-ui/core/styles';
 
 import useSnackBar from '../../hooks/useSnackbar';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((theme: Theme): ThemeOptions => ({
   snackbarFail: {
     backgroundColor: "#F44336",
   },
