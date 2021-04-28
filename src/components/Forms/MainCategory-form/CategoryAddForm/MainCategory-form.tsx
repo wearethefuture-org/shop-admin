@@ -28,8 +28,8 @@ const MainCategoryForm = withFormik<MainCategoryFormProps, IAddMainCategory>({
   handleSubmit: (values: IAddMainCategory, { setSubmitting, props }) => {
     setSubmitting(false);
 
-    const { name, key, description, category } = values;
-    props.dispatch(fetchAddMainCategories({ name, key, description, category }));
+    const { name, key, description, } = values;
+    props.dispatch(fetchAddMainCategories({ name, key, description,  }));
     props.handleClose();
   },
 })(InnerForm);

@@ -11,7 +11,7 @@ const useMainCategories = () => {
     dispatch(fetchMainCategories());
   }, [dispatch]);
 
-  const data: IGetMainCategoriesResponse[] = useSelector((state: RootState) => state.categories.list);
+  const data: IGetMainCategoriesResponse[] = useSelector((state: RootState) => state.mainCategories.list);
 
   return { data, dispatch };
 };

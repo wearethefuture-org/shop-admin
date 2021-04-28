@@ -18,7 +18,7 @@ export interface IAddMainCategory {
   name: string;
   description: string;
   key: string;
-  category: any;
+  
 }
 
 /*export interface ICharResponse extends Common {

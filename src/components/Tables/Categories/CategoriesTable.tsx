@@ -90,7 +90,7 @@ const CategoriesTable: React.FC<CategoriesDataProps> = ({ list, activeColumns })
         <AppDataTable
           data={sortedList}
           columns={categoriesColumns}
-          title="Категорії"
+          title="Під-Категорії"
           onRowClicked={(row) => onRowClicked(row.id)}
         />
       ) : null}

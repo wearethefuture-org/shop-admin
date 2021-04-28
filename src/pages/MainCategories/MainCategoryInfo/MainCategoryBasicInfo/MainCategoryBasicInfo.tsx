@@ -18,7 +18,7 @@ const MainCategoryBasicInfo: FC<MainCategoryBasicInfoProps> = ({ mainCategoryDis
   );
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
-  const { id, name, key, description, category, } = mainCategoryDisplayState;
+  const { id, name, key, description, category, } = mainCategoryDisplayState; 
   
 
   return (
@@ -37,11 +37,7 @@ const MainCategoryBasicInfo: FC<MainCategoryBasicInfoProps> = ({ mainCategoryDis
             <div className={styles.field}>
               <p className={styles.title}>Ключ:</p>
               <p className={styles.value}>{key ? key : mainCategory.key}</p>
-            </div>
-            <div className={styles.field}>
-              <p className={styles.title}>Категорії:</p>
-              <p className={styles.value}>{category.name}</p>
-            </div>
+            </div>            
             <div className={styles.field}>
               <p className={styles.title}>Опис:</p>
               <p className={styles.value}>{description ? description : mainCategory.description}</p>
@@ -53,6 +49,10 @@ const MainCategoryBasicInfo: FC<MainCategoryBasicInfoProps> = ({ mainCategoryDis
             <div className={styles.field}>
               <p className={styles.title}>Оновлено:</p>
               <p className={styles.value}>{formatISODate(mainCategory.updatedAt)}</p>
+            </div>
+            <div className={styles.field}>
+              <p className={styles.title}>К-сть під-категорій:</p>
+              <p className={styles.value}>{category ? category?.length  : 0}</p>
             </div>
           </Card>
         </div>

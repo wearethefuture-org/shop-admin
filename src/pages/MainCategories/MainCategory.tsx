@@ -4,7 +4,7 @@ import { Button, LinearProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 import useMainCategories from '../../hooks/useMainCategories';
-import FormDialog from '../../components/Modals/Category-modal';
+import FormDialog from '../../components/Modals/MainCategory-modal';
 import useCategoriesModal from '../../hooks/useCategoriesModal';
 import MainCategoriesTable from '../../components/Tables/MainCategory/MainCategoriesTable';
 import { RootState } from '../../store/store';

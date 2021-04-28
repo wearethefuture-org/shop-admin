@@ -25,14 +25,7 @@ const MainCategoriesTable: React.FC<MainCategoriesDataProps> = ({ list, activeCo
       selector: (row) => row.name,
       sortable: true,
       omit: !activeColumns.includes('Назва'),
-    },
-    {
-      name: 'Кількість Під-категорій',
-      selector: (row) => row.category,
-      sortable: true,
-      format: (row) => <span>{row?.category?.length ? row?.category?.length : 0}</span>,
-      omit: !activeColumns.includes('Кількість Під-категорій'),
-    },
+    },    
     {
       name: 'Опис',
       selector: (row) => row.description,
@@ -46,6 +39,13 @@ const MainCategoriesTable: React.FC<MainCategoriesDataProps> = ({ list, activeCo
       name: 'URL ключ',
       selector: (row) => row.key,
       omit: !activeColumns.includes('URL ключ'),
+    },
+    {
+      name: 'Кількість Під-категорій',
+      selector: (row) => row.category,
+      sortable: true,
+      format: (row) => <span>{row?.category?.length ? row?.category?.length : 0}</span>,
+      omit: !activeColumns.includes('Кількість Під-категорій'),
     },
     {
       name: 'Створено',

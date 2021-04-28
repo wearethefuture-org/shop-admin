@@ -43,14 +43,7 @@ const InnerForm: React.FC<InnerMainCategoryFormProps & FormikProps<IAddMainCateg
         placeholder="url-example"
         makegreen="true"
       />
-      <Field
-        fullWidth
-        component={TextFieldWrapped}
-        className={classes.input}
-        label="Під-категорія *"
-        name="category"
-        makegreen="true"
-      />
+      
       <Field
         fullWidth
         multiline

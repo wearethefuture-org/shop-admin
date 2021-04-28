@@ -1,6 +1,6 @@
 import { api } from '../../../api/api';
 import { IAddMainCategory } from '../../../interfaces/IMainCategory';
-import { MainCategory } from '../../../pages/MainCategories/MainCategoryInfo/mainCategoryReducer';
+import { MainCategory } from '../../../pages/MainCategories/MainCategoryInfo/mainCategoryReducer'; 
 
 export async function fetchedMainCategories() {
   const mainCategories = await api.mainCategories.get();  

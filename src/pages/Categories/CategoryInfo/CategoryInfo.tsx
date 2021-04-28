@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Button, Card, IconButton, LinearProgress } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
@@ -26,10 +26,16 @@ import {
 } from './categoryToDisplayReducer';
 import { ErrorsAlert } from '../../../components/ErrorsAlert';
 import styles from './CategoryInfo.module.scss';
+import useMainCategories from '../../../hooks/useMainCategories';
+
+interface ILocation {
+  from: { pathname: string };
+}
 
 const CategoryInfo: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation<ILocation>();
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -68,22 +74,26 @@ const CategoryInfo: React.FC = () => {
       ref.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
+  const handleGoBack = () => {
+    setEditBasicInfo(false);
+    history.push(location?.state?.from || '/category');
+  };
+  
   // FORMIK;
   const initialValues: IAddCategory = {
     name: (categoryDisplayState && categoryDisplayState?.name) || (category && category.name) || '',
     description:
       (categoryDisplayState && categoryDisplayState?.description) || (category && category.description) || '',
     key: (categoryDisplayState && categoryDisplayState?.key) || (category && category.key) || '',
-    mainCategory: (categoryDisplayState && categoryDisplayState?.mainCategory.name) || (category && category.mainCategory.name) || '',
+    mainCategory:  (category.mainCategory && category.mainCategory.name) || '',
   };
-
+  
   const formik = useFormik({
     initialValues,
     validationSchema: categoryValidationShema,
-    onSubmit: (values): void => {
+    onSubmit: (values: IAddCategory): void => {
       const { name, key, description, mainCategory } = values;
-
+console.log('var '+ mainCategory)
       const existingName =
         categoryList.length &&
         categoryList
@@ -94,13 +104,7 @@ const CategoryInfo: React.FC = () => {
         categoryList.length &&
         categoryList
           .filter((cat) => cat.id !== category.id)
-          .find((cat) => cat.key.toLowerCase() === key.trim().toLowerCase());
-
-      const existingMainCategory =
-        categoryList.length &&
-        categoryList
-          .filter((cat) => cat.id !== category.id)
-          .find((cat) => cat.mainCategory.name.toLowerCase() === mainCategory.name.trim().toLowerCase());
+          .find((cat) => cat.key.toLowerCase() === key.trim().toLowerCase());   
 
 
       if (existingName) {
@@ -113,16 +117,10 @@ const CategoryInfo: React.FC = () => {
         formik.setFieldError('key', 'Такий URL-ключ вже існує');
         formik.setSubmitting(false);
         return;
-      }
-
-      if (existingMainCategory) {
-        formik.setFieldError('mainCategory', 'Така категорія вже існує');
-        formik.setSubmitting(false);
-        return;
-      }
+      }      
       dispatch(updateCategoryRequest({ ...categoryState, name, key, description, mainCategory }));
       categoryDispatch({ type: CategoryActionTypes.resetCategory });
-      finishOperation();
+      handleGoBack();
       formik.setSubmitting(false);
     },
   });
@@ -201,7 +199,7 @@ const CategoryInfo: React.FC = () => {
                 <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
                   {category ? (
                     editBasicInfo ? (
-                      <CategoryEditForm />
+                      <CategoryEditForm  formik={formik}/>
                     ) : (
                       <CategoryBasicInfo
                         categoryDisplayState={

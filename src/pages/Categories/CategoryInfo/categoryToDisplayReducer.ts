@@ -36,7 +36,7 @@ interface EditCategoryAction {
   name: string;
   key: string;
   description: string;
-  mainCategories: any;
+  mainCategory: any;
 }
 
 interface AddGroupAction {
@@ -93,13 +93,13 @@ export const categoryDisplayReducer = (
       return action.category;
 
     case CategoryToDisplayActionTypes.editCategory:
-      return action.name || action.key || action.description || action.mainCategories
+      return action.name || action.key || action.description || action.mainCategory
         ? {
             ...state,
             name: action.name,
             key: action.key,
             description: action.description,
-            mainCategory: action.mainCategories,
+            mainCategory: action.mainCategory,
           }
         : state;
 

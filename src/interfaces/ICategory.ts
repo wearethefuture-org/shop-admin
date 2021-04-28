@@ -1,3 +1,4 @@
+import { GeneralMainCategory } from './IMainCategory';
 import { Common, IBasicProduct } from './IProducts';
 
 export interface GeneralCategory extends Common {
@@ -10,7 +11,7 @@ export interface GeneralCategory extends Common {
 
 export interface IGetCategoriesResponse extends GeneralCategory {
   products: IBasicProduct[];
-  
+  mainCategory: GeneralMainCategory;
   
   
 }
@@ -40,7 +41,7 @@ export interface IGroupResponse extends Common {
 
 export interface ICategoryResponse extends GeneralCategory {
   characteristicGroup: IGroupResponse[];
-  
+  mainCategory: any;
   
   
 }
@@ -60,7 +61,7 @@ export interface ICharToAdd {
 export interface CategoryTableData extends GeneralCategory {
   description?: string;
   products: number;
-  
+  mainCategory: any;
   
   
 }

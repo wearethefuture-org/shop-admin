@@ -19,7 +19,7 @@ const CategoryBasicInfo: FC<CategoryBasicInfoProps> = ({ categoryDisplayState })
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const { id, name, key, description, mainCategory, } = categoryDisplayState;
-  
+ 
 
   return (
     <>
@@ -40,7 +40,7 @@ const CategoryBasicInfo: FC<CategoryBasicInfoProps> = ({ categoryDisplayState })
             </div>
             <div className={styles.field}>
               <p className={styles.title}>Головна категорія:</p>
-              <p className={styles.value}>{mainCategory.name}</p>
+              <p className={styles.value}>{mainCategory.name ? mainCategory.name : category.mainCategory.name }</p>
             </div>
             <div className={styles.field}>
               <p className={styles.title}>Опис:</p>

@@ -1,17 +1,24 @@
 import React from 'react';
-import { Field, useFormikContext } from 'formik';
+import { Field, useFormikContext, FormikProps,  } from 'formik';
 
-import { Card } from '@material-ui/core';
+import { Card, MenuItem } from '@material-ui/core';
 import TextFieldWrapped from '../../../../hocs/TextFieldHOC';
-import { formatKey } from '../../Products/ProductForm/productFormHelpers';
+import { formatKey } from '../../Products/ProductForm/productFormHelpers'; 
 import styles from './CategoryEditForm.module.scss';
+import { IGetMainCategoriesResponse } from '../../../../interfaces/IMainCategory';
+import useMainCategories from '../../../../hooks/useMainCategories';
 
-const CategoryEditForm = () => {
-  const formik = useFormikContext();
 
+
+const CategoryEditForm = ({
+  formik,
+  
+}) => {
+  //const formik = useFormikContext();  
+  const { data: mainCategoriesList } = useMainCategories();
   return (
-    <Card>
-      <div className={styles['category-form']}>
+    <Card >
+      <div className={styles['block-wrapper-main']}>
         <Field
           fullWidth
           component={TextFieldWrapped}
@@ -34,14 +41,6 @@ const CategoryEditForm = () => {
         />
         <Field
           fullWidth
-          component={TextFieldWrapped}
-          label="Головна категорія *"
-          name="mainCategory"
-          makegreen="true"
-          className={styles['edit-field']}
-        />
-        <Field
-          fullWidth
           multiline
           rowsMax={6}
           component={TextFieldWrapped}
@@ -51,6 +50,24 @@ const CategoryEditForm = () => {
           makegreen="true"
           className={styles['edit-field']}
         />
+        <Field
+          select
+          fullWidth
+          component={TextFieldWrapped}
+          label="Головна категорія *"
+          name="mainCategory"
+          makegreen="true"
+          className={styles['edit-field']}
+          value={formik.values.mainCategory ?? ''}
+          >
+            {mainCategoriesList.length
+              ? mainCategoriesList.map(({ id, name }: IGetMainCategoriesResponse) => (
+                  <MenuItem value={name} key={id}>
+                    {name}
+                  </MenuItem>
+                ))
+              : []}
+          </Field>        
       </div>
     </Card>
   );

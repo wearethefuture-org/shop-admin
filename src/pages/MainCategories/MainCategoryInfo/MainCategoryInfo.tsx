@@ -3,14 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, Card, IconButton, LinearProgress } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 import { updateMainCategoryRequest } from '../../../store/actions/mainCategories.actions';
 import { AppDispatch, RootState } from '../../../store/store';
-import AddBtn from '../../../components/AddBtn/AddBtn';
-import CategoryGroupModal from '../../../components/Modals/CategoryGroupModal/CategoryGroupModal';
 import { IAddMainCategory, IMainCategoryResponse } from '../../../interfaces/IMainCategory';
-import MainCategoryEditForm from '../../../components/Forms/Category-form/CategoryEditForm/CategoryEditForm';
+import MainCategoryEditForm from '../../../components/Forms/MainCategory-form/MainCategoryEditForm/MainCategoryEditForm';
 import MainCategoryBasicInfo from './MainCategoryBasicInfo/MainCategoryBasicInfo';
 import { Form, FormikProvider, useFormik } from 'formik';
 import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
@@ -22,7 +19,6 @@ import {
   mainCategoryDisplayReducer,
   MainCategoryToDisplay,
   MainCategoryToDisplayActionTypes,
-  GroupToDisplay,
 } from './mainCategoryToDisplayReducer';
 import { ErrorsAlert } from '../../../components/ErrorsAlert';
 import styles from './MainCategoryInfo.module.scss';
@@ -75,15 +71,15 @@ const MinCategoryInfo: React.FC = () => {
     description:
       (mainCategoryDisplayState && mainCategoryDisplayState?.description) || (mainCategory && mainCategory.description) || '',
     key: (mainCategoryDisplayState && mainCategoryDisplayState?.key) || (mainCategory && mainCategory.key) || '',
-    category: (mainCategoryDisplayState && mainCategoryDisplayState?.category.name) || (mainCategory && mainCategory.category.name) || '',
+    
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema: mainCategoryValidationShema,
     onSubmit: (values): void => {
-      const { name, key, description, category } = values;
-
+      const { name, key, description, } = values;
+      
       const existingName =
         mainCategoryList.length &&
         mainCategoryList
@@ -96,11 +92,8 @@ const MinCategoryInfo: React.FC = () => {
           .filter((cat) => cat.id !== mainCategory.id)
           .find((cat) => cat.key.toLowerCase() === key.trim().toLowerCase());
 
-      const existingCategory =
-        mainCategoryList.length &&
-        mainCategoryList
-          .filter((cat) => cat.id !== mainCategory.id)
-          .find((cat) => cat.category.name.toLowerCase() === category.name.trim().toLowerCase());
+      
+          
 
 
       if (existingName) {
@@ -115,12 +108,8 @@ const MinCategoryInfo: React.FC = () => {
         return;
       }
 
-      if (existingCategory) {
-        formik.setFieldError('mainCategory', 'Така категорія вже існує');
-        formik.setSubmitting(false);
-        return;
-      }
-      dispatch(updateMainCategoryRequest({ ...mainCategoryState, name, key, description, category }));
+      
+      dispatch(updateMainCategoryRequest({ ...mainCategoryState, name, key, description,  }));
       mainCategoryDispatch({ type: MainCategoryActionTypes.resetMainCategory });
       finishOperation();
       formik.setSubmitting(false);
@@ -151,7 +140,7 @@ const MinCategoryInfo: React.FC = () => {
   }, [charGroup]); */
 
   // OPEN GROUP MODAL
-  const [openGroupModal, setOpenGroupModal] = useState<boolean>(false);
+  //const [openGroupModal, setOpenGroupModal] = useState<boolean>(false);
 
   // EDIT GROUP
   //const [groupToEdit, setGroupToEdit] = useState<GroupToDisplay | null>(null);

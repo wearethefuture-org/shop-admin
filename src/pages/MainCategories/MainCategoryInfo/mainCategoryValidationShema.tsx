@@ -20,4 +20,11 @@ export const mainCategoryValidationShema = Yup.object().shape({
     .min(2, 'Мінімальна довжина 2 символа')
     .max(360, 'Максимальна довжина 360 символів')
     .required('Обов`язкове поле'),
+  category: Yup.string()
+    .trim()
+    .min(2, 'Мінімальна довжина 2 символа')
+    .max(360, 'Максимальна довжина 360 символів'),
+    
 });
+
+
