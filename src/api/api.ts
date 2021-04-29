@@ -75,12 +75,13 @@ type ApiFetchedDataType = {
       quantity: number
     ) => FetchedDataType<IBasicOrder>;
     getById: (id: number) => FetchedDataType<IBasicOrder>;
-   };
-  
+  };
+
   comments: {
     get: (page: number, limit: number) => FetchedDataType<ICommentResponse>;
     delete: (id: number) => FetchedDataType<JSON>;
   };
+};
 
 export const api: ApiFetchedDataType = {
   categories: {
