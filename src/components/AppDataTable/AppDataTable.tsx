@@ -14,7 +14,7 @@ interface DataTableProps {
 
 const AppDataTable: React.FC<DataTableProps> = ({ data, columns, title, onRowClicked }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
-
+  
   return (
     <Card>
       <DataTable

@@ -5,13 +5,13 @@ export interface GeneralCategory extends Common {
   key: string;
   name: string;
   description?: string;
-  mainCategory: any;
+  mainCategory: any | null;
   
 }
 
 export interface IGetCategoriesResponse extends GeneralCategory {
   products: IBasicProduct[];
-  mainCategory: GeneralMainCategory;
+  mainCategory: any;
   
   
 }

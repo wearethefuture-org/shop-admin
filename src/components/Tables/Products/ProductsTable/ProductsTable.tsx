@@ -79,7 +79,7 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
     },
     {
       name: 'Категорія',
-      selector: (row) => row.category.name,
+      selector: (row) => row.category?.name ? row.category.name : 'select Category',
       sortable: true,
       omit: !activeColumns.includes('Категорія'),
     },

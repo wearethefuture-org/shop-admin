@@ -29,6 +29,7 @@ const Categories: React.FC = () => {
   
 
   const list = useSelector((state: RootState) => state.categories.list);
+  
   const loading = useSelector((state: RootState) => state.categories.loading);
 
   // ACTIVE COLUMNS

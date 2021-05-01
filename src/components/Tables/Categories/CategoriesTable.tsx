@@ -28,7 +28,7 @@ const CategoriesTable: React.FC<CategoriesDataProps> = ({ list, activeColumns })
     },
     {
       name: 'Головна категорія',
-      selector: (row) => row.mainCategory.name,
+      selector: (row) => row.mainCategory?.name ? row.mainCategory.name : 'select mainCategory',
       sortable: true,
       omit: !activeColumns.includes('Головна категорія'),
     },

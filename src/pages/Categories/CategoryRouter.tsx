@@ -29,7 +29,7 @@ const CategoryRouter: React.FC = () => {
     (state: RootState) => state.categories.currentCategory
   );
   const loading = useSelector((state: RootState) => state.categories.loading);
-
+    
   return (
     <>
       {loading && <LinearProgress />}
