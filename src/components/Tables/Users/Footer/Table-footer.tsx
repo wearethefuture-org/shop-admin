@@ -7,16 +7,16 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme, createStyles, ThemeOptions } from '@material-ui/core/styles';
 
-import { IUserItem } from '../../../../interfaces/Users';
+import { IUserItem } from '../../../../interfaces/IUsers';
 
 interface UserTableFooterProps {
-  rows: IUserItem[],
-  rowsPerPage: number,
-  page: number,
-  setPage(page: number): void,
-  setRowsPerPage(rows: number): void
+  rows: IUserItem[];
+  rowsPerPage: number;
+  page: number;
+  setPage(page: number): void;
+  setRowsPerPage(rows: number): void;
 }
 
 interface TablePaginationActionsProps {
@@ -26,7 +26,7 @@ interface TablePaginationActionsProps {
   onChangePage: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
 }
 
-const useFooterStyles = makeStyles((theme: Theme) =>
+const useFooterStyles = makeStyles((theme: Theme): ThemeOptions =>
   createStyles({
     root: {
       flexShrink: 0,
@@ -35,13 +35,20 @@ const useFooterStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const UsersTableFooter: React.FC<UserTableFooterProps> = ({ rows, rowsPerPage, page, setPage, setRowsPerPage }) => {
-
+const UsersTableFooter: React.FC<UserTableFooterProps> = ({
+  rows,
+  rowsPerPage,
+  page,
+  setPage,
+  setRowsPerPage,
+}) => {
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -54,27 +61,19 @@ const UsersTableFooter: React.FC<UserTableFooterProps> = ({ rows, rowsPerPage, p
   }: TablePaginationActionsProps) {
     const classes = useFooterStyles();
 
-    const handleFirstPageButtonClick = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
+    const handleFirstPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onChangePage(event, 0);
     };
 
-    const handleBackButtonClick = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
+    const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onChangePage(event, page - 1);
     };
 
-    const handleNextButtonClick = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
+    const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onChangePage(event, page + 1);
     };
 
-    const handleLastPageButtonClick = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
+    const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
     };
 
@@ -116,13 +115,13 @@ const UsersTableFooter: React.FC<UserTableFooterProps> = ({ rows, rowsPerPage, p
     <TableFooter>
       <TableRow>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+          rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
           colSpan={3}
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           SelectProps={{
-            inputProps: { "aria-label": "rows per page" },
+            inputProps: { 'aria-label': 'rows per page' },
             native: true,
           }}
           onChangePage={handleChangePage}
@@ -132,6 +131,6 @@ const UsersTableFooter: React.FC<UserTableFooterProps> = ({ rows, rowsPerPage, p
       </TableRow>
     </TableFooter>
   );
-}
+};
 
 export default UsersTableFooter;

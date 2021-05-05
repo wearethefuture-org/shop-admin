@@ -5,7 +5,6 @@ import OrdersTable from '../../components/Tables/Orders/OrdersTable';
 
 const OrdersPage: React.FC = () => {
   const { list } = useOrders();
-
   return (
     <>
       <OrdersTable list={list} />

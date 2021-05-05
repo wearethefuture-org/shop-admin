@@ -8,10 +8,11 @@ import settings from './reducers/settings.reducer';
 import snackBar from './reducers/snackbar.reducer';
 import theme from './reducers/themeMode.reducer';
 import users from './reducers/users.reducer';
+import rootSaga from './rootSaga';
 import slides from './reducers/slides.reduser';
 import orders from './reducers/orders.reducer';
+import user from './reducers/user.reducer';
 import comments from './reducers/comments.reducer';
-import rootSaga from './rootSaga';
 
 const saga = createSagaMiddleware();
 
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   slides,
   orders,
   comments,
+  user,
 });
 
 const store = createStore(

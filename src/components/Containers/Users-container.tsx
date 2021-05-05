@@ -5,7 +5,6 @@ import useUsers from '../../hooks/useUsers';
 
 const UsersContainer: React.FC = () => {
   const { data } = useUsers();
-
   return <UsersTable data={data} />;
 };
 
