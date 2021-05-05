@@ -1,35 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import AppDataTable from '../../../AppDataTable/AppDataTable';
-import { IGetProducts } from '../../../../interfaces/IProducts';
-import DateMoment from '../../../Common/Date-moment';
-import { root } from '../../../../api/config';
+import AppDataTable from '../../AppDataTable/AppDataTable';
+import { IGetProducts, ProductsTableProps } from '../../../interfaces/IProducts';
+import DateMoment from '../../Common/Date-moment';
+import { root } from '../../../api/config';
+import { priceFormat } from '../../../utils/priceFormat';
 import styles from './ProductsTable.module.scss';
 
 const placeholder = `${root}/product/img/empty-preview.png`;
 
-interface ProductsDataProps {
-  list: IGetProducts[];
-  activeColumns: string[];
-}
+const MainImgName = () => (
+  <p className={styles['table-header-cell']}>
+    <span>Головне</span>
+    <span>зображення</span>
+  </p>
+);
 
-const priceFormat = (num) => {
-  return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
-};
-
-const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => {
+const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) => {
   const productsColumns = [
     {
       name: 'ID',
       selector: (row) => row.id,
       sortable: true,
-      maxWidth: '60px',
-      minWidth: '60px',
+      maxWidth: '6%',
+      minWidth: '5%',
       omit: !activeColumns.includes('ID'),
     },
     {
-      name: 'Головне зображення',
+      name: <MainImgName />,
       selector: (row) => row.mainImg,
       format: (row) =>
         row.mainImg ? (
@@ -41,8 +40,8 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
             <img src={placeholder} alt="placeholder" />
           </div>
         ),
-      maxWidth: '140px',
-      minWidth: '140px',
+      maxWidth: '12%',
+      minWidth: '12%',
       omit: !activeColumns.includes('Головне зображення'),
     },
     {
@@ -74,13 +73,13 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
       sortable: true,
       format: (row) =>
         row.description.length <= 100 ? row.description : `${row.description.slice(0, 100)}...`,
-      maxWidth: '200px',
       omit: !activeColumns.includes('Опис'),
     },
     {
       name: 'Категорія',
       selector: (row) => row.category?.name ? row.category.name : 'select Category',
       sortable: true,
+      minWidth: '12%',
       omit: !activeColumns.includes('Категорія'),
     },
     {
@@ -89,25 +88,27 @@ const ProductsTable: React.FC<ProductsDataProps> = ({ list, activeColumns }) => 
       omit: !activeColumns.includes('URL ключ'),
     },
     {
-      name: 'Зображення продукта',
+      name: 'Зображення',
       selector: (row) => row.files,
-      maxWidth: '110px',
-      minWidth: '110px',
-      format: (row) => <span>{row?.files?.length ? row?.files?.length / 2 : 0}</span>,
-      omit: !activeColumns.includes('Зображення продукта'),
+      minWidth: '10%',
+      maxWidth: '12%',
+      format: (row) => (
+        <span className={styles.quantity}>{row?.files?.length ? row?.files?.length / 2 : 0}</span>
+      ),
+      omit: !activeColumns.includes('Зображення'),
     },
     {
       name: 'Створено',
       selector: (row) => row.createdAt,
       sortable: true,
-      format: (row) => <DateMoment date={row.createdAt} />,
+      format: (row) => <DateMoment date={row.createdAt} column />,
       omit: !activeColumns.includes('Створено'),
     },
     {
       name: 'Оновлено',
       selector: (row) => row.updatedAt,
       sortable: true,
-      format: (row) => <DateMoment date={row.updatedAt} />,
+      format: (row) => <DateMoment date={row.updatedAt} column />,
       omit: !activeColumns.includes('Оновлено'),
     },
   ];

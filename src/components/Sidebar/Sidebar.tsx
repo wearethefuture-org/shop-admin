@@ -14,6 +14,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import GroupIcon from '@material-ui/icons/Group';
 import ReceiptIcon from '@material-ui/icons/Receipt';
+import MessageIcon from '@material-ui/icons/Message';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -76,8 +77,8 @@ const useStyles = makeStyles((theme): ThemeOptions => ({
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
   const screenSize: boolean = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
-  useDidUpdate(() => (screenSize ? onSidebarToggle() : void 0), [screenSize]);
-  useDidUpdate(() => (!screenSize ? onSidebarToggle() : void 0), [screenSize]);
+  useDidUpdate(() => (screenSize ? onSidebarToggle() : void 0), [ screenSize ]);
+  useDidUpdate(() => (!screenSize ? onSidebarToggle() : void 0), [ screenSize ]);
 
   const { pathname: activePath } = useLocation();
 
@@ -86,7 +87,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
     {
       pageURL: '/dashboard',
       title: 'Дошка',
-      itemIcon: <HouseIcon fontSize="small" className={styles.icon} />,
+      itemIcon: <HouseIcon fontSize="small" className={ styles.icon }/>,
     },
     {
       pageURL: '/mainCategories',
@@ -96,27 +97,32 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
     {
       pageURL: '/categories',
       title: 'Під-Категорії',
-      itemIcon: <CategoryIcon fontSize="small" className={styles.icon} />,
+      itemIcon: <CategoryIcon fontSize="small" className={ styles.icon }/>,
     },
     {
       pageURL: '/products',
       title: 'Продукти',
-      itemIcon: <ShoppingCartIcon fontSize="small" className={styles.icon} />,
+      itemIcon: <ShoppingCartIcon fontSize="small" className={ styles.icon }/>,
     },
     {
       pageURL: '/statistic',
       title: 'Статистика',
-      itemIcon: <EqualizerIcon fontSize="small" className={styles.icon} />,
+      itemIcon: <EqualizerIcon fontSize="small" className={ styles.icon }/>,
     },
     {
       pageURL: '/users',
       title: 'Користувачі',
-      itemIcon: <GroupIcon fontSize="small" className={styles.icon} />,
+      itemIcon: <GroupIcon fontSize="small" className={ styles.icon }/>,
     },
     {
       pageURL: '/slides',
       title: 'Слайди',
-      itemIcon: <AmpStoriesIcon fontSize="small" className={styles.icon} />,
+      itemIcon: <AmpStoriesIcon fontSize="small" className={ styles.icon }/>,
+    },
+    {
+      pageURL: '/comments',
+      title: 'Відгуки',
+      itemIcon: <MessageIcon fontSize="small" className={styles.icon} />,
     },
   ];
 
@@ -129,56 +135,56 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
     <Drawer
       variant="permanent"
       anchor="left"
-      open={isOpen}
-      className={classes.sidebar}
-      classes={{
+      open={ isOpen }
+      className={ classes.sidebar }
+      classes={ {
         paper: classes.sidebarPaper,
-      }}
+      } }
     >
       <div className="sidebar-header">
-        <div className={classes.sidebarTitle}>BuyAll Адмін панель</div>
-        <Divider />
+        <div className={ classes.sidebarTitle }>BuyAll Адмін панель</div>
+        <Divider/>
       </div>
       <div className="sidebar-nav">
-        <List component="nav" className={classes.mainNav}>
-          {sidebarItems.map(({ pageURL, itemIcon, title }) => (
-            <NavLink to={pageURL} key={pageURL}>
+        <List component="nav" className={ classes.mainNav }>
+          { sidebarItems.map(({ pageURL, itemIcon, title }) => (
+            <NavLink to={ pageURL } key={ pageURL }>
               <ListItem
                 button
-                className={classes.listButton}
-                classes={{
+                className={ classes.listButton }
+                classes={ {
                   root: pageURL === activePath ? classes.activeButton : void 0,
-                }}
+                } }
               >
-                <ListItemIcon className={classes.itemIcon}>{itemIcon}</ListItemIcon>
-                <ListItemText className={classes.itemText} primary={title} />
+                <ListItemIcon className={ classes.itemIcon }>{ itemIcon }</ListItemIcon>
+                <ListItemText className={ classes.itemText } primary={ title }/>
               </ListItem>
             </NavLink>
-          ))}
+          )) }
         </List>
-        <Divider />
-        <List className={classes.mainNav}>
-          {extraSidebarItems.map((item, index) => (
-            <NavLink to={item.pageURL} key={item.pageURL}>
+        <Divider/>
+        <List className={ classes.mainNav }>
+          { extraSidebarItems.map((item, index) => (
+            <NavLink to={ item.pageURL } key={ item.pageURL }>
               <ListItem
                 button
-                key={item.pageURL}
-                className={classes.listButton}
-                classes={{
+                key={ item.pageURL }
+                className={ classes.listButton }
+                classes={ {
                   root: item.pageURL === activePath ? classes.activeButton : void 0,
-                }}
+                } }
               >
-                <ListItemIcon className={classes.itemIcon}>
-                  {index % 2 === 0 ? (
-                    <ReceiptIcon fontSize="small" className={styles.icon} />
+                <ListItemIcon className={ classes.itemIcon }>
+                  { index % 2 === 0 ? (
+                    <ReceiptIcon fontSize="small" className={ styles.icon }/>
                   ) : (
-                    <SettingsIcon fontSize="small" className={styles.icon} />
-                  )}
+                    <SettingsIcon fontSize="small" className={ styles.icon }/>
+                  ) }
                 </ListItemIcon>
-                <ListItemText className={classes.itemText} primary={item.title} />
+                <ListItemText className={ classes.itemText } primary={ item.title }/>
               </ListItem>
             </NavLink>
-          ))}
+          )) }
         </List>
       </div>
     </Drawer>

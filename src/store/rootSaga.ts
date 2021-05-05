@@ -18,7 +18,16 @@ import {
   REQUEST_UPDATE_SLIDES,
   REQUEST_ADD_SLIDES,
   REQUEST_DELETE_SLIDES,
+  GET_COMMENTS_REQUEST,
+  DELETE_COMMENT_REQUEST,
   REQUEST_UPDATE_SLIDE_VISIBILITY,
+  GET_USERS_REQUEST,
+  ADD_USER_REQUEST,
+  UPDATE_USER_REQUEST,
+  DELETE_USER_REQUEST,
+  USER_SIGN_IN_FETCHING,
+  USER_SIGN_OUT,
+  USER_FETCH_REQUEST,
   REQUEST_MAIN_CATEGORIES,
   REQUEST_ADD_MAIN_CATEGORIES,
   GET_MAIN_CATEGORY_BY_ID_REQUEST,
@@ -53,6 +62,14 @@ import {
   deleteSlideWorker,
   updateSlideVisibilityWorker,
   updateSlideWorker } from './sagas/slides.saga';
+import { deleteCommentWorker, getCommentsWorker } from './sagas/comments.saga';
+import {
+  addUserWorker,
+  deleteUserWorker,
+  getUsersWorker,
+  updateUserWorker,
+} from './sagas/users.saga';
+import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
 
 export function* sagaMainCategoriesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_MAIN_CATEGORIES, fetchMainCategoryWorker);
@@ -89,10 +106,38 @@ function* sagaSlidesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_SLIDES, fetchSlideWorker);
   yield takeEvery(REQUEST_UPDATE_SLIDES, updateSlideWorker);
   yield takeEvery(REQUEST_DELETE_SLIDES, deleteSlideWorker);
-  yield takeEvery(REQUEST_UPDATE_SLIDE_VISIBILITY,updateSlideVisibilityWorker);
+  yield takeEvery(REQUEST_UPDATE_SLIDE_VISIBILITY, updateSlideVisibilityWorker);
+}
+
+// Comments
+export function* sagaCommentsWatcher(): SagaIterator {
+  yield takeEvery(GET_COMMENTS_REQUEST, getCommentsWorker);
+  yield takeEvery(DELETE_COMMENT_REQUEST, deleteCommentWorker);
+}
+
+export function* sagaUsersWatcher(): SagaIterator {
+  yield takeEvery(GET_USERS_REQUEST, getUsersWorker);
+  yield takeEvery(ADD_USER_REQUEST, addUserWorker);
+  yield takeEvery(UPDATE_USER_REQUEST, updateUserWorker);
+  yield takeEvery(DELETE_USER_REQUEST, deleteUserWorker);
+}
+
+export function* sagaUserWatcher(): SagaIterator {
+  yield takeEvery(USER_SIGN_IN_FETCHING, sigInUser);
+  yield takeEvery(USER_SIGN_OUT, signOutUser);
+  yield takeEvery(USER_FETCH_REQUEST, fetchUser);
 }
 
 // RootSaga
 export default function* rootSaga(): SagaIterator {
-  yield all([fork(sagaMainCategoriesWatcher), fork(sagaCategoriesWatcher), fork(sagaProductsWatcher), fork(sagaSettingsWatcher),fork(sagaSlidesWatcher) ]);
+  yield all([
+    fork(sagaCategoriesWatcher),
+    fork(sagaMainCategoriesWatcher),
+    fork(sagaProductsWatcher),
+    fork(sagaSettingsWatcher),
+    fork(sagaSlidesWatcher),
+    fork(sagaCommentsWatcher),
+    fork(sagaUsersWatcher),
+    fork(sagaUserWatcher),
+  ]);
 }

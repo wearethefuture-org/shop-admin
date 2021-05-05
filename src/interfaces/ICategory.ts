@@ -69,3 +69,8 @@ export interface CategoryTableData extends GeneralCategory {
 export interface InnerCategoryFormProps {
   handleClose: () => void;
 }
+
+export interface CategoriesTableProps {
+  list: IGetCategoriesResponse[];
+  activeColumns: string[];
+}

@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import Sidebar from '../Sidebar/Sidebar';
 import SnackBar from '../Common/SnackBar';
@@ -8,7 +9,7 @@ import Categories from '../../pages/Categories/Categories';
 import Products from '../../pages/Products/ProductsPage';
 import Statistic from '../../pages/Statistic/Statistic';
 import Users from '../../pages/Users/Users';
-import Slides from "../../pages/Slides/Slides";
+import Slides from '../../pages/Slides/Slides';
 import Settings from '../../pages/Settings/Settings';
 import HeaderBar from '../HeaderBar/HeaderBar';
 import Content from '../Content/Content';
@@ -18,13 +19,23 @@ import AddProduct from '../Forms/Products/AddProduct/AddProduct';
 import CategoryRouter from '../../pages/Categories/CategoryRouter';
 import MainCategories from '../../pages/MainCategories/MainCategory';
 import MainCategoryRouter from '../../pages/MainCategories/MainCategoryRouter';
+import Home from '../../pages/Home/Home';
+import PrivateRoute from './PrivateRoute';
+import { RootState } from '../../store/store';
+import CommentsPage from '../../pages/Comments/CommentsPage';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
   const toggleSidebar = () => setOpenSidebar(!isOpenSidebar);
 
+  const user = useSelector<RootState>((state) => state.user.user);
+  const token = localStorage.getItem('TOKEN');
+
   return (
     <BrowserRouter>
+      <Route exact path="/">
+        {user ? <Redirect to="/dashboard" /> : <Redirect to="/home" />}
+      </Route>
       <div className={styles.container}>
         <Sidebar isOpen={isOpenSidebar} onSidebarToggle={toggleSidebar} />
         <SnackBar />
@@ -33,31 +44,25 @@ const Router: React.FC = () => {
           <HeaderBar onSidebarToggle={toggleSidebar} isShrink={isOpenSidebar} />
           <Content>
             <Switch>
-              <Route path="/dashboard" render={() => <Dashboard />} />
-              <Route path="/mainCategories" render={() => <MainCategories />} />
-              <Route path="/categories" render={() => <Categories />} />
-              <Route path="/products/" exact={true} component={Products} />
-              <Route path="/statistic" render={() => <Statistic />} />
-              <Route path="/users" render={() => <Users />} />
-              <Route path="/slides" render={() => <Slides />} />
-              <Route path="/settings" render={() => <Settings />} />
-              <Route
-                path="/product/add"
-                exact={true}
-                render={({ match }) => <AddProduct {...match.params} />}
-              />
-              <Route
-                path="/product/:id"
-                render={({ match }) => <ViewProduct {...match.params} />}
-              />
-              <Route
-                path="/category/:id"
-                render={({ match }) => <CategoryRouter {...match.params} />}
-              />
-              <Route
-                path="/mainCategory/:id"
-                render={({ match }) => <MainCategoryRouter {...match.params} />}
-              />
+              <PrivateRoute path="/dashboard" component={Dashboard} />
+              <PrivateRoute path="/categories" component={Categories} />
+              <PrivateRoute path="/mainCategories" component={MainCategories} />
+              <PrivateRoute path="/products/" exact={true} component={Products} />
+              <PrivateRoute path="/statistic" component={Statistic} />
+              <PrivateRoute path="/users" component={Users} />
+              <PrivateRoute path="/slides" component={Slides} />
+              <PrivateRoute path="/comments" component={CommentsPage} />
+              <PrivateRoute path="/settings" component={Settings} />
+              <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
+              <PrivateRoute component={ViewProduct} path="/product/:id" />
+              <PrivateRoute component={CategoryRouter} path="/category/:id" />
+              <PrivateRoute component={MainCategoryRouter} path="/mainCategory/:id" />
+              {!user && !token ? (
+                <Route path="/home" component={Home} />
+              ) : (
+                <Redirect to="/dashboard" />
+              )}
+
             </Switch>
           </Content>
         </div>

@@ -1,56 +1,140 @@
-import { IActions } from "../../interfaces/actions";
-import { LOAD_USERS, ADD_USER, DELETE_USER } from "../types";
-import { IUsersData } from "../../interfaces/Users";
+import { IActions } from '../../interfaces/actions';
+import {
+  GET_USERS_REQUEST,
+  GET_USERS_SUCCESS,
+  GET_USERS_ERROR,
+  ADD_USER_REQUEST,
+  ADD_USER_SUCCESS,
+  ADD_USER_ERROR,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_ERROR,
+} from '../types';
+import { IUsersData } from '../../interfaces/IUsers';
 
-
-const data: IUsersData = {
+const initialState: IUsersData = {
+  loading: false,
   list: [
     {
-      "id": 46,
-      "createdAt": "1-1-2020",
-      "updatedAt": "1-1-2020",
-      "email": "123@gmail.com",
-      "password": "123123",
-      "role" : 'admin'
+      id: 99999,
+      createdAt: '2021-02-17 13:47:12.523210',
+      updatedAt: '2021-02-17 13:47:12.523210',
+      firstName: 'Test',
+      lastName: 'Testings',
+      creditCard: '0000-0000-0000-0000',
+      tel: '+3800000000',
+      email: 'test@test.com',
+      role: {
+        name: 'admin',
+        id: 1,
+        description: 'lorem ipsum',
+      },
     },
-    {
-      "id": 49,
-      "createdAt": "1-1-2020",
-      "updatedAt": "1-1-2020",
-      "email": "1234@gmail.com",
-      "password": "123123",
-      "role" : 'admin'
-    },
-    {
-      "id": 41,
-      "createdAt": "1-1-2020",
-      "updatedAt": "1-1-2020",
-      "email": "123@gmail.com",
-      "password": "123123",
-      "role" : 'admin'
-    },
-    {
-      "id": 43,
-      "createdAt": "1-1-2020",
-      "updatedAt": "1-1-2020",
-      "email": "1234@gmail.com",
-      "password": "123123",
-      "role" : 'admin'
-    },
-  ]
+  ],
+  currentUser: null,
+  error: null,
 };
 
-const users = (state = data, action: IActions) => {
-  switch (action.type) {
-    case LOAD_USERS: {
-      return {...state, list: action.data}
+const users = (state = initialState, { type, data }: IActions) => {
+  switch (type) {
+    // GET ALL
+    case GET_USERS_REQUEST: {
+      return {
+        ...state,
+        currentUSER: null,
+        loading: true,
+        error: null,
+      };
     }
-    case ADD_USER: {
-      return {...state, list: [...state.list, action.data]}
+
+    case GET_USERS_SUCCESS: {
+      return {
+        ...state,
+        list: data.length ? data.length : initialState.list,
+        loading: false,
+      };
     }
-    case DELETE_USER: {
-      return {...state, list: [...state.list, action.data]}
+
+    case GET_USERS_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
     }
+    case ADD_USER_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case ADD_USER_SUCCESS: {
+      return {
+        ...state,
+        list: [...state.list, data],
+        loading: false,
+      };
+    }
+
+    case ADD_USER_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+    case UPDATE_USER_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case UPDATE_USER_SUCCESS: {
+      return {
+        ...state,
+        currentUSER: data,
+        loading: false,
+      };
+    }
+
+    case UPDATE_USER_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+    case DELETE_USER_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case DELETE_USER_SUCCESS: {
+      return {
+        ...state,
+        list: state.list.filter((USER) => USER.id !== data),
+        loading: false,
+      };
+    }
+
+    case DELETE_USER_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+
     default:
       return state;
   }
