@@ -40,7 +40,7 @@ const CategoryBasicInfo: FC<CategoryBasicInfoProps> = ({ categoryDisplayState })
             </div>
             <div className={styles.field}>
               <p className={styles.title}>Головна категорія:</p>
-              <p className={styles.value}>{mainCategory?.name ? mainCategory.name : 'select mainCategory' }</p>
+              <p className={styles.value}>{mainCategory?.name ? mainCategory.name : 'Без основної категорїї' }</p>
             </div>
             <div className={styles.field}>
               <p className={styles.title}>Опис:</p>

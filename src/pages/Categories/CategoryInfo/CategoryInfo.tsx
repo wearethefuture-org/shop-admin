@@ -26,7 +26,6 @@ import {
 } from './categoryToDisplayReducer';
 import { ErrorsAlert } from '../../../components/ErrorsAlert';
 import styles from './CategoryInfo.module.scss';
-import useMainCategories from '../../../hooks/useMainCategories';
 
 interface ILocation {
   from: { pathname: string };
@@ -35,7 +34,6 @@ interface ILocation {
 const CategoryInfo: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation<ILocation>();
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -73,10 +71,6 @@ const CategoryInfo: React.FC = () => {
     if (null !== ref.current) {
       ref.current.scrollIntoView({ behavior: 'smooth' });
     }
-  };
-  const handleGoBack = () => {
-    setEditBasicInfo(false);
-    history.push(location?.state?.from || '/category');
   };
   
   // FORMIK;
@@ -120,7 +114,7 @@ console.log('var '+ mainCategory)
       }      
       dispatch(updateCategoryRequest({ ...categoryState, name, key, description, mainCategory }));
       categoryDispatch({ type: CategoryActionTypes.resetCategory });
-      handleGoBack();
+      finishOperation();
       formik.setSubmitting(false);
     },
   });

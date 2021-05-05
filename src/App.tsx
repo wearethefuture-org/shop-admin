@@ -14,6 +14,12 @@ import { AppDispatch, RootState } from './store/store';
 import { switchDarkMode } from './store/actions/theme.actions';
 import './App.scss';
 
+declare module '@material-ui/core/styles/createMuiTheme' {
+  interface ThemeOptions {
+    [key: string]: any;
+  }
+}
+
 export function App() {
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);
   const dispatch: AppDispatch = useDispatch();

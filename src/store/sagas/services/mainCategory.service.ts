@@ -13,11 +13,11 @@ export async function addMainCategories(data: IAddMainCategory) {
 }
 
 export async function apiGetMainCategoryById(id: number) {
-  const MainCategory = await api.mainCategories.getById(id);
-  return MainCategory.data;
+  const mainCategory = await api.mainCategories.getById(id);
+  return mainCategory.data;
 }
 
 export async function apiUpdateMainCategory(data: MainCategory) {
-  const MainCategory = await api.mainCategories.update(data);
-  return MainCategory.data;
+  const mainCategory = await api.mainCategories.update(data);
+  return mainCategory.data;
 }
