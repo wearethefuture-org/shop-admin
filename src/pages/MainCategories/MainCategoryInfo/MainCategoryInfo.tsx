@@ -7,7 +7,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import { updateMainCategoryRequest } from '../../../store/actions/mainCategories.actions';
 import { AppDispatch, RootState } from '../../../store/store';
 import { IAddMainCategory, IMainCategoryResponse } from '../../../interfaces/IMainCategory';
-import MainCategoryEditForm from '../../../components/Forms/MainCategory-form/MainCategoryEditForm/MainCategoryEditForm';
+import MainCategoryEditForm
+  from '../../../components/Forms/MainCategory-form/MainCategoryEditForm/MainCategoryEditForm';
 import MainCategoryBasicInfo from './MainCategoryBasicInfo/MainCategoryBasicInfo';
 import { Form, FormikProvider, useFormik } from 'formik';
 import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
@@ -38,9 +39,9 @@ const MinCategoryInfo: React.FC = () => {
     (state: RootState) => state.mainCategories.currentMainCategory
   );
 
-  const [mainCategoryState, mainCategoryDispatch] = useReducer(mainCategoryReducer, {} as MainCategory);
+  const [ mainCategoryState, mainCategoryDispatch ] = useReducer(mainCategoryReducer, {} as MainCategory);
 
-  const [mainCategoryDisplayState, mainCategoryDisplayDispatch] = useReducer(
+  const [ mainCategoryDisplayState, mainCategoryDisplayDispatch ] = useReducer(
     mainCategoryDisplayReducer,
     mainCategory as MainCategoryToDisplay
   );
@@ -48,15 +49,9 @@ const MinCategoryInfo: React.FC = () => {
   useEffect(() => {
     if (mainCategory) {
       mainCategoryDispatch({ type: MainCategoryActionTypes.setMainCategoryId, id: mainCategory.id });
-      mainCategoryDisplayDispatch({ type: MainCategoryToDisplayActionTypes.setMainCategory, mainCategory }); 
+      mainCategoryDisplayDispatch({ type: MainCategoryToDisplayActionTypes.setMainCategory, mainCategory });
     }
-  }, [mainCategory]);
-
-  /*const charGroup = categoryDisplayState
-    ? categoryDisplayState.characteristicGroup
-    : category
-    ? category.characteristicGroup
-    : []; */
+  }, [ mainCategory ]);
 
   const finishOperation = () => {
     setEditBasicInfo(false);
@@ -71,7 +66,7 @@ const MinCategoryInfo: React.FC = () => {
     description:
       (mainCategoryDisplayState && mainCategoryDisplayState?.description) || (mainCategory && mainCategory.description) || '',
     key: (mainCategoryDisplayState && mainCategoryDisplayState?.key) || (mainCategory && mainCategory.key) || '',
-    
+
   };
 
   const formik = useFormik({
@@ -79,7 +74,7 @@ const MinCategoryInfo: React.FC = () => {
     validationSchema: mainCategoryValidationShema,
     onSubmit: (values): void => {
       const { name, key, description, } = values;
-      
+
       const existingName =
         mainCategoryList.length &&
         mainCategoryList
@@ -91,10 +86,6 @@ const MinCategoryInfo: React.FC = () => {
         mainCategoryList
           .filter((cat) => cat.id !== mainCategory.id)
           .find((cat) => cat.key.toLowerCase() === key.trim().toLowerCase());
-
-      
-          
-
 
       if (existingName) {
         formik.setFieldError('name', 'Така категорія вже існує');
@@ -108,8 +99,7 @@ const MinCategoryInfo: React.FC = () => {
         return;
       }
 
-      
-      dispatch(updateMainCategoryRequest({ ...mainCategoryState, name, key, description,  }));
+      dispatch(updateMainCategoryRequest({ ...mainCategoryState, name, key, description, }));
       mainCategoryDispatch({ type: MainCategoryActionTypes.resetMainCategory });
       finishOperation();
       formik.setSubmitting(false);
@@ -117,53 +107,31 @@ const MinCategoryInfo: React.FC = () => {
   });
 
   // EDIT BASIC INFO
-  const [editBasicInfo, setEditBasicInfo] = useState<boolean>(false);
+  const [ editBasicInfo, setEditBasicInfo ] = useState<boolean>(false);
 
   // EXPANDED BLOCKS
-  const [expandedBlocks, setExpandedBlocks] = useState<string[]>(['main', 'characteristics']);
+  const [ expandedBlocks, setExpandedBlocks ] = useState<string[]>([ 'main', 'characteristics' ]);
 
   const handleExpandedBlocks = (field: string) =>
     field && expandedBlocks.includes(field)
       ? setExpandedBlocks(expandedBlocks.filter((block) => block && block !== field))
-      : setExpandedBlocks([...expandedBlocks, field]);
-
-  // EXPANDED GROUPS
- /* const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
-
-  useEffect(() => {
-    const groupNames =
-      charGroup &&
-      charGroup.length &&
-      charGroup.map((group) => (group && group.name ? group.name : ''));
-
-    groupNames ? setExpandedGroups(groupNames) : setExpandedGroups([]);
-  }, [charGroup]); */
-
-  // OPEN GROUP MODAL
-  //const [openGroupModal, setOpenGroupModal] = useState<boolean>(false);
-
-  // EDIT GROUP
-  //const [groupToEdit, setGroupToEdit] = useState<GroupToDisplay | null>(null);
+      : setExpandedBlocks([ ...expandedBlocks, field ]);
 
   return (
-    <div ref={ref}>
-      {loading && <LinearProgress />}
+    <div ref={ ref }>
+      { loading && <LinearProgress/> }
+        <div className={ styles['block-wrapper'] }>
+          <Card className={ styles['block-card'] }>
+            <GoBackBtn handleGoBack={ () => history.push('/mainCategories') }/>
+            <h1>{ mainCategoryDisplayState ? mainCategoryDisplayState.name : mainCategory.name }</h1>
 
-      
-
-      {mainCategory ? (
-        <div className={styles['block-wrapper']}>
-          <Card className={styles['block-card']}>
-            <GoBackBtn handleGoBack={() => history.push('/mainCategories')} />
-            <h1>{mainCategoryDisplayState ? mainCategoryDisplayState.name : mainCategory.name}</h1>
-
-            <FormikProvider value={formik}>
-              <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
-                <div className={styles['expandable-field-wrapper']}>
+            <FormikProvider value={ formik }>
+              <Form onSubmit={ formik.handleSubmit } onReset={ formik.handleReset }>
+                <div className={ styles['expandable-field-wrapper'] }>
                   <ExpandBtn
-                    expandBlock={expandedBlocks.includes('main')}
-                    handleExpand={() => handleExpandedBlocks('main')}
-                    disabled={false}
+                    expandBlock={ expandedBlocks.includes('main') }
+                    handleExpand={ () => handleExpandedBlocks('main') }
+                    disabled={ false }
                   >
                     <h4>Основна інформація</h4>
                   </ExpandBtn>
@@ -172,15 +140,15 @@ const MinCategoryInfo: React.FC = () => {
                     aria-label="edit"
                     color="default"
                     type="button"
-                    onClick={() => setEditBasicInfo(true)}
+                    onClick={ () => setEditBasicInfo(true) }
                   >
-                    <EditIcon />
+                    <EditIcon/>
                   </IconButton>
                 </div>
-                <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
-                  {mainCategory ? (
+                <div className={ expandedBlocks.includes('main') ? 'expanded' : 'shrinked' }>
+                  { mainCategory ? (
                     editBasicInfo ? (
-                      <MainCategoryEditForm />
+                      <MainCategoryEditForm/>
                     ) : (
                       <MainCategoryBasicInfo
                         mainCategoryDisplayState={
@@ -188,30 +156,27 @@ const MinCategoryInfo: React.FC = () => {
                         }
                       />
                     )
-                  ) : null}
+                  ) : null }
                 </div>
 
-                
-                
-                <div className={styles['form-btn-wrapper']}>
+                <div className={ styles['form-btn-wrapper'] }>
                   <Button
                     variant="contained"
                     color="default"
-                    disabled={formik.isSubmitting}
+                    disabled={ formik.isSubmitting }
                     type="submit"
                   >
                     Зберегти
                   </Button>
-                  <Button onClick={finishOperation} color="secondary" variant="contained">
+                  <Button onClick={ finishOperation } color="secondary" variant="contained">
                     Скасувати
                   </Button>
                 </div>
-                <ErrorsAlert />
+                <ErrorsAlert/>
               </Form>
             </FormikProvider>
           </Card>
         </div>
-      ) : null}
     </div>
   );
 };
