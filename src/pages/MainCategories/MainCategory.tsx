@@ -1,40 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, LinearProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
-import AddCategoryModal from '../../components/Modals/AddCategoryModal/AddCategoryModal';
-import CategoriesTable from '../../components/Tables/Categories/CategoriesTable';
-import { AppDispatch, RootState } from '../../store/store';
+import useMainCategories from '../../hooks/useMainCategories';
+import FormDialog from '../../components/Modals/MainCategory-modal';
+import useCategoriesModal from '../../hooks/useCategoriesModal';
+import MainCategoriesTable from '../../components/Tables/MainCategory/MainCategoriesTable';
+import { RootState } from '../../store/store';
 import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
-import useCategories from '../../hooks/useCategories';
-import { clearCurrentCategory } from '../../store/actions/categories.actions';
-import styles from './Categories.module.scss';
+import styles from './MainCategories.module.scss';
 
 enum cols {
   id = 'ID',
   name = 'Назва',
   description = 'Опис',
   key = 'URL ключ',
-  mainCategory = 'Головна категорія',
+  category = 'Кількість під-категорій',
   createdAt = 'Створено',
   updatedAt = 'Оновлено',
-  products = 'Кількість продуктів',
 }
 
-const Categories: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch();
+const MainCategories: React.FC = () => {
+  const { data, dispatch } = useMainCategories();
+  const categoriesCreateModalData = useCategoriesModal();
+  
 
-  useEffect(() => {
-    dispatch(clearCurrentCategory());
-  }, [dispatch]);
-
-  const [openAddModal, setOpenAddModal] = useState(false);
-
-  const { data: list } = useCategories();
-
-  const loading = useSelector((state: RootState) => state.categories.loading);
+  const list = useSelector((state: RootState) => state.mainCategories.list);
+  const loading = useSelector((state: RootState) => state.mainCategories.loading);
 
   // ACTIVE COLUMNS
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
@@ -42,9 +36,8 @@ const Categories: React.FC = () => {
     cols.id,
     cols.name,
     cols.description,
-    cols.mainCategory,
-    cols.key,
-    cols.products,
+    cols.category,
+    cols.key,    
   ]);
 
   const handleColumns = (column: string) =>
@@ -67,19 +60,27 @@ const Categories: React.FC = () => {
       )}
 
       <div className={styles['btns-wrapper']}>
-        <Button variant="contained" color="primary" onClick={() => setOpenAddModal(true)}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={categoriesCreateModalData.handleClickOpen}
+        >
           <AddIcon /> Додати
         </Button>
         <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
       </div>
 
       <div className={styles['content-wrapper']}>
-        <AddCategoryModal openAddModal={openAddModal} setOpenAddModal={setOpenAddModal} />
+        <FormDialog
+          dispatch={dispatch}
+          categoriesLength={data?.length}
+          modalData={categoriesCreateModalData}
+        />
 
-        {list ? <CategoriesTable list={list} activeColumns={activeColumns} /> : null}
+        {list ? <MainCategoriesTable list={list} activeColumns={activeColumns} /> : null}
       </div>
     </>
   );
 };
 
-export default Categories;
+export default MainCategories;

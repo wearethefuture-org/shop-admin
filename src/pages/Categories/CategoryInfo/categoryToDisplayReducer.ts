@@ -1,4 +1,5 @@
 import { Char } from './categoryReducer';
+import { GeneralMainCategory } from "../../../interfaces/IMainCategory";
 
 export interface GroupToDisplay {
   id?: number;
@@ -11,6 +12,7 @@ export interface CategoryToDisplay {
   name?: string;
   key?: string;
   description?: string;
+  mainCategory?: GeneralMainCategory,
   characteristicGroup?: GroupToDisplay[];
 }
 
@@ -35,6 +37,7 @@ interface EditCategoryAction {
   name: string;
   key: string;
   description: string;
+  mainCategory: GeneralMainCategory;
 }
 
 interface AddGroupAction {
@@ -91,12 +94,13 @@ export const categoryDisplayReducer = (
       return action.category;
 
     case CategoryToDisplayActionTypes.editCategory:
-      return action.name || action.key || action.description
+      return action.name || action.key || action.description || action.mainCategory
         ? {
             ...state,
             name: action.name,
             key: action.key,
             description: action.description,
+            mainCategory: action.mainCategory,
           }
         : state;
 

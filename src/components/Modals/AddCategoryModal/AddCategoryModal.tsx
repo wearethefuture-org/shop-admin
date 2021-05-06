@@ -26,6 +26,7 @@ const AddCategoryModal: React.FC<FormDialogProps> = ({ openAddModal, setOpenAddM
     name: '',
     description: '',
     key: '',
+    mainCategory: ''
   };
 
   const formik = useFormik({
@@ -33,7 +34,7 @@ const AddCategoryModal: React.FC<FormDialogProps> = ({ openAddModal, setOpenAddM
     validationSchema: categoryValidationShema,
     enableReinitialize: true,
     onSubmit: (values): void => {
-      const { name, key, description } = values;
+      const { name, key, description, mainCategory } = values;
 
       const existingName =
         categoryList.length &&
@@ -55,7 +56,7 @@ const AddCategoryModal: React.FC<FormDialogProps> = ({ openAddModal, setOpenAddM
         return;
       }
 
-      dispatch(fetchAddCategories({ name, key, description }));
+      dispatch(fetchAddCategories({ name, key, description, mainCategory }));
       formik.setSubmitting(false);
       setOpenAddModal(false);
     },

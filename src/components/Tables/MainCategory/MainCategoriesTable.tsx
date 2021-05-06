@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 
-import { CategoriesTableProps, IGetCategoriesResponse } from '../../../interfaces/ICategory';
+import { IGetMainCategoriesResponse } from '../../../interfaces/IMainCategory';
 import AppDataTable from '../../AppDataTable/AppDataTable';
 import DateMoment from '../../Common/Date-moment';
 
-const CategoriesTable: React.FC<CategoriesTableProps> = ({ list, activeColumns }) => {
+interface MainCategoriesDataProps {
+  list: IGetMainCategoriesResponse[];
+  activeColumns: string[];
+}
+
+const MainCategoriesTable: React.FC<MainCategoriesDataProps> = ({ list, activeColumns }) => {
   const categoriesColumns = [
     {
       name: 'ID',
@@ -20,13 +25,7 @@ const CategoriesTable: React.FC<CategoriesTableProps> = ({ list, activeColumns }
       selector: (row) => row.name,
       sortable: true,
       omit: !activeColumns.includes('Назва'),
-    },
-    {
-      name: 'Головна категорія',
-      selector: (row) => row.mainCategory?.name ? row.mainCategory.name : 'Без основної категорії',
-      sortable: true,
-      omit: !activeColumns.includes('Головна категорія'),
-    },
+    },    
     {
       name: 'Опис',
       selector: (row) => row.description,
@@ -42,41 +41,41 @@ const CategoriesTable: React.FC<CategoriesTableProps> = ({ list, activeColumns }
       omit: !activeColumns.includes('URL ключ'),
     },
     {
+      name: 'Кількість Під-категорій',
+      selector: (row) => row.category,
+      sortable: true,
+      format: (row) => <span>{row?.category?.length ? row?.category?.length : 0}</span>,
+      omit: !activeColumns.includes('Кількість Під-категорій'),
+    },
+    {
       name: 'Створено',
       selector: (row) => row.createdAt,
       sortable: true,
-      format: (row) => <DateMoment date={row.createdAt} column />,
+      format: (row) => <DateMoment date={row.createdAt} />,
       omit: !activeColumns.includes('Створено'),
     },
     {
       name: 'Оновлено',
       selector: (row) => row.updatedAt,
       sortable: true,
-      format: (row) => <DateMoment date={row.updatedAt} column />,
+      format: (row) => <DateMoment date={row.updatedAt} />,
       omit: !activeColumns.includes('Оновлено'),
     },
-    {
-      name: 'Кількість продуктів',
-      selector: (row) => row.files,
-      maxWidth: '110px',
-      minWidth: '110px',
-      format: (row) => <span>{row?.products?.length ? row?.products?.length : 0}</span>,
-      omit: !activeColumns.includes('Кількість продуктів'),
-    },
+    
   ];
 
   const history = useHistory();
-  const [sortedList, setSortedList] = useState<IGetCategoriesResponse[]>([]);
+  const [sortedList, setSortedList] = useState<IGetMainCategoriesResponse[]>([]);
 
   useEffect(() => {
-    const sortedList: IGetCategoriesResponse[] = list.length
+    const sortedList: IGetMainCategoriesResponse[] = list.length
       ? list.sort((a, b) => b.id - a.id)
       : [];
     setSortedList(sortedList);
   }, [list]);
 
   const onRowClicked = (id) => {
-    history.push(`/sub-category/${id}`);
+    history.push(`/main-category/${id}`);
   };
 
   return (
@@ -85,7 +84,7 @@ const CategoriesTable: React.FC<CategoriesTableProps> = ({ list, activeColumns }
         <AppDataTable
           data={sortedList}
           columns={categoriesColumns}
-          title="Під-категорії"
+          title="Головні Категорії"
           onRowClicked={(row) => onRowClicked(row.id)}
         />
       ) : null}
@@ -93,4 +92,4 @@ const CategoriesTable: React.FC<CategoriesTableProps> = ({ list, activeColumns }
   );
 };
 
-export default CategoriesTable;
+export default MainCategoriesTable;

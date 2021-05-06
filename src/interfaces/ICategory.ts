@@ -1,19 +1,29 @@
 import { Common, IBasicProduct } from './IProducts';
+import { GeneralMainCategory } from "./IMainCategory";
+
+export interface ICategory extends Common {
+  key: string;
+  name: string;
+  description: string;
+}
 
 export interface GeneralCategory extends Common {
   key: string;
   name: string;
   description?: string;
+  mainCategory: GeneralMainCategory | null;
 }
 
 export interface IGetCategoriesResponse extends GeneralCategory {
   products: IBasicProduct[];
+  mainCategory: any;
 }
 
 export interface IAddCategory {
   name: string;
   description: string;
   key: string;
+  mainCategory: string;
 }
 
 export interface ICharResponse extends Common {
@@ -24,6 +34,7 @@ export interface ICharResponse extends Common {
   minValue: number | null;
   maxValue: number | null;
   defaultValues: null | { values: string[] };
+
 }
 
 export interface IGroupResponse extends Common {
@@ -33,6 +44,7 @@ export interface IGroupResponse extends Common {
 
 export interface ICategoryResponse extends GeneralCategory {
   characteristicGroup: IGroupResponse[];
+  mainCategory: GeneralMainCategory;
 }
 
 export interface ICharToAdd {
@@ -45,11 +57,6 @@ export interface ICharToAdd {
   defaultVal?: string;
   defaultValues: null | { values: string[] };
   categoryId?: number;
-}
-
-export interface CategoryTableData extends GeneralCategory {
-  description?: string;
-  products: number;
 }
 
 export interface InnerCategoryFormProps {

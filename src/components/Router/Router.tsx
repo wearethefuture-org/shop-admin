@@ -17,6 +17,8 @@ import styles from './Router.module.scss';
 import ViewProduct from '../../pages/Products/ProductRouter';
 import AddProduct from '../Forms/Products/AddProduct/AddProduct';
 import CategoryRouter from '../../pages/Categories/CategoryRouter';
+import MainCategories from '../../pages/MainCategories/MainCategory';
+import MainCategoryRouter from '../../pages/MainCategories/MainCategoryRouter';
 import Home from '../../pages/Home/Home';
 import PrivateRoute from './PrivateRoute';
 import { RootState } from '../../store/store';
@@ -37,12 +39,14 @@ const Router: React.FC = () => {
       <div className={styles.container}>
         <Sidebar isOpen={isOpenSidebar} onSidebarToggle={toggleSidebar} />
         <SnackBar />
+
         <div className={isOpenSidebar ? styles.main : styles['main-expanded']}>
           <HeaderBar onSidebarToggle={toggleSidebar} isShrink={isOpenSidebar} />
           <Content>
             <Switch>
               <PrivateRoute path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/categories" component={Categories} />
+              <PrivateRoute path="/sub-categories" component={Categories} />
+              <PrivateRoute path="/main-categories" component={MainCategories} />
               <PrivateRoute path="/products/" exact={true} component={Products} />
               <PrivateRoute path="/statistic" component={Statistic} />
               <PrivateRoute path="/users" component={Users} />
@@ -51,7 +55,8 @@ const Router: React.FC = () => {
               <PrivateRoute path="/settings" component={Settings} />
               <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
               <PrivateRoute component={ViewProduct} path="/product/:id" />
-              <PrivateRoute component={CategoryRouter} path="/category/:id" />
+              <PrivateRoute component={CategoryRouter} path="/sub-category/:id" />
+              <PrivateRoute component={MainCategoryRouter} path="/main-category/:id" />
               {!user && !token ? (
                 <Route path="/home" component={Home} />
               ) : (
