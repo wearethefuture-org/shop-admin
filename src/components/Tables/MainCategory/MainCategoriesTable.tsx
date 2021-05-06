@@ -75,7 +75,7 @@ const MainCategoriesTable: React.FC<MainCategoriesDataProps> = ({ list, activeCo
   }, [list]);
 
   const onRowClicked = (id) => {
-    history.push(`/mainCategory/${id}`);
+    history.push(`/main-category/${id}`);
   };
 
   return (

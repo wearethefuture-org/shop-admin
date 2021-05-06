@@ -162,7 +162,7 @@ const CategoryInfo: React.FC = () => {
       )}
       <div className={styles['block-wrapper']}>
         <Card className={styles['block-card']}>
-          <GoBackBtn handleGoBack={() => history.push('/categories')} />
+          <GoBackBtn handleGoBack={() => history.push('/sub-categories')} />
           <h1>
             {categoryDisplayState ? categoryDisplayState.name : category ? category.name : ''}
           </h1>

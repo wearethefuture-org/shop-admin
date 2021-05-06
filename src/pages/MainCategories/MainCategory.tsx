@@ -17,7 +17,7 @@ enum cols {
   name = 'Назва',
   description = 'Опис',
   key = 'URL ключ',
-  category = 'Кількість Під-категорій',
+  category = 'Кількість під-категорій',
   createdAt = 'Створено',
   updatedAt = 'Оновлено',
 }

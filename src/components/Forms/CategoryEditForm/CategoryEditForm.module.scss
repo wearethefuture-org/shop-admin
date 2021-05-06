@@ -92,9 +92,9 @@
       height: 99px;
       border-radius: 4px;
       background: linear-gradient(90deg, #ccc 50%, transparent 50%),
-        linear-gradient(0deg, #ccc 50%, transparent 50%),
-        linear-gradient(90deg, #ccc 50%, transparent 50%),
-        linear-gradient(0deg, #ccc 50%, transparent 50%);
+      linear-gradient(0deg, #ccc 50%, transparent 50%),
+      linear-gradient(90deg, #ccc 50%, transparent 50%),
+      linear-gradient(0deg, #ccc 50%, transparent 50%);
       background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
       background-size: 8px 1.5px, 1.5px 8px, 8px 1.5px, 1.5px 8px;
       background-position: left top, right top, left bottom, left top;
@@ -104,9 +104,9 @@
     .dropzone-border-reject {
       @extend .dropzone-border;
       background: linear-gradient(90deg, red 50%, transparent 50%),
-        linear-gradient(0deg, red 50%, transparent 50%),
-        linear-gradient(90deg, red 50%, transparent 50%),
-        linear-gradient(0deg, red 50%, transparent 50%);
+      linear-gradient(0deg, red 50%, transparent 50%),
+      linear-gradient(90deg, red 50%, transparent 50%),
+      linear-gradient(0deg, red 50%, transparent 50%);
       background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
       background-size: 8px 1.5px, 1.5px 8px, 8px 1.5px, 1.5px 8px;
       background-position: left top, right top, left bottom, left top;

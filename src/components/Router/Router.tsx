@@ -45,8 +45,8 @@ const Router: React.FC = () => {
           <Content>
             <Switch>
               <PrivateRoute path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/categories" component={Categories} />
-              <PrivateRoute path="/mainCategories" component={MainCategories} />
+              <PrivateRoute path="/sub-categories" component={Categories} />
+              <PrivateRoute path="/main-categories" component={MainCategories} />
               <PrivateRoute path="/products/" exact={true} component={Products} />
               <PrivateRoute path="/statistic" component={Statistic} />
               <PrivateRoute path="/users" component={Users} />
@@ -55,8 +55,8 @@ const Router: React.FC = () => {
               <PrivateRoute path="/settings" component={Settings} />
               <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
               <PrivateRoute component={ViewProduct} path="/product/:id" />
-              <PrivateRoute component={CategoryRouter} path="/category/:id" />
-              <PrivateRoute component={MainCategoryRouter} path="/mainCategory/:id" />
+              <PrivateRoute component={CategoryRouter} path="/sub-category/:id" />
+              <PrivateRoute component={MainCategoryRouter} path="/main-category/:id" />
               {!user && !token ? (
                 <Route path="/home" component={Home} />
               ) : (

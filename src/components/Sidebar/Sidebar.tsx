@@ -90,13 +90,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
       itemIcon: <HouseIcon fontSize="small" className={ styles.icon }/>,
     },
     {
-      pageURL: '/mainCategories',
-      title: 'Головні Категорії',
+      pageURL: '/main-categories',
+      title: 'Основні категорії',
       itemIcon: <CategoryIcon fontSize="small" className={styles.icon} />,
     },
     {
-      pageURL: '/categories',
-      title: 'Під-Категорії',
+      pageURL: '/sub-categories',
+      title: 'Під-категорії',
       itemIcon: <CategoryIcon fontSize="small" className={ styles.icon }/>,
     },
     {

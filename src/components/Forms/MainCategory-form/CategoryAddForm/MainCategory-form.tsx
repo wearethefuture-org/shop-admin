@@ -12,7 +12,7 @@ interface MainCategoryFormProps {
   initialName?: string;
   initialKeyLink?: string;
   initialDescription?: string;
-  initialCategory?: any;
+  initialCategory?: string;
 }
 
 const MainCategoryForm = withFormik<MainCategoryFormProps, IAddMainCategory>({

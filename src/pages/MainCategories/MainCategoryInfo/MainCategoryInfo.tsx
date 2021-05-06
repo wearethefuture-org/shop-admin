@@ -122,7 +122,7 @@ const MinCategoryInfo: React.FC = () => {
       { loading && <LinearProgress/> }
         <div className={ styles['block-wrapper'] }>
           <Card className={ styles['block-card'] }>
-            <GoBackBtn handleGoBack={ () => history.push('/mainCategories') }/>
+            <GoBackBtn handleGoBack={ () => history.push('/main-categories') }/>
             <h1>{ mainCategoryDisplayState ? mainCategoryDisplayState.name : mainCategory.name }</h1>
 
             <FormikProvider value={ formik }>

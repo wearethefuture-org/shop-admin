@@ -77,7 +77,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) =>
     },
     {
       name: 'Категорія',
-      selector: (row) => row.category?.name ? row.category.name : 'select Category',
+      selector: (row) => row.category?.name ? row.category.name : 'Без категорії',
       sortable: true,
       minWidth: '12%',
       omit: !activeColumns.includes('Категорія'),

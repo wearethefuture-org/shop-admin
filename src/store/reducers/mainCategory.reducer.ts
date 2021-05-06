@@ -43,7 +43,6 @@ const mainCategories = (state = initialState, { type, data }: IActions) => {
       };
     }
 
-    // get one by id
     case GET_MAIN_CATEGORY_BY_ID_REQUEST: {
       return {
         ...state,
@@ -68,7 +67,6 @@ const mainCategories = (state = initialState, { type, data }: IActions) => {
       };
     }
 
-    // update mainCategory
     case UPDATE_MAIN_CATEGORY_REQUEST: {
       return {
         ...state,

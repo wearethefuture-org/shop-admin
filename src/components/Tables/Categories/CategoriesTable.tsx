@@ -76,7 +76,7 @@ const CategoriesTable: React.FC<CategoriesTableProps> = ({ list, activeColumns }
   }, [list]);
 
   const onRowClicked = (id) => {
-    history.push(`/category/${id}`);
+    history.push(`/sub-category/${id}`);
   };
 
   return (
@@ -85,7 +85,7 @@ const CategoriesTable: React.FC<CategoriesTableProps> = ({ list, activeColumns }
         <AppDataTable
           data={sortedList}
           columns={categoriesColumns}
-          title="Під-Категорії"
+          title="Під-категорії"
           onRowClicked={(row) => onRowClicked(row.id)}
         />
       ) : null}
