@@ -45,7 +45,7 @@ const MainCategoriesTable: React.FC<MainCategoriesDataProps> = ({ list, activeCo
       selector: (row) => row.category,
       sortable: true,
       format: (row) => <span>{row?.category?.length ? row?.category?.length : 0}</span>,
-      omit: !activeColumns.includes('Кількість Під-категорій'),
+      omit: !activeColumns.includes('Кількість під-категорій'),
     },
     {
       name: 'Створено',
