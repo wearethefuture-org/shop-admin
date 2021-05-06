@@ -25,7 +25,6 @@ enum cols {
 const MainCategories: React.FC = () => {
   const { data, dispatch } = useMainCategories();
   const categoriesCreateModalData = useCategoriesModal();
-  
 
   const list = useSelector((state: RootState) => state.mainCategories.list);
   const loading = useSelector((state: RootState) => state.mainCategories.loading);

@@ -30,7 +30,6 @@ const CategoryBasicInfo = () => {
             <div className={ styles.field }>
               <p className={ styles.title }>Ключ:</p>
               <p className={ styles.value }>{ category.key }</p>
-              <p className={ styles.value }>{ category.key }</p>
             </div>
             <div className={ styles.field }>
               <p className={ styles.title }>Головна категорія:</p>
