@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dialog, DialogContent, DialogTitle, Button } from '@material-ui/core';
+import { Dialog, DialogContent, DialogTitle, Button, MenuItem } from '@material-ui/core';
 
 import { IAddCategory, ICategoryResponse } from '../../../interfaces/ICategory';
 import { fetchAddCategories } from '../../../store/actions/categories.actions';
@@ -9,6 +9,8 @@ import { Field, Form, FormikProvider, useFormik } from 'formik';
 import { categoryValidationShema } from '../../../pages/Categories/CategoryInfo/categoryValidationShema';
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import styles from './AddCategoryModal.module.scss';
+import { GeneralMainCategory, IGetMainCategoriesResponse } from "../../../interfaces/IMainCategory";
+import { fetchMainCategories } from "../../../store/actions/mainCategories.actions";
 
 interface FormDialogProps {
   openAddModal: boolean;
@@ -21,6 +23,12 @@ const AddCategoryModal: React.FC<FormDialogProps> = ({ openAddModal, setOpenAddM
   const categoryList: ICategoryResponse[] = useSelector(
     (state: RootState) => state.categories.list
   );
+
+  const mainCategorisList = useSelector<RootState, GeneralMainCategory[]>((state) => state.mainCategories.list);
+
+  useEffect(() => {
+    dispatch(fetchMainCategories());
+  }, [])
 
   const initialValues: IAddCategory = {
     name: '',
@@ -101,6 +109,24 @@ const AddCategoryModal: React.FC<FormDialogProps> = ({ openAddModal, setOpenAddM
               name="description"
               makegreen="true"
             />
+            <Field
+              select
+              fullWidth
+              component={ TextFieldWrapped }
+              label="Основна категорія *"
+              name="mainCategory"
+              makegreen="true"
+              className={ styles['edit-field'] }
+              value={ formik.values.mainCategory ?? '' }
+            >
+              { mainCategorisList.length
+                ? mainCategorisList.map(({ id, name }: IGetMainCategoriesResponse) => (
+                  <MenuItem value={ name } key={ id }>
+                    { name }
+                  </MenuItem>
+                ))
+                : [] }
+            </Field>
 
             <div className={styles['form-btn-wrapper']}>
               <Button
