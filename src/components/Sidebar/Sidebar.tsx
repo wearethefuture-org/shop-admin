@@ -121,7 +121,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
   ];
 
   const extraSidebarItems = [
-    { pageURL: '/orders', title: 'Рахунки' },
+    { pageURL: '/orders', title: 'Замовлення' },
     { pageURL: '/settings', title: 'Налаштування' },
   ];
 

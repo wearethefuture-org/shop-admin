@@ -11,7 +11,6 @@ const OrdersEditStatus = ({ row }) => {
   const loading = useSelector((state: RootState) => state.orders.loading);
 
   enum Status {
-    OPEN = 'open',
     PENDING = 'pending',
     PAID = 'paid',
     DELIVERING = 'delivering',

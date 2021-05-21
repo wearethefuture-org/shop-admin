@@ -26,6 +26,7 @@ const OrdersTable = ({ list }) => {
       name: 'Створено',
       selector: (row) => row.createdAt,
       sortable: true,
+      id: 'created',
       format: (row) => {
         return new Date(row.createdAt).toLocaleDateString(undefined, {
           day: 'numeric',
@@ -80,7 +81,8 @@ const OrdersTable = ({ list }) => {
     <AppDataTable
       data={list}
       columns={ordersColumns}
-      title="Рахунки"
+      title="Замовлення"
+      defaultSortFieldId={'created'}
       onRowClicked={(row) => {
         history.push(`/order/${row.id}`);
       }}

@@ -15,6 +15,7 @@ interface DataTableProps {
   setLimit?: Dispatch<SetStateAction<number>>;
   paginationServer?: boolean;
   setPage?: Dispatch<SetStateAction<number>>;
+  defaultSortFieldId?: string;
 }
 
 const AppDataTable: React.FC<DataTableProps> = ({
@@ -27,6 +28,7 @@ const AppDataTable: React.FC<DataTableProps> = ({
   limit,
   setLimit = () => {},
   paginationServer = false,
+  defaultSortFieldId = '',
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
@@ -41,6 +43,8 @@ const AppDataTable: React.FC<DataTableProps> = ({
         onRowClicked={onRowClicked}
         pointerOnHover={true}
         pagination
+        defaultSortAsc={false}
+        defaultSortFieldId={defaultSortFieldId}
         paginationTotalRows={count}
         paginationRowsPerPageOptions={[10, 30, 50, 100]}
         paginationServer={paginationServer}
