@@ -7,7 +7,7 @@ const useOrders = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getOrdersRequest());
+    dispatch(getOrdersRequest(1,10));
   }, [dispatch]);
 
   const list = useSelector((state: RootState) => state.orders.list);

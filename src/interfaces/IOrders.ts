@@ -27,4 +27,6 @@ export interface IOrdersData {
   loading: boolean;
   currentOrder: IGetOrders | any;
   error: string | null;
+  count: number,
+  totalPages: number,
 }

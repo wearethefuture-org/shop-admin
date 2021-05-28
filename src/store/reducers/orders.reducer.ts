@@ -20,6 +20,8 @@ const initialState: IOrdersData = {
   list: [],
   currentOrder: null,
   error: null,
+  count: 0,
+  totalPages: 0,
 };
 
 const orders = (state = initialState, { type, data }: IActions) => {
@@ -36,6 +38,8 @@ const orders = (state = initialState, { type, data }: IActions) => {
       return {
         ...state,
         list: data.data,
+        count: data.count,
+        totalPages: data.totalPages,
         loading: false,
       };
     }

@@ -136,17 +136,27 @@ input[type='number'] {
   }
 }
 
-// .rdt_Table {
-//   .rdt_TableCell, .rdt_TableCol {
-//     max-width: 200px;
-//     min-width: 60px;
-//   }
-// }
-
+// Tables Styles
 
 .MuiCard-root {
   .rdt_Pagination {
     justify-content: center;
   }
+  header {
+    padding-left: 16px;
+  }
 }
 
+.btns-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem;
+
+  button:first-child {
+    margin-right: 1rem;
+  }
+}
+
+.content-wrapper {
+  padding: 1rem;
+}

@@ -1,11 +1,15 @@
 import React from 'react';
 
-import UsersTable from '../Tables/Users/Users-table';
+import UsersTable from '../Tables/Users/UsersTable';
 import useUsers from '../../hooks/useUsers';
 
 const UsersContainer: React.FC = () => {
   const { data } = useUsers();
-  return <UsersTable data={data} />;
+  return (
+  <div>
+    <UsersTable list={data} />
+  </div>
+  )
 };
 
 export default UsersContainer;

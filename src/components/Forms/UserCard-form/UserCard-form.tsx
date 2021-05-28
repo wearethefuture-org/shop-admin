@@ -93,7 +93,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
   const initialValues = {
     firstName: isNew ? '' : user?.firstName,
     lastName: isNew ? '' : user?.lastName,
-    tel: isNew ? '' : user?.tel,
+    tel: isNew ? '' : user?.phoneNumber,
     creditCard: isNew ? '' : user?.creditCard,
     email: isNew ? '' : user?.email,
     role_id: isNew ? 0 : user?.role.id,

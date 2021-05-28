@@ -45,8 +45,10 @@ const AppDataTable: React.FC<DataTableProps> = ({
         pagination
         defaultSortAsc={false}
         defaultSortFieldId={defaultSortFieldId}
+        fixedHeader={true}
+        fixedHeaderScrollHeight={'60vh'}
         paginationTotalRows={count}
-        paginationRowsPerPageOptions={[10, 30, 50, 100]}
+        paginationRowsPerPageOptions={[2, 10, 30, 50, 100]}
         paginationServer={paginationServer}
         paginationPerPage={limit}
         onChangePage={(p) => setPage(p)}

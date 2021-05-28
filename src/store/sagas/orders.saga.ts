@@ -20,9 +20,11 @@ import {
 } from '../actions/orders.actions';
 import { IActions } from '../../interfaces/actions';
 
-export function* getOrdersWorker(): SagaIterator {
+export function* getOrdersWorker({
+  data: {page, limit}
+}: IActions): SagaIterator<void> {
   try {
-    const orders = yield call(apiGetOrders);
+    const orders = yield call(apiGetOrders, page, limit);
     yield put(getOrdersSuccess(orders));
   } catch (error) {
     yield put(failSnackBar(error.message));
