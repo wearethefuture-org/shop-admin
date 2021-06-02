@@ -30,31 +30,29 @@ const OrdersEditQuantity = ({ row, orderId }) => {
     setValue(row.quantity);
   };
 
-  let cell = (
+  const isEditable = () => {
+    if (loading) {
+      return;
+    }
+    setEditable(true);
+  };
+
+  let cell = !editable ? (
     <div className={styles.quantity}>
       {row.quantity}
       <EditIcon
-        onClick={() => {
-          if (loading) {
-            return;
-          }
-          setEditable(true);
-        }}
+        onClick={isEditable}
         color={loading ? 'disabled' : 'primary'}
         fontSize="small"
       />
     </div>
+  ) : (
+    <div className={styles.edit_quantity}>
+      <input type="number" value={value} onChange={handleChange}/>
+      <DoneIcon color="primary" onClick={(e) => onQuantityChanged(e, orderId, row.product.id)}/>
+      <CancelIcon color="secondary" onClick={onQuantityChangedCancel}/>
+    </div>
   );
-
-  if (editable) {
-    cell = (
-      <div className={styles.edit_quantity}>
-        <input type="number" value={value} onChange={handleChange} />
-        <DoneIcon color="primary" onClick={(e) => onQuantityChanged(e, orderId, row.product.id)} />
-        <CancelIcon color="secondary" onClick={onQuantityChangedCancel} />
-      </div>
-    );
-  }
 
   return cell;
 };

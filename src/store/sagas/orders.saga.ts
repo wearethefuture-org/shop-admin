@@ -55,7 +55,7 @@ export function* updateOrderQuantityWorker({
   }
 }
 
-export function* updateOrderStatusWorker({ data: { id, status } }: IActions): SagaIterator<void> {
+export function* updateOrderStatusWorker({ data: { id, status } }: IActions): SagaIterator {
   try {
     yield call(apiUpdateOrderStatus, id, status);
     yield put(updateOrderStatusSuccess(id, status));

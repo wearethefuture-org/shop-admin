@@ -6,8 +6,14 @@ import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import { getOrdersRequest } from '../../../store/actions/orders.actions';
 import { AppDispatch, RootState } from '../../../store/store';
 import OrdersEditStatus from './OrdersEditStatus';
+import { IGetOrders } from '../../../interfaces/IOrders';
 
-const OrdersTable = ({ list, activeColumns }) => {
+interface OrdersTableProps {
+  list: IGetOrders[];
+  activeColumns: Array<string>;
+}
+
+const OrdersTable: React.FC<OrdersTableProps> = ({list,activeColumns}) => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
   const [page, setPage] = useState(1);
@@ -15,16 +21,14 @@ const OrdersTable = ({ list, activeColumns }) => {
   const count = useSelector((state: RootState) => state.orders.count);
 
   const onChangePage = (page) => {
-    console.log('pafge');
     setPage(page);
     dispatch(getOrdersRequest(page, limit));
-  }
+  };
 
   const onChangeLimit = (limit) => {
-    console.log('limitt');
     setLimit(limit);
     dispatch(getOrdersRequest(page, limit));
-  }
+  };
 
   const ordersColumns = [
     {
@@ -86,11 +90,11 @@ const OrdersTable = ({ list, activeColumns }) => {
       omit: !activeColumns.includes('Email'),
     },
     {
-      name: "Ім'я",
+      name: 'Ім\'я',
       maxWidth: '150px',
       selector: (row) => `${row.user.firstName} ${row.user.lastName}`,
       sortable: true,
-      omit: !activeColumns.includes("Ім'я"),
+      omit: !activeColumns.includes('Ім\'я'),
     },
     {
       name: 'Сума',
@@ -104,9 +108,9 @@ const OrdersTable = ({ list, activeColumns }) => {
       selector: (row) => row.status,
       sortable: true,
       cell: (row) => {
-        return <OrdersEditStatus row={row} />;
+        return <OrdersEditStatus row={row}/>;
       },
-      omit: !activeColumns.includes("Статус"),
+      omit: !activeColumns.includes('Статус'),
     },
   ];
 
@@ -119,7 +123,7 @@ const OrdersTable = ({ list, activeColumns }) => {
       onRowClicked={(row) => {
         history.push(`/order/${row.id}`);
       }}
-      setLimit={(e)=> onChangeLimit(e)}
+      setLimit={(e) => onChangeLimit(e)}
       setPage={(e) => onChangePage(e)}
       paginationServer={true}
       count={count}

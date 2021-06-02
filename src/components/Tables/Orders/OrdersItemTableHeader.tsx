@@ -5,8 +5,13 @@ import PersonPinIcon from '@material-ui/icons/PersonPin';
 import styles from './OrdersTable.module.scss';
 import { useHistory } from 'react-router';
 import GoBackBtn from '../../GoBackBtn/GoBackBtn';
+import { ICurrentOrder } from '../../../interfaces/IOrders';
 
-const OrdersItemTableHeader = ({ order }) => {
+interface OrdersItemTableHeaderProps {
+  order: ICurrentOrder;
+}
+
+const OrdersItemTableHeader: React.FC<OrdersItemTableHeaderProps> = ({ order }) => {
   const history = useHistory();
   return (
     <div className={styles.orderHeader}>

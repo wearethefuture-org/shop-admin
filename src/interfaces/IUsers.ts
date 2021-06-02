@@ -74,3 +74,14 @@ export interface UserTableData {
   role: string;
   users: number;
 }
+
+export interface IOrderUser {
+  id: number;
+  dateOfBirth?: string;
+  email: string;
+  facebookId?: string;
+  googleId?: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+}

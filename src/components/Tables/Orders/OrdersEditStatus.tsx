@@ -4,21 +4,12 @@ import { FormControl, Select, MenuItem } from '@material-ui/core';
 
 import { AppDispatch, RootState } from '../../../store/store';
 import { updateOrderStatusRequest } from '../../../store/actions/orders.actions';
-
+import { Status } from '../../../enums/orderStatus';
+// import { Status } from '../../../enums/orderStatus';
 
 const OrdersEditStatus = ({ row }) => {
   const dispatch: AppDispatch = useDispatch();
   const loading = useSelector((state: RootState) => state.orders.loading);
-
-  enum Status {
-    PENDING = 'pending',
-    PAID = 'paid',
-    DELIVERING = 'delivering',
-    CONFIRMED = 'confirmed',
-    COMPLETED = 'completed',
-    CANCELLED = 'cancelled',
-    REOPENED = 'reopened',
-  }
 
   const onChangeStatus = (e, id) => {
     e.stopPropagation();

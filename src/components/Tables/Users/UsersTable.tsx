@@ -2,7 +2,6 @@ import { Box, Button } from '@material-ui/core';
 import React from 'react';
 
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
-// import UsersRoleEdit from './UsersEditRole';
 
 const OrdersTable = ({ list }) => {
 
@@ -41,14 +40,6 @@ const OrdersTable = ({ list }) => {
       selector: (row) => `${row.firstName} ${row.lastName}`,
       sortable: true,
     },
-    // {
-    //   name: 'Роль',
-    //   selector: (row) => row.role.name,
-    //   sortable: true,
-    //   cell: (row) => {
-    //     return <UsersRoleEdit row={row} />;
-    //   },
-    // },
     {
       name: '',
       selector: (row) => row.role.name,
@@ -57,8 +48,8 @@ const OrdersTable = ({ list }) => {
         return (
           <Box display="flex">
             <Box>
-              <Button variant="contained" 
-                size="small" 
+              <Button variant="contained"
+                size="small"
                 onClick={() => console.log('edit')}>
                 Редагувати
               </Button>

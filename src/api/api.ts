@@ -34,6 +34,7 @@ import {
   IUsersData,
 } from '../interfaces/IUsers';
 import instance from './axios-interceptors';
+import { Status } from '../enums/orderStatus';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -77,7 +78,7 @@ type ApiFetchedDataType = {
 
   orders: {
     get: (page: number, limit: number) => FetchedDataType<IBasicOrder>;
-    updateStatus: (id: number, status: any) => FetchedDataType<IBasicOrder>;
+    updateStatus: (id: number, status: Status) => FetchedDataType<IBasicOrder>;
     updateQuantity: (
       orderId: number,
       productId: number,

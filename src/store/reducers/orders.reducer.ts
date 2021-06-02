@@ -86,13 +86,13 @@ const orders = (state = initialState, { type, data }: IActions) => {
     }
 
     case UPDATE_ORDER_STATUS_SUCCESS: {
-      const idx = state.list.findIndex((item) => item.id === data.id);
       return {
         ...state,
         list: [
-          ...state.list.slice(0, idx),
-          { ...state.list[idx], status: data.status.status },
-          ...state.list.slice(idx + 1),
+          ...state.list.map(item => {
+            if(item.id === data.id) return { ...item, status: data.status.status };
+            return item;
+          }),
         ],
         loading: false,
         error: null,
@@ -116,17 +116,19 @@ const orders = (state = initialState, { type, data }: IActions) => {
     }
 
     case UPDATE_ORDER_QUANTITY_SUCCESS: {
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        currentOrder: {
-          ...state.currentOrder,
-          productToOrder: state.currentOrder.productToOrder.map((item) =>
-            item.id === data.id ? data : item
-          ),
-        },
-      };
+      if (state.currentOrder) {
+        return {
+          ...state,
+          loading: false,
+          error: null,
+          currentOrder: {
+            ...state.currentOrder,
+            productToOrder: state.currentOrder.productToOrder.map((item) =>
+              item.id === data.id ? data : item,
+            ),
+          },
+        };
+      }
     }
 
     case UPDATE_ORDER_QUANTITY_ERROR: {
