@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import OrdersEditQuantity from '../../../components/Tables/Orders/OrdersEditQuantity';
 import OrdersItemTableHeader from './OrdersItemTableHeader';
+import { ICurrentOrder } from '../../../interfaces/IOrders';
 
-const OrdersItemTable = ({ order }) => {
+interface OrdersItemTableProps {
+  order: ICurrentOrder;
+}
+
+const OrdersItemTable: FC<OrdersItemTableProps>  = ({ order }) => {
   const columns = [
     {
       name: 'productID',

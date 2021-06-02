@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import EmailIcon from '@material-ui/icons/Email';
 import PhoneInTalkIcon from '@material-ui/icons/PhoneInTalk';
 import PersonPinIcon from '@material-ui/icons/PersonPin';
@@ -11,7 +11,7 @@ interface OrdersItemTableHeaderProps {
   order: ICurrentOrder;
 }
 
-const OrdersItemTableHeader: React.FC<OrdersItemTableHeaderProps> = ({ order }) => {
+const OrdersItemTableHeader: FC<OrdersItemTableHeaderProps> = ({ order }) => {
   const history = useHistory();
   return (
     <div className={styles.orderHeader}>

@@ -5,7 +5,6 @@ import { FormControl, Select, MenuItem } from '@material-ui/core';
 import { AppDispatch, RootState } from '../../../store/store';
 import { updateOrderStatusRequest } from '../../../store/actions/orders.actions';
 import { Status } from '../../../enums/orderStatus';
-// import { Status } from '../../../enums/orderStatus';
 
 const OrdersEditStatus = ({ row }) => {
   const dispatch: AppDispatch = useDispatch();
