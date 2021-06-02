@@ -86,6 +86,7 @@ const orders = (state = initialState, { type, data }: IActions) => {
     }
 
     case UPDATE_ORDER_STATUS_SUCCESS: {
+      const idx = state.list.findIndex((item) => item.id === data.id);
       return {
         ...state,
         list: [
@@ -116,7 +117,7 @@ const orders = (state = initialState, { type, data }: IActions) => {
     }
 
     case UPDATE_ORDER_QUANTITY_SUCCESS: {
-      if (state.currentOrder) {
+      if(state.currentOrder) {
         return {
           ...state,
           loading: false,
@@ -124,7 +125,7 @@ const orders = (state = initialState, { type, data }: IActions) => {
           currentOrder: {
             ...state.currentOrder,
             productToOrder: state.currentOrder.productToOrder.map((item) =>
-              item.id === data.id ? data : item,
+              item.id === data.id ? data : item
             ),
           },
         };
