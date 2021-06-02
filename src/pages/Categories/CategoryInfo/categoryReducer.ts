@@ -23,6 +23,7 @@ export interface Category {
   name?: string;
   key?: string;
   description?: string;
+  mainCategory?: string;
   characteristicGroups?: Group[];
   removedCharacteristics?: RemovedChars;
 }

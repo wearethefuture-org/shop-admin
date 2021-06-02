@@ -31,7 +31,7 @@ const AppDataTable: React.FC<DataTableProps> = ({
   defaultSortFieldId = '',
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
-
+  
   return (
     <Card>
       <DataTable

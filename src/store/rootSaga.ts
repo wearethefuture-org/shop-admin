@@ -32,7 +32,19 @@ import {
   USER_SIGN_IN_FETCHING,
   USER_SIGN_OUT,
   USER_FETCH_REQUEST,
+  REQUEST_MAIN_CATEGORIES,
+  REQUEST_ADD_MAIN_CATEGORIES,
+  GET_MAIN_CATEGORY_BY_ID_REQUEST,
+  UPDATE_MAIN_CATEGORY_REQUEST,
 } from './types';
+
+import {
+  fetchMainCategoryWorker,
+  addMainCategoryWorker,
+  getMainCategoryByIdWorker,
+  updateMainCategoryWorker,
+} from './sagas/mainCategories.saga';
+
 import {
   fetchCategoryWorker,
   addCategoryWorker,
@@ -68,6 +80,13 @@ import {
   updateUserWorker,
 } from './sagas/users.saga';
 import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
+
+export function* sagaMainCategoriesWatcher(): SagaIterator {
+  yield takeEvery(REQUEST_MAIN_CATEGORIES, fetchMainCategoryWorker);
+  yield takeEvery(REQUEST_ADD_MAIN_CATEGORIES, addMainCategoryWorker);
+  yield takeEvery(GET_MAIN_CATEGORY_BY_ID_REQUEST, getMainCategoryByIdWorker);
+  yield takeEvery(UPDATE_MAIN_CATEGORY_REQUEST, updateMainCategoryWorker);
+}
 
 export function* sagaCategoriesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_CATEGORIES, fetchCategoryWorker);
@@ -131,6 +150,7 @@ export function* sagaUserWatcher(): SagaIterator {
 export default function* rootSaga(): SagaIterator {
   yield all([
     fork(sagaCategoriesWatcher),
+    fork(sagaMainCategoriesWatcher),
     fork(sagaProductsWatcher),
     fork(sagaSettingsWatcher),
     fork(sagaSlidesWatcher),

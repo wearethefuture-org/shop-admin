@@ -1,3 +1,8 @@
+export interface IMainCategoriesModal {
+  handleClickOpen: () => void;
+  handleClose: () => void;
+  isOpened: boolean;
+}
 export interface ICategoriesModal {
   handleClickOpen: () => void;
   handleClose: () => void;

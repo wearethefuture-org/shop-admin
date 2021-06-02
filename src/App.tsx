@@ -21,6 +21,12 @@ declare module '@material-ui/core/styles/createMuiTheme' {
   }
 }
 
+declare module '@material-ui/core/styles/createMuiTheme' {
+  interface ThemeOptions {
+    [key: string]: any;
+  }
+}
+
 export function App() {
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);
   const dispatch: AppDispatch = useDispatch();

@@ -75,14 +75,15 @@ const CategoryInfo: React.FC = () => {
     name: category && category.name ? category.name : '',
     description: category && category.description ? category.description : '',
     key: category && category.key ? category.key : '',
+    mainCategory:  (category.mainCategory && category.mainCategory.name) || '',
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema: categoryValidationShema,
     enableReinitialize: true,
-    onSubmit: (values): void => {
-      const { name, key, description } = values;
+    onSubmit: (values: IAddCategory): void => {
+      const { name, key, description, mainCategory } = values;
 
       const existingName =
         categoryList.length &&
@@ -108,7 +109,7 @@ const CategoryInfo: React.FC = () => {
         return;
       }
 
-      dispatch(updateCategoryRequest({ ...categoryState, name, key, description }));
+      dispatch(updateCategoryRequest({ ...categoryState, name, key, description, mainCategory }));
       categoryDispatch({ type: CategoryActionTypes.resetCategory });
       finishOperation();
       formik.setSubmitting(false);
@@ -161,7 +162,7 @@ const CategoryInfo: React.FC = () => {
       )}
       <div className={styles['block-wrapper']}>
         <Card className={styles['block-card']}>
-          <GoBackBtn handleGoBack={() => history.push('/categories')} />
+          <GoBackBtn handleGoBack={() => history.push('/sub-categories')} />
           <h1>
             {categoryDisplayState ? categoryDisplayState.name : category ? category.name : ''}
           </h1>
