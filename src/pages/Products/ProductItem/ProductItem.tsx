@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import ArrowIcon from '@material-ui/icons/ArrowBackIos';
-import { Card } from '@material-ui/core';
+import { Card, Switch } from '@material-ui/core';
 
-import { deleteProductRequest } from '../../../store/actions/products.actions';
+import { deleteProductRequest, updateAvailabilityProduct } from '../../../store/actions/products.actions';
 import { AppDispatch, RootState } from '../../../store/store';
 import ProductImages from './ProductImages/ProductImages';
 import ProductDescription from './ProductDescription/ProductDescription';
@@ -24,7 +24,6 @@ const ProductItem: React.FC = () => {
   const location = useLocation();
 
   const product: IGetProductById = useSelector((state: RootState) => state.products.currentProduct);
-
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const goBack = () => history.push('/products');
@@ -35,6 +34,13 @@ const ProductItem: React.FC = () => {
   const handleDeleteProduct = () => {
     dispatch(deleteProductRequest(product));
     goBack();
+  };
+
+  // UPDATE AVAILABILITY PRODUCT
+  const [availability, setAvailability] = useState(product.availability)
+  const handleUpdateAvailabilityProduct = (e) => {
+    setAvailability(e.target.checked)
+    dispatch(updateAvailabilityProduct({availability: e.target.checked, productId: product.id}));
   };
 
   // ADDITIONAL INFO
@@ -65,6 +71,7 @@ const ProductItem: React.FC = () => {
             <EditBtn handleClick={() => {}} />
           </Link>
           <DeleteBtn handleDelete={() => setOpenDeleteDialog(true)} />
+
         </div>
       </div>
 
@@ -83,7 +90,17 @@ const ProductItem: React.FC = () => {
         </span>
         <span>{product.name}</span>
       </p>
-      <h1>{product.name}</h1>
+      <div className={styles.availability}>
+        <h1>{product.name}</h1>
+        <div className={styles.switch}>
+          <span>Наявність</span>
+          <Switch
+            checked={availability}
+            onChange={handleUpdateAvailabilityProduct}
+            name="isWidgetActiveNewArrivals"
+          />
+        </div>
+      </div>
 
       <Card>
         <div className={styles['item-main-info']}>

@@ -15,6 +15,7 @@ import {
   apiDeleteChar,
   apiUpdateProductCharValues,
   apiAddProductCharValues,
+  apiUpdateAvailabilityProduct,
 } from './services/products.service';
 import {
   addProductError,
@@ -178,5 +179,13 @@ export function* deleteProductWorker({ data: product }: IActions): SagaIterator 
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(deleteProductError(error.message));
+  }
+}
+
+export function* updateAvailabilityProductWorker({data}: IActions): SagaIterator {
+  try {
+    yield call(apiUpdateAvailabilityProduct, data);
+  } catch (error) {
+    yield put(failSnackBar(error.message));
   }
 }
