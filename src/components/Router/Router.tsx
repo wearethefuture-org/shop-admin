@@ -56,9 +56,11 @@ const Router: React.FC = () => {
               <PrivateRoute path="/comments" component={CommentsPage} />
               <PrivateRoute path="/settings" component={Settings} />
               <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
+              <PrivateRoute path="/orders" component={OrdersPage}/>
               <PrivateRoute component={ViewProduct} path="/product/:id" />
               <PrivateRoute component={CategoryRouter} path="/sub-category/:id" />
               <PrivateRoute component={MainCategoryRouter} path="/main-category/:id" />
+              <PrivateRoute component={OrderRouter} path="/order/:id"/>
               {!user && !token ? (
                 <Route path="/home" component={Home}/>
               ) : (
