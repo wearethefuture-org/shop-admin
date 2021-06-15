@@ -36,7 +36,7 @@ const UsersTable: React.FC<UsersDataProps> = ({ data }) => {
     );
 
   const rows: Array<IUserItem> = data
-    .map((user: any) => ({
+    .map((user: IUserItem) => ({
       id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -44,8 +44,7 @@ const UsersTable: React.FC<UsersDataProps> = ({ data }) => {
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
       email: user.email,
-      password: user.password,
-      tel: user.tel,
+      phoneNumber: user.phoneNumber,
       role: user.role,
     }))
     .sort((a, b) => a.id - b.id);

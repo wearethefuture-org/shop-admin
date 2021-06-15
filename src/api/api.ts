@@ -156,7 +156,7 @@ export const api: ApiFetchedDataType = {
   user: {
     auth: (user) => instance.post(`${ root }/auth/admin/login`, user),
     get: () => instance.get(`${ root }/users/profile`),
-    update: ({ id, ...user }) => instance.patch(`${ root }/users/${ id }`, user),
+    update: ({ id, ...user }) => instance.put(`${ root }/users/${ id }`, user),
     delete: (id) => instance.delete(`${ root }/users/${ id }`),
     add: (user) => instance.post(`${ root }/auth/register`, user),
   },

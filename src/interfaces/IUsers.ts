@@ -15,8 +15,9 @@ export interface IUserItem {
   firstName: string;
   lastName: string;
   creditCard: string;
-  tel: string;
+  phoneNumber: string;
   email: string;
+  telegramId?: string;
   role: {
     name: string;
     id: number;
@@ -41,8 +42,8 @@ export interface IUserReqUp {
   firstName?: string;
   lastName?: string;
   creditCard?: string;
-  tel?: string;
-  role_id?: number;
+  phoneNumber?: string;
+  roleId?: number;
   password?: string;
   email?: string;
 }
@@ -52,9 +53,9 @@ export interface IUserReqAdd {
   lastName: string;
   email: string;
   password: string;
-  tel: string;
+  phoneNumber: string;
   creditCard: string;
-  role_id: number;
+  roleId: number;
 }
 
 export interface IUsersData {

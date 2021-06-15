@@ -70,7 +70,9 @@ const UsersTableBody: React.FC<TableBodyProps> = ({ rows, rowsPerPage, page, emp
             <DateMoment date={row.createdAt} />
           </TableCell>
           <TableCell align="right">{row.email}</TableCell>
+          <TableCell align="right">{row.phoneNumber}</TableCell>
           <TableCell align="right">{row.role.name}</TableCell>
+          <TableCell align="right">{row.telegramId}</TableCell>
           <TableCell align="right">
             <Box display="flex">
               <Box>

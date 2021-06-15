@@ -17,23 +17,7 @@ import { IUsersData } from '../../interfaces/IUsers';
 
 const initialState: IUsersData = {
   loading: false,
-  list: [
-    {
-      id: 99999,
-      createdAt: '2021-02-17 13:47:12.523210',
-      updatedAt: '2021-02-17 13:47:12.523210',
-      firstName: 'Test',
-      lastName: 'Testings',
-      creditCard: '0000-0000-0000-0000',
-      tel: '+3800000000',
-      email: 'test@test.com',
-      role: {
-        name: 'admin',
-        id: 1,
-        description: 'lorem ipsum',
-      },
-    },
-  ],
+  list: [],
   currentUser: null,
   error: null,
 };
@@ -53,7 +37,7 @@ const users = (state = initialState, { type, data }: IActions) => {
     case GET_USERS_SUCCESS: {
       return {
         ...state,
-        list: data.length ? data.length : initialState.list,
+        list: data.length ? data.length : data.data,
         loading: false,
       };
     }

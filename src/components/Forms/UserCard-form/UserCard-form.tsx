@@ -64,9 +64,9 @@ interface FormDialogProps {
 const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
 const roles = [
-  { id: 0, name: 'user', description: 'lorem ipsum' },
   { id: 1, name: 'admin', description: 'lorem ipsum' },
   { id: 2, name: 'moderator', description: 'lorem ipsum' },
+  { id: 3, name: 'user', description: 'lorem ipsum' },
 ];
 
 const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) => {
@@ -82,21 +82,21 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
     email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
     creditCard: Yup.string().required('Це поле не повинно бути пустим!'),
-    role_id: Yup.string().required('Це поле не повинно бути пустим!'),
+    roleId: Yup.string().required('Це поле не повинно бути пустим!'),
     password: isNew
       ? Yup.string().min(6, 'Пароль занадто короткий!').required('Це поле не повинно бути пустим!')
       : Yup.string().min(6, 'Пароль занадто короткий!'),
     confirmPassword: Yup.string().oneOf([Yup.ref('password')], 'Пароль не співпадає'),
   });
-  const [isEdit, setIsEdit] = useState(isNew);
+  const [isEdit, setIsEdit] = useState(true);
   const dispatch: AppDispatch = useDispatch();
   const initialValues = {
     firstName: isNew ? '' : user?.firstName,
     lastName: isNew ? '' : user?.lastName,
-    tel: isNew ? '' : user?.tel,
+    phoneNumber: isNew ? '' : user?.phoneNumber,
     creditCard: isNew ? '' : user?.creditCard,
     email: isNew ? '' : user?.email,
-    role_id: isNew ? 0 : user?.role.id,
+    roleId: isNew ? 0 : user?.role.id,
     password: '',
     confirmPassword: '',
   };
@@ -116,8 +116,8 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             firstName: _values.firstName ? _values.firstName : '',
             lastName: _values.lastName ? _values.lastName : '',
             creditCard: _values.creditCard ? _values.creditCard : '',
-            tel: _values.tel ? _values.tel : '',
-            role_id: _values.role_id ? _values.role_id : 0,
+            phoneNumber: _values.phoneNumber ? _values.phoneNumber : '',
+            roleId: _values.roleId ? _values.roleId : 0,
             password: _values.password ? _values.password : '',
             email: _values.email ? _values.email : '',
           })
@@ -174,7 +174,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       <div className={classes.row}>
         <TextField
           className={classes.input}
-          value={formik.values.tel}
+          value={formik.values.phoneNumber}
           disabled={!isEdit}
           type="tel"
           name="tel"
@@ -182,8 +182,8 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           placeholder="Номер телефону"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.tel && Boolean(formik.errors.tel)}
-          helperText={formik.touched.tel && formik.errors.tel}
+          error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+          helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
         />
       </div>
       <div className={classes.row}>
@@ -203,11 +203,11 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       </div>
       <div className={classes.row}>
         <Select
-          value={formik.values.role_id}
+          value={formik.values.roleId}
           className={classes.inputSelect}
           disabled={!isEdit}
           type="select"
-          name="role_id"
+          name="roleId"
           id={'role_id-field'}
           placeholder={'роль'}
           onChange={formik.handleChange}
