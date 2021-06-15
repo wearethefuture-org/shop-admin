@@ -25,7 +25,7 @@ import {
   IProductsInCart,
   IUpdateProduct,
 } from '../interfaces/IProducts';
-
+import { IBasicOrder } from '../interfaces/IOrders';
 import { MainCategory } from '../pages/MainCategories/MainCategoryInfo/mainCategoryReducer';
 import { Category } from '../pages/Categories/CategoryInfo/categoryReducer';
 
@@ -42,6 +42,7 @@ import {
   IUsersData,
 } from '../interfaces/IUsers';
 import instance from './axios-interceptors';
+import { Status } from '../enums/orderStatus';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -88,6 +89,17 @@ type ApiFetchedDataType = {
     update: (slide: ISlideUpdateValues) => FetchedDataType<ISlideItem>;
     updateVisibility: (slide: ISlideVisibility) => FetchedDataType<ISlideItem>;
     delete: (slide: IActionsImage) => FetchedDataType<ISlideItem>;
+  };
+
+  orders: {
+    get: (page: number, limit: number) => FetchedDataType<IBasicOrder>;
+    updateStatus: (id: number, status: Status) => FetchedDataType<IBasicOrder>;
+    updateQuantity: (
+      orderId: number,
+      productId: number,
+      quantity: number
+    ) => FetchedDataType<IBasicOrder>;
+    getById: (id: number) => FetchedDataType<IBasicOrder>;
   };
 
   comments: {
@@ -147,6 +159,14 @@ export const api: ApiFetchedDataType = {
   settings: {
     get: () => instance.get(`${ root }/parameters`),
     put: (settings) => instance.put(`${ root }/parameters`, settings),
+  },
+
+  orders: {
+    get: (page, limit) => instance.get(`${root}/orders?page=${page}&limit=${limit}`),
+    getById: (id) => instance.get(`${root}/orders/${id}`),
+    updateStatus: (id, status) => instance.patch(`${root}/orders/status/${id}`, status),
+    updateQuantity: (orderId, productId, quantity) =>
+      instance.put(`${root}/orders/${orderId}/${productId}`, quantity),
   },
 
   users: {

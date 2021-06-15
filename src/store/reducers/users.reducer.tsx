@@ -25,13 +25,14 @@ const initialState: IUsersData = {
       firstName: 'Test',
       lastName: 'Testings',
       creditCard: '0000-0000-0000-0000',
-      tel: '+3800000000',
+      phoneNumber: '+3800000000',
       email: 'test@test.com',
       role: {
         name: 'admin',
         id: 1,
         description: 'lorem ipsum',
       },
+      status: 'user',
     },
   ],
   currentUser: null,
@@ -53,7 +54,7 @@ const users = (state = initialState, { type, data }: IActions) => {
     case GET_USERS_SUCCESS: {
       return {
         ...state,
-        list: data.length ? data.length : initialState.list,
+        list: data.length ? data : initialState.list,
         loading: false,
       };
     }
