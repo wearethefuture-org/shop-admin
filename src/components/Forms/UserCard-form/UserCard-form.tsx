@@ -94,6 +94,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     firstName: isNew ? '' : user?.firstName,
     lastName: isNew ? '' : user?.lastName,
     phoneNumber: isNew ? '' : user?.phoneNumber,
+    // tel: isNew ? '' : user?.phoneNumber,
     creditCard: isNew ? '' : user?.creditCard,
     email: isNew ? '' : user?.email,
     roleId: isNew ? 0 : user?.role.id,

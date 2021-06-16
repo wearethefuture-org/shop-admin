@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import DataTable from 'react-data-table-component';
 import Card from '@material-ui/core/Card';
@@ -8,13 +8,14 @@ import { RootState } from '../../store/store';
 interface DataTableProps {
   columns: any[];
   data: any[];
-  title: string;
+  title: ReactElement<any> | string;
   onRowClicked?: (row: any) => void;
   count?: number;
   limit?: number;
   setLimit?: Dispatch<SetStateAction<number>>;
   paginationServer?: boolean;
   setPage?: Dispatch<SetStateAction<number>>;
+  defaultSortFieldId?: string;
 }
 
 const AppDataTable: React.FC<DataTableProps> = ({
@@ -27,6 +28,7 @@ const AppDataTable: React.FC<DataTableProps> = ({
   limit,
   setLimit = () => {},
   paginationServer = false,
+  defaultSortFieldId = '',
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
   
@@ -41,8 +43,12 @@ const AppDataTable: React.FC<DataTableProps> = ({
         onRowClicked={onRowClicked}
         pointerOnHover={true}
         pagination
+        defaultSortAsc={false}
+        defaultSortFieldId={defaultSortFieldId}
+        fixedHeader={true}
+        fixedHeaderScrollHeight={'60vh'}
         paginationTotalRows={count}
-        paginationRowsPerPageOptions={[10, 30, 50, 100]}
+        paginationRowsPerPageOptions={[2, 10, 30, 50, 100]}
         paginationServer={paginationServer}
         paginationPerPage={limit}
         onChangePage={(p) => setPage(p)}
