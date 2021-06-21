@@ -11,6 +11,7 @@ import theme from './reducers/themeMode.reducer';
 import users from './reducers/users.reducer';
 import rootSaga from './rootSaga';
 import slides from './reducers/slides.reduser';
+import orders from './reducers/orders.reducer';
 import user from './reducers/user.reducer';
 import comments from './reducers/comments.reducer';
 
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   theme,
   users,
   slides,
+  orders,
   comments,
   user,
 });

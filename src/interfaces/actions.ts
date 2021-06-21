@@ -1,6 +1,6 @@
 export interface IActions {
    type: string,
-   data?: any
+   data?: any,
 }
 
 export interface IActionsImage extends IActions {
