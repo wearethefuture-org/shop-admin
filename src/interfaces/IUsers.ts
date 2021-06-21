@@ -47,6 +47,7 @@ export interface IUserReqUp {
   roleId?: number;
   password?: string;
   email?: string;
+  telegramId?: string
 }
 
 export interface IUserReqAdd {
@@ -54,9 +55,11 @@ export interface IUserReqAdd {
   lastName: string;
   email: string;
   password: string;
+  confirmPassword: string;
   phoneNumber: string;
   creditCard: string;
   roleId: number;
+  telegramId: string;
 }
 
 export interface IUsersData {
@@ -64,6 +67,8 @@ export interface IUsersData {
   loading: boolean;
   currentUser: IUserItem | null;
   error: string | null;
+  count: number,
+  totalPages: number,
 }
 
 export interface UserTableData {

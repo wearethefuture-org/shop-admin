@@ -94,13 +94,14 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     firstName: isNew ? '' : user?.firstName,
     lastName: isNew ? '' : user?.lastName,
     phoneNumber: isNew ? '' : user?.phoneNumber,
-    // tel: isNew ? '' : user?.phoneNumber,
     creditCard: isNew ? '' : user?.creditCard,
     email: isNew ? '' : user?.email,
     roleId: isNew ? 0 : user?.role.id,
+    telegramId: isNew ? '' : user?.telegramId,
     password: '',
     confirmPassword: '',
   };
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema,
@@ -120,7 +121,9 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             phoneNumber: _values.phoneNumber ? _values.phoneNumber : '',
             roleId: _values.roleId ? _values.roleId : 0,
             password: _values.password ? _values.password : '',
+            confirmPassword: _values.confirmPassword ? _values.confirmPassword : '',
             email: _values.email ? _values.email : '',
+            telegramId: _values.telegramId ? _values.telegramId : '',
           })
         );
       } else if (user) {
@@ -130,6 +133,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             sendData[key] = _values[key];
           }
         }
+        sendData['roleId'] = _values['roleId']
         if (Object.keys(sendData).length > 1) {
           dispatch(updateUserRequest(user.id, sendData));
         } else {
@@ -141,7 +145,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className={classes.formDiv}>
+    <form onSubmit={formik.handleSubmit} className={classes.formDiv} onClick={(e) => e.stopPropagation()}>
       <div className={classes.row}>
         <TextField
           className={classes.input}
@@ -178,7 +182,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           value={formik.values.phoneNumber}
           disabled={!isEdit}
           type="tel"
-          name="tel"
+          name="phoneNumber"
           id="tel-field"
           placeholder="Номер телефону"
           onChange={formik.handleChange}
@@ -196,6 +200,21 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           name="email"
           id="email-field"
           placeholder="Електронна пошта"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+        />
+      </div>
+      <div className={classes.row}>
+        <TextField
+          className={classes.input}
+          value={formik.values.telegramId}
+          disabled={!isEdit}
+          type="text"
+          name="telegramId"
+          id="telegramId-field"
+          placeholder="Telegram Id"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.email && Boolean(formik.errors.email)}
