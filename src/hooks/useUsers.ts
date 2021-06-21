@@ -7,7 +7,7 @@ const useUsers = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUsersRequest());
+    dispatch(getUsersRequest(1, 10));
   }, [dispatch]);
 
   const data = useSelector((state: RootState) => state.users.list);

@@ -107,7 +107,7 @@ type ApiFetchedDataType = {
     delete: (id: number) => FetchedDataType<JSON>;
   };
   users: {
-    get: () => FetchedDataType<IUsersData>;
+    get: (page: number, limit: number) => FetchedDataType<IUsersData>;
   };
   user: {
     auth: (user: IUserCreeds) => FetchedDataType<IAuthResponse>;
@@ -170,7 +170,7 @@ export const api: ApiFetchedDataType = {
   },
 
   users: {
-    get: () => instance.get(`${ root }/users`),
+    get: (page, limit) => instance.get(`${ root }/users?page=${page}&limit=${limit}`),
   },
 
   user: {
@@ -178,7 +178,7 @@ export const api: ApiFetchedDataType = {
     get: () => instance.get(`${ root }/users/profile`),
     update: ({ id, ...user }) => instance.put(`${ root }/users/${ id }`, user),
     delete: (id) => instance.delete(`${ root }/users/${ id }`),
-    add: (user) => instance.post(`${ root }/auth/register`, user),
+    add: (user) => instance.post(`${ root }/auth/register-through-admin`, user),
   },
   comments: {
     get: (page, limit) => instance.get(`${ root }/comments?page=${ page }&limit=${ limit }`),
