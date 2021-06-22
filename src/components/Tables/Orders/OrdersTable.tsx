@@ -13,7 +13,7 @@ interface OrdersTableProps {
   activeColumns: Array<string>;
 }
 
-const OrdersTable: React.FC<OrdersTableProps> = ({list,activeColumns}) => {
+const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
   const [page, setPage] = useState(1);
@@ -90,11 +90,18 @@ const OrdersTable: React.FC<OrdersTableProps> = ({list,activeColumns}) => {
       omit: !activeColumns.includes('Email'),
     },
     {
-      name: 'Ім\'я',
+      name: "Ім'я",
       maxWidth: '150px',
       selector: (row) => `${row.user.firstName} ${row.user.lastName}`,
       sortable: true,
-      omit: !activeColumns.includes('Ім\'я'),
+      omit: !activeColumns.includes("Ім'я"),
+    },
+    {
+      name: 'Відділення',
+      selector: (row) => row.delivery.streetName,
+      maxWidth: '700px',
+      sortable: true,
+      omit: !activeColumns.includes('Відділення'),
     },
     {
       name: 'Сума',
@@ -108,7 +115,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({list,activeColumns}) => {
       selector: (row) => row.status,
       sortable: true,
       cell: (row) => {
-        return <OrdersEditStatus row={row}/>;
+        return <OrdersEditStatus row={row} />;
       },
       omit: !activeColumns.includes('Статус'),
     },

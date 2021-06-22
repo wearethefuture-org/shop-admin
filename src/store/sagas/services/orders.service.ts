@@ -1,6 +1,6 @@
 import { api } from '../../../api/api';
 
-export async function apiGetOrders(page: number,limit: number) {
+export async function apiGetOrders(page: number, limit: number) {
   const orders = await api.orders.get(page, limit);
   return orders.data;
 }
