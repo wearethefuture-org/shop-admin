@@ -23,9 +23,9 @@ export interface IProductToOrder extends Common {
 
 export interface IDelivery {
   areaName: string;
-  citiFullName: string;
-  citiName: string;
-  citiRef: string;
+  cityFullName: string;
+  cityName: string;
+  cityRef: string;
   streetName: string;
   streetRef: string;
 }
