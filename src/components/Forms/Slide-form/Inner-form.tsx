@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button, DialogActions, LinearProgress } from '@material-ui/core';
+import React, { useState } from 'react'
+import { Button, DialogActions, LinearProgress, CircularProgress } from '@material-ui/core';
 import { Field, Form, FormikProps } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,16 +10,56 @@ const useStyles = makeStyles({
   customBtn: {
     marginTop: "15px",
   },
+  linkField: {
+    display: "flex",
+    flexDirection: "row"
+  },
+  progress: {
+    color: "green"
+  }
 });
 
 const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> = (
-  {submitForm, isSubmitting, handleClose, ...props}) => {
+  {submitForm, isSubmitting, handleClose, values, ...props}) => {
 
   const classes = useStyles();
+  const [sliderLink, setSliderLink] = useState(values.href);
+  const [loading, setLoading] = useState(false);
 
   const dragOverHandler = (event: React.DragEvent<HTMLFormElement>) => {
     event.preventDefault();
   }
+  React.useEffect(() => {
+    setLoading(true);
+    const timeout = setTimeout(() => {
+      const defaultLink = 'shop.waf.com.ua'
+      let currentLink: any = sliderLink;
+      if(currentLink.trim() != '') {
+        switch(true) {
+          case currentLink[0] === '/':
+            values.href = currentLink
+            break;
+
+          case !currentLink.includes('http'):
+            currentLink = 'http://' + currentLink;
+            values.href = currentLink;
+            break;
+
+          case currentLink.includes(defaultLink):
+            values.href = new URL(currentLink).pathname
+            break;
+
+          default:
+            values.href = currentLink
+        }
+
+      }
+      setLoading(false);
+    }, 2000)
+
+    return () => clearTimeout(timeout)
+  }, [sliderLink])
+
 
   const dropHandler = (event: React.DragEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -62,14 +102,18 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
         label="Image"
         name="image"
       />
-      <Field
-        fullWidth
-        multiline
-        component={TextField}
-        type="href"
-        label="Href"
-        name="href"
-      />
+      <div className={classes.linkField}>
+        <Field
+          fullWidth
+          multiline
+          component={TextField}
+          type="href"
+          label="Href"
+          name="href"
+          onKeyUp={() => { setSliderLink(values.href) }}
+        />
+        { loading && <span><CircularProgress size={30} className={classes.progress} /></span> }
+      </div>
       <Field
         fullWidth
         multiline
@@ -92,7 +136,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           className={classes.customBtn}
           variant="contained"
           color="secondary"
-          disabled={isSubmitting}
+          disabled={isSubmitting || loading}
           onClick={submitForm}
         >
           Save
