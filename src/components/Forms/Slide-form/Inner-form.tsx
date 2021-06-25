@@ -5,6 +5,7 @@ import { TextField } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
 import { ISlideFormValues, InnerSlideFormProps } from '../../../interfaces/ISlides';
 import FileUpload from "./FileUpload";
+import clientUrl from '../../../api/config';
 
 const useStyles = makeStyles({
   customBtn: {
@@ -20,45 +21,36 @@ const useStyles = makeStyles({
 });
 
 const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> = (
-  {submitForm, isSubmitting, handleClose, values, ...props}) => {
+  {submitForm, isSubmitting, handleChange, handleClose, values, ...props}) => {
 
   const classes = useStyles();
-  const [sliderLink, setSliderLink] = useState(values.href);
-  const [loading, setLoading] = useState(false);
+  const [isValidate, setValidate] = useState(false);
+  const [fieldStatus, setFieldStatus] = useState(false);
+  const [slideLink, setSlideLink] = useState(values.href);
+
+
+  const validateSliderLink = (e: any) => {
+    let currentLink: any = e.target.value;
+    setValidate(true);
+    const timeout = setTimeout(() => {
+      if(currentLink.trim() != '') {
+        if(currentLink.includes(clientUrl) && !currentLink.includes('http')) {
+          currentLink = new URL('http://' + currentLink).pathname
+        }
+        else if(currentLink.includes(clientUrl) && currentLink.includes('http://')) {
+          currentLink = new URL(currentLink).pathname
+        }
+      }
+      values.href = currentLink.toString();
+      setValidate(false);
+      setFieldStatus(false);
+    }, 500)
+  }
 
   const dragOverHandler = (event: React.DragEvent<HTMLFormElement>) => {
     event.preventDefault();
   }
-  React.useEffect(() => {
-    setLoading(true);
-    const timeout = setTimeout(() => {
-      const defaultLink = 'shop.waf.com.ua'
-      let currentLink: any = sliderLink;
-      if(currentLink.trim() != '') {
-        switch(true) {
-          case currentLink[0] === '/':
-            values.href = currentLink
-            break;
-
-          case !currentLink.includes('http'):
-            currentLink = 'http://' + currentLink;
-            values.href = currentLink;
-            break;
-
-          case currentLink.includes(defaultLink):
-            values.href = new URL(currentLink).pathname
-            break;
-
-          default:
-            values.href = currentLink
-        }
-
-      }
-      setLoading(false);
-    }, 2000)
-
-    return () => clearTimeout(timeout)
-  }, [sliderLink])
+  
 
 
   const dropHandler = (event: React.DragEvent<HTMLFormElement>) => {
@@ -110,9 +102,13 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           type="href"
           label="Href"
           name="href"
-          onKeyUp={() => { setSliderLink(values.href) }}
+          value={values.href}
+          onKeyUp={() => setFieldStatus(true)}
+          onBlur={(e) => {
+            validateSliderLink(e)
+          }}
         />
-        { loading && <span><CircularProgress size={30} className={classes.progress} /></span> }
+        { isValidate && <span><CircularProgress size={30} className={classes.progress} /></span> }
       </div>
       <Field
         fullWidth
@@ -136,7 +132,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           className={classes.customBtn}
           variant="contained"
           color="secondary"
-          disabled={isSubmitting || loading}
+          disabled={isSubmitting || isValidate || fieldStatus}
           onClick={submitForm}
         >
           Save
