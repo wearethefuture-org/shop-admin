@@ -10,13 +10,14 @@ import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
 import AddCategoryModal from '../../components/Modals/AddCategoryModal/AddCategoryModal';
 
 enum cols {
-  orderId= 'OrderId',
+  orderId = 'OrderId',
   userId = 'UserId',
   createdAt = 'Створено',
   updatedAt = 'Оновлено',
   tel = 'Телефон',
   email = 'Email',
   name = "Ім'я",
+  street = 'Відділення',
   sum = 'Сума',
   status = 'Статус',
 }
@@ -34,8 +35,9 @@ const OrdersPage: React.FC = () => {
     cols.tel,
     cols.email,
     cols.name,
+    cols.street,
     cols.sum,
-    cols.status
+    cols.status,
   ]);
 
   const handleColumns = (column: string) =>
@@ -57,14 +59,14 @@ const OrdersPage: React.FC = () => {
         />
       )}
 
-      <div className="btns-wrapper">  
+      <div className="btns-wrapper">
         <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
       </div>
 
       <div className="content-wrapper">
         <AddCategoryModal openAddModal={openAddModal} setOpenAddModal={setOpenAddModal} />
 
-        {list ? <OrdersTable list={list} activeColumns={activeColumns}/> : null}
+        {list ? <OrdersTable list={list} activeColumns={activeColumns} /> : null}
       </div>
     </>
   );
