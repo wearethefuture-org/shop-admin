@@ -7,8 +7,6 @@ import UserDialog from '../../Modals/UserDialog/UserDialog';
 import UserRemoveDialog from '../../Modals/UserRemoveDialog/UserRemoveDialog';
 import { AppDispatch, RootState } from '../../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { getOrdersRequest } from '../../../store/actions/orders.actions';
 import { getUsersRequest } from '../../../store/actions/users.actions';
 
 const UsersTable = ({ list }) => {
@@ -129,7 +127,6 @@ const UsersTable = ({ list }) => {
     {
       name: '',
       selector: (row) => row.id,
-      sortable: true,
       cell: (row) => {
         return (
           <Box display="flex">

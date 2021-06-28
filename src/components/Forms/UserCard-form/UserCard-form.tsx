@@ -81,7 +81,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       .required('Це поле не повинно бути пустим!'),
     tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
     email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
-    creditCard: Yup.string().required('Це поле не повинно бути пустим!'),
+    creditCard: Yup.string().min(16,'Введіть коректний номер картки!').nullable(),
     roleId: Yup.string().required('Це поле не повинно бути пустим!'),
     password: isNew
       ? Yup.string().min(6, 'Пароль занадто короткий!').required('Це поле не повинно бути пустим!')
