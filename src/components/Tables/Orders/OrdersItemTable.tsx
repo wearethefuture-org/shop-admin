@@ -9,7 +9,11 @@ interface OrdersItemTableProps {
   order: ICurrentOrder;
 }
 
-const OrdersItemTable: FC<OrdersItemTableProps>  = ({ order }) => {
+const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
+  const currentOrderData = order.productToOrder.map((item) => {
+    return { ...item, delivery: order.delivery };
+  });
+
   const columns = [
     {
       name: 'productID',
@@ -53,6 +57,21 @@ const OrdersItemTable: FC<OrdersItemTableProps>  = ({ order }) => {
       sortable: true,
     },
     {
+      name: 'Область',
+      selector: (row) => row.delivery.areaName,
+      sortable: true,
+    },
+    {
+      name: 'Місто',
+      selector: (row) => row.delivery.citiName,
+      sortable: true,
+    },
+    {
+      name: 'Відділення',
+      selector: (row) => row.delivery.streetName,
+      sortable: true,
+    },
+    {
       name: 'Ціна',
       selector: (row) => row.product.price,
       sortable: true,
@@ -74,7 +93,7 @@ const OrdersItemTable: FC<OrdersItemTableProps>  = ({ order }) => {
 
   return (
     <AppDataTable
-      data={order.productToOrder}
+      data={currentOrderData}
       columns={columns}
       title={<OrdersItemTableHeader order={order} />}
       onRowClicked={() => {}}
