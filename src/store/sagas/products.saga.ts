@@ -15,7 +15,6 @@ import {
   apiDeleteChar,
   apiUpdateProductCharValues,
   apiAddProductCharValues,
-  apiUpdateAvailabilityProduct,
 } from './services/products.service';
 import {
   addProductError,
@@ -104,7 +103,7 @@ export function* updateProductWorker({
   },
 }: IActions): SagaIterator<void> {
   try {
-    const { name, price, description, categoryName, key, files } = productValues;
+    const { name, price, description, categoryName, key, files, availability } = productValues;
     const editedProduct = yield call(apiUpdateProduct, {
       id,
       name,
@@ -112,6 +111,7 @@ export function* updateProductWorker({
       description,
       categoryName,
       key,
+      availability
     });
 
     if (editedProduct && files instanceof FormData) {
@@ -179,13 +179,5 @@ export function* deleteProductWorker({ data: product }: IActions): SagaIterator 
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(deleteProductError(error.message));
-  }
-}
-
-export function* updateAvailabilityProductWorker({data}: IActions): SagaIterator {
-  try {
-    yield call(apiUpdateAvailabilityProduct, data);
-  } catch (error) {
-    yield put(failSnackBar(error.message));
   }
 }

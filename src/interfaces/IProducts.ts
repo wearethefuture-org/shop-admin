@@ -62,6 +62,9 @@ export interface IAddProduct extends GeneralProductInfo {
 
 export interface IUpdateProduct {
   id?: number;
+  availability?: boolean;
+  categoryName?: string;
+  key?: string;
   files: IImg[] | {};
   subForm?: object;
 }
@@ -137,9 +140,4 @@ export enum Type {
 export interface ProductsTableProps {
   list: IGetProducts[];
   activeColumns: string[];
-}
-
-export interface IUpdateAvailabilityProduct {
-  productId: number;
-  availability: boolean;
 }

@@ -24,7 +24,6 @@ import {
   IProductCharRequest,
   IProductsInCart,
   IUpdateProduct,
-  IUpdateAvailabilityProduct,
 } from '../interfaces/IProducts';
 import { IBasicOrder } from '../interfaces/IOrders';
 import { MainCategory } from '../pages/MainCategories/MainCategoryInfo/mainCategoryReducer';
@@ -77,7 +76,6 @@ type ApiFetchedDataType = {
     getProductsInCart: () => FetchedDataType<IProductsInCart>;
     addProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
-    updateAvailabilityProduct: (data: IUpdateAvailabilityProduct) => FetchedDataType<IAddCharResponse>;
   };
 
   settings: {
@@ -147,7 +145,6 @@ export const api: ApiFetchedDataType = {
     getProductsInCart: () => instance.get(`${ root }/products-in-cart`),
     addProductCharValues: (data) => instance.post(`${ root }/characteristics-values`, data),
     updateProductCharValues: (data) => instance.patch(`${ root }/characteristics-values`, data),
-    updateAvailabilityProduct: (data) => instance.post(`${ root }/product/updateAvailabilityProduct`, data),
   },
 
   slides: {

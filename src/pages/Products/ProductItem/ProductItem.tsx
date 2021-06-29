@@ -4,7 +4,10 @@ import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import ArrowIcon from '@material-ui/icons/ArrowBackIos';
 import { Card, Switch } from '@material-ui/core';
 
-import { deleteProductRequest, updateAvailabilityProduct } from '../../../store/actions/products.actions';
+import {
+  deleteProductRequest,
+  updateProductRequest,
+} from '../../../store/actions/products.actions';
 import { AppDispatch, RootState } from '../../../store/store';
 import ProductImages from './ProductImages/ProductImages';
 import ProductDescription from './ProductDescription/ProductDescription';
@@ -37,10 +40,22 @@ const ProductItem: React.FC = () => {
   };
 
   // UPDATE AVAILABILITY PRODUCT
-  const [availability, setAvailability] = useState(product.availability)
+  const [availability, setAvailability] = useState(product.availability);
   const handleUpdateAvailabilityProduct = (e) => {
-    setAvailability(e.target.checked)
-    dispatch(updateAvailabilityProduct({availability: e.target.checked, productId: product.id}));
+    setAvailability(e.target.checked);
+    dispatch(updateProductRequest(product.id, {
+        id: product.category.id,
+        availability: e.target.checked,
+        files: {},
+        categoryName: product.category.name,
+        key: product.category.key,
+      }, {
+        charsToAdd: [],
+        charsToDelete: [],
+        charsToEdit: [],
+      },
+      [],
+    ));
   };
 
   // ADDITIONAL INFO
@@ -59,7 +74,7 @@ const ProductItem: React.FC = () => {
       )}
 
       <div className={styles['btn-container']}>
-        <GoBackBtn handleGoBack={() => goBack()} />
+        <GoBackBtn handleGoBack={() => goBack()}/>
 
         <div className={styles['right-btn-wrapper']}>
           <Link
@@ -68,9 +83,10 @@ const ProductItem: React.FC = () => {
               state: { from: `${location.pathname}` },
             }}
           >
-            <EditBtn handleClick={() => {}} />
+            <EditBtn handleClick={() => {
+            }}/>
           </Link>
-          <DeleteBtn handleDelete={() => setOpenDeleteDialog(true)} />
+          <DeleteBtn handleDelete={() => setOpenDeleteDialog(true)}/>
 
         </div>
       </div>
@@ -80,13 +96,13 @@ const ProductItem: React.FC = () => {
           <Link to={'/products'}>Продукти</Link>
         </span>
         <span>
-          <ArrowIcon />
+          <ArrowIcon/>
         </span>
         <span>
           <Link to={'/categories'}>{product.category?.name}</Link>
         </span>
         <span>
-          <ArrowIcon />
+          <ArrowIcon/>
         </span>
         <span>{product.name}</span>
       </p>
@@ -104,8 +120,8 @@ const ProductItem: React.FC = () => {
 
       <Card>
         <div className={styles['item-main-info']}>
-          <ProductImages />
-          <ProductDescription />
+          <ProductImages/>
+          <ProductDescription/>
         </div>
 
         <div className={styles['item-additional-info']}>
@@ -118,7 +134,7 @@ const ProductItem: React.FC = () => {
           </ExpandBtn>
 
           <div className={expandBlock ? 'expanded' : 'shrinked'}>
-            <ProductCharGroups categoryName={product.category?.name} />
+            <ProductCharGroups categoryName={product.category?.name}/>
           </div>
         </div>
       </Card>
