@@ -6,7 +6,7 @@ import { Card, Switch } from '@material-ui/core';
 
 import {
   deleteProductRequest,
-  updateProductRequest,
+  updateAvailabilityProduct,
 } from '../../../store/actions/products.actions';
 import { AppDispatch, RootState } from '../../../store/store';
 import ProductImages from './ProductImages/ProductImages';
@@ -43,19 +43,11 @@ const ProductItem: React.FC = () => {
   const [availability, setAvailability] = useState(product.availability);
   const handleUpdateAvailabilityProduct = (e) => {
     setAvailability(e.target.checked);
-    dispatch(updateProductRequest(product.id, {
-        id: product.category.id,
-        availability: e.target.checked,
-        files: {},
-        categoryName: product.category.name,
-        key: product.category.key,
-      }, {
-        charsToAdd: [],
-        charsToDelete: [],
-        charsToEdit: [],
-      },
-      [],
-    ));
+    dispatch(updateAvailabilityProduct({
+      availability: e.target.checked,
+      productId: product.id,
+      categoryName: product.category.name,
+    }));
   };
 
   // ADDITIONAL INFO

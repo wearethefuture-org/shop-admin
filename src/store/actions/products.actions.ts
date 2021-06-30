@@ -6,6 +6,7 @@ import {
   IAddProduct,
   IUpdateProduct,
   IGetProductById,
+  IUpdateAvailabilityProduct,
 } from '../../interfaces/IProducts';
 import {
   GET_PRODUCTS_REQUEST,
@@ -113,6 +114,11 @@ export const updateProductRequest = (
 export const updateProductSuccess = (product: IProductItem): IActions => ({
   type: UPDATE_PRODUCT_SUCCESS,
   data: product,
+});
+
+export const updateAvailabilityProduct = (data: IUpdateAvailabilityProduct): IActions => ({
+  type: UPDATE_AVAILABILITY_PRODUCT,
+  data: data,
 });
 
 export const updateProductError = (message: string): IActions => ({

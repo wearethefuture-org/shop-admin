@@ -157,6 +157,16 @@ const products = (state = initialState, { type, data }: IActions) => {
       };
     }
 
+    case UPDATE_AVAILABILITY_PRODUCT: {
+      return {
+        ...state,
+        currentProduct: {
+          ...state.currentProduct,
+          availability: data.availability
+        }
+      };
+    }
+
     // DELETE PRODUCT
     case DELETE_PRODUCT_REQUEST: {
       return {
