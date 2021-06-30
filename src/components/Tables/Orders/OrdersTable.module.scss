@@ -1,0 +1,35 @@
+.edit_quantity {
+    display: flex;
+    align-items: center;
+    width: 70%;
+
+    input {
+        width: 100%;
+    }
+}
+
+.quantity {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;width: 40%;
+}
+
+.orderHeader {
+    padding-top: 20px;
+}
+
+.headerUserData {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.headerTitle {
+    font-size: 26px;
+}
+
+.amount {
+    text-align: end;
+    margin-right: 8%;
+    font-size: 18px;
+}
+

@@ -15,7 +15,8 @@ export interface IUserItem {
   firstName: string;
   lastName: string;
   creditCard: string;
-  tel: string;
+  phoneNumber: string;
+  status: string;
   email: string;
   role: {
     name: string;
@@ -72,4 +73,15 @@ export interface UserTableData {
   password: string;
   role: string;
   users: number;
+}
+
+export interface IOrderUser {
+  id: number;
+  dateOfBirth?: string;
+  email: string;
+  facebookId?: string;
+  googleId?: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
 }
