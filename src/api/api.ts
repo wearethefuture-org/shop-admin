@@ -147,7 +147,7 @@ export const api: ApiFetchedDataType = {
     getProductsInCart: () => instance.get(`${ root }/products-in-cart`),
     addProductCharValues: (data) => instance.post(`${ root }/characteristics-values`, data),
     updateProductCharValues: (data) => instance.patch(`${ root }/characteristics-values`, data),
-    updateAvailabilityProduct: (data) => instance.post(`${ root }/product/updateAvailabilityProduct`, data),
+    updateAvailabilityProduct: ({productId, ...product}) => instance.patch(`${ root }/product/${ productId }`, product),
   },
 
   slides: {

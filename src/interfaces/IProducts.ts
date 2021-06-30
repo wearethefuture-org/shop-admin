@@ -142,4 +142,5 @@ export interface ProductsTableProps {
 export interface IUpdateAvailabilityProduct {
   productId: number;
   availability: boolean;
+  categoryName: string;
 }
