@@ -15,6 +15,7 @@ import {
   apiDeleteChar,
   apiUpdateProductCharValues,
   apiAddProductCharValues,
+  apiUpdateAvailabilityProduct,
 } from './services/products.service';
 import {
   addProductError,
@@ -29,6 +30,8 @@ import {
   updateProductSuccess,
   uploadMainImgError,
   uploadMainImgSuccess,
+  updateAvailabilityProductError,
+  updateAvailabilityProductSuccess,
 } from '../actions/products.actions';
 import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 
@@ -178,5 +181,16 @@ export function* deleteProductWorker({ data: product }: IActions): SagaIterator 
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(deleteProductError(error.message));
+  }
+}
+
+export function* updateAvailabilityProductWorker({data}: IActions): SagaIterator {
+  try {
+    yield call(apiUpdateAvailabilityProduct, data);
+    yield put(updateAvailabilityProductSuccess(data));
+    yield put(successSnackBar());
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(updateAvailabilityProductError(error.message));
   }
 }
