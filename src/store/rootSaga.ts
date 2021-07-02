@@ -36,7 +36,7 @@ import {
   REQUEST_ADD_MAIN_CATEGORIES,
   GET_MAIN_CATEGORY_BY_ID_REQUEST,
   UPDATE_MAIN_CATEGORY_REQUEST,
-  UPDATE_AVAILABILITY_PRODUCT,
+  UPDATE_AVAILABILITY_PRODUCT_REQUEST,
 } from './types';
 
 import {
@@ -104,7 +104,7 @@ export function* sagaProductsWatcher(): SagaIterator {
   yield takeEvery(UPLOAD_MAIN_IMG_REQUEST, uploadMainImgWorker);
   yield takeEvery(UPDATE_PRODUCT_REQUEST, updateProductWorker);
   yield takeEvery(DELETE_PRODUCT_REQUEST, deleteProductWorker);
-  yield takeEvery(UPDATE_AVAILABILITY_PRODUCT, updateAvailabilityProductWorker);
+  yield takeEvery(UPDATE_AVAILABILITY_PRODUCT_REQUEST, updateAvailabilityProductWorker);
 }
 
 // Settings

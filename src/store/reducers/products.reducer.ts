@@ -18,7 +18,9 @@ import {
   UPLOAD_MAIN_IMG_REQUEST,
   UPLOAD_MAIN_IMG_SUCCESS,
   UPLOAD_MAIN_IMG_ERROR,
-  UPDATE_AVAILABILITY_PRODUCT,
+  UPDATE_AVAILABILITY_PRODUCT_REQUEST,
+  UPDATE_AVAILABILITY_PRODUCT_ERROR,
+  UPDATE_AVAILABILITY_PRODUCT_SUCCESS,
 } from '../types';
 import { IProductsData } from '../../interfaces/IProducts';
 
@@ -157,13 +159,29 @@ const products = (state = initialState, { type, data }: IActions) => {
       };
     }
 
-    case UPDATE_AVAILABILITY_PRODUCT: {
+    case UPDATE_AVAILABILITY_PRODUCT_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
+    case UPDATE_AVAILABILITY_PRODUCT_SUCCESS: {
       return {
         ...state,
         currentProduct: {
           ...state.currentProduct,
           availability: data.availability
-        }
+        },
+        loading: false,
+      };
+    }
+
+    case UPDATE_AVAILABILITY_PRODUCT_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
       };
     }
 
