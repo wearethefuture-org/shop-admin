@@ -32,17 +32,19 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
   const [fieldStatus, setFieldStatus] = useState(false);
   const [slideLink, setSlideLink] = useState(values.href);
 
-  const validateSliderLink = (e: any) => {
+  const validateSliderLink = (e) => {
     let currentLink: any = e.target.value;
+    let reg = new RegExp('([a-z0-9-]+\:\/+)([^\/\s]+)([a-z0-9\^=%&;\/~\+]*)[\?]?([^ \#\r\n]*)#?([^ \#\r\n]*)');
     setValidate(true);
     setTimeout(() => {
       if (currentLink.trim() !== '') {
-        if (!currentLink.includes('http') && currentLink[0] !== '/') {
-          currentLink = new URL('http://' + currentLink).pathname;
-        }
-        if (currentLink.includes('http://') && currentLink.length > 7) {
+        if (currentLink.match(reg) && currentLink[0] !== '/') {
           currentLink = new URL(currentLink).pathname;
         }
+        if (!currentLink.match(reg) && currentLink[0] !== '/') {
+          currentLink = new URL('http://' + currentLink).pathname;
+        }
+        
       }
       values.href = currentLink.toString();
       setValidate(false);
