@@ -63,7 +63,7 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
     },
     {
       name: 'Місто',
-      selector: (row) => row.delivery.citiName,
+      selector: (row) => row.delivery.cityName,
       sortable: true,
     },
     {
