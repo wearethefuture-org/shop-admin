@@ -81,7 +81,6 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       .required('Це поле не повинно бути пустим!'),
     tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
     email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
-    creditCard: Yup.string().min(16,'Введіть коректний номер картки!').nullable(),
     roleId: Yup.string().required('Це поле не повинно бути пустим!'),
     password: isNew
       ? Yup.string().min(6, 'Пароль занадто короткий!').required('Це поле не повинно бути пустим!')
@@ -94,7 +93,6 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     firstName: isNew ? '' : user?.firstName,
     lastName: isNew ? '' : user?.lastName,
     phoneNumber: isNew ? '' : user?.phoneNumber,
-    creditCard: isNew ? '' : user?.creditCard,
     email: isNew ? '' : user?.email,
     roleId: isNew ? 0 : user?.role.id,
     telegramId: isNew ? '' : user?.telegramId,
@@ -117,7 +115,6 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           addUserRequest({
             firstName: _values.firstName ? _values.firstName : '',
             lastName: _values.lastName ? _values.lastName : '',
-            creditCard: _values.creditCard ? _values.creditCard : '',
             phoneNumber: _values.phoneNumber ? _values.phoneNumber : '',
             roleId: _values.roleId ? _values.roleId : 0,
             password: _values.password ? _values.password : '',
@@ -241,21 +238,6 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             );
           })}
         </Select>
-      </div>
-      <div className={classes.row}>
-        <TextField
-          className={classes.input}
-          value={formik.values.creditCard}
-          disabled={!isEdit}
-          type="text"
-          name="creditCard"
-          id="creditCard-field"
-          placeholder="ВВедить кредтну картку"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.creditCard && Boolean(formik.errors.creditCard)}
-          helperText={formik.touched.creditCard && formik.errors.creditCard}
-        />
       </div>
       <div className={classes.row}>
         <TextField

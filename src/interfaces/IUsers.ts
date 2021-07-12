@@ -14,7 +14,6 @@ export interface IUserItem {
   updatedAt: string;
   firstName: string;
   lastName: string;
-  creditCard: string;
   phoneNumber: string;
   status: string;
   email: string;
@@ -42,7 +41,6 @@ export interface IUserReqUp {
   id: number;
   firstName?: string;
   lastName?: string;
-  creditCard?: string;
   phoneNumber?: string;
   roleId?: number;
   password?: string;
@@ -57,7 +55,6 @@ export interface IUserReqAdd {
   password: string;
   confirmPassword: string;
   phoneNumber: string;
-  creditCard: string;
   roleId: number;
   telegramId: string;
 }

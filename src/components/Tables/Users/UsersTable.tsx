@@ -112,10 +112,6 @@ const UsersTable = ({ list }) => {
       selector: (row) => row.telegramId,
     },
     {
-      name: 'Картка',
-      selector: (row) => row.creditCard,
-    },
-    {
       name: 'Ім\'я',
       selector: (row) => `${row.firstName} ${row.lastName}`,
       sortable: true,
