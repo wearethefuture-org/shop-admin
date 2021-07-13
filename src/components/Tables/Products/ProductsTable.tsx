@@ -8,7 +8,7 @@ import { root } from '../../../api/config';
 import { priceFormat } from '../../../utils/priceFormat';
 import styles from './ProductsTable.module.scss';
 
-const placeholder = `${root}/product/img/empty-preview.png`;
+const placeholder = `${root}/static/uploads/empty-preview.png`;
 
 const MainImgName = () => (
   <p className={styles['table-header-cell']}>
@@ -18,6 +18,7 @@ const MainImgName = () => (
 );
 
 const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) => {
+
   const productsColumns = [
     {
       name: 'ID',
@@ -33,7 +34,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) =>
       format: (row) =>
         row.mainImg ? (
           <div className={styles.mainImg}>
-            <img src={`${root}/product/img/${row.mainImg.name}`} alt={row.mainImg.name} />
+            <img src={`${root}/static/uploads/${row.mainImg.name}`} alt={row.mainImg.name} />
           </div>
         ) : (
           <div className={styles.placeholder}>
