@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { api } from '../../../api/api';
 import { root } from '../../../api/config';
-import { IAddProduct, IProductCharRequest } from '../../../interfaces/IProducts';
+import { IAddProduct, IProductCharRequest, IUpdateAvailabilityProduct } from '../../../interfaces/IProducts';
 
 export async function apiGetProducts() {
   const products = await api.products.get();
@@ -56,6 +56,11 @@ export async function apiAddProductCharValues(data: IProductCharRequest) {
 
 export async function apiUpdateProductCharValues(data: IProductCharRequest) {
   const res = await api.products.updateProductCharValues(data);
+  return res.data;
+}
+
+export async function apiUpdateAvailabilityProduct(data: IUpdateAvailabilityProduct) {
+  const res = await api.products.updateAvailabilityProduct(data);
   return res.data;
 }
 

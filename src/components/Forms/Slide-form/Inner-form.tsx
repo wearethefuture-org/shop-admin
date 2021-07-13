@@ -1,25 +1,60 @@
-import React from 'react'
-import { Button, DialogActions, LinearProgress } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Button, DialogActions, LinearProgress, CircularProgress } from '@material-ui/core';
 import { Field, Form, FormikProps } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
 import { ISlideFormValues, InnerSlideFormProps } from '../../../interfaces/ISlides';
-import FileUpload from "./FileUpload";
+import FileUpload from './FileUpload';
 
 const useStyles = makeStyles({
   customBtn: {
-    marginTop: "15px",
+    marginTop: '15px',
+  },
+  linkField: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  progress: {
+    color: 'green',
   },
 });
 
-const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> = (
-  {submitForm, isSubmitting, handleClose, ...props}) => {
-
+const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> = ({
+  submitForm,
+  isSubmitting,
+  handleChange,
+  handleClose,
+  values,
+  ...props
+}) => {
   const classes = useStyles();
+  const [isValidate, setValidate] = useState(false);
+  const [fieldStatus, setFieldStatus] = useState(false);
+  const [slideLink, setSlideLink] = useState(values.href);
+
+  const validateSliderLink = (e) => {
+    let currentLink: any = e.target.value;
+    let reg = new RegExp('([a-z0-9-]+\:\/+)([^\/\s]+)([a-z0-9\^=%&;\/~\+]*)[\?]?([^ \#\r\n]*)#?([^ \#\r\n]*)');
+    setValidate(true);
+    setTimeout(() => {
+      if (currentLink.trim() !== '') {
+        if (currentLink.match(reg) && currentLink[0] !== '/') {
+          currentLink = new URL(currentLink).pathname;
+        }
+        if (!currentLink.match(reg) && currentLink[0] !== '/') {
+          currentLink = new URL('http://' + currentLink).pathname;
+        }
+        
+      }
+      values.href = currentLink.toString();
+      setValidate(false);
+      setFieldStatus(false);
+    }, 500);
+  };
 
   const dragOverHandler = (event: React.DragEvent<HTMLFormElement>) => {
     event.preventDefault();
-  }
+  };
 
   const dropHandler = (event: React.DragEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,48 +63,35 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
       for (let i = 0; i < event.dataTransfer.items.length; i++) {
         if (event.dataTransfer.items[i].kind === 'file') {
           let file = event.dataTransfer.items[i].getAsFile();
-          props.setFieldValue("image", file)
+          props.setFieldValue('image', file);
         }
       }
     }
-  }
+  };
 
   return (
-    <Form
-      onDrop={dropHandler}
-      onDragOver={dragOverHandler}
-    >
-      <Field
-        fullWidth
-        component={TextField}
-        type="name"
-        label="Name"
-        name="name"
-      />
-      <Field
-        fullWidth
-        multiline
-        component={TextField}
-        type="text"
-        label="Text"
-        name="text"
-      />
-      <Field
-        fullWidth
-        multiline
-        component={FileUpload}
-        type="file"
-        label="Image"
-        name="image"
-      />
-      <Field
-        fullWidth
-        multiline
-        component={TextField}
-        type="href"
-        label="Href"
-        name="href"
-      />
+    <Form onDrop={dropHandler} onDragOver={dragOverHandler}>
+      <Field fullWidth component={TextField} type="name" label="Name" name="name" />
+      <Field fullWidth multiline component={TextField} type="text" label="Text" name="text" />
+      <Field fullWidth multiline component={FileUpload} type="file" label="Image" name="image" />
+      <div className={classes.linkField}>
+        <Field
+          fullWidth
+          multiline
+          component={TextField}
+          type="href"
+          label="Href"
+          name="href"
+          value={values.href}
+          onKeyUp={() => setFieldStatus(true)}
+          onBlur={(e) => validateSliderLink(e)}
+        />
+        {isValidate && (
+          <span>
+            <CircularProgress size={30} className={classes.progress} />
+          </span>
+        )}
+      </div>
       <Field
         fullWidth
         multiline
@@ -78,7 +100,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
         label="Priority"
         name="priority"
       />
-      {isSubmitting && <LinearProgress/>}
+      {isSubmitting && <LinearProgress />}
       <DialogActions>
         <Button
           onClick={handleClose}
@@ -92,7 +114,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           className={classes.customBtn}
           variant="contained"
           color="secondary"
-          disabled={isSubmitting}
+          disabled={isSubmitting || isValidate || fieldStatus}
           onClick={submitForm}
         >
           Save
@@ -100,5 +122,5 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
       </DialogActions>
     </Form>
   );
-}
+};
 export default InnerForm;

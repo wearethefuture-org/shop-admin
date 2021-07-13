@@ -11,6 +11,7 @@ export interface IBasicProduct extends Common {
   key: string;
   description: string;
   price: number;
+  availability: boolean;
 }
 
 export interface GeneralProductInfo {
@@ -136,4 +137,10 @@ export enum Type {
 export interface ProductsTableProps {
   list: IGetProducts[];
   activeColumns: string[];
+}
+
+export interface IUpdateAvailabilityProduct {
+  productId: number;
+  availability: boolean;
+  categoryName: string;
 }

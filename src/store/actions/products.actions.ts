@@ -6,6 +6,7 @@ import {
   IAddProduct,
   IUpdateProduct,
   IGetProductById,
+  IUpdateAvailabilityProduct,
 } from '../../interfaces/IProducts';
 import {
   GET_PRODUCTS_REQUEST,
@@ -25,7 +26,7 @@ import {
   UPDATE_PRODUCT_ERROR,
   UPLOAD_MAIN_IMG_REQUEST,
   UPLOAD_MAIN_IMG_SUCCESS,
-  UPLOAD_MAIN_IMG_ERROR,
+  UPLOAD_MAIN_IMG_ERROR, UPDATE_AVAILABILITY_PRODUCT_REQUEST, UPDATE_AVAILABILITY_PRODUCT_SUCCESS, UPDATE_AVAILABILITY_PRODUCT_ERROR,
 } from '../types';
 
 // get all
@@ -116,6 +117,22 @@ export const updateProductSuccess = (product: IProductItem): IActions => ({
 
 export const updateProductError = (message: string): IActions => ({
   type: UPDATE_PRODUCT_ERROR,
+  data: message,
+});
+
+// update availability product
+export const updateAvailabilityProductRequest = (data: IUpdateAvailabilityProduct): IActions => ({
+  type: UPDATE_AVAILABILITY_PRODUCT_REQUEST,
+  data: data,
+});
+
+export const updateAvailabilityProductSuccess = (product: IProductItem): IActions => ({
+  type: UPDATE_AVAILABILITY_PRODUCT_SUCCESS,
+  data: product,
+});
+
+export const updateAvailabilityProductError = (message: string): IActions => ({
+  type: UPDATE_AVAILABILITY_PRODUCT_ERROR,
   data: message,
 });
 
