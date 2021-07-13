@@ -52,8 +52,9 @@ export interface IUserReqAdd {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
-  confirmPassword: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
   phoneNumber: string;
   roleId: number;
   telegramId: string;
@@ -73,7 +74,7 @@ export interface UserTableData {
   createdAt: string;
   updatedAt: string;
   email: string;
-  password: string;
+  newPassword: string;
   role: string;
   users: number;
 }

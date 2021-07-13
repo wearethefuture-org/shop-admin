@@ -74,7 +74,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string()
-      .min(3, "Введіть коректне ім'я")
+      .min(3, 'Введіть коректне ім\'я')
       .required('Це поле не повинно бути пустим!'),
     lastName: Yup.string()
       .min(2, 'Введіть коректне прізвище')
@@ -82,10 +82,23 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
     email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
     roleId: Yup.string().required('Це поле не повинно бути пустим!'),
-    password: isNew
+    currentPassword: isNew
       ? Yup.string().min(6, 'Пароль занадто короткий!').required('Це поле не повинно бути пустим!')
       : Yup.string().min(6, 'Пароль занадто короткий!'),
-    confirmPassword: Yup.string().oneOf([Yup.ref('password')], 'Пароль не співпадає'),
+    newPassword: isNew
+      ? Yup.string().min(6, 'Пароль занадто короткий!').required('Це поле не повинно бути пустим!')
+        .test(
+          'regex',
+          'Пароль має бути не менше 6 символів, містити цифри та великі літери',
+          (val) => new RegExp(/^(?=.*[A-ZА-Я])(?=.*\d).*$/).test(val!),
+        )
+      : Yup.string().min(6, 'Пароль занадто короткий!')
+        .test(
+          'regex',
+          'Пароль має бути не менше 6 символів, містити цифри та великі літери',
+          (val) => new RegExp(/^(?=.*[A-ZА-Я])(?=.*\d).*$/).test(val!),
+        ),
+    confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
   });
   const [isEdit, setIsEdit] = useState(true);
   const dispatch: AppDispatch = useDispatch();
@@ -96,8 +109,9 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     email: isNew ? '' : user?.email,
     roleId: isNew ? 0 : user?.role.id,
     telegramId: isNew ? '' : user?.telegramId,
-    password: '',
-    confirmPassword: '',
+    currentPassword: '',
+    newPassword: '',
+    confirmNewPassword: '',
   };
 
   const formik = useFormik({
@@ -117,11 +131,12 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             lastName: _values.lastName ? _values.lastName : '',
             phoneNumber: _values.phoneNumber ? _values.phoneNumber : '',
             roleId: _values.roleId ? _values.roleId : 0,
-            password: _values.password ? _values.password : '',
-            confirmPassword: _values.confirmPassword ? _values.confirmPassword : '',
+            currentPassword: _values.currentPassword ? _values.currentPassword : '',
+            newPassword: _values.newPassword ? _values.newPassword : '',
+            confirmNewPassword: _values.confirmNewPassword ? _values.confirmNewPassword : '',
             email: _values.email ? _values.email : '',
             telegramId: _values.telegramId ? _values.telegramId : '',
-          })
+          }),
         );
       } else if (user) {
         let sendData: { id: number; [key: string]: any } = { id: user.id };
@@ -130,7 +145,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             sendData[key] = _values[key];
           }
         }
-        sendData['roleId'] = _values['roleId']
+        sendData['roleId'] = _values['roleId'];
         if (Object.keys(sendData).length > 1) {
           dispatch(updateUserRequest(user.id, sendData));
         } else {
@@ -142,7 +157,8 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className={classes.formDiv} onClick={(e) => e.stopPropagation()}>
+    <form onSubmit={formik.handleSubmit} className={classes.formDiv}
+          onClick={(e) => e.stopPropagation()}>
       <div className={classes.row}>
         <TextField
           className={classes.input}
@@ -245,13 +261,13 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           autoComplete={'false'}
           disabled={!isEdit}
           type="password"
-          name="password"
-          id="password-field"
-          placeholder="Пароль (6 символів)"
+          name="currentPassword"
+          id="currentPassword-field"
+          placeholder="Поточний пароль"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
+          error={formik.touched.currentPassword && Boolean(formik.errors.currentPassword)}
+          helperText={formik.touched.currentPassword && formik.errors.currentPassword}
         />
       </div>
       <div className={classes.row}>
@@ -260,13 +276,28 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           autoComplete={'false'}
           disabled={!isEdit}
           type="password"
-          name="confirmPassword"
-          id="confirmPassword-field"
+          name="newPassword"
+          id="newPassword-field"
+          placeholder="Новий пароль"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.newPassword && Boolean(formik.errors.newPassword)}
+          helperText={formik.touched.newPassword && formik.errors.newPassword}
+        />
+      </div>
+      <div className={classes.row}>
+        <TextField
+          className={classes.input}
+          autoComplete={'false'}
+          disabled={!isEdit}
+          type="password"
+          name="confirmNewPassword"
+          id="confirmNewPassword-field"
           placeholder="Підтвердіть пароль"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
-          helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+          error={formik.touched.confirmNewPassword && Boolean(formik.errors.confirmNewPassword)}
+          helperText={formik.touched.confirmNewPassword && formik.errors.confirmNewPassword}
         />
       </div>
       <div className={classes.row}>
