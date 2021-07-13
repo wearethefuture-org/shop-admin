@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { Button, TextField, Select, MenuItem } from '@material-ui/core';
-
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { AppDispatch } from '../../../store/store';
 import { useDispatch } from 'react-redux';
+import * as Yup from 'yup';
+import { makeStyles } from '@material-ui/core/styles';
+
+import { AppDispatch } from '../../../store/store';
 import {
   addUserRequest,
   updateUserRequest,
 } from '../../../store/actions/users.actions';
 import { IUserItem } from '../../../interfaces/IUsers';
 import { failSnackBar } from '../../../store/actions/snackbar.actions';
-import { makeStyles } from '@material-ui/core/styles';
+import useRoles from '../../../hooks/useRoles';
 
 const useStyles = makeStyles({
   input: {
@@ -63,14 +64,9 @@ interface FormDialogProps {
 
 const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
-const roles = [
-  { id: 1, name: 'admin', description: 'lorem ipsum' },
-  { id: 2, name: 'moderator', description: 'lorem ipsum' },
-  { id: 3, name: 'user', description: 'lorem ipsum' },
-];
-
 const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) => {
   const classes = useStyles();
+  const { data: roles } = useRoles();
 
   const validationSchema = Yup.object().shape({
     firstName: Yup.string()

@@ -44,6 +44,7 @@ import {
 } from '../interfaces/IUsers';
 import instance from './axios-interceptors';
 import { Status } from '../enums/orderStatus';
+import { IRole } from '../interfaces/IRoles';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -118,6 +119,9 @@ type ApiFetchedDataType = {
     update: (user: IUserReqUp) => FetchedDataType<IUserItem>;
     delete: (id: number) => FetchedDataType<JSON>;
   };
+  roles: {
+    get: () => FetchedDataType<IRole[]>;
+  }
 };
 
 export const api: ApiFetchedDataType = {
@@ -187,4 +191,7 @@ export const api: ApiFetchedDataType = {
     get: (page, limit) => instance.get(`${ root }/comments?page=${ page }&limit=${ limit }`),
     delete: (id) => instance.delete(`${ root }/comments/admin/${ id }`),
   },
+  roles: {
+    get: () => instance.get(`${ root }/roles`),
+  }
 };
