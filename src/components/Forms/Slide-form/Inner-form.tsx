@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, DialogActions, LinearProgress, CircularProgress } from '@material-ui/core';
 import { Field, Form, FormikProps } from 'formik';
 import { TextField } from 'formik-material-ui';
@@ -28,29 +28,6 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
   ...props
 }) => {
   const classes = useStyles();
-  const [isValidate, setValidate] = useState(false);
-  const [fieldStatus, setFieldStatus] = useState(false);
-  const [slideLink, setSlideLink] = useState(values.href);
-
-  const validateSliderLink = (e) => {
-    let currentLink: any = e.target.value;
-    let reg = new RegExp('([a-z0-9-]+\:\/+)([^\/\s]+)([a-z0-9\^=%&;\/~\+]*)[\?]?([^ \#\r\n]*)#?([^ \#\r\n]*)');
-    setValidate(true);
-    setTimeout(() => {
-      if (currentLink.trim() !== '') {
-        if (currentLink.match(reg) && currentLink[0] !== '/') {
-          currentLink = new URL(currentLink).pathname;
-        }
-        if (!currentLink.match(reg) && currentLink[0] !== '/') {
-          currentLink = new URL('http://' + currentLink).pathname;
-        }
-        
-      }
-      values.href = currentLink.toString();
-      setValidate(false);
-      setFieldStatus(false);
-    }, 500);
-  };
 
   const dragOverHandler = (event: React.DragEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -83,14 +60,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           label="Href"
           name="href"
           value={values.href}
-          onKeyUp={() => setFieldStatus(true)}
-          onBlur={(e) => validateSliderLink(e)}
         />
-        {isValidate && (
-          <span>
-            <CircularProgress size={30} className={classes.progress} />
-          </span>
-        )}
       </div>
       <Field
         fullWidth
@@ -114,7 +84,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           className={classes.customBtn}
           variant="contained"
           color="secondary"
-          disabled={isSubmitting || isValidate || fieldStatus}
+          disabled={isSubmitting}
           onClick={submitForm}
         >
           Save
