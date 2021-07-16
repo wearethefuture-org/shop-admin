@@ -68,34 +68,51 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
   const classes = useStyles();
   const { data: roles } = useRoles();
 
-  const validationSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(3, 'Введіть коректне ім\'я')
-      .required('Це поле не повинно бути пустим!'),
-    lastName: Yup.string()
-      .min(2, 'Введіть коректне прізвище')
-      .required('Це поле не повинно бути пустим!'),
-    tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
-    email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
-    roleId: Yup.string().required('Це поле не повинно бути пустим!'),
-    currentPassword: isNew
-      ? Yup.string().min(6, 'Пароль занадто короткий!').required('Це поле не повинно бути пустим!')
-      : Yup.string().min(6, 'Пароль занадто короткий!'),
-    newPassword: isNew
-      ? Yup.string().min(6, 'Пароль занадто короткий!').required('Це поле не повинно бути пустим!')
-        .test(
-          'regex',
-          'Пароль має бути не менше 6 символів, містити цифри та великі літери',
-          (val) => new RegExp(/^(?=.*[A-ZА-Я])(?=.*\d).*$/).test(val!),
-        )
-      : Yup.string().min(6, 'Пароль занадто короткий!')
-        .test(
-          'regex',
-          'Пароль має бути не менше 6 символів, містити цифри та великі літери',
-          (val) => new RegExp(/^(?=.*[A-ZА-Я])(?=.*\d).*$/).test(val!),
-        ),
-    confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
-  });
+  const validationSchema = isNew ? Yup.object().shape({
+      firstName: Yup.string()
+        .min(3, 'Введіть коректне ім\'я')
+        .required('Це поле не повинно бути пустим!'),
+      lastName: Yup.string()
+        .min(2, 'Введіть коректне прізвище')
+        .required('Це поле не повинно бути пустим!'),
+      tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
+      email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
+      telegramId: Yup.string().notRequired(),
+      roleId: Yup.string().required('Це поле не повинно бути пустим!'),
+      newPassword:
+        Yup.string().min(6, 'Пароль занадто короткий!').required('Це поле не повинно бути пустим!')
+          .matches(
+            /^(?=.*[A-ZА-Я])(?=.*\d).*$/,
+            'Пароль має бути не менше 6 символів, містити цифри та великі літери',
+          ),
+      confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
+    }) :
+    Yup.object().shape({
+      firstName: Yup.string()
+        .min(3, 'Введіть коректне ім\'я')
+        .required('Це поле не повинно бути пустим!'),
+      lastName: Yup.string()
+        .min(2, 'Введіть коректне прізвище')
+        .required('Це поле не повинно бути пустим!'),
+      tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
+      email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
+      telegramId: Yup.string().notRequired(),
+      roleId: Yup.string().required('Це поле не повинно бути пустим!'),
+      currentPassword: Yup.string().min(6, 'Пароль занадто короткий!').notRequired(),
+      newPassword:
+        Yup.string().when(['currentPassword'], {
+          is: true,
+          then: Yup.string()
+            .min(6, 'Пароль занадто короткий!')
+            .matches(
+              /^(?=.*[A-ZА-Я])(?=.*\d).*$/,
+              'Пароль має бути не менше 6 символів, містити цифри та великі літери',
+            ),
+          otherwise: Yup.string().notRequired(),
+        }),
+      confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
+    });
+
   const [isEdit, setIsEdit] = useState(true);
   const dispatch: AppDispatch = useDispatch();
   const initialValues = {
@@ -103,7 +120,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     lastName: isNew ? '' : user?.lastName,
     phoneNumber: isNew ? '' : user?.phoneNumber,
     email: isNew ? '' : user?.email,
-    roleId: isNew ? 0 : user?.role.id,
+    roleId: isNew ? 1 : user?.role.id,
     telegramId: isNew ? '' : user?.telegramId,
     currentPassword: '',
     newPassword: '',
@@ -126,10 +143,9 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             firstName: _values.firstName ? _values.firstName : '',
             lastName: _values.lastName ? _values.lastName : '',
             phoneNumber: _values.phoneNumber ? _values.phoneNumber : '',
-            roleId: _values.roleId ? _values.roleId : 0,
-            currentPassword: _values.currentPassword ? _values.currentPassword : '',
-            newPassword: _values.newPassword ? _values.newPassword : '',
-            confirmNewPassword: _values.confirmNewPassword ? _values.confirmNewPassword : '',
+            roleId: _values.roleId ? _values.roleId : 1,
+            password: _values.newPassword ? _values.newPassword : '',
+            confirmPassword: _values.confirmNewPassword ? _values.confirmNewPassword : '',
             email: _values.email ? _values.email : '',
             telegramId: _values.telegramId ? _values.telegramId : '',
           }),
@@ -226,8 +242,8 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           placeholder="Telegram Id"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
+          error={formik.touched.telegramId && Boolean(formik.errors.telegramId)}
+          helperText={formik.touched.telegramId && formik.errors.telegramId}
         />
       </div>
       <div className={classes.row}>
@@ -251,21 +267,23 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           })}
         </Select>
       </div>
-      <div className={classes.row}>
-        <TextField
-          className={classes.input}
-          autoComplete={'false'}
-          disabled={!isEdit}
-          type="password"
-          name="currentPassword"
-          id="currentPassword-field"
-          placeholder="Поточний пароль"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.currentPassword && Boolean(formik.errors.currentPassword)}
-          helperText={formik.touched.currentPassword && formik.errors.currentPassword}
-        />
-      </div>
+      {!isNew ?
+        <div className={classes.row}>
+          <TextField
+            className={classes.input}
+            autoComplete={'false'}
+            disabled={!isEdit}
+            type="password"
+            name="currentPassword"
+            id="currentPassword-field"
+            placeholder="Поточний пароль"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.currentPassword && Boolean(formik.errors.currentPassword)}
+            helperText={formik.touched.currentPassword && formik.errors.currentPassword}
+          />
+        </div>
+        : null}
       <div className={classes.row}>
         <TextField
           className={classes.input}

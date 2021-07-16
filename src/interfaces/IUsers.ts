@@ -52,9 +52,8 @@ export interface IUserReqAdd {
   firstName: string;
   lastName: string;
   email: string;
-  currentPassword: string;
-  newPassword: string;
-  confirmNewPassword: string;
+  password: string;
+  confirmPassword: string;
   phoneNumber: string;
   roleId: number;
   telegramId: string;
