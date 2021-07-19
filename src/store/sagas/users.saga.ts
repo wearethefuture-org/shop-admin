@@ -15,9 +15,12 @@ import {
 } from '../actions/users.actions';
 import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 
-export function* getUsersWorker(): SagaIterator {
+export function* getUsersWorker(
+  {
+    data: { page, limit },
+  }: IActions): SagaIterator {
   try {
-    const user = yield call(apiGetUsers);
+    const user = yield call(apiGetUsers, page, limit);
     yield put(getUsersSuccess(user));
   } catch (error) {
     yield put(failSnackBar(error.message));
@@ -30,7 +33,7 @@ export function* addUserWorker({ data: { userValues } }: IActions): SagaIterator
     const user = yield call(apiAddUser, userValues);
     yield put(addUserSuccess(user));
     yield put(successSnackBar());
-    yield put(getUsersRequest());
+    yield put(getUsersRequest(1, 10));
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(addUserError(error.message));
@@ -42,7 +45,7 @@ export function* updateUserWorker({ data: { userValues } }: IActions): SagaItera
     const user = yield call(apiUpdateUser, userValues);
     yield put(updateUserSuccess(user));
     yield put(successSnackBar());
-    yield put(getUsersRequest());
+    yield put(getUsersRequest(1, 10));
 
   } catch (error) {
     yield put(failSnackBar(error.message));

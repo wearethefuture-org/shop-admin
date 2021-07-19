@@ -1,8 +1,8 @@
 import { api } from '../../../api/api';
 import { IUserReqAdd } from '../../../interfaces/IUsers';
 
-export async function apiGetUsers() {
-  const users = await api.users.get();
+export async function apiGetUsers(page: number, limit: number,) {
+  const users = await api.users.get(page, limit);
   return users.data;
 }
 

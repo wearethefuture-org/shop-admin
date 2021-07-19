@@ -14,10 +14,10 @@ export interface IUserItem {
   updatedAt: string;
   firstName: string;
   lastName: string;
-  creditCard: string;
   phoneNumber: string;
   status: string;
   email: string;
+  telegramId?: string;
   role: {
     name: string;
     id: number;
@@ -41,11 +41,11 @@ export interface IUserReqUp {
   id: number;
   firstName?: string;
   lastName?: string;
-  creditCard?: string;
-  tel?: string;
-  role_id?: number;
+  phoneNumber?: string;
+  roleId?: number;
   password?: string;
   email?: string;
+  telegramId?: string
 }
 
 export interface IUserReqAdd {
@@ -53,9 +53,10 @@ export interface IUserReqAdd {
   lastName: string;
   email: string;
   password: string;
-  tel: string;
-  creditCard: string;
-  role_id: number;
+  confirmPassword: string;
+  phoneNumber: string;
+  roleId: number;
+  telegramId: string;
 }
 
 export interface IUsersData {
@@ -63,6 +64,8 @@ export interface IUsersData {
   loading: boolean;
   currentUser: IUserItem | null;
   error: string | null;
+  count: number,
+  totalPages: number,
 }
 
 export interface UserTableData {
@@ -70,7 +73,7 @@ export interface UserTableData {
   createdAt: string;
   updatedAt: string;
   email: string;
-  password: string;
+  newPassword: string;
   role: string;
   users: number;
 }

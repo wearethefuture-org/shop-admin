@@ -37,6 +37,7 @@ import {
   GET_MAIN_CATEGORY_BY_ID_REQUEST,
   UPDATE_MAIN_CATEGORY_REQUEST,
   UPDATE_AVAILABILITY_PRODUCT_REQUEST,
+  GET_ROLES_REQUEST,
 } from './types';
 
 import {
@@ -82,6 +83,7 @@ import {
   updateUserWorker,
 } from './sagas/users.saga';
 import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
+import { getRolesWorker } from './sagas/roles.saga';
 
 export function* sagaMainCategoriesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_MAIN_CATEGORIES, fetchMainCategoryWorker);
@@ -149,6 +151,11 @@ export function* sagaUserWatcher(): SagaIterator {
   yield takeEvery(USER_FETCH_REQUEST, fetchUser);
 }
 
+// Roles
+export function* getRolesWatcher(): SagaIterator {
+  yield takeEvery(GET_ROLES_REQUEST, getRolesWorker);
+}
+
 // RootSaga
 export default function* rootSaga(): SagaIterator {
   yield all([
@@ -161,5 +168,6 @@ export default function* rootSaga(): SagaIterator {
     fork(sagaCommentsWatcher),
     fork(sagaUsersWatcher),
     fork(sagaUserWatcher),
+    fork(getRolesWatcher),
   ]);
 }
