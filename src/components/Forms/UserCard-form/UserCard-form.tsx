@@ -68,36 +68,30 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
   const classes = useStyles();
   const { data: roles } = useRoles();
 
-  const validationSchema = isNew ? Yup.object().shape({
-      firstName: Yup.string()
-        .min(3, 'Введіть коректне ім\'я')
-        .required('Це поле не повинно бути пустим!'),
-      lastName: Yup.string()
-        .min(2, 'Введіть коректне прізвище')
-        .required('Це поле не повинно бути пустим!'),
-      tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
-      email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
-      telegramId: Yup.string().notRequired(),
-      roleId: Yup.string().required('Це поле не повинно бути пустим!'),
+  const basicValidation = {
+    firstName: Yup.string()
+      .min(3, 'Введіть коректне ім\'я')
+      .required('Це поле не повинно бути пустим!'),
+    lastName: Yup.string()
+      .min(2, 'Введіть коректне прізвище')
+      .required('Це поле не повинно бути пустим!'),
+    tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
+    email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
+    telegramId: Yup.string().notRequired(),
+    roleId: Yup.string().required('Це поле не повинно бути пустим!'),
+    confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
+  }
+
+  const newUserValidation = {...basicValidation, ...{
       newPassword:
         Yup.string().min(6, 'Пароль занадто короткий!').required('Це поле не повинно бути пустим!')
           .matches(
             /^(?=.*[A-ZА-Я])(?=.*\d).*$/,
             'Пароль має бути не менше 6 символів, містити цифри та великі літери',
           ),
-      confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
-    }) :
-    Yup.object().shape({
-      firstName: Yup.string()
-        .min(3, 'Введіть коректне ім\'я')
-        .required('Це поле не повинно бути пустим!'),
-      lastName: Yup.string()
-        .min(2, 'Введіть коректне прізвище')
-        .required('Це поле не повинно бути пустим!'),
-      tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
-      email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
-      telegramId: Yup.string().notRequired(),
-      roleId: Yup.string().required('Це поле не повинно бути пустим!'),
+    }}
+
+  const currentUserValidation = {...basicValidation, ...{
       currentPassword: Yup.string().min(6, 'Пароль занадто короткий!').notRequired(),
       newPassword:
         Yup.string().when(['currentPassword'], {
@@ -110,8 +104,10 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             ),
           otherwise: Yup.string().notRequired(),
         }),
-      confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
-    });
+  }}
+
+  const validationSchema = isNew ? Yup.object().shape(newUserValidation) :
+    Yup.object().shape(currentUserValidation);
 
   const [isEdit, setIsEdit] = useState(true);
   const dispatch: AppDispatch = useDispatch();
