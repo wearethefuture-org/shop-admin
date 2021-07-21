@@ -58,7 +58,7 @@ const useStyles = makeStyles({
 
 interface FormDialogProps {
   isNew: boolean;
-  user: IUserItem | null;
+  user: IUserItem | null | undefined;
   closeModal: () => void;
 }
 

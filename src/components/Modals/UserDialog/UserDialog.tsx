@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 
 interface FormDialogProps {
   isNew: boolean;
-  user: IUserItem | null;
+  user: IUserItem | null | undefined;
   closeModal: () => void;
 }
 
@@ -24,7 +24,6 @@ const UserDialog: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) => {
   const handleClose = () => {
     closeModal();
   };
-
   return (
     <Dialog
       open={true}

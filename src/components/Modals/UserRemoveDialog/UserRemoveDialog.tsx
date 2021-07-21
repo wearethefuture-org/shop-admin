@@ -12,7 +12,7 @@ import { deleteUserRequest } from '../../../store/actions/users.actions';
 import { IUserItem } from '../../../interfaces/IUsers';
 
 interface RemoveProps {
-  user: IUserItem;
+  user: IUserItem | null | undefined;
   closeModal: () => void;
 }
 
@@ -40,7 +40,7 @@ const UserRemoveDialog: React.FC<RemoveProps> = ({ closeModal, user }) => {
   };
 
   const removeUser = () => {
-    dispatch(deleteUserRequest(user.id));
+    dispatch(deleteUserRequest(user?.id));
     closeModal();
   };
 
@@ -56,7 +56,7 @@ const UserRemoveDialog: React.FC<RemoveProps> = ({ closeModal, user }) => {
       <DialogTitle id="form-dialog-title">Видалення</DialogTitle>
       <DialogContent dividers>
         <DialogContentText>
-          Ви дійсно бажаєте видалити {user.firstName} {user.lastName}
+          Ви дійсно бажаєте видалити {user?.firstName} {user?.lastName}
         </DialogContentText>
       </DialogContent>
       <div>

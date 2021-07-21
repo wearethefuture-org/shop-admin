@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import { Box, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -8,8 +8,13 @@ import UserRemoveDialog from '../../Modals/UserRemoveDialog/UserRemoveDialog';
 import { AppDispatch, RootState } from '../../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUsersRequest } from '../../../store/actions/users.actions';
+import { ISetModalParams, IUserItem } from '../../../interfaces/IUsers';
 
-const UsersTable = ({ list }) => {
+interface UsersTableProps {
+  list: IUserItem[];
+}
+
+const UsersTable: FC<UsersTableProps> = ({ list }) => {
 
   const dispatch: AppDispatch = useDispatch();
   const [page, setPage] = useState(1);
@@ -27,38 +32,39 @@ const UsersTable = ({ list }) => {
   };
 
   const [userDialogIsOpen, setUserDialogIsOpen] = useState(false);
-  const [removeUserDialogIsOpen, setRemoveUserDialogIsOpen] = useState(false);
+  const [removeUserDialogIsOpen, removeSetUserDialogIsOpen] = useState(false);
 
   const userDialogClose = () => {
     setUserDialogIsOpen(false);
   };
-  const removeUserDialogClose = () => {
-    setRemoveUserDialogIsOpen(false);
-  };
-  const [modalParams, setModalParams] = useState();
-  const [modalRemoveParams, setModalRemoveParams] = useState();
+
+  const [modalParams, setModalParams] = useState<ISetModalParams>({
+    closeModal: () => {},
+    user: null,
+  });
+  const [isNew, setIsNew] = useState(false)
 
   const openDialogNewUser = () => {
     setUserDialogIsOpen(true);
+    setIsNew(true)
     setModalParams({
-      isNew: true,
       user: null,
       closeModal: userDialogClose,
     });
   };
   const openDialogUserCard = (event) => {
     setUserDialogIsOpen(true);
+    setIsNew(false)
     setModalParams({
-      isNew: false,
       user: list.find(item => item.id == event.currentTarget.value),
       closeModal: userDialogClose,
     });
   };
   const openDialogRemoveUser = (event) => {
-    setRemoveUserDialogIsOpen(true);
-    setModalRemoveParams({
+    removeSetUserDialogIsOpen(true);
+    setModalParams({
       user: list.find(item => item.id == event.currentTarget.value),
-      closeModal: removeUserDialogClose,
+      closeModal: userDialogClose,
     });
   };
 
@@ -72,10 +78,10 @@ const UsersTable = ({ list }) => {
       >
         Створити
       </Button>
-      {userDialogIsOpen && <UserDialog {...modalParams} />}
-      {removeUserDialogIsOpen && <UserRemoveDialog {...modalRemoveParams} />}
+      {userDialogIsOpen && <UserDialog isNew={isNew} {...modalParams} />}
+      {removeUserDialogIsOpen && <UserRemoveDialog {...modalParams} />}
     </Box>
-  )
+  );
 
   const userColumns = [
     {

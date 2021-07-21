@@ -88,3 +88,8 @@ export interface IOrderUser {
   lastName: string;
   phoneNumber: string;
 }
+
+export interface ISetModalParams {
+  user: IUserItem | null | undefined;
+  closeModal: () => void;
+}
