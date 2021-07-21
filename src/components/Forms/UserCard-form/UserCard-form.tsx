@@ -80,18 +80,21 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     telegramId: Yup.string().notRequired(),
     roleId: Yup.string().required('Це поле не повинно бути пустим!'),
     confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
-  }
+  };
 
-  const newUserValidation = {...basicValidation, ...{
+  const newUserValidation = {
+    ...basicValidation, ...{
       newPassword:
         Yup.string().min(6, 'Пароль занадто короткий!').required('Це поле не повинно бути пустим!')
           .matches(
             /^(?=.*[A-ZА-Я])(?=.*\d).*$/,
             'Пароль має бути не менше 6 символів, містити цифри та великі літери',
           ),
-    }}
+    },
+  };
 
-  const currentUserValidation = {...basicValidation, ...{
+  const currentUserValidation = {
+    ...basicValidation, ...{
       currentPassword: Yup.string().min(6, 'Пароль занадто короткий!').notRequired(),
       newPassword:
         Yup.string().when(['currentPassword'], {
@@ -104,7 +107,8 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             ),
           otherwise: Yup.string().notRequired(),
         }),
-  }}
+    },
+  };
 
   const validationSchema = isNew ? Yup.object().shape(newUserValidation) :
     Yup.object().shape(currentUserValidation);
@@ -146,7 +150,8 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             telegramId: _values.telegramId ? _values.telegramId : '',
           }),
         );
-      } else if (user) {
+      }
+      if (user) {
         let sendData: { id: number; [key: string]: any } = { id: user.id };
         for (let key in _values) {
           if (_values[key] && _values[key] !== initialValues[key]) {
@@ -156,9 +161,10 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
         sendData['roleId'] = _values['roleId'];
         if (Object.keys(sendData).length > 1) {
           dispatch(updateUserRequest(user.id, sendData));
-        } else {
-          dispatch(failSnackBar('Ви нічого не змінили'));
+          closeModal();
+          return;
         }
+        dispatch(failSnackBar('Ви нічого не змінили'));
       }
       closeModal();
     },

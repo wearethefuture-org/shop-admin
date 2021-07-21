@@ -35,7 +35,7 @@ const UsersTable: FC<UsersTableProps> = ({ list }) => {
   const [removeUserDialogIsOpen, removeSetUserDialogIsOpen] = useState(false);
 
   const userDialogClose = () => {
-    setUserDialogIsOpen(false);
+    setUserDialogIsOpen(false)
   };
 
   const [modalParams, setModalParams] = useState<ISetModalParams>({
