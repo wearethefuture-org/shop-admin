@@ -35,7 +35,7 @@ const rootReducer = combineReducers({
 
 const store = createStore(
   rootReducer,
-  p§.REACT_APP_ENVIRONMENT === 'production'
+  REACT_APP_ENVIRONMENT === 'production'
     ? applyMiddleware(saga)
     : composeWithDevTools(applyMiddleware(saga))
 );
