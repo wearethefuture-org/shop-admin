@@ -8,7 +8,7 @@ import { root } from '../../../api/config';
 import { priceFormat } from '../../../utils/priceFormat';
 import styles from './ProductsTable.module.scss';
 
-const placeholder = `${root}/product/img/empty-preview.png`;
+const placeholder = `${root}/static/uploads/empty-preview.png`;
 
 const MainImgName = () => (
   <p className={styles['table-header-cell']}>
@@ -33,10 +33,10 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) =>
       format: (row) =>
         row.mainImg ? (
           <div className={styles.mainImg}>
-            <img src={`${root}/product/img/${row.mainImg.name}`} alt={row.mainImg.name} />
+            <img src={`${root}/static/uploads/${row.mainImg.name}`} alt={row.mainImg.name} />
           </div>
         ) : (
-          <div className={styles.placeholder}>
+          <div className={styles.mainImg}>
             <img src={placeholder} alt="placeholder" />
           </div>
         ),
@@ -48,6 +48,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) =>
       name: 'Назва',
       selector: (row) => row.name,
       sortable: true,
+      minWidth: '200px',
       cell: (row) => (
         <Link
           to={{
@@ -55,7 +56,9 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) =>
             state: { from: '/product' },
           }}
         >
-          <span className={styles['product-name']}>{row.name}</span>
+          <span className={styles['product-name']}>
+            {row.name.length <= 30 ? row.name : `${row.name.slice(0, 30)}...`}
+          </span>
         </Link>
       ),
       omit: !activeColumns.includes('Назва'),
@@ -71,13 +74,14 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) =>
       selector: (row) => row.description,
       wrap: true,
       sortable: true,
+      minWidth: '150px',
       format: (row) =>
-        row.description.length <= 100 ? row.description : `${row.description.slice(0, 100)}...`,
+        row.description.length <= 30 ? row.description : `${row.description.slice(0, 30)}...`,
       omit: !activeColumns.includes('Опис'),
     },
     {
       name: 'Категорія',
-      selector: (row) => row.category?.name ? row.category.name : 'Без категорії',
+      selector: (row) => (row.category?.name ? row.category.name : 'Без категорії'),
       sortable: true,
       minWidth: '12%',
       omit: !activeColumns.includes('Категорія'),

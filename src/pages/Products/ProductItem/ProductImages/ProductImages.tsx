@@ -12,7 +12,7 @@ import { failSnackBar } from '../../../../store/actions/snackbar.actions';
 import { AppDispatch, RootState } from '../../../../store/store';
 import styles from './ProductImages.module.scss';
 
-const placeholder = `${root}/product/img/empty-preview.png`;
+const placeholder = `${root}/static/uploads/empty-preview.png`;
 
 const ProductImages: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -45,8 +45,8 @@ const ProductImages: React.FC = () => {
   }, [product]);
 
   const images = largeImages.map((img, idx) => ({
-    original: `${root}/product/img/${img}`,
-    thumbnail: `${root}/product/img/${croppedImages[idx]}`,
+    original: `${root}/static/uploads/${img}`,
+    thumbnail: `${root}/static/uploads/${croppedImages[idx]}`,
     bulletClass: styles.bullet,
   }));
 
