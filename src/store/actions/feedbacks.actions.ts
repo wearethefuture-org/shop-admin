@@ -15,9 +15,9 @@ export const getFeedbacksRequest = (page: number, limit: number): IActions => ({
   data: { page, limit },
 });
 
-export const getFeedbacksSuccess = (users: IFeedback[]): IActions => ({
+export const getFeedbacksSuccess = (feedbacks: IFeedback[]): IActions => ({
   type: GET_FEEDBACKS_SUCCESS,
-  data: users,
+  data: feedbacks,
 });
 
 export const getFeedbacksError = (message: string): IActions => ({

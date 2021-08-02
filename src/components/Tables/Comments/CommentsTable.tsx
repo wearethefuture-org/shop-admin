@@ -36,7 +36,7 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
       omit: !activeColumns.includes('ID'),
     },
     {
-      name: 'Відгук',
+      name: 'Коментар',
       selector: (row) => row.text,
       wrap: true,
       format: (row) =>
@@ -112,7 +112,7 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
         <AppDataTable
           data={list}
           columns={commentsColumns}
-          title="Відгуки"
+          title="Коментарі"
           count={count}
           limit={limit}
           setLimit={setLimit}

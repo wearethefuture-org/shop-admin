@@ -13,6 +13,7 @@ import styles from './FeedbacksPage.module.scss';
 
 enum feedbacksColumns {
   id = 'ID',
+  authorIP = 'IP-адреса',
   text = 'Відгук',
   author = 'Автор',
   createdAt = 'Створено',
@@ -30,6 +31,7 @@ export default function FeedbacksPage() {
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [activeColumns, setActiveColumns] = useState<string[]>([
     feedbacksColumns.id,
+    feedbacksColumns.authorIP,
     feedbacksColumns.text,
     feedbacksColumns.author,
     feedbacksColumns.createdAt,

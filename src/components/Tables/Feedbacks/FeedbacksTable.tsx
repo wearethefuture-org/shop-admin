@@ -35,6 +35,14 @@ const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
       omit: !activeColumns.includes('ID'),
     },
     {
+      name: 'IP-адреса',
+      selector: (row) => row.authorIP,
+      sortable: true,
+      maxWidth: '15%',
+      minWidth: '5%',
+      omit: !activeColumns.includes('IP-адреса'),
+    },
+    {
       name: 'Відгук',
       selector: (row) => row.text,
       wrap: true,
