@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
+import { Common } from './IProducts';
 
-export interface IBaseFeedback {
+export interface IBaseFeedback extends Common {
   text: string;
 }
 

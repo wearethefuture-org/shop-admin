@@ -53,13 +53,13 @@ const feedbacks = (state = initialState, { type, data }: IActions) => {
       };
     }
 
-    /*case DELETE_FEEDBACK_SUCCESS: {
+    case DELETE_FEEDBACK_SUCCESS: {
       return {
         ...state,
         loading: false,
         list: state.list.filter((feedback) => feedback.id !== data),
       };
-    }*/
+    }
 
     case DELETE_FEEDBACK_ERROR: {
       return {
