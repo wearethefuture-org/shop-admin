@@ -77,6 +77,8 @@ export interface IProductsData {
   loading: boolean;
   currentProduct: IGetProductById | null;
   error: string | null;
+  count: number,
+  totalPages: number,
 }
 
 export interface CharValues {

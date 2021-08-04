@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../store/store';
+import { getProductsRequest } from '../../../store/actions/products.actions';
 import AppDataTable from '../../AppDataTable/AppDataTable';
 import { IGetProducts, ProductsTableProps } from '../../../interfaces/IProducts';
 import DateMoment from '../../Common/Date-moment';
@@ -18,6 +21,21 @@ const MainImgName = () => (
 );
 
 const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) => {
+
+  const dispatch: AppDispatch = useDispatch();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const count = useSelector((state: RootState) => state.products.count);
+
+  const onChangePage = (page) => {
+    setPage(page);
+    dispatch(getProductsRequest(page, limit));
+  };
+
+  const onChangeLimit = (limit) => {
+    setLimit(limit);
+    dispatch(getProductsRequest(page, limit));
+  };
 
   const productsColumns = [
     {
@@ -132,6 +150,10 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) =>
       columns={productsColumns}
       title="Продукти"
       onRowClicked={(row) => onRowClicked(row.id)}
+      count={count}
+      setLimit={(e) => onChangeLimit(e)}
+      setPage={(e) => onChangePage(e)}
+      paginationServer={true}
     />
   );
 };

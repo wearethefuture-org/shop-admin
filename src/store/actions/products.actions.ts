@@ -30,8 +30,9 @@ import {
 } from '../types';
 
 // get all
-export const getProductsRequest = (): IActions => ({
+export const getProductsRequest = (page: number, limit: number): IActions => ({
   type: GET_PRODUCTS_REQUEST,
+  data: { page, limit }
 });
 
 export const getProductsSuccess = (products: IGetProducts[]): IActions => ({
