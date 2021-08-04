@@ -1,10 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import {
-  ThemeOptions,
-  ThemeProvider,
-  unstable_createMuiStrictModeTheme as createMuiTheme,
-} from '@material-ui/core/styles';
+import { createTheme, ThemeOptions, ThemeProvider } from '@material-ui/core/styles';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Paper } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,7 +12,7 @@ import './App.scss';
 import { fetchUserRequest } from './store/actions/user.action';
 
 declare module '@material-ui/core/styles/createTheme' {
-  interface ThemeOptions {
+  export interface ThemeOptions {
     [key: string]: any;
   }
 }
@@ -30,7 +26,7 @@ export function App() {
     JSON.parse(bool) ? dispatch(switchDarkMode()) : void 0;
   }, []);
 
-  const darkTheme: ThemeOptions = createMuiTheme({
+  const darkTheme: ThemeOptions = createTheme({
     palette: {
       type: darkMode ? 'dark' : 'light',
       background: {

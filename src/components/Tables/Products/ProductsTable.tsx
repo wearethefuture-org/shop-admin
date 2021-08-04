@@ -18,6 +18,7 @@ const MainImgName = () => (
 );
 
 const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) => {
+
   const productsColumns = [
     {
       name: 'ID',

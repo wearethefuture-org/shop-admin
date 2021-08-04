@@ -21,7 +21,6 @@ const ProductImages: React.FC = () => {
 
   // GALLERY
   const [imgUrls, setImgUrls] = useState<string[]>([]);
-
   useEffect(() => {
     if (product.files && product.files.length) {
       setImgUrls(product.files.map((file) => file.name));

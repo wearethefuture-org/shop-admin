@@ -26,13 +26,14 @@ interface TablePaginationActionsProps {
   onChangePage: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
 }
 
-const useFooterStyles = makeStyles((theme: Theme): ThemeOptions =>
-  createStyles({
-    root: {
-      flexShrink: 0,
-      marginLeft: theme.spacing(2.5),
-    },
-  })
+const useFooterStyles = makeStyles(
+  (theme: Theme): ThemeOptions =>
+    createStyles({
+      root: {
+        flexShrink: 0,
+        marginLeft: theme.spacing(2.5),
+      },
+    })
 );
 
 const UsersTableFooter: React.FC<UserTableFooterProps> = ({
@@ -124,7 +125,7 @@ const UsersTableFooter: React.FC<UserTableFooterProps> = ({
             inputProps: { 'aria-label': 'rows per page' },
             native: true,
           }}
-          onChangePage={handleChangePage}
+          onPageChange={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
           ActionsComponent={TablePaginationActions}
         />
