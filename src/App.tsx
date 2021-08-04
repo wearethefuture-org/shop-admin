@@ -15,13 +15,7 @@ import { switchDarkMode } from './store/actions/theme.actions';
 import './App.scss';
 import { fetchUserRequest } from './store/actions/user.action';
 
-declare module '@material-ui/core/styles/createMuiTheme' {
-  interface ThemeOptions {
-    [key: string]: any;
-  }
-}
-
-declare module '@material-ui/core/styles/createMuiTheme' {
+declare module '@material-ui/core/styles/createTheme' {
   interface ThemeOptions {
     [key: string]: any;
   }
