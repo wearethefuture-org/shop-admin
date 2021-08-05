@@ -65,7 +65,10 @@ const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
     },
     {
       name: 'Автор',
-      selector: (row) => (row.author ? `${row.author.id}` : 'анонім'),
+      selector: (row) =>
+        row.author
+          ? `${row.author.firstName} ${row.author.lastName} [ID: ${row.author.id}]`
+          : 'Анонімний користувач',
       wrap: true,
       sortable: true,
       maxWidth: '20%',
