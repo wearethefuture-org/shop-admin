@@ -78,7 +78,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
     },
     {
       name: 'Телефон',
-      selector: (row) => row.user.phoneNumber,
+      selector: (row) => (row.additionalNumber ? row.additionalNumber : row.user.phoneNumber),
       sortable: true,
       maxWidth: '140px',
       omit: !activeColumns.includes('Телефон'),
