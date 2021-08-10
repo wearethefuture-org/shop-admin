@@ -15,6 +15,7 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 import GroupIcon from '@material-ui/icons/Group';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import MessageIcon from '@material-ui/icons/Message';
+import FeedbackIcon from '@material-ui/icons/Feedback';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -121,8 +122,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
     },
     {
       pageURL: '/comments',
-      title: 'Відгуки',
+      title: 'Коментарі',
       itemIcon: <MessageIcon fontSize="small" className={styles.icon} />,
+    },
+    {
+      pageURL: '/feedbacks',
+      title: 'Відгуки',
+      itemIcon: <FeedbackIcon fontSize="small" className={styles.icon} />,
     },
   ];
 

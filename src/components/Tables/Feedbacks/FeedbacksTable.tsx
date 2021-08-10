@@ -1,32 +1,31 @@
 import React, { useState } from 'react';
 import { IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-
-import { CommentsTableProps } from '../../../interfaces/IComment';
+import { FeedbacksTableProps } from '../../../interfaces/IFeedback';
 import AppDataTable from '../../AppDataTable/AppDataTable';
 import DateMoment from '../../Common/Date-moment';
-import styles from './CommentsTable.module.scss';
+import styles from './FeedbacksTable.module.scss';
 
-const CommentsTable: React.FC<CommentsTableProps> = ({
+const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
   list,
   activeColumns,
-  setOpenDeleteCommentDialog,
-  setCommentToDelete,
+  setOpenDeleteFeedbackDialog,
+  setFeedbackToDelete,
   count,
   limit,
   setLimit,
   paginationServer,
   setPage,
 }) => {
-  const [expandedComments, setExpandedComments] = useState<number[]>([]);
+  const [expandedFeedbacks, setExpandedFeedbacks] = useState<number[]>([]);
 
-  const handleExpandedComments = (id) => {
-    expandedComments.includes(id)
-      ? setExpandedComments(expandedComments.filter((commentId) => commentId !== id))
-      : setExpandedComments(expandedComments.concat(id));
+  const handleExpandedFeedbacks = (id) => {
+    expandedFeedbacks.includes(id)
+      ? setExpandedFeedbacks(expandedFeedbacks.filter((feedbackId) => feedbackId !== id))
+      : setExpandedFeedbacks(expandedFeedbacks.concat(id));
   };
 
-  const commentsColumns = [
+  const feedbacksColumns = [
     {
       name: 'ID',
       selector: (row) => row.id,
@@ -36,21 +35,29 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
       omit: !activeColumns.includes('ID'),
     },
     {
-      name: 'Коментар',
+      name: 'IP-адреса',
+      selector: (row) => row.authorIP,
+      sortable: true,
+      maxWidth: '15%',
+      minWidth: '5%',
+      omit: !activeColumns.includes('IP-адреса'),
+    },
+    {
+      name: 'Відгук',
       selector: (row) => row.text,
       wrap: true,
       format: (row) =>
         row.text.length <= 100 ? (
-          <p className={styles.comment}>{row.text}</p>
+          <p className={styles.feedback}>{row.text}</p>
         ) : (
-          <p className={styles.comment}>
-            {!expandedComments.includes(row.id) ? (
+          <p className={styles.feedback}>
+            {!expandedFeedbacks.includes(row.id) ? (
               <span>{row.text.slice(0, 100)}...</span>
             ) : (
               <span>{row.text}</span>
             )}
-            <span className={styles['expand-btn']} onClick={() => handleExpandedComments(row.id)}>
-              {expandedComments.includes(row.id) ? 'Менше' : 'Повністю'}
+            <span className={styles['expand-btn']} onClick={() => handleExpandedFeedbacks(row.id)}>
+              {expandedFeedbacks.includes(row.id) ? 'Менше' : 'Повністю'}
             </span>
           </p>
         ),
@@ -58,18 +65,14 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
     },
     {
       name: 'Автор',
-      selector: (row) => `${row.author.firstName} ${row.author.lastName}`,
+      selector: (row) =>
+        row.author
+          ? `${row.author.firstName} ${row.author.lastName} [ID: ${row.author.id}]`
+          : 'Анонімний користувач',
       wrap: true,
       sortable: true,
       maxWidth: '20%',
       omit: !activeColumns.includes('Автор'),
-    },
-    {
-      name: 'ID продукту',
-      selector: (row) => row.product.id,
-      sortable: true,
-      maxWidth: '11%',
-      omit: !activeColumns.includes('ID продукту'),
     },
     {
       name: 'Створено',
@@ -96,8 +99,8 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
           type="button"
           color="secondary"
           onClick={() => {
-            setOpenDeleteCommentDialog(true);
-            setCommentToDelete(row.id);
+            setOpenDeleteFeedbackDialog(true);
+            setFeedbackToDelete(row.id);
           }}
         >
           <DeleteIcon />
@@ -111,8 +114,8 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
       {list.length ? (
         <AppDataTable
           data={list}
-          columns={commentsColumns}
-          title="Коментарі"
+          columns={feedbacksColumns}
+          title="Відгуки"
           count={count}
           limit={limit}
           setLimit={setLimit}
@@ -124,4 +127,4 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
   );
 };
 
-export default CommentsTable;
+export default FeedbacksTable;

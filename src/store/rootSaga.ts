@@ -24,6 +24,8 @@ import {
   UPDATE_ORDER_STATUS_REQUEST,
   GET_COMMENTS_REQUEST,
   DELETE_COMMENT_REQUEST,
+  GET_FEEDBACKS_REQUEST,
+  DELETE_FEEDBACK_REQUEST,
   REQUEST_UPDATE_SLIDE_VISIBILITY,
   GET_USERS_REQUEST,
   ADD_USER_REQUEST,
@@ -76,6 +78,7 @@ import {
   updateOrderStatusWorker
 } from './sagas/orders.saga';
 import { deleteCommentWorker, getCommentsWorker } from './sagas/comments.saga';
+import { deleteFeedbackWorker, getFeedbacksWorker } from './sagas/feedbacks.saga';
 import {
   addUserWorker,
   deleteUserWorker,
@@ -130,6 +133,12 @@ export function* sagaCommentsWatcher(): SagaIterator {
   yield takeEvery(DELETE_COMMENT_REQUEST, deleteCommentWorker);
 }
 
+// Feedbacks
+export function* sagaFeedbacksWatcher(): SagaIterator {
+  yield takeEvery(GET_FEEDBACKS_REQUEST, getFeedbacksWorker);
+  yield takeEvery(DELETE_FEEDBACK_REQUEST, deleteFeedbackWorker);
+}
+
 //Orders
 function* sagaOrdersWatcher(): SagaIterator {
   yield takeEvery(GET_ORDERS_REQUEST, getOrdersWorker);
@@ -166,6 +175,7 @@ export default function* rootSaga(): SagaIterator {
     fork(sagaSlidesWatcher),
     fork(sagaOrdersWatcher),
     fork(sagaCommentsWatcher),
+    fork(sagaFeedbacksWatcher),
     fork(sagaUsersWatcher),
     fork(sagaUserWatcher),
     fork(getRolesWatcher),
