@@ -12,11 +12,11 @@ import { makeStyles, Theme, createStyles, ThemeOptions } from '@material-ui/core
 import { SlideTableData } from '../../../../interfaces/ISlides';
 
 interface SlideTableFooterProps {
-  rows: SlideTableData[],
-  rowsPerPage: number,
-  page: number,
-  setPage(page: number): void,
-  setRowsPerPage(rows: number): void
+  rows: SlideTableData[];
+  rowsPerPage: number;
+  page: number;
+  setPage(page: number): void;
+  setRowsPerPage(rows: number): void;
 }
 
 interface TablePaginationActionsProps {
@@ -26,22 +26,30 @@ interface TablePaginationActionsProps {
   onChangePage: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
 }
 
-const useFooterStyles = makeStyles((theme: Theme): ThemeOptions =>
-  createStyles({
-    root: {
-      flexShrink: 0,
-      marginLeft: theme.spacing(2.5),
-    },
-  })
+const useFooterStyles = makeStyles(
+  (theme: Theme): ThemeOptions =>
+    createStyles({
+      root: {
+        flexShrink: 0,
+        marginLeft: theme.spacing(2.5),
+      },
+    })
 );
 
-const SlideTableFooter: React.FC<SlideTableFooterProps> = ({rows, rowsPerPage, page, setPage, setRowsPerPage}) => {
-
+const SlideTableFooter: React.FC<SlideTableFooterProps> = ({
+  rows,
+  rowsPerPage,
+  page,
+  setPage,
+  setRowsPerPage,
+}) => {
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -54,27 +62,19 @@ const SlideTableFooter: React.FC<SlideTableFooterProps> = ({rows, rowsPerPage, p
   }: TablePaginationActionsProps) {
     const classes = useFooterStyles();
 
-    const handleFirstPageButtonClick = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
+    const handleFirstPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onChangePage(event, 0);
     };
 
-    const handleBackButtonClick = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
+    const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onChangePage(event, page - 1);
     };
 
-    const handleNextButtonClick = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
+    const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onChangePage(event, page + 1);
     };
 
-    const handleLastPageButtonClick = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
+    const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
     };
 
@@ -85,28 +85,28 @@ const SlideTableFooter: React.FC<SlideTableFooterProps> = ({rows, rowsPerPage, p
           disabled={page === 0}
           aria-label="first page"
         >
-          <FirstPageIcon/>
+          <FirstPageIcon />
         </IconButton>
         <IconButton
           onClick={handleBackButtonClick}
           disabled={page === 0}
           aria-label="previous page"
         >
-          <KeyboardArrowLeft/>
+          <KeyboardArrowLeft />
         </IconButton>
         <IconButton
           onClick={handleNextButtonClick}
           disabled={page >= Math.ceil(count / rowsPerPage) - 1}
           aria-label="next page"
         >
-          <KeyboardArrowRight/>
+          <KeyboardArrowRight />
         </IconButton>
         <IconButton
           onClick={handleLastPageButtonClick}
           disabled={page >= Math.ceil(count / rowsPerPage) - 1}
           aria-label="last page"
         >
-          <LastPageIcon/>
+          <LastPageIcon />
         </IconButton>
       </div>
     );
@@ -116,22 +116,22 @@ const SlideTableFooter: React.FC<SlideTableFooterProps> = ({rows, rowsPerPage, p
     <TableFooter>
       <TableRow>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25, {label: "All", value: -1}]}
+          rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
           colSpan={3}
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           SelectProps={{
-            inputProps: {"aria-label": "rows per page"},
+            inputProps: { 'aria-label': 'rows per page' },
             native: true,
           }}
-          onChangePage={handleChangePage}
+          onPageChange={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
           ActionsComponent={TablePaginationActions}
         />
       </TableRow>
     </TableFooter>
   );
-}
+};
 
 export default SlideTableFooter;

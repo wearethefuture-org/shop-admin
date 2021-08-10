@@ -29,7 +29,7 @@ const FileUpload = ({
       reader.readAsDataURL(image);
     }
   } else if (!imageSrc.includes(root) && image.length > 2) {
-    setImageSrc(`${root}/slide/img/${image}`);
+    setImageSrc(`${root}/static/uploads/${image}`);
   }
 
   // @ts-ignore

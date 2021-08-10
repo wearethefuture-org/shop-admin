@@ -33,10 +33,10 @@ const EditProduct: React.FC = () => {
     history.push(location?.state?.from || '/products');
   };
 
-  const [ validation, setValidation ] = useState(productValidationShema);
+  const [validation, setValidation] = useState(productValidationShema);
 
   // DELETE IMAGES
-  const [ imagesToDelete, setImagesToDelete ] = useState<string[]>([]);
+  const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
 
   // FORMIK
   const initialValues = {
@@ -72,8 +72,8 @@ const EditProduct: React.FC = () => {
   });
 
   // HANDLE IMAGES
-  const [ images, setImages ] = useState<File[]>([]);
-  const [ imagesPreview, setImagesPreview ] = useState<string[]>([]);
+  const [images, setImages] = useState<File[]>([]);
+  const [imagesPreview, setImagesPreview] = useState<string[]>([]);
 
   const imagesFD = new FormData();
   if (images.length) {
@@ -90,10 +90,10 @@ const EditProduct: React.FC = () => {
       setImagesPreview(
         product.files
           .filter((file) => !file.name.includes('cropped'))
-          .map((file) => `${ root }/product/img/${ file.name }`)
+          .map((file) => `${root}/static/uploads/${file.name}`)
       );
     }
-  }, [ product.files ]);
+  }, [product.files]);
 
   const handleImageChange = (fileList: File[]) => {
     setImages((prev) => prev.concat(fileList));
@@ -117,14 +117,14 @@ const EditProduct: React.FC = () => {
 
   return (
     <ProductForm
-      editMode={ true }
-      formik={ formik }
-      handleGoBack={ handleGoBack }
-      categories={ categories }
-      handleImageChange={ handleImageChange }
-      imagesPreview={ imagesPreview }
-      handleDeleteImg={ handleDeleteImg }
-      setValidation={ setValidation }
+      editMode={true}
+      formik={formik}
+      handleGoBack={handleGoBack}
+      categories={categories}
+      handleImageChange={handleImageChange}
+      imagesPreview={imagesPreview}
+      handleDeleteImg={handleDeleteImg}
+      setValidation={setValidation}
     />
   );
 };
