@@ -34,6 +34,7 @@ import { IActions, IActionsImage } from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';
 import { ISlideItem, ISlideUpdateValues, ISlideVisibility } from '../interfaces/ISlides';
 import { ICommentResponse } from '../interfaces/IComment';
+import { IFeedbackResponse } from '../interfaces/IFeedback';
 import {
   IUserReqAdd,
   IAuthResponse,
@@ -111,6 +112,12 @@ type ApiFetchedDataType = {
     get: (page: number, limit: number) => FetchedDataType<ICommentResponse>;
     delete: (id: number) => FetchedDataType<JSON>;
   };
+
+  feedbacks: {
+    get: (page: number, limit: number) => FetchedDataType<IFeedbackResponse>;
+    delete: (id: number) => FetchedDataType<JSON>;
+  };
+
   users: {
     get: (page: number, limit: number) => FetchedDataType<IUsersData>;
   };
@@ -193,6 +200,10 @@ export const api: ApiFetchedDataType = {
   comments: {
     get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),
     delete: (id) => instance.delete(`${root}/comments/admin/${id}`),
+  },
+  feedbacks: {
+    get: (page, limit) => instance.get(`${ root }/feedbacks?page=${ page }&limit=${ limit }`),
+    delete: (id) => instance.delete(`${ root }/feedbacks/admin/${ id }`),
   },
   roles: {
     get: () => instance.get(`${root}/roles`),
