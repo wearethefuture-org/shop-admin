@@ -34,6 +34,7 @@ export interface IGetOrders extends IBasicOrder {
   productToOrder: Array<IProductToOrder>;
   user: UserTableData;
   delivery: IDelivery;
+  additionalNumber: string;
 }
 
 export interface IOrdersData {
@@ -51,4 +52,5 @@ export interface ICurrentOrder extends Common {
   productToOrder: Array<IProductToOrder>;
   user: IOrderUser;
   delivery: IDelivery;
+  additionalNumber: string;
 }
