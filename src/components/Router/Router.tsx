@@ -25,6 +25,7 @@ import Home from '../../pages/Home/Home';
 import PrivateRoute from './PrivateRoute';
 import { RootState } from '../../store/store';
 import CommentsPage from '../../pages/Comments/CommentsPage';
+import Lottery from '../../pages/Lottery/Lottery';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -39,28 +40,29 @@ const Router: React.FC = () => {
         {user ? <Redirect to="/dashboard"/> : <Redirect to="/home"/>}
       </Route>
       <div className={styles.container}>
-        <Sidebar isOpen={isOpenSidebar} onSidebarToggle={toggleSidebar} />
-        <SnackBar />
+        <Sidebar isOpen={isOpenSidebar} onSidebarToggle={toggleSidebar}/>
+        <SnackBar/>
 
         <div className={isOpenSidebar ? styles.main : styles['main-expanded']}>
           <HeaderBar onSidebarToggle={toggleSidebar} isShrink={isOpenSidebar}/>
           <Content>
             <Switch>
-              <PrivateRoute path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/sub-categories" component={Categories} />
-              <PrivateRoute path="/main-categories" component={MainCategories} />
-              <PrivateRoute path="/products/" exact={true} component={Products} />
-              <PrivateRoute path="/statistic" component={Statistic} />
-              <PrivateRoute path="/users" component={Users} />
-              <PrivateRoute path="/slides" component={Slides} />
-              <PrivateRoute path="/comments" component={CommentsPage} />
-              <PrivateRoute path="/settings" component={Settings} />
-              <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
+              <PrivateRoute path="/dashboard" component={Dashboard}/>
+              <PrivateRoute path="/sub-categories" component={Categories}/>
+              <PrivateRoute path="/main-categories" component={MainCategories}/>
+              <PrivateRoute path="/products/" exact={true} component={Products}/>
+              <PrivateRoute path="/statistic" component={Statistic}/>
+              <PrivateRoute path="/users" component={Users}/>
+              <PrivateRoute path="/slides" component={Slides}/>
+              <PrivateRoute path="/comments" component={CommentsPage}/>
+              <PrivateRoute path="/settings" component={Settings}/>
+              <PrivateRoute path="/product/add" exact={true} component={AddProduct}/>
               <PrivateRoute path="/orders" component={OrdersPage}/>
-              <PrivateRoute component={ViewProduct} path="/product/:id" />
-              <PrivateRoute component={CategoryRouter} path="/sub-category/:id" />
-              <PrivateRoute component={MainCategoryRouter} path="/main-category/:id" />
-              <PrivateRoute component={OrderRouter} path="/order/:id"/>
+              <PrivateRoute path="/lottery" component={Lottery}/>
+              <PrivateRoute path="/product/:id" component={ViewProduct}/>
+              <PrivateRoute path="/sub-category/:id" component={CategoryRouter}/>
+              <PrivateRoute path="/main-category/:id" component={MainCategoryRouter}/>
+              <PrivateRoute path="/order/:id" component={OrderRouter}/>
               {!user && !token ? (
                 <Route path="/home" component={Home}/>
               ) : (

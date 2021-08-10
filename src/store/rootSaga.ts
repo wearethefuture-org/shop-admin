@@ -36,7 +36,7 @@ import {
   REQUEST_ADD_MAIN_CATEGORIES,
   GET_MAIN_CATEGORY_BY_ID_REQUEST,
   UPDATE_MAIN_CATEGORY_REQUEST,
-  UPDATE_AVAILABILITY_PRODUCT_REQUEST,
+  UPDATE_AVAILABILITY_PRODUCT_REQUEST, GET_LOTTERY_REQUEST,
 } from './types';
 
 import {
@@ -82,6 +82,7 @@ import {
   updateUserWorker,
 } from './sagas/users.saga';
 import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
+import { getLotteriesWorker } from './sagas/lotteries.saga';
 
 export function* sagaMainCategoriesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_MAIN_CATEGORIES, fetchMainCategoryWorker);
@@ -107,7 +108,7 @@ export function* sagaProductsWatcher(): SagaIterator {
   yield takeEvery(UPDATE_AVAILABILITY_PRODUCT_REQUEST, updateAvailabilityProductWorker);
 }
 
-// Settings
+// Lottery
 function* sagaSettingsWatcher(): SagaIterator {
   yield takeEvery(REQUEST_SETTINGS, fetchSettingsWorker);
   yield takeEvery(REQUEST_UPDATE_SETTINGS, updateSettingsWorker);
@@ -149,6 +150,12 @@ export function* sagaUserWatcher(): SagaIterator {
   yield takeEvery(USER_FETCH_REQUEST, fetchUser);
 }
 
+
+export function* sagaLotteryWatcher(): SagaIterator {
+  yield takeEvery(GET_LOTTERY_REQUEST, getLotteriesWorker);
+}
+
+
 // RootSaga
 export default function* rootSaga(): SagaIterator {
   yield all([
@@ -161,5 +168,6 @@ export default function* rootSaga(): SagaIterator {
     fork(sagaCommentsWatcher),
     fork(sagaUsersWatcher),
     fork(sagaUserWatcher),
+    fork(sagaLotteryWatcher)
   ]);
 }

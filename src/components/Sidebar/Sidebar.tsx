@@ -18,6 +18,7 @@ import MessageIcon from '@material-ui/icons/Message';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 
 import useDidUpdate from '../../hooks/useDidUpdate';
 import styles from './Sidebar.module.scss';
@@ -123,6 +124,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
       pageURL: '/comments',
       title: 'Відгуки',
       itemIcon: <MessageIcon fontSize="small" className={styles.icon} />,
+    },
+    {
+      pageURL: '/lottery',
+      title: 'Конкурси',
+      itemIcon: <StarBorderIcon fontSize="small" className={styles.icon} />,
     },
   ];
 

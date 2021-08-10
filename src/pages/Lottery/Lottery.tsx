@@ -1,45 +1,40 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LinearProgress } from '@material-ui/core';
-
-import ProductsTable from '../../components/Tables/Products/ProductsTable';
 import AddBtn from '../../components/AddBtn/AddBtn';
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
 import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
-import useProducts from '../../hooks/useProducts';
-import styles from './ProductsPage.module.scss';
+import styles from '../Products/ProductsPage.module.scss';
+import LotteryTable from '../../components/Tables/Lottery/LotteryTable';
+import useLottery from '../../hooks/useLottery';
 
 enum cols {
   id = 'ID',
   mainImg = 'Головне зображення',
-  name = 'Назва',
-  price = 'Ціна',
+  lotteryName = 'Назва',
   description = 'Опис',
-  categoryName = 'Категорія',
-  key = 'URL ключ',
   files = 'Зображення',
   createdAt = 'Створено',
   updatedAt = 'Оновлено',
+  lotteryStatus = 'Статус'
 }
 
-const Products: React.FC = () => {
+const Lottery: React.FC = () => {
   const location = useLocation();
 
-  const { list, loading } = useProducts();
-  console.log(loading);
+  const { list, loading } = useLottery();
+  console.log(list);
 
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [activeColumns, setActiveColumns] = useState<string[]>([
     cols.id,
     cols.mainImg,
-    cols.name,
-    cols.price,
+    cols.lotteryName,
     cols.description,
-    cols.categoryName,
-    cols.key,
     cols.files,
     cols.createdAt,
     cols.updatedAt,
+    cols.lotteryStatus
   ]);
 
   const handleColumns = (column: string) =>
@@ -74,11 +69,11 @@ const Products: React.FC = () => {
           <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
         </div>
         <div className={styles['table-wrapper']}>
-          {list && <ProductsTable list={list} activeColumns={activeColumns} />}
+          {list && <LotteryTable list={list} activeColumns={activeColumns} />}
         </div>
       </div>
     </>
   );
 };
 
-export default Products;
+export default Lottery;
