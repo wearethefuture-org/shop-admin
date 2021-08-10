@@ -78,7 +78,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
     },
     {
       name: 'Телефон',
-      selector: (row) => row.additionalNumber,
+      selector: (row) => (row.additionalNumber ? row.additionalNumber : row.user.phoneNumber),
       sortable: true,
       maxWidth: '140px',
       omit: !activeColumns.includes('Телефон'),
@@ -86,13 +86,15 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
     {
       name: 'Email',
       maxWidth: '250px',
-      selector: (row) => row.additionalEmail,
+      selector: (row) => (row.additionalEmail ? row.additionalEmail : row.user.email),
       omit: !activeColumns.includes('Email'),
     },
     {
       name: "Ім'я",
       maxWidth: '150px',
-      selector: (row) => `${row.additionalFirstName} ${row.additionalLastName}`,
+      selector: (row) =>
+        `${row.additionalFirstName ? row.additionalFirstName : row.user.firstName} 
+         ${row.additionalLastName ? row.additionalLastName : row.user.lastName}`,
       sortable: true,
       omit: !activeColumns.includes("Ім'я"),
     },
