@@ -8,7 +8,7 @@ import {
   getFeedbacksError,
   getFeedbacksSuccess,
 } from '../actions/feedbacks.actions';
-import { failSnackBar } from '../actions/snackbar.actions';
+import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 import { apiDeleteFeedback, apiGetFeedbacks } from './services/feedbacks.service';
 
 export function* getFeedbacksWorker({ data: { page, limit } }: IActions): SagaIterator {
@@ -25,6 +25,7 @@ export function* deleteFeedbackWorker({ data: id }: IActions): SagaIterator {
   try {
     yield call(apiDeleteFeedback, id);
     yield put(deleteFeedbackSuccess(id));
+    yield put(successSnackBar());
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(deleteFeedbackError(error.message));
