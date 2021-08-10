@@ -15,7 +15,7 @@ import {
   UPDATE_ORDER_QUANTITY_ERROR,
 } from '../types';
 
-export const getOrdersRequest = (page, limit): IActions => ({
+export const getOrdersRequest = (page: number, limit: number): IActions => ({
   type: GET_ORDERS_REQUEST,
   data: {
     page,

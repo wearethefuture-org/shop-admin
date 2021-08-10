@@ -15,6 +15,8 @@ import orders from './reducers/orders.reducer';
 import user from './reducers/user.reducer';
 import comments from './reducers/comments.reducer';
 import lottery from './reducers/lottery.reducer'
+import feedbacks from './reducers/feedbacks.reducer';
+import roles from './reducers/roles.reducer';
 
 const saga = createSagaMiddleware();
 
@@ -29,8 +31,10 @@ const rootReducer = combineReducers({
   slides,
   orders,
   comments,
+  feedbacks,
   user,
   lottery
+  roles,
 });
 
 const store = createStore(

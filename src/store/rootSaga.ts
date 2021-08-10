@@ -24,6 +24,8 @@ import {
   UPDATE_ORDER_STATUS_REQUEST,
   GET_COMMENTS_REQUEST,
   DELETE_COMMENT_REQUEST,
+  GET_FEEDBACKS_REQUEST,
+  DELETE_FEEDBACK_REQUEST,
   REQUEST_UPDATE_SLIDE_VISIBILITY,
   GET_USERS_REQUEST,
   ADD_USER_REQUEST,
@@ -36,7 +38,10 @@ import {
   REQUEST_ADD_MAIN_CATEGORIES,
   GET_MAIN_CATEGORY_BY_ID_REQUEST,
   UPDATE_MAIN_CATEGORY_REQUEST,
-  UPDATE_AVAILABILITY_PRODUCT_REQUEST, GET_LOTTERY_REQUEST,
+  UPDATE_AVAILABILITY_PRODUCT_REQUEST,
+  GET_ROLES_REQUEST,
+  GET_LOTTERY_REQUEST
+
 } from './types';
 
 import {
@@ -75,6 +80,7 @@ import {
   updateOrderStatusWorker
 } from './sagas/orders.saga';
 import { deleteCommentWorker, getCommentsWorker } from './sagas/comments.saga';
+import { deleteFeedbackWorker, getFeedbacksWorker } from './sagas/feedbacks.saga';
 import {
   addUserWorker,
   deleteUserWorker,
@@ -83,6 +89,7 @@ import {
 } from './sagas/users.saga';
 import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
 import { getLotteriesWorker } from './sagas/lotteries.saga';
+import { getRolesWorker } from './sagas/roles.saga';
 
 export function* sagaMainCategoriesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_MAIN_CATEGORIES, fetchMainCategoryWorker);
@@ -108,7 +115,7 @@ export function* sagaProductsWatcher(): SagaIterator {
   yield takeEvery(UPDATE_AVAILABILITY_PRODUCT_REQUEST, updateAvailabilityProductWorker);
 }
 
-// Lottery
+// Settings
 function* sagaSettingsWatcher(): SagaIterator {
   yield takeEvery(REQUEST_SETTINGS, fetchSettingsWorker);
   yield takeEvery(REQUEST_UPDATE_SETTINGS, updateSettingsWorker);
@@ -127,6 +134,12 @@ function* sagaSlidesWatcher(): SagaIterator {
 export function* sagaCommentsWatcher(): SagaIterator {
   yield takeEvery(GET_COMMENTS_REQUEST, getCommentsWorker);
   yield takeEvery(DELETE_COMMENT_REQUEST, deleteCommentWorker);
+}
+
+// Feedbacks
+export function* sagaFeedbacksWatcher(): SagaIterator {
+  yield takeEvery(GET_FEEDBACKS_REQUEST, getFeedbacksWorker);
+  yield takeEvery(DELETE_FEEDBACK_REQUEST, deleteFeedbackWorker);
 }
 
 //Orders
@@ -156,6 +169,11 @@ export function* sagaLotteryWatcher(): SagaIterator {
 }
 
 
+// Roles
+export function* getRolesWatcher(): SagaIterator {
+  yield takeEvery(GET_ROLES_REQUEST, getRolesWorker);
+}
+
 // RootSaga
 export default function* rootSaga(): SagaIterator {
   yield all([
@@ -166,8 +184,10 @@ export default function* rootSaga(): SagaIterator {
     fork(sagaSlidesWatcher),
     fork(sagaOrdersWatcher),
     fork(sagaCommentsWatcher),
+    fork(sagaFeedbacksWatcher),
     fork(sagaUsersWatcher),
     fork(sagaUserWatcher),
-    fork(sagaLotteryWatcher)
+    fork(sagaLotteryWatcher),
+    fork(getRolesWatcher),
   ]);
 }

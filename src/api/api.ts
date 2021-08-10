@@ -34,6 +34,7 @@ import { IActions, IActionsImage } from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';
 import { ISlideItem, ISlideUpdateValues, ISlideVisibility } from '../interfaces/ISlides';
 import { ICommentResponse } from '../interfaces/IComment';
+import { IFeedbackResponse } from '../interfaces/IFeedback';
 import {
   IUserReqAdd,
   IAuthResponse,
@@ -45,6 +46,7 @@ import {
 import instance from './axios-interceptors';
 import { Status } from '../enums/orderStatus';
 import { ILotteryArrayData } from '../interfaces/ILottery';
+import { IRole } from '../interfaces/IRoles';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -78,7 +80,9 @@ type ApiFetchedDataType = {
     getProductsInCart: () => FetchedDataType<IProductsInCart>;
     addProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
-    updateAvailabilityProduct: (data: IUpdateAvailabilityProduct) => FetchedDataType<IAddCharResponse>;
+    updateAvailabilityProduct: (
+      data: IUpdateAvailabilityProduct
+    ) => FetchedDataType<IAddCharResponse>;
   };
 
   settings: {
@@ -109,8 +113,14 @@ type ApiFetchedDataType = {
     get: (page: number, limit: number) => FetchedDataType<ICommentResponse>;
     delete: (id: number) => FetchedDataType<JSON>;
   };
+
+  feedbacks: {
+    get: (page: number, limit: number) => FetchedDataType<IFeedbackResponse>;
+    delete: (id: number) => FetchedDataType<JSON>;
+  };
+
   users: {
-    get: () => FetchedDataType<IUsersData>;
+    get: (page: number, limit: number) => FetchedDataType<IUsersData>;
   };
   user: {
     auth: (user: IUserCreeds) => FetchedDataType<IAuthResponse>;
@@ -122,6 +132,9 @@ type ApiFetchedDataType = {
   lottery: {
     getAllLottery: () => FetchedDataType<ILotteryArrayData>;
   }
+  roles: {
+    get: () => FetchedDataType<IRole[]>;
+  };
 };
 
 export const api: ApiFetchedDataType = {
@@ -145,13 +158,14 @@ export const api: ApiFetchedDataType = {
     getById: (id) => instance.get(`${root}/product/${id}`),
     update: ({ id, ...product }) => instance.patch(`${root}/product/${id}`, product),
     updateImg: (data) => instance.post(`${root}/product/multipleimages`, data),
-    updateMainImg: (data) => instance.patch(`${root}/product/img/preview`, data),
-    deleteImg: (imgName) => instance.delete(`${root}/product/img/${imgName}`),
+    updateMainImg: (data) => instance.patch(`${root}/static/uploads/preview`, data),
+    deleteImg: (imgName) => instance.delete(`${root}/static/uploads/${imgName}`),
     deleteProduct: (id) => instance.delete(`${root}/product/${id}`),
     getProductsInCart: () => instance.get(`${root}/products-in-cart`),
     addProductCharValues: (data) => instance.post(`${root}/characteristics-values`, data),
     updateProductCharValues: (data) => instance.patch(`${root}/characteristics-values`, data),
-    updateAvailabilityProduct: ({ productId, ...product }) => instance.patch(`${root}/product/${productId}`, product),
+    updateAvailabilityProduct: ({ productId, ...product }) =>
+      instance.patch(`${root}/product/${productId}`, product),
   },
 
   slides: {
@@ -177,19 +191,26 @@ export const api: ApiFetchedDataType = {
   },
 
   users: {
-    get: () => instance.get(`${root}/users`),
+    get: (page, limit) => instance.get(`${root}/users?page=${page}&limit=${limit}`),
   },
 
   user: {
     auth: (user) => instance.post(`${root}/auth/admin/login`, user),
     get: () => instance.get(`${root}/users/profile`),
-    update: ({ id, ...user }) => instance.patch(`${root}/users/${id}`, user),
+    update: ({ id, ...user }) => instance.put(`${root}/users/${id}`, user),
     delete: (id) => instance.delete(`${root}/users/${id}`),
-    add: (user) => instance.post(`${root}/auth/register`, user),
+    add: (user) => instance.post(`${root}/auth/register-through-admin`, user),
   },
   comments: {
     get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),
     delete: (id) => instance.delete(`${root}/comments/admin/${id}`),
+  },
+  feedbacks: {
+    get: (page, limit) => instance.get(`${ root }/feedbacks?page=${ page }&limit=${ limit }`),
+    delete: (id) => instance.delete(`${ root }/feedbacks/admin/${ id }`),
+  },
+  roles: {
+    get: () => instance.get(`${root}/roles`),
   },
   lottery: {
     getAllLottery: () => instance.get(`${root}/lottery`),

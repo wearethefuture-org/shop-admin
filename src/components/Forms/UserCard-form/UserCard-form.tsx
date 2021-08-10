@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { Button, TextField, Select, MenuItem } from '@material-ui/core';
-
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { AppDispatch } from '../../../store/store';
 import { useDispatch } from 'react-redux';
+import * as Yup from 'yup';
+import { makeStyles } from '@material-ui/core/styles';
+
+import { AppDispatch } from '../../../store/store';
 import {
   addUserRequest,
   updateUserRequest,
 } from '../../../store/actions/users.actions';
 import { IUserItem } from '../../../interfaces/IUsers';
 import { failSnackBar } from '../../../store/actions/snackbar.actions';
-import { makeStyles } from '@material-ui/core/styles';
+import useRoles from '../../../hooks/useRoles';
 
 const useStyles = makeStyles({
   input: {
@@ -63,43 +64,69 @@ interface FormDialogProps {
 
 const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
-const roles = [
-  { id: 0, name: 'user', description: 'lorem ipsum' },
-  { id: 1, name: 'admin', description: 'lorem ipsum' },
-  { id: 2, name: 'moderator', description: 'lorem ipsum' },
-];
-
 const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) => {
   const classes = useStyles();
+  const { data: roles } = useRoles();
 
-  const validationSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(3, "Введіть коректне ім'я")
-      .required('Це поле не повинно бути пустим!'),
-    lastName: Yup.string()
-      .min(2, 'Введіть коректне прізвище')
-      .required('Це поле не повинно бути пустим!'),
-    tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
-    email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
-    creditCard: Yup.string().required('Це поле не повинно бути пустим!'),
-    role_id: Yup.string().required('Це поле не повинно бути пустим!'),
-    password: isNew
-      ? Yup.string().min(6, 'Пароль занадто короткий!').required('Це поле не повинно бути пустим!')
-      : Yup.string().min(6, 'Пароль занадто короткий!'),
-    confirmPassword: Yup.string().oneOf([Yup.ref('password')], 'Пароль не співпадає'),
-  });
-  const [isEdit, setIsEdit] = useState(isNew);
+  const validationSchema = isNew ? Yup.object().shape({
+      firstName: Yup.string()
+        .min(3, 'Введіть коректне ім\'я')
+        .required('Це поле не повинно бути пустим!'),
+      lastName: Yup.string()
+        .min(2, 'Введіть коректне прізвище')
+        .required('Це поле не повинно бути пустим!'),
+      tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
+      email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
+      telegramId: Yup.string().notRequired(),
+      roleId: Yup.string().required('Це поле не повинно бути пустим!'),
+      newPassword:
+        Yup.string().min(6, 'Пароль занадто короткий!').required('Це поле не повинно бути пустим!')
+          .matches(
+            /^(?=.*[A-ZА-Я])(?=.*\d).*$/,
+            'Пароль має бути не менше 6 символів, містити цифри та великі літери',
+          ),
+      confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
+    }) :
+    Yup.object().shape({
+      firstName: Yup.string()
+        .min(3, 'Введіть коректне ім\'я')
+        .required('Це поле не повинно бути пустим!'),
+      lastName: Yup.string()
+        .min(2, 'Введіть коректне прізвище')
+        .required('Це поле не повинно бути пустим!'),
+      tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
+      email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
+      telegramId: Yup.string().notRequired(),
+      roleId: Yup.string().required('Це поле не повинно бути пустим!'),
+      currentPassword: Yup.string().min(6, 'Пароль занадто короткий!').notRequired(),
+      newPassword:
+        Yup.string().when(['currentPassword'], {
+          is: true,
+          then: Yup.string()
+            .min(6, 'Пароль занадто короткий!')
+            .matches(
+              /^(?=.*[A-ZА-Я])(?=.*\d).*$/,
+              'Пароль має бути не менше 6 символів, містити цифри та великі літери',
+            ),
+          otherwise: Yup.string().notRequired(),
+        }),
+      confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
+    });
+
+  const [isEdit, setIsEdit] = useState(true);
   const dispatch: AppDispatch = useDispatch();
   const initialValues = {
     firstName: isNew ? '' : user?.firstName,
     lastName: isNew ? '' : user?.lastName,
-    tel: isNew ? '' : user?.phoneNumber,
-    creditCard: isNew ? '' : user?.creditCard,
+    phoneNumber: isNew ? '' : user?.phoneNumber,
     email: isNew ? '' : user?.email,
-    role_id: isNew ? 0 : user?.role.id,
-    password: '',
-    confirmPassword: '',
+    roleId: isNew ? 1 : user?.role.id,
+    telegramId: isNew ? '' : user?.telegramId,
+    currentPassword: '',
+    newPassword: '',
+    confirmNewPassword: '',
   };
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema,
@@ -115,12 +142,13 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           addUserRequest({
             firstName: _values.firstName ? _values.firstName : '',
             lastName: _values.lastName ? _values.lastName : '',
-            creditCard: _values.creditCard ? _values.creditCard : '',
-            tel: _values.tel ? _values.tel : '',
-            role_id: _values.role_id ? _values.role_id : 0,
-            password: _values.password ? _values.password : '',
+            phoneNumber: _values.phoneNumber ? _values.phoneNumber : '',
+            roleId: _values.roleId ? _values.roleId : 1,
+            password: _values.newPassword ? _values.newPassword : '',
+            confirmPassword: _values.confirmNewPassword ? _values.confirmNewPassword : '',
             email: _values.email ? _values.email : '',
-          })
+            telegramId: _values.telegramId ? _values.telegramId : '',
+          }),
         );
       } else if (user) {
         let sendData: { id: number; [key: string]: any } = { id: user.id };
@@ -129,6 +157,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             sendData[key] = _values[key];
           }
         }
+        sendData['roleId'] = _values['roleId'];
         if (Object.keys(sendData).length > 1) {
           dispatch(updateUserRequest(user.id, sendData));
         } else {
@@ -140,7 +169,8 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className={classes.formDiv}>
+    <form onSubmit={formik.handleSubmit} className={classes.formDiv}
+          onClick={(e) => e.stopPropagation()}>
       <div className={classes.row}>
         <TextField
           className={classes.input}
@@ -174,16 +204,16 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       <div className={classes.row}>
         <TextField
           className={classes.input}
-          value={formik.values.tel}
+          value={formik.values.phoneNumber}
           disabled={!isEdit}
           type="tel"
-          name="tel"
+          name="phoneNumber"
           id="tel-field"
           placeholder="Номер телефону"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.tel && Boolean(formik.errors.tel)}
-          helperText={formik.touched.tel && formik.errors.tel}
+          error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
+          helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
         />
       </div>
       <div className={classes.row}>
@@ -202,12 +232,27 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
         />
       </div>
       <div className={classes.row}>
+        <TextField
+          className={classes.input}
+          value={formik.values.telegramId}
+          disabled={!isEdit}
+          type="text"
+          name="telegramId"
+          id="telegramId-field"
+          placeholder="Telegram Id"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.telegramId && Boolean(formik.errors.telegramId)}
+          helperText={formik.touched.telegramId && formik.errors.telegramId}
+        />
+      </div>
+      <div className={classes.row}>
         <Select
-          value={formik.values.role_id}
+          value={formik.values.roleId}
           className={classes.inputSelect}
           disabled={!isEdit}
           type="select"
-          name="role_id"
+          name="roleId"
           id={'role_id-field'}
           placeholder={'роль'}
           onChange={formik.handleChange}
@@ -222,19 +267,36 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           })}
         </Select>
       </div>
+      {!isNew ?
+        <div className={classes.row}>
+          <TextField
+            className={classes.input}
+            autoComplete={'false'}
+            disabled={!isEdit}
+            type="password"
+            name="currentPassword"
+            id="currentPassword-field"
+            placeholder="Поточний пароль"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.currentPassword && Boolean(formik.errors.currentPassword)}
+            helperText={formik.touched.currentPassword && formik.errors.currentPassword}
+          />
+        </div>
+        : null}
       <div className={classes.row}>
         <TextField
           className={classes.input}
-          value={formik.values.creditCard}
+          autoComplete={'false'}
           disabled={!isEdit}
-          type="text"
-          name="creditCard"
-          id="creditCard-field"
-          placeholder="ВВедить кредтну картку"
+          type="password"
+          name="newPassword"
+          id="newPassword-field"
+          placeholder="Новий пароль"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.creditCard && Boolean(formik.errors.creditCard)}
-          helperText={formik.touched.creditCard && formik.errors.creditCard}
+          error={formik.touched.newPassword && Boolean(formik.errors.newPassword)}
+          helperText={formik.touched.newPassword && formik.errors.newPassword}
         />
       </div>
       <div className={classes.row}>
@@ -243,28 +305,13 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           autoComplete={'false'}
           disabled={!isEdit}
           type="password"
-          name="password"
-          id="password-field"
-          placeholder="Пароль (6 символів)"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-        />
-      </div>
-      <div className={classes.row}>
-        <TextField
-          className={classes.input}
-          autoComplete={'false'}
-          disabled={!isEdit}
-          type="password"
-          name="confirmPassword"
-          id="confirmPassword-field"
+          name="confirmNewPassword"
+          id="confirmNewPassword-field"
           placeholder="Підтвердіть пароль"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
-          helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+          error={formik.touched.confirmNewPassword && Boolean(formik.errors.confirmNewPassword)}
+          helperText={formik.touched.confirmNewPassword && formik.errors.confirmNewPassword}
         />
       </div>
       <div className={classes.row}>

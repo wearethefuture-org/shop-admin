@@ -15,8 +15,9 @@ import {
   UPDATE_USER_SUCCESS,
 } from '../types';
 
-export const getUsersRequest = (): IActions => ({
+export const getUsersRequest = (page: number, limit: number): IActions => ({
   type: GET_USERS_REQUEST,
+  data: { page, limit, }
 });
 
 export const getUsersSuccess = (users: IUserItem[]): IActions => ({
