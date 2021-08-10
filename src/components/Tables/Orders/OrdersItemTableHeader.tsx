@@ -15,20 +15,20 @@ const OrdersItemTableHeader: FC<OrdersItemTableHeaderProps> = ({ order }) => {
   const history = useHistory();
   return (
     <div className={styles.orderHeader}>
-      <GoBackBtn handleGoBack={() => history.push('/orders')}/>
+      <GoBackBtn handleGoBack={() => history.push('/orders')} />
       <div className={styles.headerTitle}>Замовлення № {order.id}</div>
       <div className={styles.headerUserData}>
         <PersonPinIcon color="primary" />
-        {order.user.firstName} {order.user.lastName}
+        {order.additionalFirstName} {order.additionalLastName}
       </div>
       <div className={styles.headerUserData}>
-        <a href={`mailto:${order.user.email}`}>
-          <EmailIcon color="primary" /> {order.user.email}
+        <a href={`mailto:${order.additionalEmail}`}>
+          <EmailIcon color="primary" /> {order.additionalEmail}
         </a>
       </div>
       <div className={styles.headerUserData}>
-        <a href={`tel:${order.user.phoneNumber.replace(/ /g, '')}`}>
-          <PhoneInTalkIcon color="primary" /> {order.user.phoneNumber}
+        <a href={`tel:${order.additionalNumber.replace(/ /g, '')}`}>
+          <PhoneInTalkIcon color="primary" /> {order.additionalNumber}
         </a>
       </div>
       <div className={styles.amount}>

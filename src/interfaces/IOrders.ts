@@ -50,5 +50,9 @@ export interface ICurrentOrder extends Common {
   amount: number;
   productToOrder: Array<IProductToOrder>;
   user: IOrderUser;
+  additionalFirstName: string;
+  additionalLastName: string;
+  additionalEmail: string;
+  additionalNumber: string;
   delivery: IDelivery;
 }
