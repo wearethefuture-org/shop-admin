@@ -33,7 +33,7 @@ const rootReducer = combineReducers({
   comments,
   feedbacks,
   user,
-  lottery
+  lottery,
   roles,
 });
 
