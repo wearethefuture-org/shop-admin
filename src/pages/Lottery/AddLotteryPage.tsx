@@ -1,40 +1,45 @@
 import React, { useState } from 'react';
-import { Button, LinearProgress } from '@material-ui/core';
+import { Link, useLocation } from 'react-router-dom';
+import { LinearProgress } from '@material-ui/core';
+
+import ProductsTable from '../../components/Tables/Products/ProductsTable';
+import AddBtn from '../../components/AddBtn/AddBtn';
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
 import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
-import styles from '../Products/ProductsPage.module.scss';
-import LotteryTable from '../../components/Tables/Lottery/LotteryTable';
-import useLottery from '../../hooks/useLottery';
-import AddIcon from '@material-ui/icons/Add';
-import useCategoriesModal from '../../hooks/useCategoriesModal';
-import LotteryModal from '../../components/Modals/lotteryModal';
+import useProducts from '../../hooks/useProducts';
+import styles from './ProductsPage.module.scss';
 
 enum cols {
   id = 'ID',
   mainImg = 'Головне зображення',
-  lotteryName = 'Назва',
+  name = 'Назва',
+  price = 'Ціна',
   description = 'Опис',
+  categoryName = 'Категорія',
+  key = 'URL ключ',
   files = 'Зображення',
-  start = 'Старт',
-  finish = 'Фініш',
-  lotteryStatus = 'Статус'
+  createdAt = 'Створено',
+  updatedAt = 'Оновлено',
 }
 
-const Lottery: React.FC = () => {
-  const categoriesCreateModalData = useCategoriesModal();
-  const { list, loading, dispatch } = useLottery();
+const Products: React.FC = () => {
+  const location = useLocation();
 
+  const { list, loading } = useProducts();
+  console.log(loading);
 
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [activeColumns, setActiveColumns] = useState<string[]>([
     cols.id,
     cols.mainImg,
-    cols.lotteryName,
+    cols.name,
+    cols.price,
     cols.description,
+    cols.categoryName,
+    cols.key,
     cols.files,
-    cols.start,
-    cols.finish,
-    cols.lotteryStatus
+    cols.createdAt,
+    cols.updatedAt,
   ]);
 
   const handleColumns = (column: string) =>
@@ -58,28 +63,22 @@ const Lottery: React.FC = () => {
         )}
 
         <div className={styles['header-btn-wrapper']}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={categoriesCreateModalData.handleClickOpen}
+          <Link
+            to={{
+              pathname: '/product/add',
+              state: { from: `${location.pathname}` },
+            }}
           >
-            <AddIcon /> Додати
-          </Button>
+            <AddBtn title="Додати" handleAdd={undefined} />
+          </Link>
           <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
         </div>
-        <div className={styles['content-wrapper']}>
-          <LotteryModal
-            dispatch={dispatch}
-            modalData={categoriesCreateModalData}
-          />
-
-        </div>
         <div className={styles['table-wrapper']}>
-          {list && <LotteryTable list={list} activeColumns={activeColumns} />}
+          {list && <ProductsTable list={list} activeColumns={activeColumns} />}
         </div>
       </div>
     </>
   );
 };
 
-export default Lottery;
+export default Products;

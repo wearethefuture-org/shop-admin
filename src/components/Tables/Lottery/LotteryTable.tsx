@@ -27,16 +27,16 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ list, activeColumns }) => {
       omit: !activeColumns.includes('ID'),
     },
     {
-      name: <MainImgName />,
+      name: <MainImgName/>,
       selector: (row) => row.mainImg,
       format: (row) =>
         row.mainImg ? (
           <div className={styles.mainImg}>
-            <img src={`${root}uploads/images/${row.mainImg.name}`} alt={row.mainImg.name} />
+            <img src={`${root}uploads/images/${row.mainImg.name}`} alt={row.mainImg.name}/>
           </div>
         ) : (
           <div className={styles.placeholder}>
-            <img src={placeholder} alt="placeholder" />
+            <img src={placeholder} alt="placeholder"/>
           </div>
         ),
       maxWidth: '12%',
@@ -45,7 +45,7 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ list, activeColumns }) => {
     },
     {
       name: 'Назва',
-      selector: (row) => row.name,
+      selector: (row) => row.title,
       sortable: true,
       cell: (row) => (
         <Link
@@ -54,7 +54,7 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ list, activeColumns }) => {
             state: { from: '/product' },
           }}
         >
-          <span className={styles['product-name']}>{row.name}</span>
+          <span className={styles['product-name']}>{row.title}</span>
         </Link>
       ),
       omit: !activeColumns.includes('Назва'),
@@ -79,25 +79,26 @@ const LotteryTable: React.FC<LotteryTableProps> = ({ list, activeColumns }) => {
       omit: !activeColumns.includes('Зображення'),
     },
     {
-      name: 'Створено',
-      selector: (row) => row.createdAt,
+      name: 'Старт',
+      selector: (row) => row.start,
       sortable: true,
-      format: (row) => <DateMoment date={row.createdAt} column />,
-      omit: !activeColumns.includes('Створено'),
+      format: (row) => <DateMoment date={row.createdAt} column/>,
+      omit: !activeColumns.includes('Старт'),
     },
     {
-      name: 'Оновлено',
+      name: 'Фініш',
       selector: (row) => row.updatedAt,
       sortable: true,
-      format: (row) => <DateMoment date={row.updatedAt} column />,
-      omit: !activeColumns.includes('Оновлено'),
+      format: (row) => <DateMoment date={row.finish} column/>,
+      omit: !activeColumns.includes('Фініш'),
     },
     {
       name: 'Статус',
-      selector: (row) => row.updatedAt,
+      selector: (row) => row.active,
       sortable: true,
-      format: (row) => <DateMoment date={row.lotteryStatus} column />,
-      omit: !activeColumns.includes('Статус'),
+      format: (row) => (
+        <>{row?.active ? <div>активний</div> : <div>завершений</div>}</>
+      ),
     },
   ];
 

@@ -24,3 +24,14 @@ export interface LotteryTableProps {
   activeColumns: string[];
 }
 
+export interface IAddLotteryItem {
+  start: string,
+  finish: string,
+  title: string,
+  description: string,
+}
+
+export interface IInnerLotteryFormProps {
+  handleClose: () => void;
+}
+

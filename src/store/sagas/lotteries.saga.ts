@@ -1,8 +1,9 @@
 import { put, call } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 import { failSnackBar } from '../actions/snackbar.actions';
-import { apiGetLotteries } from './services/lotteries.service';
-import { getLotteryError, getLotterySuccess } from '../actions/lottery.actions';
+import { apiAddLottery, apiGetLotteries } from './services/lotteries.service';
+import { addLotterySuccess, getLotteryError, getLotterySuccess } from '../actions/lottery.actions';
+import { IActions } from '../../interfaces/actions';
 
 
 export function* getLotteriesWorker(): SagaIterator {
@@ -12,5 +13,14 @@ export function* getLotteriesWorker(): SagaIterator {
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(getLotteryError(error.message));
+  }
+}
+
+export function* addLotteryWorker({ data }: IActions): SagaIterator {
+  try {
+    const newLottery = yield call(apiAddLottery, data);
+    yield put(addLotterySuccess(newLottery));
+  } catch (error) {
+    yield put(failSnackBar(error.message));
   }
 }

@@ -40,7 +40,7 @@ import {
   UPDATE_MAIN_CATEGORY_REQUEST,
   UPDATE_AVAILABILITY_PRODUCT_REQUEST,
   GET_ROLES_REQUEST,
-  GET_LOTTERY_REQUEST
+  GET_LOTTERY_REQUEST, ADD_LOTTERY_REQUEST,
 
 } from './types';
 
@@ -88,7 +88,7 @@ import {
   updateUserWorker,
 } from './sagas/users.saga';
 import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
-import { getLotteriesWorker } from './sagas/lotteries.saga';
+import { addLotteryWorker, getLotteriesWorker } from './sagas/lotteries.saga';
 import { getRolesWorker } from './sagas/roles.saga';
 
 export function* sagaMainCategoriesWatcher(): SagaIterator {
@@ -166,6 +166,7 @@ export function* sagaUserWatcher(): SagaIterator {
 
 export function* sagaLotteryWatcher(): SagaIterator {
   yield takeEvery(GET_LOTTERY_REQUEST, getLotteriesWorker);
+  yield takeEvery(ADD_LOTTERY_REQUEST, addLotteryWorker);
 }
 
 

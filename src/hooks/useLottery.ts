@@ -15,7 +15,7 @@ const useLottery = () => {
     (state: RootState) => state.lottery,
   );
 
-  return { list, loading };
+  return { list, loading, dispatch };
 };
 
 export default useLottery;

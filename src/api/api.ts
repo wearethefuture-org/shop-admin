@@ -45,7 +45,7 @@ import {
 } from '../interfaces/IUsers';
 import instance from './axios-interceptors';
 import { Status } from '../enums/orderStatus';
-import { ILotteryArrayData } from '../interfaces/ILottery';
+import { IAddLotteryItem, ILotteryArrayData, ILotteryItem } from '../interfaces/ILottery';
 import { IRole } from '../interfaces/IRoles';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
@@ -131,6 +131,7 @@ type ApiFetchedDataType = {
   };
   lottery: {
     getAllLottery: () => FetchedDataType<ILotteryArrayData>;
+    addLottery: (data: IAddLotteryItem) => FetchedDataType<ILotteryItem>;
   }
   roles: {
     get: () => FetchedDataType<IRole[]>;
@@ -214,5 +215,6 @@ export const api: ApiFetchedDataType = {
   },
   lottery: {
     getAllLottery: () => instance.get(`${root}/lottery`),
+    addLottery: (data) => instance.post(`${root}/lottery`, data),
   },
 };
