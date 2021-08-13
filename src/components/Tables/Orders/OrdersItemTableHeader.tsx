@@ -19,19 +19,22 @@ const OrdersItemTableHeader: FC<OrdersItemTableHeaderProps> = ({ order }) => {
       <div className={styles.headerTitle}>Замовлення № {order.id}</div>
       <div className={styles.headerUserData}>
         <PersonPinIcon color="primary" />
-        {order.user.firstName} {order.user.lastName}
+        {order.additionalFirstName ? order.additionalFirstName : order.user.firstName}{' '}
+        {order.additionalLastName ? order.additionalLastName : order.user.lastName}
       </div>
       <div className={styles.headerUserData}>
-        <a href={`mailto:${order.user.email}`}>
-          <EmailIcon color="primary" /> {order.user.email}
+        <a href={`mailto:${order.additionalEmail ? order.additionalEmail : order.user.email}`}>
+          <EmailIcon color="primary" />{' '}
+          {order.additionalEmail ? order.additionalEmail : order.user.email}
         </a>
       </div>
       <div className={styles.headerUserData}>
         <a
-          href={`tel:${(order.additionalNumber
-            ? order.additionalNumber
-            : order.user.phoneNumber
-          ).replace(/ /g, '')}`}
+          href={`tel:${
+            order.additionalNumber
+              ? order.additionalNumber.replace(/ /g, '')
+              : order.user.phoneNumber.replace(/ /g, '')
+          }`}
         >
           <PhoneInTalkIcon color="primary" />{' '}
           {order.additionalNumber ? order.additionalNumber : order.user.phoneNumber}
