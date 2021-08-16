@@ -65,7 +65,7 @@ type ApiFetchedDataType = {
   };
 
   products: {
-    get: () => FetchedDataType<IGetProducts>;
+    get: (page: number, limit: number) => FetchedDataType<IGetProducts>;
     getById: (id: number) => FetchedDataType<IGetProductById>;
     add: (product: IAddProduct) => FetchedDataType<IGetProductById>;
     update: (product: IUpdateProduct) => FetchedDataType<IGetProductById>;
@@ -149,19 +149,18 @@ export const api: ApiFetchedDataType = {
   },
 
   products: {
-    get: () => instance.get(`${root}/product`),
-    add: (product) => instance.post(`${root}/product`, product),
-    getById: (id) => instance.get(`${root}/product/${id}`),
-    update: ({ id, ...product }) => instance.patch(`${root}/product/${id}`, product),
-    updateImg: (data) => instance.post(`${root}/product/multipleimages`, data),
-    updateMainImg: (data) => instance.patch(`${root}/static/uploads/preview`, data),
-    deleteImg: (imgName) => instance.delete(`${root}/static/uploads/${imgName}`),
-    deleteProduct: (id) => instance.delete(`${root}/product/${id}`),
-    getProductsInCart: () => instance.get(`${root}/products-in-cart`),
-    addProductCharValues: (data) => instance.post(`${root}/characteristics-values`, data),
-    updateProductCharValues: (data) => instance.patch(`${root}/characteristics-values`, data),
-    updateAvailabilityProduct: ({ productId, ...product }) =>
-      instance.patch(`${root}/product/${productId}`, product),
+    get: (page, limit) => instance.get(`${root}/product?page=${page}&limit=${limit}`),
+    add: (product) => instance.post(`${ root }/product`, product),
+    getById: (id) => instance.get(`${ root }/product/${ id }`),
+    update: ({ id, ...product }) => instance.patch(`${ root }/product/${ id }`, product),
+    updateImg: (data) => instance.post(`${ root }/product/multipleimages`, data),
+    updateMainImg: (data) => instance.patch(`${ root }/product/img/preview`, data),
+    deleteImg: (imgName) => instance.delete(`${ root }/product/img/${ imgName }`),
+    deleteProduct: (id) => instance.delete(`${ root }/product/${ id }`),
+    getProductsInCart: () => instance.get(`${ root }/products-in-cart`),
+    addProductCharValues: (data) => instance.post(`${ root }/characteristics-values`, data),
+    updateProductCharValues: (data) => instance.patch(`${ root }/characteristics-values`, data),
+    updateAvailabilityProduct: ({productId, ...product}) => instance.patch(`${ root }/product/${ productId }`, product),
   },
 
   slides: {

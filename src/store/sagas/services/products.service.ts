@@ -4,8 +4,8 @@ import { api } from '../../../api/api';
 import { root } from '../../../api/config';
 import { IAddProduct, IProductCharRequest, IUpdateAvailabilityProduct } from '../../../interfaces/IProducts';
 
-export async function apiGetProducts() {
-  const products = await api.products.get();
+export async function apiGetProducts(page: number, limit: number) {
+  const products = await api.products.get(page, limit);
   return products.data;
 }
 
