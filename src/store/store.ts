@@ -14,6 +14,7 @@ import slides from './reducers/slides.reduser';
 import orders from './reducers/orders.reducer';
 import user from './reducers/user.reducer';
 import comments from './reducers/comments.reducer';
+import feedbacks from './reducers/feedbacks.reducer';
 import roles from './reducers/roles.reducer';
 
 const saga = createSagaMiddleware();
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   slides,
   orders,
   comments,
+  feedbacks,
   user,
   roles,
 });

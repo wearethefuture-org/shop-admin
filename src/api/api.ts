@@ -34,6 +34,7 @@ import { IActions, IActionsImage } from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';
 import { ISlideItem, ISlideUpdateValues, ISlideVisibility } from '../interfaces/ISlides';
 import { ICommentResponse } from '../interfaces/IComment';
+import { IFeedbackResponse } from '../interfaces/IFeedback';
 import {
   IUserReqAdd,
   IAuthResponse,
@@ -78,7 +79,9 @@ type ApiFetchedDataType = {
     getProductsInCart: () => FetchedDataType<IProductsInCart>;
     addProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
-    updateAvailabilityProduct: (data: IUpdateAvailabilityProduct) => FetchedDataType<IAddCharResponse>;
+    updateAvailabilityProduct: (
+      data: IUpdateAvailabilityProduct
+    ) => FetchedDataType<IAddCharResponse>;
   };
 
   settings: {
@@ -109,6 +112,12 @@ type ApiFetchedDataType = {
     get: (page: number, limit: number) => FetchedDataType<ICommentResponse>;
     delete: (id: number) => FetchedDataType<JSON>;
   };
+
+  feedbacks: {
+    get: (page: number, limit: number) => FetchedDataType<IFeedbackResponse>;
+    delete: (id: number) => FetchedDataType<JSON>;
+  };
+
   users: {
     get: (page: number, limit: number) => FetchedDataType<IUsersData>;
   };
@@ -121,22 +130,22 @@ type ApiFetchedDataType = {
   };
   roles: {
     get: () => FetchedDataType<IRole[]>;
-  }
+  };
 };
 
 export const api: ApiFetchedDataType = {
   mainCategories: {
-    get: () => instance.get(`${ root }/mainCategory`),
-    add: (mainCategory) => instance.post(`${ root }/mainCategory`, mainCategory),
-    getById: (id) => instance.get(`${ root }/mainCategory/${ id }`),
-    update: (data) => instance.patch(`${ root }/mainCategory`, data),
+    get: () => instance.get(`${root}/mainCategory`),
+    add: (mainCategory) => instance.post(`${root}/mainCategory`, mainCategory),
+    getById: (id) => instance.get(`${root}/mainCategory/${id}`),
+    update: (data) => instance.patch(`${root}/mainCategory`, data),
   },
 
   categories: {
-    get: () => instance.get(`${ root }/category`),
-    add: (category) => instance.post(`${ root }/category`, category),
-    getById: (id) => instance.get(`${ root }/category/${ id }`),
-    update: (data) => instance.patch(`${ root }/category`, data),
+    get: () => instance.get(`${root}/category`),
+    add: (category) => instance.post(`${root}/category`, category),
+    getById: (id) => instance.get(`${root}/category/${id}`),
+    update: (data) => instance.patch(`${root}/category`, data),
   },
 
   products: {
@@ -155,17 +164,17 @@ export const api: ApiFetchedDataType = {
   },
 
   slides: {
-    get: () => instance.get(`${ root }/slide`),
-    add: (slide) => instance.post(`${ root }/slide`, slide),
-    update: (slide) => instance.patch(`${ root }/slide/${ slide.id }`, slide.body),
+    get: () => instance.get(`${root}/slide`),
+    add: (slide) => instance.post(`${root}/slide`, slide),
+    update: (slide) => instance.patch(`${root}/slide/${slide.id}`, slide.body),
     updateVisibility: (slide) =>
-      instance.patch(`${ root }/slide/visibility/${ slide.id }`, { isShown: slide.isShown }),
-    delete: (slide) => instance.delete(`${ root }/slide/${ slide.id }`),
+      instance.patch(`${root}/slide/visibility/${slide.id}`, { isShown: slide.isShown }),
+    delete: (slide) => instance.delete(`${root}/slide/${slide.id}`),
   },
 
   settings: {
-    get: () => instance.get(`${ root }/parameters`),
-    put: (settings) => instance.put(`${ root }/parameters`, settings),
+    get: () => instance.get(`${root}/parameters`),
+    put: (settings) => instance.put(`${root}/parameters`, settings),
   },
 
   orders: {
@@ -177,21 +186,25 @@ export const api: ApiFetchedDataType = {
   },
 
   users: {
-    get: (page, limit) => instance.get(`${ root }/users?page=${page}&limit=${limit}`),
+    get: (page, limit) => instance.get(`${root}/users?page=${page}&limit=${limit}`),
   },
 
   user: {
-    auth: (user) => instance.post(`${ root }/auth/admin/login`, user),
-    get: () => instance.get(`${ root }/users/profile`),
-    update: ({ id, ...user }) => instance.put(`${ root }/users/${ id }`, user),
-    delete: (id) => instance.delete(`${ root }/users/${ id }`),
-    add: (user) => instance.post(`${ root }/auth/register-through-admin`, user),
+    auth: (user) => instance.post(`${root}/auth/admin/login`, user),
+    get: () => instance.get(`${root}/users/profile`),
+    update: ({ id, ...user }) => instance.put(`${root}/users/${id}`, user),
+    delete: (id) => instance.delete(`${root}/users/${id}`),
+    add: (user) => instance.post(`${root}/auth/register-through-admin`, user),
   },
   comments: {
-    get: (page, limit) => instance.get(`${ root }/comments?page=${ page }&limit=${ limit }`),
-    delete: (id) => instance.delete(`${ root }/comments/admin/${ id }`),
+    get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),
+    delete: (id) => instance.delete(`${root}/comments/admin/${id}`),
+  },
+  feedbacks: {
+    get: (page, limit) => instance.get(`${ root }/feedbacks?page=${ page }&limit=${ limit }`),
+    delete: (id) => instance.delete(`${ root }/feedbacks/admin/${ id }`),
   },
   roles: {
-    get: () => instance.get(`${ root }/roles`),
-  }
+    get: () => instance.get(`${root}/roles`),
+  },
 };

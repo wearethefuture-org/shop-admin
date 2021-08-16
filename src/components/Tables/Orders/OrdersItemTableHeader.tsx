@@ -15,7 +15,7 @@ const OrdersItemTableHeader: FC<OrdersItemTableHeaderProps> = ({ order }) => {
   const history = useHistory();
   return (
     <div className={styles.orderHeader}>
-      <GoBackBtn handleGoBack={() => history.push('/orders')}/>
+      <GoBackBtn handleGoBack={() => history.push('/orders')} />
       <div className={styles.headerTitle}>Замовлення № {order.id}</div>
       <div className={styles.headerUserData}>
         <PersonPinIcon color="primary" />
@@ -27,8 +27,14 @@ const OrdersItemTableHeader: FC<OrdersItemTableHeaderProps> = ({ order }) => {
         </a>
       </div>
       <div className={styles.headerUserData}>
-        <a href={`tel:${order.user.phoneNumber.replace(/ /g, '')}`}>
-          <PhoneInTalkIcon color="primary" /> {order.user.phoneNumber}
+        <a
+          href={`tel:${(order.additionalNumber
+            ? order.additionalNumber
+            : order.user.phoneNumber
+          ).replace(/ /g, '')}`}
+        >
+          <PhoneInTalkIcon color="primary" />{' '}
+          {order.additionalNumber ? order.additionalNumber : order.user.phoneNumber}
         </a>
       </div>
       <div className={styles.amount}>

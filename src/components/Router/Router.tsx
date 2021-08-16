@@ -25,6 +25,7 @@ import Home from '../../pages/Home/Home';
 import PrivateRoute from './PrivateRoute';
 import { RootState } from '../../store/store';
 import CommentsPage from '../../pages/Comments/CommentsPage';
+import FeedbacksPage from '../../pages/Feedbacks/FeedbacksPage';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -54,6 +55,7 @@ const Router: React.FC = () => {
               <PrivateRoute path="/users" component={Users} />
               <PrivateRoute path="/slides" component={Slides} />
               <PrivateRoute path="/comments" component={CommentsPage} />
+              <PrivateRoute path="/feedbacks" component={FeedbacksPage} />
               <PrivateRoute path="/settings" component={Settings} />
               <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
               <PrivateRoute path="/orders" component={OrdersPage}/>
