@@ -78,6 +78,14 @@ const LotteryForm: React.FC<ILotteryFormProps> = ({
                 <Field
                   fullWidth
                   component={TextFieldWrapped}
+                  label="Фото"
+                  name="img"
+                  makegreen="true"
+                  className={styles['edit-field']}
+                />
+                <Field
+                  fullWidth
+                  component={TextFieldWrapped}
                   label="Назва"
                   name="name"
                   makegreen="true"

@@ -29,6 +29,14 @@ const InnerForm: React.FC<IInnerLotteryFormProps & FormikProps<IAddLotteryItem>>
         fullWidth
         component={TextFieldWrapped}
         className={classes.input}
+        label="Фото *"
+        name="img"
+        makegreen="true"
+      />
+      <Field
+        fullWidth
+        component={TextFieldWrapped}
+        className={classes.input}
         label="Назва *"
         name="title"
         makegreen="true"
