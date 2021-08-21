@@ -6,10 +6,9 @@ import AddIcon from '@material-ui/icons/Add';
 import useMainCategories from '../../hooks/useMainCategories';
 import FormDialog from '../../components/Modals/MainCategory-modal';
 import useCategoriesModal from '../../hooks/useCategoriesModal';
-import MainCategoriesTable from '../../components/Tables/MainCategory/MainCategoriesTable';
+import MainCategoriesCards from './Cards/MainCategoriesCards';
+//import MainCategoriesTable from '../../components/Tables/MainCategory/MainCategoriesTable';
 import { RootState } from '../../store/store';
-import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
-import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
 import styles from './MainCategories.module.scss';
 
 enum cols {
@@ -29,34 +28,9 @@ const MainCategories: React.FC = () => {
   const list = useSelector((state: RootState) => state.mainCategories.list);
   const loading = useSelector((state: RootState) => state.mainCategories.loading);
 
-  // ACTIVE COLUMNS
-  const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
-  const [activeColumns, setActiveColumns] = useState<string[]>([
-    cols.id,
-    cols.name,
-    cols.description,
-    cols.category,
-    cols.key,    
-  ]);
-
-  const handleColumns = (column: string) =>
-    activeColumns.includes(column)
-      ? setActiveColumns(activeColumns.filter((col) => col !== column))
-      : setActiveColumns([...activeColumns, column]);
-
   return (
     <>
       {loading && <LinearProgress />}
-
-      {showColumnsMenu && (
-        <ColumnsMenu
-          allColumns={cols}
-          activeColumns={activeColumns}
-          showColumnsMenu={showColumnsMenu}
-          setShowColumnsMenu={setShowColumnsMenu}
-          handleColumns={handleColumns}
-        />
-      )}
 
       <div className={styles['btns-wrapper']}>
         <Button
@@ -66,7 +40,6 @@ const MainCategories: React.FC = () => {
         >
           <AddIcon /> Додати
         </Button>
-        <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
       </div>
 
       <div className={styles['content-wrapper']}>
@@ -76,7 +49,7 @@ const MainCategories: React.FC = () => {
           modalData={categoriesCreateModalData}
         />
 
-        {list ? <MainCategoriesTable list={list} activeColumns={activeColumns} /> : null}
+        {list ? <MainCategoriesCards list={list} /> : null}
       </div>
     </>
   );

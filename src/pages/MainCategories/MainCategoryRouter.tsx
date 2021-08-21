@@ -17,7 +17,6 @@ const MainCategoryRouter: React.FC = () => {
   const match = useRouteMatch<MatchParams>();
   const dispatch: AppDispatch = useDispatch();
 
-
   useEffect(() => {
     match.params.id && dispatch(getMainCategoryByIdRequest(Number(match.params.id)));
   }, [dispatch, match.params.id]);
