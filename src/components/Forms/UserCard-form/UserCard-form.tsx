@@ -6,10 +6,7 @@ import * as Yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { AppDispatch } from '../../../store/store';
-import {
-  addUserRequest,
-  updateUserRequest,
-} from '../../../store/actions/users.actions';
+import { addUserRequest, updateUserRequest } from '../../../store/actions/users.actions';
 import { IUserItem } from '../../../interfaces/IUsers';
 import { failSnackBar } from '../../../store/actions/snackbar.actions';
 import useRoles from '../../../hooks/useRoles';
@@ -62,56 +59,50 @@ interface FormDialogProps {
   closeModal: () => void;
 }
 
-const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
+const phoneRegExp =
+  /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
 const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) => {
   const classes = useStyles();
   const { data: roles } = useRoles();
 
-  const validationSchema = isNew ? Yup.object().shape({
-      firstName: Yup.string()
-        .min(3, 'Введіть коректне ім\'я')
-        .required('Це поле не повинно бути пустим!'),
-      lastName: Yup.string()
-        .min(2, 'Введіть коректне прізвище')
-        .required('Це поле не повинно бути пустим!'),
-      tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
-      email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
-      telegramId: Yup.string().notRequired(),
-      roleId: Yup.string().required('Це поле не повинно бути пустим!'),
-      newPassword:
-        Yup.string().min(6, 'Пароль занадто короткий!').required('Це поле не повинно бути пустим!')
-          .matches(
-            /^(?=.*[A-ZА-Я])(?=.*\d).*$/,
-            'Пароль має бути не менше 6 символів, містити цифри та великі літери',
-          ),
-      confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
-    }) :
-    Yup.object().shape({
-      firstName: Yup.string()
-        .min(3, 'Введіть коректне ім\'я')
-        .required('Це поле не повинно бути пустим!'),
-      lastName: Yup.string()
-        .min(2, 'Введіть коректне прізвище')
-        .required('Це поле не повинно бути пустим!'),
-      tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
-      email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
-      telegramId: Yup.string().notRequired(),
-      roleId: Yup.string().required('Це поле не повинно бути пустим!'),
-      currentPassword: Yup.string().min(6, 'Пароль занадто короткий!').notRequired(),
-      newPassword:
-        Yup.string().when(['currentPassword'], {
-          is: true,
-          then: Yup.string()
-            .min(6, 'Пароль занадто короткий!')
-            .matches(
-              /^(?=.*[A-ZА-Я])(?=.*\d).*$/,
-              'Пароль має бути не менше 6 символів, містити цифри та великі літери',
-            ),
-          otherwise: Yup.string().notRequired(),
-        }),
-      confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
-    });
+  const baseScheme = {
+    firstName: Yup.string()
+      .min(3, "Введіть коректне ім'я")
+      .required('Це поле не повинно бути пустим!'),
+    lastName: Yup.string()
+      .min(2, 'Введіть коректне прізвище')
+      .required('Це поле не повинно бути пустим!'),
+    tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
+    email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
+    telegramId: Yup.string().notRequired().nullable(),
+    roleId: Yup.string().required('Це поле не повинно бути пустим!'),
+    newPassword: Yup.string()
+      .min(6, 'Пароль занадто короткий!')
+      .required('Це поле не повинно бути пустим!')
+      .matches(
+        /^(?=.*[A-ZА-Я])(?=.*\d).*$/,
+        'Пароль має бути не менше 6 символів, містити цифри та великі літери'
+      ),
+    confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
+  };
+
+  const newScheme = {
+    ...baseScheme,
+    currentPassword: Yup.string().min(6, 'Пароль занадто короткий!').notRequired(),
+    newPassword: Yup.string().when(['currentPassword'], {
+      is: true,
+      then: Yup.string()
+        .min(6, 'Пароль занадто короткий!')
+        .matches(
+          /^(?=.*[A-ZА-Я])(?=.*\d).*$/,
+          'Пароль має бути не менше 6 символів, містити цифри та великі літери'
+        ),
+      otherwise: Yup.string().notRequired(),
+    }),
+  };
+
+  const validationSchema = isNew ? Yup.object().shape(baseScheme) : Yup.object().shape(newScheme);
 
   const [isEdit, setIsEdit] = useState(true);
   const dispatch: AppDispatch = useDispatch();
@@ -148,7 +139,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             confirmPassword: _values.confirmNewPassword ? _values.confirmNewPassword : '',
             email: _values.email ? _values.email : '',
             telegramId: _values.telegramId ? _values.telegramId : '',
-          }),
+          })
         );
       } else if (user) {
         let sendData: { id: number; [key: string]: any } = { id: user.id };
@@ -169,8 +160,11 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className={classes.formDiv}
-          onClick={(e) => e.stopPropagation()}>
+    <form
+      onSubmit={formik.handleSubmit}
+      className={classes.formDiv}
+      onClick={(e) => e.stopPropagation()}
+    >
       <div className={classes.row}>
         <TextField
           className={classes.input}
@@ -267,7 +261,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           })}
         </Select>
       </div>
-      {!isNew ?
+      {!isNew ? (
         <div className={classes.row}>
           <TextField
             className={classes.input}
@@ -283,7 +277,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             helperText={formik.touched.currentPassword && formik.errors.currentPassword}
           />
         </div>
-        : null}
+      ) : null}
       <div className={classes.row}>
         <TextField
           className={classes.input}

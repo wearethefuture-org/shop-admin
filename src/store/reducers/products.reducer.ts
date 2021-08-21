@@ -29,6 +29,8 @@ const initialState: IProductsData = {
   list: [],
   currentProduct: null,
   error: null,
+  count: 0,
+  totalPages: 0,
 };
 
 const products = (state = initialState, { type, data }: IActions) => {
@@ -46,8 +48,10 @@ const products = (state = initialState, { type, data }: IActions) => {
     case GET_PRODUCTS_SUCCESS: {
       return {
         ...state,
-        list: data,
+        list: data.data,
         loading: false,
+        count: data.count,
+        totalPages: data.totalPages
       };
     }
 

@@ -8,7 +8,7 @@ const useProducts = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProductsRequest());
+    dispatch(getProductsRequest(1, 10));
   }, [dispatch]);
 
   const { list, loading }: Partial<IProductsData> = useSelector(
