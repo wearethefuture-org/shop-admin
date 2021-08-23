@@ -68,6 +68,7 @@ type ApiFetchedDataType = {
 
   treeCategories: {
     get: () => FetchedDataType<IGetTreeCategoriesResponse>;
+    getByKey: (key: string) => FetchedDataType<IGetTreeCategoriesResponse>;
   };
 
   products: {
@@ -156,6 +157,7 @@ export const api: ApiFetchedDataType = {
 
   treeCategories: {
     get: () => instance.get(`${root}/category/tree`),
+    getByKey: (key) => instance.get(`${root}/category/tree/key/${key}`),
   },
 
   products: {

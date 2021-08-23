@@ -1,6 +1,6 @@
 import { IActions } from '../../interfaces/actions';
 import { IGetTreeCategoriesResponse } from '../../interfaces/ITreeCategory';
-import { LOAD_TREE_CATEGORIES } from '../types';
+import { LOAD_TREE_CATEGORIES, GET_TREE_CATEGORIES_BY_KEY } from '../types';
 
 interface ITreeCategoriesState {
   list: IGetTreeCategoriesResponse[];
@@ -23,6 +23,14 @@ const treeCategories = (state = initialState, { type, data }: IActions) => {
         loading: false,
         list: data,
         currentTreeCategory: null,
+        error: null,
+      };
+    }
+
+    case GET_TREE_CATEGORIES_BY_KEY: {
+      return {
+        ...state,
+        loading: true,
         error: null,
       };
     }

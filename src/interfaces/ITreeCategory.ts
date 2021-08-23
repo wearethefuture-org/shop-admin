@@ -6,12 +6,21 @@ export interface ITreeCategory extends Common {
 	description: string;
 }
 
+export interface IChildren extends Common {
+	key: string;
+	name: string;
+	description: string;
+	mpath?: string;
+	parent?: IParent[] | null;
+	children?: IChildren[];
+}
+
 export interface IParent {
 	id: number;
 }
 
 export interface IGetTreeCategoriesResponse extends ITreeCategory {
 	mpath: string;
-	parent: IParent[] | null;
-	children: ITreeCategory[];
+	parent?: IParent[] | null;
+	children: IChildren[];
 }

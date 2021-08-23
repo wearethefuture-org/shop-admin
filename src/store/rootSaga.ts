@@ -8,6 +8,7 @@ import {
   GET_PRODUCTS_REQUEST,
   REQUEST_ADD_CATEGORIES,
   REQUEST_TREE_CATEGORIES,
+  GET_TREE_CATEGORIES_BY_KEY,
   REQUEST_CATEGORIES,
   REQUEST_SETTINGS,
   REQUEST_UPDATE_SETTINGS,
@@ -43,7 +44,7 @@ import {
   GET_ROLES_REQUEST,
 } from './types';
 
-import { fetchTreeCategoryWorker } from './sagas/treeCategories.saga';
+import { fetchTreeCategoryWorker, getTreeCategoriesByKeyWorker } from './sagas/treeCategories.saga';
 
 import {
   fetchMainCategoryWorker,
@@ -94,6 +95,7 @@ import { getRolesWorker } from './sagas/roles.saga';
 
 export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(REQUEST_TREE_CATEGORIES, fetchTreeCategoryWorker);
+  yield takeEvery(GET_TREE_CATEGORIES_BY_KEY, getTreeCategoriesByKeyWorker);
 }
 
 export function* sagaMainCategoriesWatcher(): SagaIterator {
