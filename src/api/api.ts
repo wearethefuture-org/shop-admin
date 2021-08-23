@@ -15,6 +15,8 @@ import {
   IGetCategoriesResponse,
 } from '../interfaces/ICategory';
 
+import { IGetTreeCategoriesResponse } from '../interfaces/ITreeCategory';
+
 import {
   IAddCharResponse,
   IAddImgResponse,
@@ -62,6 +64,10 @@ type ApiFetchedDataType = {
     add: (category: IAddCategory) => FetchedDataType<GeneralCategory>;
     getById: (id: number) => FetchedDataType<ICategoryResponse>;
     update: (data: Category) => FetchedDataType<ICategoryResponse>;
+  };
+
+  treeCategories: {
+    get: () => FetchedDataType<IGetTreeCategoriesResponse>;
   };
 
   products: {
@@ -148,19 +154,24 @@ export const api: ApiFetchedDataType = {
     update: (data) => instance.patch(`${root}/category`, data),
   },
 
+  treeCategories: {
+    get: () => instance.get(`${root}/category/tree`),
+  },
+
   products: {
     get: (page, limit) => instance.get(`${root}/product?page=${page}&limit=${limit}`),
-    add: (product) => instance.post(`${ root }/product`, product),
-    getById: (id) => instance.get(`${ root }/product/${ id }`),
-    update: ({ id, ...product }) => instance.patch(`${ root }/product/${ id }`, product),
-    updateImg: (data) => instance.post(`${ root }/product/multipleimages`, data),
-    updateMainImg: (data) => instance.patch(`${ root }/product/img/preview`, data),
-    deleteImg: (imgName) => instance.delete(`${ root }/product/img/${ imgName }`),
-    deleteProduct: (id) => instance.delete(`${ root }/product/${ id }`),
-    getProductsInCart: () => instance.get(`${ root }/products-in-cart`),
-    addProductCharValues: (data) => instance.post(`${ root }/characteristics-values`, data),
-    updateProductCharValues: (data) => instance.patch(`${ root }/characteristics-values`, data),
-    updateAvailabilityProduct: ({productId, ...product}) => instance.patch(`${ root }/product/${ productId }`, product),
+    add: (product) => instance.post(`${root}/product`, product),
+    getById: (id) => instance.get(`${root}/product/${id}`),
+    update: ({ id, ...product }) => instance.patch(`${root}/product/${id}`, product),
+    updateImg: (data) => instance.post(`${root}/product/multipleimages`, data),
+    updateMainImg: (data) => instance.patch(`${root}/product/img/preview`, data),
+    deleteImg: (imgName) => instance.delete(`${root}/product/img/${imgName}`),
+    deleteProduct: (id) => instance.delete(`${root}/product/${id}`),
+    getProductsInCart: () => instance.get(`${root}/products-in-cart`),
+    addProductCharValues: (data) => instance.post(`${root}/characteristics-values`, data),
+    updateProductCharValues: (data) => instance.patch(`${root}/characteristics-values`, data),
+    updateAvailabilityProduct: ({ productId, ...product }) =>
+      instance.patch(`${root}/product/${productId}`, product),
   },
 
   slides: {
@@ -201,8 +212,8 @@ export const api: ApiFetchedDataType = {
     delete: (id) => instance.delete(`${root}/comments/admin/${id}`),
   },
   feedbacks: {
-    get: (page, limit) => instance.get(`${ root }/feedbacks?page=${ page }&limit=${ limit }`),
-    delete: (id) => instance.delete(`${ root }/feedbacks/admin/${ id }`),
+    get: (page, limit) => instance.get(`${root}/feedbacks?page=${page}&limit=${limit}`),
+    delete: (id) => instance.delete(`${root}/feedbacks/admin/${id}`),
   },
   roles: {
     get: () => instance.get(`${root}/roles`),
