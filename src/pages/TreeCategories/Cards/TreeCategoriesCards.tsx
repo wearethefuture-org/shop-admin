@@ -11,6 +11,7 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import CategoryInfoModal from '../../../components/Modals/CategoryInfoModal/CategoryInfoModal';
 import ChildrenCard from '../ChildrenCard/ChildrenCard';
 import { ImTree } from 'react-icons/im';
+import Tree, { withStyles } from 'react-vertical-tree';
 
 interface TreeCategoriesDataProps {
   list: IGetTreeCategoriesResponse[];
@@ -62,6 +63,16 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ list }) => {
   const history = useHistory();
   const [infoModal, toggleInfoModal] = useState(false);
 
+  const customStyles = {
+    lines: {
+      color: 'green',
+      height: '90px',
+      zIndex: '5',
+    },
+  };
+
+  const StyledTree = withStyles(customStyles)(Tree);
+
   const toggleOpen = (section: string) => {
     openSections.includes(section)
       ? setOpenSections(openSections.filter((sec) => sec !== section))
@@ -80,7 +91,11 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ list }) => {
               title={l.name}
             >
               <div className={styles.childrensBlock}>
-                <ChildrenCard childrens={l.children} />
+                <StyledTree
+                  data={l.children}
+                  direction
+                  render={(item) => <ChildrenCard children={item} />}
+                />
               </div>
             </ExpandableBlock>
             <hr />

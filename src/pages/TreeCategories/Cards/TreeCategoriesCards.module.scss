@@ -3,6 +3,10 @@
 	justify-content: space-between;
 	flex-wrap: wrap;
 
+	li {
+		z-index: 1;
+	}
+
 	.expandBlockArrow {
 		cursor: pointer;
 	}
@@ -40,8 +44,9 @@
 		}
 
 		.childrensBlock {
-			margin-top: 30px;
-
+			display: flex;
+			flex-direction: column;
+			align-items: center;
 			> div {
 				display: flex;
 			}
