@@ -11,7 +11,7 @@ import TreeCategoriesCards from './Cards/TreeCategoriesCards';
 import { RootState } from '../../store/store';
 import styles from './TreeCategories.module.scss';
 
-const TreeCategory: React.FC = () => {
+const TreeCategories: React.FC = () => {
   const { data, dispatch } = useTreeCategories();
   const categoriesCreateModalData = useCategoriesModal();
 
@@ -45,4 +45,4 @@ const TreeCategory: React.FC = () => {
   );
 };
 
-export default TreeCategory;
+export default TreeCategories;

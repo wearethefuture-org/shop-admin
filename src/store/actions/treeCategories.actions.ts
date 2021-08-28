@@ -3,7 +3,9 @@ import { IGetTreeCategoriesResponse } from '../../interfaces/ITreeCategory';
 import {
 	LOAD_TREE_CATEGORIES,
 	REQUEST_TREE_CATEGORIES,
-	GET_TREE_CATEGORIES_BY_KEY,
+	GET_TREE_CATEGORIES_BY_ID_REQUEST,
+	GET_TREE_CATEGORIES_BY_ID_SUCCESS,
+	GET_TREE_CATEGORIES_BY_ID_ERROR,
 } from '../types';
 
 export const loadTreeCategories = (treeCategories: IGetTreeCategoriesResponse[]): IActions => ({
@@ -12,12 +14,19 @@ export const loadTreeCategories = (treeCategories: IGetTreeCategoriesResponse[])
 });
 export const fetchTreeCategories = (): IActions => ({ type: REQUEST_TREE_CATEGORIES });
 
-export const getTreeCategoriesByKeySuccess = (category: IGetTreeCategoriesResponse): IActions => ({
-	type: GET_TREE_CATEGORIES_BY_KEY,
+// get by id
+
+export const getTreeCategoryByIdRequest = (id: number): IActions => ({
+	type: GET_TREE_CATEGORIES_BY_ID_REQUEST,
+	data: id,
+});
+
+export const getTreeCategoriesByIdSuccess = (category: IGetTreeCategoriesResponse): IActions => ({
+	type: GET_TREE_CATEGORIES_BY_ID_SUCCESS,
 	data: category,
 });
 
-export const getTreeCategoriesByKeyError = (message: string): IActions => ({
-	type: GET_TREE_CATEGORIES_BY_KEY,
+export const getTreeCategoriesByIdError = (message: string): IActions => ({
+	type: GET_TREE_CATEGORIES_BY_ID_ERROR,
 	data: message,
 });

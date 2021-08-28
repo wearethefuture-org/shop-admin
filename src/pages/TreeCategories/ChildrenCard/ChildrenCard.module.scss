@@ -1,10 +1,20 @@
 .childrenCard {
-	display: flex;
-	flex-direction: column;
+	display: inline-flex;
 	align-items: center;
 
-	> div {
-		margin-left: 30px;
+	.addIcon {
+		display: inline-block;
+		border-radius: 60px;
+		box-shadow: 0px 0px 2px #888;
+		padding: 0.3em 0.5em;
+		color: rgb(1, 196, 57);
+		cursor: pointer;
+		transition: 0.3s all;
+
+		&:hover {
+			color: black;
+			background-color: rgb(229, 227, 227);
+		}
 	}
 }
 

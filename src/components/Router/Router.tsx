@@ -16,10 +16,11 @@ import Content from '../Content/Content';
 import styles from './Router.module.scss';
 import ViewProduct from '../../pages/Products/ProductRouter';
 import AddProduct from '../Forms/Products/AddProduct/AddProduct';
+import TreeCategoryRouter from '../../pages/TreeCategories/TreeCategoryRouter';
 import CategoryRouter from '../../pages/Categories/CategoryRouter';
 import OrdersPage from '../../pages/Orders/OrdersPage';
 import OrderRouter from '../../pages/Orders/OrderRouter';
-import TreeCategories from '../../pages/TreeCategories/TreeCategory';
+import TreeCategories from '../../pages/TreeCategories/TreeCategories';
 import MainCategories from '../../pages/MainCategories/MainCategory';
 import MainCategoryRouter from '../../pages/MainCategories/MainCategoryRouter';
 import Home from '../../pages/Home/Home';
@@ -62,6 +63,7 @@ const Router: React.FC = () => {
               <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
               <PrivateRoute path="/orders" component={OrdersPage} />
               <PrivateRoute component={ViewProduct} path="/product/:id" />
+              <PrivateRoute component={TreeCategoryRouter} path="/tree-category/:id" />
               <PrivateRoute component={CategoryRouter} path="/sub-category/:id" />
               <PrivateRoute component={MainCategoryRouter} path="/main-category/:id" />
               <PrivateRoute component={OrderRouter} path="/order/:id" />

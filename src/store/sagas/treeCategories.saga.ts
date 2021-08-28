@@ -1,14 +1,11 @@
 import { put, call, delay } from 'redux-saga/effects';
 
-import {
-	fetchedTreeCategories,
-	apiGetTreeCategoriesByKey,
-} from './services/treeCategories.service';
+import { fetchedTreeCategories, apiGetTreeCategoriesById } from './services/treeCategories.service';
 
 import {
 	loadTreeCategories,
-	getTreeCategoriesByKeySuccess,
-	getTreeCategoriesByKeyError,
+	getTreeCategoriesByIdSuccess,
+	getTreeCategoriesByIdError,
 } from '../actions/treeCategories.actions';
 import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 import { SagaIterator } from 'redux-saga';
@@ -23,12 +20,12 @@ export function* fetchTreeCategoryWorker(): SagaIterator {
 	}
 }
 
-export function* getTreeCategoriesByKeyWorker({ data: key }: IActions): SagaIterator {
+export function* getTreeCategoriesByIdWorker({ data: id }: IActions): SagaIterator {
 	try {
-		const treeCategories = yield call(apiGetTreeCategoriesByKey, key);
-		yield put(getTreeCategoriesByKeySuccess(treeCategories));
+		const treeCategories = yield call(apiGetTreeCategoriesById, id);
+		yield put(getTreeCategoriesByIdSuccess(treeCategories));
 	} catch (error) {
 		yield put(failSnackBar(error.message));
-		yield put(getTreeCategoriesByKeyError(error.message));
+		yield put(getTreeCategoriesByIdError(error.message));
 	}
 }

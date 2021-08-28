@@ -1,6 +1,11 @@
 import { IActions } from '../../interfaces/actions';
 import { IGetTreeCategoriesResponse } from '../../interfaces/ITreeCategory';
-import { LOAD_TREE_CATEGORIES, GET_TREE_CATEGORIES_BY_KEY } from '../types';
+import {
+  LOAD_TREE_CATEGORIES,
+  GET_TREE_CATEGORIES_BY_ID_REQUEST,
+  GET_TREE_CATEGORIES_BY_ID_SUCCESS,
+  GET_TREE_CATEGORIES_BY_ID_ERROR,
+} from '../types';
 
 interface ITreeCategoriesState {
   list: IGetTreeCategoriesResponse[];
@@ -27,11 +32,28 @@ const treeCategories = (state = initialState, { type, data }: IActions) => {
       };
     }
 
-    case GET_TREE_CATEGORIES_BY_KEY: {
+    // get one by id
+    case GET_TREE_CATEGORIES_BY_ID_REQUEST: {
       return {
         ...state,
         loading: true,
         error: null,
+      };
+    }
+
+    case GET_TREE_CATEGORIES_BY_ID_SUCCESS: {
+      return {
+        ...state,
+        currentTreeCategory: data,
+        loading: false,
+      };
+    }
+
+    case GET_TREE_CATEGORIES_BY_ID_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
       };
     }
 

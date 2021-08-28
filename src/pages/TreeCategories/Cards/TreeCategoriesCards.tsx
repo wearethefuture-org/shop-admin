@@ -60,13 +60,14 @@ const ExpandableBlock: FC<ExpandableBlockProps> = ({
 
 const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ list }) => {
   const [openSections, setOpenSections] = useState<string[]>([]);
+
   const history = useHistory();
   const [infoModal, toggleInfoModal] = useState(false);
 
   const customStyles = {
     lines: {
       color: 'green',
-      height: '90px',
+      height: '60px',
       zIndex: '5',
     },
   };
@@ -78,6 +79,8 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ list }) => {
       ? setOpenSections(openSections.filter((sec) => sec !== section))
       : setOpenSections(openSections.concat(section));
   };
+
+  const editHandleClick = (category) => {};
 
   return (
     <>
@@ -100,7 +103,7 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ list }) => {
             </ExpandableBlock>
             <hr />
             <div className={styles.icons}>
-              <InfoIcon onClick={() => toggleInfoModal(!infoModal)} />
+              <InfoIcon onClick={() => editHandleClick(l)} />
               <EditIcon />
               <DeleteIcon />
             </div>
