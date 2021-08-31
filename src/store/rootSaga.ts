@@ -7,7 +7,9 @@ import {
   GET_PRODUCT_BY_ID_REQUEST,
   GET_PRODUCTS_REQUEST,
   REQUEST_ADD_CATEGORIES,
-  REQUEST_TREE_CATEGORIES,
+  GET_TREE_CATEGORIES_REQUEST,
+  ADD_TREE_CATEGORY,
+  DELETE_TREE_CATEGORY,
   GET_TREE_CATEGORIES_BY_ID_REQUEST,
   REQUEST_CATEGORIES,
   REQUEST_SETTINGS,
@@ -44,7 +46,12 @@ import {
   GET_ROLES_REQUEST,
 } from './types';
 
-import { fetchTreeCategoryWorker, getTreeCategoriesByIdWorker } from './sagas/treeCategories.saga';
+import {
+  fetchTreeCategoryWorker,
+  addTreeCategoryWorker,
+  deleteTreeCategoryWorker,
+  getTreeCategoriesByIdWorker,
+} from './sagas/treeCategories.saga';
 
 import {
   fetchMainCategoryWorker,
@@ -94,7 +101,9 @@ import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
 import { getRolesWorker } from './sagas/roles.saga';
 
 export function* sagaTreeCategoriesWatcher(): SagaIterator {
-  yield takeEvery(REQUEST_TREE_CATEGORIES, fetchTreeCategoryWorker);
+  yield takeEvery(GET_TREE_CATEGORIES_REQUEST, fetchTreeCategoryWorker);
+  yield takeEvery(ADD_TREE_CATEGORY, addTreeCategoryWorker);
+  yield takeEvery(DELETE_TREE_CATEGORY, deleteTreeCategoryWorker);
   yield takeEvery(GET_TREE_CATEGORIES_BY_ID_REQUEST, getTreeCategoriesByIdWorker);
 }
 

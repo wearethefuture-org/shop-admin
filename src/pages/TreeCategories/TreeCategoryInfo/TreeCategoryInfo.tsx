@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Button, Card, IconButton, LinearProgress } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 import { updateCategoryRequest } from '../../../store/actions/categories.actions';
 import { AppDispatch, RootState } from '../../../store/store';
 import AddBtn from '../../../components/AddBtn/AddBtn';
+import DeleteTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/DeleteTreeCategoryModal/DeleteTreeCategoryModal';
 import TreeCategoryGroupModal from '../../../components/Modals/TreeCategoryGroupModal/TreeCategoryGroupModal';
 import { IGetTreeCategoriesResponse, IAddTreeCategory } from '../../../interfaces/ITreeCategory';
 import TreeCategoryEditForm from '../../../components/Forms/TreeCategoryEditForm/TreeCategoryEditForm';
@@ -30,6 +32,12 @@ import styles from './TreeCategoryInfo.module.scss';
 const TreeCategoryInfo: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
+
+  // Delete Modal
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
+  const closeDeleteModal = () => {
+    setOpenDeleteDialog(false);
+  };
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -84,6 +92,7 @@ const TreeCategoryInfo: React.FC = () => {
     name: treeCategory && treeCategory.name ? treeCategory.name : '',
     description: treeCategory && treeCategory.description ? treeCategory.description : '',
     key: treeCategory && treeCategory.key ? treeCategory.key : '',
+    parentId: treeCategory && treeCategory.parentId ? treeCategory.parentId : null,
   };
 
   const formik = useFormik({
@@ -168,6 +177,12 @@ const TreeCategoryInfo: React.FC = () => {
           setGroupToEdit={setGroupToEdit}
         />
       )}
+      {openDeleteDialog && (
+        <DeleteTreeCategoryModal
+          handleClose={closeDeleteModal}
+          categoryInfo={{ id: treeCategory.id, name: treeCategory?.name ? treeCategory.name : '' }}
+        />
+      )}
       <div className={styles['block-wrapper']}>
         <Card className={styles['block-card']}>
           <GoBackBtn handleGoBack={() => history.push('/tree-categories')} />
@@ -189,15 +204,24 @@ const TreeCategoryInfo: React.FC = () => {
                 >
                   <h4>Основна інформація</h4>
                 </ExpandBtn>
-
-                <IconButton
-                  aria-label="edit"
-                  color="default"
-                  type="button"
-                  onClick={() => setEditBasicInfo(true)}
-                >
-                  <EditIcon />
-                </IconButton>
+                <div>
+                  <IconButton
+                    aria-label="edit"
+                    color="default"
+                    type="button"
+                    onClick={() => setEditBasicInfo(true)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="delete"
+                    color="secondary"
+                    type="button"
+                    onClick={() => setOpenDeleteDialog(true)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </div>
               </div>
               <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
                 {editBasicInfo ? <TreeCategoryEditForm /> : <TreeCategoryBasicInfo />}

@@ -11,6 +11,7 @@ export interface TreeCategoryToDisplay {
   name?: string;
   key?: string;
   description?: string;
+  parentId?: number | null;
   characteristicGroup?: GroupToDisplay[];
 }
 

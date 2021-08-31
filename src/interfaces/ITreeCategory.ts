@@ -3,13 +3,16 @@ import { Common } from './IProducts';
 export interface ITreeCategory extends Common {
 	key: string;
 	name: string;
-	description: string;
+	description?: string;
+	mpath?: string;
+	parent?: IParent[] | null;
+	children?: IChildren[];
 }
 
 export interface IChildren extends Common {
 	key: string;
 	name: string;
-	description: string;
+	description?: string;
 	mpath?: string;
 	parent?: IParent[] | null;
 	children?: IChildren[];
@@ -34,8 +37,11 @@ export interface IGroupResponse extends Common {
 	characteristic: ICharResponse[];
 }
 
-export interface IGetTreeCategoriesResponse extends ITreeCategory {
-	mpath: string;
+export interface IGetTreeCategoriesResponse extends Common {
+	key: string;
+	name: string;
+	description: string;
+	mpath?: string;
 	parent?: IParent[] | null;
 	children: IChildren[];
 	characteristicGroup?: IGroupResponse[];
@@ -43,8 +49,10 @@ export interface IGetTreeCategoriesResponse extends ITreeCategory {
 
 export interface IAddTreeCategory {
 	name: string;
-	description: string;
+	description?: string;
 	key: string;
+	parentId?: number | null;
+	children?: IChildren[];
 }
 
 export interface ICharToAdd {

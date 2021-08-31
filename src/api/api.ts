@@ -15,7 +15,11 @@ import {
   IGetCategoriesResponse,
 } from '../interfaces/ICategory';
 
-import { IGetTreeCategoriesResponse } from '../interfaces/ITreeCategory';
+import {
+  IGetTreeCategoriesResponse,
+  ITreeCategory,
+  IAddTreeCategory,
+} from '../interfaces/ITreeCategory';
 
 import {
   IAddCharResponse,
@@ -68,8 +72,9 @@ type ApiFetchedDataType = {
 
   treeCategories: {
     get: () => FetchedDataType<IGetTreeCategoriesResponse>;
-    getByKey: (key: string) => FetchedDataType<IGetTreeCategoriesResponse>;
     getById: (id: number) => FetchedDataType<IGetTreeCategoriesResponse>;
+    add: (category: IAddTreeCategory) => FetchedDataType<ITreeCategory>;
+    delete: (id: number) => FetchedDataType<JSON>;
   };
 
   products: {
@@ -158,8 +163,9 @@ export const api: ApiFetchedDataType = {
 
   treeCategories: {
     get: () => instance.get(`${root}/category/tree`),
-    getByKey: (key) => instance.get(`${root}/category/tree/key/${key}`),
     getById: (id) => instance.get(`${root}/category/tree/${id}`),
+    add: (category) => instance.post(`${root}/category/tree`, category),
+    delete: (id) => instance.delete(`${root}/category/tree/${id}`),
   },
 
   products: {

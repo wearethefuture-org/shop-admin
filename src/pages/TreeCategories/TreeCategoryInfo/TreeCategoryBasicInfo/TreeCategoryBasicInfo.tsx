@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Card } from '@material-ui/core';
 
@@ -6,41 +6,55 @@ import { IGetTreeCategoriesResponse } from '../../../../interfaces/ITreeCategory
 import { RootState } from '../../../../store/store';
 import { formatISODate } from '../../../../utils/formatISODate';
 import styles from './TreeCategoryBasicInfo.module.scss';
+import { IChildren } from '../../../../interfaces/ITreeCategory';
 
-const TreeCategoryBasicInfo = () => {
-  const treeCategory: IGetTreeCategoriesResponse = useSelector(
+interface TreeCategoryBasicInfoProps {
+  category?: IChildren | undefined;
+}
+
+const TreeCategoryBasicInfo: FC<TreeCategoryBasicInfoProps> = ({ category }) => {
+  let displayCategory;
+
+  const stateTreeCategory: IChildren = useSelector(
     (state: RootState) => state.treeCategories.currentTreeCategory
   );
+
+  displayCategory = stateTreeCategory;
+
+  if (category) {
+    displayCategory = category;
+  }
+
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
   return (
     <>
-      {treeCategory ? (
+      {displayCategory ? (
         <div className={darkMode ? styles['description-dark'] : styles.description}>
           <Card>
             <div className={styles.field}>
               <p className={styles.title}>ID:</p>
-              <p className={styles.value}>{treeCategory.id}</p>
+              <p className={styles.value}>{displayCategory.id}</p>
             </div>
             <div className={styles.field}>
               <p className={styles.title}>Назва:</p>
-              <p className={styles.value}>{treeCategory.name}</p>
+              <p className={styles.value}>{displayCategory.name}</p>
             </div>
             <div className={styles.field}>
               <p className={styles.title}>Ключ:</p>
-              <p className={styles.value}>{treeCategory.key}</p>
+              <p className={styles.value}>{displayCategory.key}</p>
             </div>
             <div className={styles.field}>
               <p className={styles.title}>Опис:</p>
-              <p className={styles.value}>{treeCategory.description}</p>
+              <p className={styles.value}>{displayCategory.description}</p>
             </div>
             <div className={styles.field}>
               <p className={styles.title}>Створено:</p>
-              <p className={styles.value}>{formatISODate(treeCategory.createdAt)}</p>
+              <p className={styles.value}>{formatISODate(displayCategory.createdAt)}</p>
             </div>
             <div className={styles.field}>
               <p className={styles.title}>Оновлено:</p>
-              <p className={styles.value}>{formatISODate(treeCategory.updatedAt)}</p>
+              <p className={styles.value}>{formatISODate(displayCategory.updatedAt)}</p>
             </div>
           </Card>
         </div>

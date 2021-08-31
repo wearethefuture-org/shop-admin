@@ -47,7 +47,6 @@
 		.childrensBlock {
 			display: flex;
 			width: max-content;
-			border: 1px solid red;
 
 			ul {
 				padding-left: 0;
@@ -74,6 +73,7 @@
 			column-gap: 100px;
 
 			> :first-child {
+				cursor: pointer;
 				color: rgb(52, 132, 237);
 				transition: 0.3s all;
 
@@ -83,10 +83,12 @@
 			}
 
 			:nth-child(2):hover {
+				cursor: pointer;
 				color: grey;
 			}
 
 			:nth-child(3) {
+				cursor: pointer;
 				transition: 0.3s all;
 				color: red;
 

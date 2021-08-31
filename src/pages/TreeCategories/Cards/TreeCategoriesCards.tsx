@@ -1,7 +1,8 @@
 import React, { FC, useState, ReactNode } from 'react';
 import { useHistory } from 'react-router';
+import { Dispatch } from 'redux';
 
-import { IGetTreeCategoriesResponse } from '../../../interfaces/ITreeCategory';
+import { ITreeCategory, IGetTreeCategoriesResponse } from '../../../interfaces/ITreeCategory';
 import styles from './TreeCategoriesCards.module.scss';
 import { Collapse } from 'reactstrap';
 import EditIcon from '@material-ui/icons/Edit';
@@ -12,8 +13,11 @@ import CategoryInfoModal from '../../../components/Modals/CategoryInfoModal/Cate
 import ChildrenCard from '../ChildrenCard/ChildrenCard';
 import { ImTree } from 'react-icons/im';
 import Tree, { withStyles } from 'react-vertical-tree';
+import MainTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/MainTreeCategoryModal/MainTreeCategoryModal';
+import DeleteTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/DeleteTreeCategoryModal/DeleteTreeCategoryModal';
 
 interface TreeCategoriesDataProps {
+  dispatch: Dispatch;
   list: IGetTreeCategoriesResponse[];
 }
 
@@ -58,11 +62,13 @@ const ExpandableBlock: FC<ExpandableBlockProps> = ({
   );
 };
 
-const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ list }) => {
+const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) => {
   const [openSections, setOpenSections] = useState<string[]>([]);
+  const [categoryModalIsOpen, setCategoryModalOpen] = useState<boolean>(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<number | null>(null);
+  const [modalParams, setModalParams] = useState();
 
   const history = useHistory();
-  const [infoModal, toggleInfoModal] = useState(false);
 
   const customStyles = {
     lines: {
@@ -80,13 +86,33 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ list }) => {
       : setOpenSections(openSections.concat(section));
   };
 
-  const editHandleClick = (category) => {};
+  const categoryModalClose = () => {
+    setCategoryModalOpen(false);
+  };
+
+  const closeDeleteModal = () => {
+    setOpenDeleteDialog(null);
+  };
+
+  const openCategoryInfo = (category: ITreeCategory) => {
+    setCategoryModalOpen(true);
+    setModalParams({
+      category,
+      closeModal: categoryModalClose,
+    });
+  };
 
   return (
     <>
       <div className={styles.cardsContainer}>
         {list.map((l) => (
           <div className={styles.card}>
+            {openDeleteDialog === l.id && (
+              <DeleteTreeCategoryModal
+                handleClose={closeDeleteModal}
+                categoryInfo={{ id: l.id, name: l.name }}
+              />
+            )}
             <ExpandableBlock
               blockName={l.key}
               toggleOpen={toggleOpen}
@@ -97,20 +123,20 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ list }) => {
                 <StyledTree
                   data={l.children}
                   direction
-                  render={(item) => <ChildrenCard children={item} />}
+                  render={(item) => <ChildrenCard dispatch={dispatch} children={item} />}
                 />
               </div>
             </ExpandableBlock>
             <hr />
             <div className={styles.icons}>
-              <InfoIcon onClick={() => editHandleClick(l)} />
+              <InfoIcon onClick={() => openCategoryInfo(l)} />
               <EditIcon />
-              <DeleteIcon />
+              <DeleteIcon onClick={() => setOpenDeleteDialog(l.id)} />
             </div>
           </div>
         ))}
       </div>
-      {infoModal && <CategoryInfoModal toggleInfoModal={toggleInfoModal} />}
+      {categoryModalIsOpen && <MainTreeCategoryModal {...modalParams} />}
     </>
   );
 };

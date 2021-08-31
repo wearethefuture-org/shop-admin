@@ -1,7 +1,10 @@
 import { IActions } from '../../interfaces/actions';
 import { IGetTreeCategoriesResponse } from '../../interfaces/ITreeCategory';
 import {
-  LOAD_TREE_CATEGORIES,
+  GET_TREE_CATEGORIES_REQUEST,
+  GET_TREE_CATEGORIES_SUCCESS,
+  ADD_TREE_CATEGORY,
+  DELETE_TREE_CATEGORY,
   GET_TREE_CATEGORIES_BY_ID_REQUEST,
   GET_TREE_CATEGORIES_BY_ID_SUCCESS,
   GET_TREE_CATEGORIES_BY_ID_ERROR,
@@ -23,11 +26,38 @@ const initialState: ITreeCategoriesState = {
 
 const treeCategories = (state = initialState, { type, data }: IActions) => {
   switch (type) {
-    case LOAD_TREE_CATEGORIES: {
+    case GET_TREE_CATEGORIES_REQUEST: {
+      return {
+        ...state,
+        currentTreeCategory: null,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case GET_TREE_CATEGORIES_SUCCESS: {
       return {
         loading: false,
         list: data,
         currentTreeCategory: null,
+        error: null,
+      };
+    }
+
+    // add
+
+    case ADD_TREE_CATEGORY: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case DELETE_TREE_CATEGORY: {
+      return {
+        ...state,
+        loading: true,
         error: null,
       };
     }

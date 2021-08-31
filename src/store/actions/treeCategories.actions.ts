@@ -1,18 +1,47 @@
 import { IActions } from '../../interfaces/actions';
-import { IGetTreeCategoriesResponse } from '../../interfaces/ITreeCategory';
 import {
-	LOAD_TREE_CATEGORIES,
-	REQUEST_TREE_CATEGORIES,
+	ITreeCategory,
+	IAddTreeCategory,
+	IGetTreeCategoriesResponse,
+} from '../../interfaces/ITreeCategory';
+import {
+	GET_TREE_CATEGORIES_REQUEST,
+	GET_TREE_CATEGORIES_SUCCESS,
+	GET_TREE_CATEGORIES_ERROR,
+	ADD_TREE_CATEGORY,
+	DELETE_TREE_CATEGORY,
 	GET_TREE_CATEGORIES_BY_ID_REQUEST,
 	GET_TREE_CATEGORIES_BY_ID_SUCCESS,
 	GET_TREE_CATEGORIES_BY_ID_ERROR,
 } from '../types';
 
-export const loadTreeCategories = (treeCategories: IGetTreeCategoriesResponse[]): IActions => ({
-	type: LOAD_TREE_CATEGORIES,
+export const getTreeCategoriesRequest = (): IActions => ({ type: GET_TREE_CATEGORIES_REQUEST });
+
+export const getTreeCategoriesSuccess = (
+	treeCategories: IGetTreeCategoriesResponse[]
+): IActions => ({
+	type: GET_TREE_CATEGORIES_SUCCESS,
 	data: treeCategories,
 });
-export const fetchTreeCategories = (): IActions => ({ type: REQUEST_TREE_CATEGORIES });
+
+export const getTreeCategoriesError = (message: string): IActions => ({
+	type: GET_TREE_CATEGORIES_ERROR,
+	data: message,
+});
+
+// add
+
+export const addTreeCategory = (data: IAddTreeCategory): IActions => ({
+	type: ADD_TREE_CATEGORY,
+	data,
+});
+
+//delete
+
+export const deleteTreeCategory = (id: number): IActions => ({
+	type: DELETE_TREE_CATEGORY,
+	data: id,
+});
 
 // get by id
 

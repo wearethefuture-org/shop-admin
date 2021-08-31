@@ -94,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
     },
     {
       pageURL: '/tree-categories',
-      title: 'Категорії товарів',
+      title: 'Категорії',
       itemIcon: <CategoryIcon fontSize="small" className={styles.icon} />,
     },
     {

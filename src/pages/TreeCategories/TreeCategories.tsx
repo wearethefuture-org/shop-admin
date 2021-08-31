@@ -39,7 +39,7 @@ const TreeCategories: React.FC = () => {
           modalData={categoriesCreateModalData}
         />
 
-        {list ? <TreeCategoriesCards list={list} /> : null}
+        {list ? <TreeCategoriesCards dispatch={dispatch} list={list} /> : null}
       </div>
     </>
   );
