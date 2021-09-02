@@ -40,6 +40,7 @@ import {
   UPDATE_MAIN_CATEGORY_REQUEST,
   UPDATE_AVAILABILITY_PRODUCT_REQUEST,
   GET_ROLES_REQUEST,
+  DISABLE_PRODUCT_REQUEST,
 } from './types';
 
 import {
@@ -64,18 +65,20 @@ import {
   updateProductWorker,
   uploadMainImgWorker,
   updateAvailabilityProductWorker,
+  disableProductWorker,
 } from './sagas/products.saga';
 import {
   addSlideWorker,
   fetchSlideWorker,
   deleteSlideWorker,
   updateSlideVisibilityWorker,
-  updateSlideWorker } from './sagas/slides.saga';
+  updateSlideWorker,
+} from './sagas/slides.saga';
 import {
   getOrdersWorker,
   getOrdersByIdWorker,
   updateOrderQuantityWorker,
-  updateOrderStatusWorker
+  updateOrderStatusWorker,
 } from './sagas/orders.saga';
 import { deleteCommentWorker, getCommentsWorker } from './sagas/comments.saga';
 import { deleteFeedbackWorker, getFeedbacksWorker } from './sagas/feedbacks.saga';
@@ -110,6 +113,7 @@ export function* sagaProductsWatcher(): SagaIterator {
   yield takeEvery(UPDATE_PRODUCT_REQUEST, updateProductWorker);
   yield takeEvery(DELETE_PRODUCT_REQUEST, deleteProductWorker);
   yield takeEvery(UPDATE_AVAILABILITY_PRODUCT_REQUEST, updateAvailabilityProductWorker);
+  yield takeEvery(DISABLE_PRODUCT_REQUEST, disableProductWorker);
 }
 
 // Settings

@@ -7,6 +7,7 @@ import {
   IUpdateProduct,
   IGetProductById,
   IUpdateAvailabilityProduct,
+  IDisableProduct,
 } from '../../interfaces/IProducts';
 import {
   GET_PRODUCTS_REQUEST,
@@ -26,13 +27,19 @@ import {
   UPDATE_PRODUCT_ERROR,
   UPLOAD_MAIN_IMG_REQUEST,
   UPLOAD_MAIN_IMG_SUCCESS,
-  UPLOAD_MAIN_IMG_ERROR, UPDATE_AVAILABILITY_PRODUCT_REQUEST, UPDATE_AVAILABILITY_PRODUCT_SUCCESS, UPDATE_AVAILABILITY_PRODUCT_ERROR,
+  UPLOAD_MAIN_IMG_ERROR,
+  UPDATE_AVAILABILITY_PRODUCT_REQUEST,
+  UPDATE_AVAILABILITY_PRODUCT_SUCCESS,
+  UPDATE_AVAILABILITY_PRODUCT_ERROR,
+  DISABLE_PRODUCT_REQUEST,
+  DISABLE_PRODUCT_SUCCESS,
+  DISABLE_PRODUCT_ERROR,
 } from '../types';
 
 // get all
 export const getProductsRequest = (page: number, limit: number): IActions => ({
   type: GET_PRODUCTS_REQUEST,
-  data: { page, limit }
+  data: { page, limit },
 });
 
 export const getProductsSuccess = (products: IGetProducts[]): IActions => ({
@@ -134,6 +141,20 @@ export const updateAvailabilityProductSuccess = (product: IProductItem): IAction
 
 export const updateAvailabilityProductError = (message: string): IActions => ({
   type: UPDATE_AVAILABILITY_PRODUCT_ERROR,
+  data: message,
+});
+
+// disable product
+export const disableProductRequest = (data: IDisableProduct): IActions => ({
+  type: DISABLE_PRODUCT_REQUEST,
+  data,
+});
+export const disableProductSuccess = (product: IProductItem): IActions => ({
+  type: DISABLE_PRODUCT_SUCCESS,
+  data: product,
+});
+export const disableProductError = (message: string): IActions => ({
+  type: DISABLE_PRODUCT_ERROR,
   data: message,
 });
 

@@ -12,6 +12,7 @@ export interface IBasicProduct extends Common {
   description: string;
   price: number;
   availability: boolean;
+  disabled: boolean;
 }
 
 export interface GeneralProductInfo {
@@ -77,8 +78,8 @@ export interface IProductsData {
   loading: boolean;
   currentProduct: IGetProductById | null;
   error: string | null;
-  count: number,
-  totalPages: number,
+  count: number;
+  totalPages: number;
 }
 
 export interface CharValues {
@@ -144,5 +145,11 @@ export interface ProductsTableProps {
 export interface IUpdateAvailabilityProduct {
   productId: number;
   availability: boolean;
+  categoryName: string;
+}
+
+export interface IDisableProduct {
+  productId: number;
+  disabled: boolean;
   categoryName: string;
 }
