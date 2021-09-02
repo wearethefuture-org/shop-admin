@@ -24,6 +24,9 @@ import {
   UPDATE_AVAILABILITY_PRODUCT_REQUEST,
   UPDATE_AVAILABILITY_PRODUCT_ERROR,
   UPDATE_AVAILABILITY_PRODUCT_SUCCESS,
+  DISABLE_PRODUCT_REQUEST,
+  DISABLE_PRODUCT_SUCCESS,
+  DISABLE_PRODUCT_ERROR,
 } from '../types';
 import { IProductsData } from '../../interfaces/IProducts';
 
@@ -219,6 +222,29 @@ const products = (state = initialState, { type, data }: IActions) => {
         error: data,
       };
     }
+
+    case DISABLE_PRODUCT_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case DISABLE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        currentProduct: {
+          ...state.currentProduct,
+          disabled: data.disabled,
+        },
+        loading: false,
+      };
+
+    case DISABLE_PRODUCT_ERROR:
+      return {
+        ...state,
+        error: data,
+        loading: false,
+      };
 
     // DELETE PRODUCT
     case DELETE_PRODUCT_REQUEST: {

@@ -4,6 +4,7 @@ import { api } from '../../../api/api';
 import { root } from '../../../api/config';
 import {
   IAddProduct,
+  IDisableProduct,
   IProductCharRequest,
   IUpdateAvailabilityProduct,
 } from '../../../interfaces/IProducts';
@@ -70,6 +71,11 @@ export async function apiUpdateProductCharValues(data: IProductCharRequest) {
 
 export async function apiUpdateAvailabilityProduct(data: IUpdateAvailabilityProduct) {
   const res = await api.products.updateAvailabilityProduct(data);
+  return res.data;
+}
+
+export async function disableProduct(data: IDisableProduct) {
+  const res = await api.products.disableProduct(data);
   return res.data;
 }
 

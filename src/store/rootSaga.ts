@@ -41,6 +41,7 @@ import {
   UPDATE_MAIN_CATEGORY_REQUEST,
   UPDATE_AVAILABILITY_PRODUCT_REQUEST,
   GET_ROLES_REQUEST,
+  DISABLE_PRODUCT_REQUEST,
 } from './types';
 
 import {
@@ -66,6 +67,7 @@ import {
   updateProductWorker,
   uploadMainImgWorker,
   updateAvailabilityProductWorker,
+  disableProductWorker,
 } from './sagas/products.saga';
 import {
   addSlideWorker,
@@ -114,6 +116,7 @@ export function* sagaProductsWatcher(): SagaIterator {
   yield takeEvery(UPDATE_PRODUCT_REQUEST, updateProductWorker);
   yield takeEvery(DELETE_PRODUCT_REQUEST, deleteProductWorker);
   yield takeEvery(UPDATE_AVAILABILITY_PRODUCT_REQUEST, updateAvailabilityProductWorker);
+  yield takeEvery(DISABLE_PRODUCT_REQUEST, disableProductWorker);
 }
 
 // Settings
