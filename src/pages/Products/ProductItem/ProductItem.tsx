@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import ArrowIcon from '@material-ui/icons/ArrowBackIos';
@@ -6,6 +6,7 @@ import { Card, Switch } from '@material-ui/core';
 
 import {
   deleteProductRequest,
+  disableProductRequest,
   updateAvailabilityProductRequest,
 } from '../../../store/actions/products.actions';
 import { AppDispatch, RootState } from '../../../store/store';
@@ -40,19 +41,42 @@ const ProductItem: React.FC = () => {
   };
 
   // UPDATE AVAILABILITY PRODUCT
-  const [availability, setAvailability] = useState(product.availability);
-  const handleUpdateAvailabilityProduct = (e) => {
+  const [productStatus, setProductStatus] = useState<{ availability: boolean; disabled: boolean }>({
+    availability: product.availability,
+    disabled: product.disabled,
+  });
+  const handleUpdateAvailability = (e) => {
     const data = {
       availability: e.target.checked,
       productId: product.id,
       categoryName: product.category.name,
-    }
-    setAvailability(e.target.checked);
+    };
+    setProductStatus((prevState) => ({ ...prevState, availability: data.availability }));
     dispatch(updateAvailabilityProductRequest(data));
+  };
+
+  const handleDisableProduct: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const data = {
+      disabled: e.target.checked,
+      productId: product.id,
+      categoryName: product.category.name,
+    };
+    setProductStatus((prevState) => ({ ...prevState, disabled: data.disabled }));
+    dispatch(disableProductRequest(data));
   };
 
   // ADDITIONAL INFO
   const [expandBlock, setExpandBlock] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (product.disabled !== productStatus.disabled) {
+      setProductStatus((prevState) => ({ ...prevState, disabled: product.disabled }));
+    }
+
+    if (product.availability !== productStatus.availability) {
+      setProductStatus((prevState) => ({ ...prevState, availability: product.availability }));
+    }
+  }, [product.availability, product.disabled, productStatus]);
 
   return (
     <div className={darkMode ? styles['itemCard-dark'] : styles.itemCard}>
@@ -67,7 +91,7 @@ const ProductItem: React.FC = () => {
       )}
 
       <div className={styles['btn-container']}>
-        <GoBackBtn handleGoBack={() => goBack()}/>
+        <GoBackBtn handleGoBack={() => goBack()} />
 
         <div className={styles['right-btn-wrapper']}>
           <Link
@@ -76,11 +100,9 @@ const ProductItem: React.FC = () => {
               state: { from: `${location.pathname}` },
             }}
           >
-            <EditBtn handleClick={() => {
-            }}/>
+            <EditBtn handleClick={() => {}} />
           </Link>
-          <DeleteBtn handleDelete={() => setOpenDeleteDialog(true)}/>
-
+          <DeleteBtn handleDelete={() => setOpenDeleteDialog(true)} />
         </div>
       </div>
 
@@ -89,13 +111,13 @@ const ProductItem: React.FC = () => {
           <Link to={'/products'}>Продукти</Link>
         </span>
         <span>
-          <ArrowIcon/>
+          <ArrowIcon />
         </span>
         <span>
           <Link to={'/categories'}>{product.category?.name}</Link>
         </span>
         <span>
-          <ArrowIcon/>
+          <ArrowIcon />
         </span>
         <span>{product.name}</span>
       </p>
@@ -104,8 +126,16 @@ const ProductItem: React.FC = () => {
         <div className={styles.switch}>
           <span>Наявність</span>
           <Switch
-            checked={availability}
-            onChange={handleUpdateAvailabilityProduct}
+            checked={productStatus.availability}
+            onChange={handleUpdateAvailability}
+            name="isWidgetActiveNewArrivals"
+          />
+        </div>
+        <div>
+          <span>Disabled</span>
+          <Switch
+            checked={productStatus.disabled}
+            onChange={handleDisableProduct}
             name="isWidgetActiveNewArrivals"
           />
         </div>
@@ -113,8 +143,8 @@ const ProductItem: React.FC = () => {
 
       <Card>
         <div className={styles['item-main-info']}>
-          <ProductImages/>
-          <ProductDescription/>
+          <ProductImages />
+          <ProductDescription />
         </div>
 
         <div className={styles['item-additional-info']}>
@@ -127,7 +157,7 @@ const ProductItem: React.FC = () => {
           </ExpandBtn>
 
           <div className={expandBlock ? 'expanded' : 'shrinked'}>
-            <ProductCharGroups categoryName={product.category?.name}/>
+            <ProductCharGroups categoryName={product.category?.name} />
           </div>
         </div>
       </Card>
