@@ -37,6 +37,12 @@ export interface IGetProductById extends IGetProducts {
   characteristicValue: ICharResponse[];
 }
 
+export interface IProductsSearchResponse {
+  data: IGetProducts[];
+  count: number;
+  totalPages: number;
+}
+
 interface GroupChar extends Common {
   name: string;
 }
@@ -77,8 +83,8 @@ export interface IProductsData {
   loading: boolean;
   currentProduct: IGetProductById | null;
   error: string | null;
-  count: number,
-  totalPages: number,
+  count: number;
+  totalPages: number;
 }
 
 export interface CharValues {
@@ -139,6 +145,8 @@ export enum Type {
 export interface ProductsTableProps {
   list: IGetProducts[];
   activeColumns: string[];
+  isSearchEnabled: boolean;
+  searchValue: string;
 }
 
 export interface IUpdateAvailabilityProduct {

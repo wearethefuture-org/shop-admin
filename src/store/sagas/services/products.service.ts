@@ -2,7 +2,11 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import { api } from '../../../api/api';
 import { root } from '../../../api/config';
-import { IAddProduct, IProductCharRequest, IUpdateAvailabilityProduct } from '../../../interfaces/IProducts';
+import {
+  IAddProduct,
+  IProductCharRequest,
+  IUpdateAvailabilityProduct,
+} from '../../../interfaces/IProducts';
 
 export async function apiGetProducts(page: number, limit: number) {
   const products = await api.products.get(page, limit);
@@ -11,6 +15,11 @@ export async function apiGetProducts(page: number, limit: number) {
 
 export async function apiGetProductById(id: number) {
   const product = await api.products.getById(id);
+  return product.data;
+}
+
+export async function apiGetProductsByQuery(searchQuery: string, page: number, limit: number) {
+  const product = await api.products.getSearchProducts(searchQuery, page, limit);
   return product.data;
 }
 

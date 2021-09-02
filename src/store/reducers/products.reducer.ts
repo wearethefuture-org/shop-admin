@@ -6,6 +6,9 @@ import {
   GET_PRODUCT_BY_ID_REQUEST,
   GET_PRODUCT_BY_ID_SUCCESS,
   GET_PRODUCT_BY_ID_ERROR,
+  GET_PRODUCTS_BY_QUERY_REQUEST,
+  GET_PRODUCTS_BY_QUERY_SUCCESS,
+  GET_PRODUCTS_BY_QUERY_ERROR,
   ADD_PRODUCT_REQUEST,
   ADD_PRODUCT_SUCCESS,
   ADD_PRODUCT_ERROR,
@@ -51,11 +54,39 @@ const products = (state = initialState, { type, data }: IActions) => {
         list: data.data,
         loading: false,
         count: data.count,
-        totalPages: data.totalPages
+        totalPages: data.totalPages,
       };
     }
 
     case GET_PRODUCTS_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+
+    // GET BY SEARCH QUERY
+
+    case GET_PRODUCTS_BY_QUERY_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case GET_PRODUCTS_BY_QUERY_SUCCESS: {
+      return {
+        ...state,
+        list: data.data,
+        count: data.count,
+        totalPages: data.totalPages,
+        loading: false,
+      };
+    }
+
+    case GET_PRODUCTS_BY_QUERY_ERROR: {
       return {
         ...state,
         loading: false,
@@ -175,7 +206,7 @@ const products = (state = initialState, { type, data }: IActions) => {
         ...state,
         currentProduct: {
           ...state.currentProduct,
-          availability: data.availability
+          availability: data.availability,
         },
         loading: false,
       };

@@ -5,6 +5,7 @@ import { IActions } from '../../interfaces/actions';
 import {
   apiGetProducts,
   apiGetProductById,
+  apiGetProductsByQuery,
   apiAddProduct,
   apiUpdateProduct,
   apiDeleteProduct,
@@ -24,6 +25,8 @@ import {
   deleteProductSuccess,
   getProductByIdError,
   getProductByIdSuccess,
+  getProductsByQueryError,
+  getProductsByQuerySuccess,
   getProductsError,
   getProductsSuccess,
   updateProductError,
@@ -35,10 +38,7 @@ import {
 } from '../actions/products.actions';
 import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 
-export function* getProductsWorker(
-  {
-    data: { page, limit },
-  }: IActions): SagaIterator {
+export function* getProductsWorker({ data: { page, limit } }: IActions): SagaIterator {
   try {
     const products = yield call(apiGetProducts, page, limit);
     yield put(getProductsSuccess(products));
@@ -55,6 +55,18 @@ export function* getProductByIdWorker({ data: id }: IActions): SagaIterator {
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(getProductByIdError(error.message));
+  }
+}
+
+export function* getProductsByQueryWorker({
+  data: { searchQuery, page, limit },
+}: IActions): SagaIterator {
+  try {
+    const products = yield call(apiGetProductsByQuery, searchQuery, page, limit);
+    yield put(getProductsByQuerySuccess(products));
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(getProductsByQueryError(error.message));
   }
 }
 
@@ -187,7 +199,7 @@ export function* deleteProductWorker({ data: product }: IActions): SagaIterator 
   }
 }
 
-export function* updateAvailabilityProductWorker({data}: IActions): SagaIterator {
+export function* updateAvailabilityProductWorker({ data }: IActions): SagaIterator {
   try {
     yield call(apiUpdateAvailabilityProduct, data);
     yield put(updateAvailabilityProductSuccess(data));
