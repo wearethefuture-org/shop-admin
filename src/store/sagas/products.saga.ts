@@ -5,6 +5,7 @@ import { IActions } from '../../interfaces/actions';
 import {
   apiGetProducts,
   apiGetProductById,
+  apiGetProductsByQuery,
   apiAddProduct,
   apiUpdateProduct,
   apiDeleteProduct,
@@ -25,6 +26,8 @@ import {
   deleteProductSuccess,
   getProductByIdError,
   getProductByIdSuccess,
+  getProductsByQueryError,
+  getProductsByQuerySuccess,
   getProductsError,
   getProductsSuccess,
   updateProductError,
@@ -55,6 +58,18 @@ export function* getProductByIdWorker({ data: id }: IActions): SagaIterator {
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(getProductByIdError(error.message));
+  }
+}
+
+export function* getProductsByQueryWorker({
+  data: { searchQuery, page, limit },
+}: IActions): SagaIterator {
+  try {
+    const products = yield call(apiGetProductsByQuery, searchQuery, page, limit);
+    yield put(getProductsByQuerySuccess(products));
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(getProductsByQueryError(error.message));
   }
 }
 

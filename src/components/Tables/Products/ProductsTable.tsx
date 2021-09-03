@@ -3,7 +3,10 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/store';
-import { getProductsRequest } from '../../../store/actions/products.actions';
+import {
+  getProductsRequest,
+  getProductsByQueryRequest,
+} from '../../../store/actions/products.actions';
 import AppDataTable from '../../AppDataTable/AppDataTable';
 import { IGetProducts, ProductsTableProps } from '../../../interfaces/IProducts';
 import DateMoment from '../../Common/Date-moment';
@@ -20,8 +23,12 @@ const MainImgName = () => (
   </p>
 );
 
-const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) => {
-
+const ProductsTable: React.FC<ProductsTableProps> = ({
+  list,
+  activeColumns,
+  isSearchEnabled,
+  searchValue,
+}) => {
   const dispatch: AppDispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -29,11 +36,21 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) =>
 
   const onChangePage = (page) => {
     setPage(page);
+
+    if (isSearchEnabled) {
+      dispatch(getProductsByQueryRequest(searchValue, page, limit));
+      return;
+    }
     dispatch(getProductsRequest(page, limit));
   };
 
   const onChangeLimit = (limit) => {
     setLimit(limit);
+
+    if (isSearchEnabled) {
+      dispatch(getProductsByQueryRequest(searchValue, page, limit));
+      return;
+    }
     dispatch(getProductsRequest(page, limit));
   };
 
@@ -152,7 +169,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ list, activeColumns }) =>
     <AppDataTable
       data={sortedList}
       columns={productsColumns}
-      title="Продукти"
+      title={isSearchEnabled ? 'Результати пошуку' : 'Продукти'}
       onRowClicked={(row) => onRowClicked(row.id)}
       count={count}
       setLimit={(e) => onChangeLimit(e)}

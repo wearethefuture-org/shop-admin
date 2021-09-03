@@ -3,6 +3,7 @@ import {
   IProductItem,
   ICharValue,
   IGetProducts,
+  IProductsSearchResponse,
   IAddProduct,
   IUpdateProduct,
   IGetProductById,
@@ -16,6 +17,9 @@ import {
   GET_PRODUCT_BY_ID_REQUEST,
   GET_PRODUCT_BY_ID_SUCCESS,
   GET_PRODUCT_BY_ID_ERROR,
+  GET_PRODUCTS_BY_QUERY_REQUEST,
+  GET_PRODUCTS_BY_QUERY_SUCCESS,
+  GET_PRODUCTS_BY_QUERY_ERROR,
   ADD_PRODUCT_REQUEST,
   ADD_PRODUCT_SUCCESS,
   ADD_PRODUCT_ERROR,
@@ -49,6 +53,27 @@ export const getProductsSuccess = (products: IGetProducts[]): IActions => ({
 
 export const getProductsError = (message: string): IActions => ({
   type: GET_PRODUCTS_ERROR,
+  data: message,
+});
+
+// get by search query
+
+export const getProductsByQueryRequest = (
+  searchQuery: string,
+  page: number,
+  limit: number
+): IActions => ({
+  type: GET_PRODUCTS_BY_QUERY_REQUEST,
+  data: { searchQuery, page, limit },
+});
+
+export const getProductsByQuerySuccess = (products: IProductsSearchResponse): IActions => ({
+  type: GET_PRODUCTS_BY_QUERY_SUCCESS,
+  data: products,
+});
+
+export const getProductsByQueryError = (message: string): IActions => ({
+  type: GET_PRODUCTS_BY_QUERY_ERROR,
   data: message,
 });
 
