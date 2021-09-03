@@ -62,7 +62,7 @@ const SearchField: React.FC<IProps> = ({
 
     e.preventDefault();
     setSearchEnabled(true);
-    dispatch(getProductsByQueryRequest(searchValue, 1, 10));
+    dispatch(getProductsByQueryRequest(searchValue.trim(), 1, 10));
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
