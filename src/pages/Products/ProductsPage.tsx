@@ -10,7 +10,6 @@ import { LinearProgress } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Search from '@material-ui/icons/Search';
-import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 
 import ProductsTable from '../../components/Tables/Products/ProductsTable';
@@ -18,7 +17,6 @@ import AddBtn from '../../components/AddBtn/AddBtn';
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
 import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
 import useProducts from '../../hooks/useProducts';
-import { IGetProducts, IProductsSearchResponse } from '../../interfaces/IProducts';
 import styles from './ProductsPage.module.scss';
 
 enum cols {
@@ -57,6 +55,11 @@ const SearchField: React.FC<IProps> = ({
   }, [searchValue]);
 
   const handleSubmit = (e: React.FormEvent) => {
+    if (!searchValue || !searchValue.length) {
+      e.preventDefault();
+      return;
+    }
+
     e.preventDefault();
     setSearchEnabled(true);
     dispatch(getProductsByQueryRequest(searchValue, 1, 10));
