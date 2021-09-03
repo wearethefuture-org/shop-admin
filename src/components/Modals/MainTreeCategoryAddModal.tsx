@@ -5,7 +5,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { Dispatch } from 'redux';
 
 import { IMainCategoriesModal } from '../../interfaces/modals';
-import MainCategoryForm from '../Forms/MainCategory-form/CategoryAddForm/MainCategory-form';
+import AddTreeCategoryForm from '../Forms/TreeCategories/AddTreeCategoryForm/AddTreeCategoryForm';
 
 interface FormDialogProps {
   dispatch: Dispatch;
@@ -26,7 +26,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ dispatch, modalData }) => {
     >
       <DialogTitle id="form-dialog-title">Нова категорія</DialogTitle>
       <DialogContent>
-        <MainCategoryForm dispatch={dispatch} handleClose={handleClose} />
+        <AddTreeCategoryForm dispatch={dispatch} closeModal={handleClose} />
       </DialogContent>
     </Dialog>
   );

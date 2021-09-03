@@ -6,7 +6,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
-import { updateCategoryRequest } from '../../../store/actions/categories.actions';
+import { updateTreeCategoryRequest } from '../../../store/actions/treeCategories.actions';
 import { AppDispatch, RootState } from '../../../store/store';
 import AddBtn from '../../../components/AddBtn/AddBtn';
 import DeleteTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/DeleteTreeCategoryModal/DeleteTreeCategoryModal';
@@ -92,7 +92,7 @@ const TreeCategoryInfo: React.FC = () => {
     name: treeCategory && treeCategory.name ? treeCategory.name : '',
     description: treeCategory && treeCategory.description ? treeCategory.description : '',
     key: treeCategory && treeCategory.key ? treeCategory.key : '',
-    parentId: treeCategory && treeCategory.parentId ? treeCategory.parentId : null,
+    parentId: treeCategory?.parent && treeCategory.parent.id ? treeCategory.parent.id : null,
   };
 
   const formik = useFormik({
@@ -100,7 +100,7 @@ const TreeCategoryInfo: React.FC = () => {
     validationSchema: treeCategoryValidationShema,
     enableReinitialize: true,
     onSubmit: (values: IAddTreeCategory): void => {
-      const { name, key, description } = values;
+      const { name, key, description, parentId } = values;
 
       const existingName =
         treeCategoriesList.length &&
@@ -126,7 +126,15 @@ const TreeCategoryInfo: React.FC = () => {
         return;
       }
 
-      dispatch(updateCategoryRequest({ ...treeCategoryState, name, key, description }));
+      dispatch(
+        updateTreeCategoryRequest({
+          ...treeCategoryState,
+          name,
+          key,
+          description,
+          parentCategory: parentId,
+        })
+      );
       treeCategoryDispatch({ type: TreeCategoryActionTypes.resetTreeCategory });
       finishOperation();
       formik.setSubmitting(false);
@@ -179,6 +187,7 @@ const TreeCategoryInfo: React.FC = () => {
       )}
       {openDeleteDialog && (
         <DeleteTreeCategoryModal
+          lastCategory={true}
           handleClose={closeDeleteModal}
           categoryInfo={{ id: treeCategory.id, name: treeCategory?.name ? treeCategory.name : '' }}
         />

@@ -1,5 +1,6 @@
 import { api } from '../../../api/api';
 import { IAddTreeCategory } from '../../../interfaces/ITreeCategory';
+import { TreeCategory } from '../../../pages/TreeCategories/TreeCategoryInfo/treeCategoryReducer';
 
 export async function fetchedTreeCategories() {
 	const treeCategories = await api.treeCategories.get();
@@ -14,6 +15,11 @@ export async function addTreeCategory(data: IAddTreeCategory) {
 export async function deleteTreeCategory(id: number) {
 	await api.treeCategories.delete(id);
 	return id;
+}
+
+export async function apiUpdateTreeCategory(data: TreeCategory) {
+	const category = await api.treeCategories.update(data);
+	return category.data;
 }
 
 export async function apiGetTreeCategoriesById(id: number) {

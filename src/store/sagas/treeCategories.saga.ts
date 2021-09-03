@@ -4,6 +4,7 @@ import {
 	fetchedTreeCategories,
 	addTreeCategory,
 	deleteTreeCategory,
+	apiUpdateTreeCategory,
 	apiGetTreeCategoriesById,
 } from './services/treeCategories.service';
 
@@ -12,6 +13,8 @@ import {
 	getTreeCategoriesSuccess,
 	getTreeCategoriesByIdSuccess,
 	getTreeCategoriesByIdError,
+	updateTreeCategorySuccess,
+	updateTreeCategoryError,
 } from '../actions/treeCategories.actions';
 import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 import { SagaIterator } from 'redux-saga';
@@ -47,6 +50,19 @@ export function* deleteTreeCategoryWorker({ data: id }: IActions): SagaIterator 
 		yield put(successSnackBar());
 	} catch (error) {
 		yield put(failSnackBar(error.message));
+	}
+}
+
+export function* updateTreeCategoryWorker({ data }: IActions): SagaIterator {
+	try {
+		const category = yield call(apiUpdateTreeCategory, data);
+
+		yield put(updateTreeCategorySuccess(category));
+		yield delay(700);
+		yield put(successSnackBar());
+	} catch (error) {
+		yield put(failSnackBar(error.message));
+		yield put(updateTreeCategoryError(error.message));
 	}
 }
 

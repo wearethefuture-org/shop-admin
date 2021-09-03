@@ -31,22 +31,40 @@
 			font-size: 20px;
 		}
 
-		.childrensTitle {
-			display: inline-flex;
+		.treeHeader {
+			display: flex;
+			flex-direction: column;
 			align-items: center;
+			margin-top: 25px;
 
-			.title {
+			.title,
+			.emptyTitle {
 				cursor: default;
 				color: gray;
 				font-weight: 500;
 				font-size: 17px;
 				margin-left: 10px;
 			}
+
+			.emptyTitle {
+				align-self: center;
+			}
+		}
+
+		.addSubBtn {
+			margin-top: 20px;
+			color: white;
+			background-color: rgb(31, 116, 186);
+
+			:first-child {
+				margin-right: 10px;
+			}
 		}
 
 		.childrensBlock {
 			display: flex;
 			width: max-content;
+			margin-top: 35px;
 
 			ul {
 				padding-left: 0;

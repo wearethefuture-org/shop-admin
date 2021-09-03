@@ -1,4 +1,5 @@
 import { Char } from './treeCategoryReducer';
+import { Common } from '../../../interfaces/IProducts';
 
 export interface GroupToDisplay {
   id?: number;
@@ -6,12 +7,19 @@ export interface GroupToDisplay {
   characteristic: Char[];
 }
 
+export interface IParent extends Common {
+  description?: string;
+  key: string;
+  mpath?: string;
+  name: string;
+}
+
 export interface TreeCategoryToDisplay {
   id: number;
   name?: string;
   key?: string;
   description?: string;
-  parentId?: number | null;
+  parent?: IParent | null;
   characteristicGroup?: GroupToDisplay[];
 }
 

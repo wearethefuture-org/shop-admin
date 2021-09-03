@@ -35,6 +35,7 @@ import {
 import { IBasicOrder } from '../interfaces/IOrders';
 import { MainCategory } from '../pages/MainCategories/MainCategoryInfo/mainCategoryReducer';
 import { Category } from '../pages/Categories/CategoryInfo/categoryReducer';
+import { TreeCategory } from '../pages/TreeCategories/TreeCategoryInfo/treeCategoryReducer';
 
 import { IActions, IActionsImage } from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';
@@ -75,6 +76,7 @@ type ApiFetchedDataType = {
     getById: (id: number) => FetchedDataType<IGetTreeCategoriesResponse>;
     add: (category: IAddTreeCategory) => FetchedDataType<ITreeCategory>;
     delete: (id: number) => FetchedDataType<JSON>;
+    update: (data: TreeCategory) => FetchedDataType<IGetTreeCategoriesResponse>;
   };
 
   products: {
@@ -166,6 +168,7 @@ export const api: ApiFetchedDataType = {
     getById: (id) => instance.get(`${root}/category/tree/${id}`),
     add: (category) => instance.post(`${root}/category/tree`, category),
     delete: (id) => instance.delete(`${root}/category/tree/${id}`),
+    update: (data) => instance.patch(`${root}/category/tree`, data),
   },
 
   products: {

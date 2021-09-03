@@ -4,12 +4,16 @@ import {
 	IAddTreeCategory,
 	IGetTreeCategoriesResponse,
 } from '../../interfaces/ITreeCategory';
+import { TreeCategory } from '../../pages/TreeCategories/TreeCategoryInfo/treeCategoryReducer';
 import {
 	GET_TREE_CATEGORIES_REQUEST,
 	GET_TREE_CATEGORIES_SUCCESS,
 	GET_TREE_CATEGORIES_ERROR,
 	ADD_TREE_CATEGORY,
 	DELETE_TREE_CATEGORY,
+	UPDATE_TREE_CATEGORY_REQUEST,
+	UPDATE_TREE_CATEGORY_SUCCESS,
+	UPDATE_TREE_CATEGORY_ERROR,
 	GET_TREE_CATEGORIES_BY_ID_REQUEST,
 	GET_TREE_CATEGORIES_BY_ID_SUCCESS,
 	GET_TREE_CATEGORIES_BY_ID_ERROR,
@@ -57,5 +61,22 @@ export const getTreeCategoriesByIdSuccess = (category: IGetTreeCategoriesRespons
 
 export const getTreeCategoriesByIdError = (message: string): IActions => ({
 	type: GET_TREE_CATEGORIES_BY_ID_ERROR,
+	data: message,
+});
+
+// update
+
+export const updateTreeCategoryRequest = (data: TreeCategory): IActions => ({
+	type: UPDATE_TREE_CATEGORY_REQUEST,
+	data,
+});
+
+export const updateTreeCategorySuccess = (category: IGetTreeCategoriesResponse): IActions => ({
+	type: UPDATE_TREE_CATEGORY_SUCCESS,
+	data: category,
+});
+
+export const updateTreeCategoryError = (message: string): IActions => ({
+	type: UPDATE_TREE_CATEGORY_ERROR,
 	data: message,
 });

@@ -4,7 +4,7 @@ import { Button, LinearProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 import useMainCategories from '../../hooks/useMainCategories';
-import FormDialog from '../../components/Modals/MainCategory-modal';
+//import FormDialog from '../../components/Modals/TreeCategoryModal/TreeCategoryModal';
 import useCategoriesModal from '../../hooks/useCategoriesModal';
 import MainCategoriesCards from './Cards/MainCategoriesCards';
 //import MainCategoriesTable from '../../components/Tables/MainCategory/MainCategoriesTable';
@@ -43,12 +43,6 @@ const MainCategories: React.FC = () => {
       </div>
 
       <div className={styles['content-wrapper']}>
-        <FormDialog
-          dispatch={dispatch}
-          categoriesLength={data?.length}
-          modalData={categoriesCreateModalData}
-        />
-
         {list ? <MainCategoriesCards list={list} /> : null}
       </div>
     </>

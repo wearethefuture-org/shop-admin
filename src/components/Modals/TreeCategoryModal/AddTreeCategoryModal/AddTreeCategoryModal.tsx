@@ -8,7 +8,7 @@ import styles from './AddTreeCategoryModal.module.scss';
 import AddTreeCategoryForm from '../../../Forms/TreeCategories/AddTreeCategoryForm/AddTreeCategoryForm';
 
 interface IParentInfo {
-  id: number;
+  id?: number;
   name: string;
 }
 

@@ -4,10 +4,9 @@ import { Button, LinearProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 import useTreeCategories from '../../hooks/useTreeCategories';
-import FormDialog from '../../components/Modals/MainCategory-modal';
+import FormDialog from '../../components/Modals/MainTreeCategoryAddModal';
 import useCategoriesModal from '../../hooks/useCategoriesModal';
 import TreeCategoriesCards from './Cards/TreeCategoriesCards';
-//import MainCategoriesTable from '../../components/Tables/MainCategory/MainCategoriesTable';
 import { RootState } from '../../store/store';
 import styles from './TreeCategories.module.scss';
 

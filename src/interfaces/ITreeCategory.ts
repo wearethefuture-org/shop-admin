@@ -18,8 +18,11 @@ export interface IChildren extends Common {
 	children?: IChildren[];
 }
 
-export interface IParent {
-	id: number;
+export interface IParent extends Common {
+	description?: string;
+	key: string;
+	mpath?: string;
+	name: string;
 }
 
 export interface ICharResponse extends Common {
@@ -37,13 +40,7 @@ export interface IGroupResponse extends Common {
 	characteristic: ICharResponse[];
 }
 
-export interface IGetTreeCategoriesResponse extends Common {
-	key: string;
-	name: string;
-	description: string;
-	mpath?: string;
-	parent?: IParent[] | null;
-	children: IChildren[];
+export interface IGetTreeCategoriesResponse extends ITreeCategory {
 	characteristicGroup?: IGroupResponse[];
 }
 

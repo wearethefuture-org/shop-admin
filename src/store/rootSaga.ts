@@ -10,6 +10,7 @@ import {
   GET_TREE_CATEGORIES_REQUEST,
   ADD_TREE_CATEGORY,
   DELETE_TREE_CATEGORY,
+  UPDATE_TREE_CATEGORY_REQUEST,
   GET_TREE_CATEGORIES_BY_ID_REQUEST,
   REQUEST_CATEGORIES,
   REQUEST_SETTINGS,
@@ -50,6 +51,7 @@ import {
   fetchTreeCategoryWorker,
   addTreeCategoryWorker,
   deleteTreeCategoryWorker,
+  updateTreeCategoryWorker,
   getTreeCategoriesByIdWorker,
 } from './sagas/treeCategories.saga';
 
@@ -104,6 +106,7 @@ export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(GET_TREE_CATEGORIES_REQUEST, fetchTreeCategoryWorker);
   yield takeEvery(ADD_TREE_CATEGORY, addTreeCategoryWorker);
   yield takeEvery(DELETE_TREE_CATEGORY, deleteTreeCategoryWorker);
+  yield takeEvery(UPDATE_TREE_CATEGORY_REQUEST, updateTreeCategoryWorker);
   yield takeEvery(GET_TREE_CATEGORIES_BY_ID_REQUEST, getTreeCategoriesByIdWorker);
 }
 

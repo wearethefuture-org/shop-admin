@@ -23,6 +23,7 @@ export interface TreeCategory {
   name?: string;
   key?: string;
   description?: string;
+  parentCategory?: number | null;
   characteristicGroups?: Group[];
   removedCharacteristics?: RemovedChars;
 }

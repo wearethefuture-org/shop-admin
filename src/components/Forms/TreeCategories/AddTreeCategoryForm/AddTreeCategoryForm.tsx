@@ -9,7 +9,7 @@ import { treeCategoryValidationShema } from '../../../../pages/TreeCategories/Tr
 
 interface TreeCategoryFormProps {
   dispatch: Dispatch;
-  parentId: number;
+  parentId?: number;
   closeModal: () => void;
 }
 
