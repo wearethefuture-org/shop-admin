@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { api } from '../../../api/api';
 import { Dispatch } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { IChildren, ITreeCategory } from '../../../interfaces/ITreeCategory';
@@ -17,7 +18,20 @@ interface ChildrenCategoriesDataProps {
 const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({ dispatch, children }) => {
   const [addCategoryModalIsOpen, setAddCategoryModalOpen] = useState(false);
   const [categoryModalIsOpen, setCategoryModalOpen] = useState(false);
+  const [hasChar, setHasChar] = useState<boolean>(false);
   const [modalParams, setModalParams] = useState();
+
+  const checkCategoryChar = async (id: number) => {
+    const { data: category } = await api.treeCategories.getById(id);
+
+    if (category && category?.characteristicGroup?.length) {
+      setHasChar(true);
+    }
+  };
+
+  if (children && !children?.children?.length) {
+    checkCategoryChar(children.id);
+  }
 
   const history = useHistory();
 
@@ -65,9 +79,11 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({ dispatch, children }) =
           >
             <span className={styles.title}>{children.name}</span>
           </div>
-          <span onClick={() => showAddCategoryModal(children)} className={styles.addIcon}>
-            <VscAdd />
-          </span>
+          {!hasChar && (
+            <span onClick={() => showAddCategoryModal(children)} className={styles.addIcon}>
+              <VscAdd />
+            </span>
+          )}
         </div>
       ) : null}
       {categoryModalIsOpen && <TreeCategoryModal {...modalParams} />}

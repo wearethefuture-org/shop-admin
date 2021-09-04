@@ -19,10 +19,7 @@ export interface IChildren extends Common {
 }
 
 export interface IParent extends Common {
-	description?: string;
-	key: string;
-	mpath?: string;
-	name: string;
+	id: number;
 }
 
 export interface ICharResponse extends Common {

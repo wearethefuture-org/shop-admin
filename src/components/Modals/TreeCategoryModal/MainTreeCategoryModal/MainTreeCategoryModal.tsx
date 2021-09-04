@@ -5,7 +5,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
 import TreeCategoryBasicInfo from '../../../../pages/TreeCategories/TreeCategoryInfo/TreeCategoryBasicInfo/TreeCategoryBasicInfo';
 import styles from './MainTreeCategoryModal.module.scss';
-import { Button } from 'reactstrap';
+import Button from '@material-ui/core/Button';
 
 interface ModalCategoryProps {
   category: ITreeCategory;
@@ -31,7 +31,7 @@ const MainTreeCategoryModal: React.FC<ModalCategoryProps> = ({ category, closeMo
           <div className={styles.infoModal}>
             <TreeCategoryBasicInfo category={category} />
             <span className={styles.closeBtn}>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={handleClose} variant="contained" color="primary">
                 Закрити
               </Button>
             </span>

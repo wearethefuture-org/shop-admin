@@ -5,7 +5,7 @@ import { Dispatch } from 'redux';
 import { ITreeCategory, IGetTreeCategoriesResponse } from '../../../interfaces/ITreeCategory';
 import styles from './TreeCategoriesCards.module.scss';
 import { VscAdd } from 'react-icons/vsc';
-import { Collapse } from 'reactstrap';
+import Accordion from '@material-ui/core/Accordion';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
 import InfoIcon from '@material-ui/icons/Info';
@@ -47,17 +47,17 @@ const ExpandableBlock: FC<ExpandableBlockProps> = ({
 }) => {
   return (
     <div>
-      <div onClick={() => toggleOpen(blockName)}>
-        <span className={styles.expandBlockArrow}>
-          {openSections.includes(blockName) ? (
-            <IoIosArrowUp size={23} style={{ color: 'green' }} />
-          ) : (
-            <IoIosArrowDown size={23} />
-          )}
-        </span>
-        <h5>{title}</h5>
-      </div>
-      <Collapse isOpen={openSections.includes(blockName)}>
+      <Accordion className={styles.expandBlock} expanded={openSections.includes(blockName)}>
+        <div onClick={() => toggleOpen(blockName)}>
+          <span className={styles.expandBlockArrow}>
+            {openSections.includes(blockName) ? (
+              <IoIosArrowUp size={23} style={{ color: 'green' }} />
+            ) : (
+              <IoIosArrowDown size={23} />
+            )}
+          </span>
+          <h5>{title}</h5>
+        </div>
         <div className={styles.treeHeader}>
           {hasTree ? (
             <div>
@@ -65,7 +65,7 @@ const ExpandableBlock: FC<ExpandableBlockProps> = ({
                 <span className={styles.forkIcon}>
                   <ImTree />
                 </span>
-                Дерево категорій
+                <span>Дерево категорій</span>
               </span>
             </div>
           ) : (
@@ -83,7 +83,7 @@ const ExpandableBlock: FC<ExpandableBlockProps> = ({
           </div>
         </div>
         <div className={styles.children}>{children}</div>
-      </Collapse>
+      </Accordion>
     </div>
   );
 };

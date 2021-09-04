@@ -7,7 +7,7 @@ import TreeCategoryBasicInfo from '../../../pages/TreeCategories/TreeCategoryInf
 import TreeCategoryEditForm from '../../Forms/TreeCategoryEditForm/TreeCategoryEditForm';
 import DeleteTreeCategoryModal from '../TreeCategoryModal/DeleteTreeCategoryModal/DeleteTreeCategoryModal';
 import styles from './TreeCategoryModal.module.scss';
-import { Button } from 'reactstrap';
+import Button from '@material-ui/core/Button';
 
 interface ModalCategoryProps {
   category: ITreeCategory;
@@ -51,13 +51,17 @@ const TreeCategoryModal: React.FC<ModalCategoryProps> = ({ category, closeModal 
               <div className={styles.infoModal}>
                 <TreeCategoryBasicInfo category={category} />
                 <div className={styles.modalButtons}>
-                  <Button onClick={() => setEditMode(true)} color="secondary">
+                  <Button onClick={() => setEditMode(true)} variant="contained">
                     Редагувати
                   </Button>
-                  <Button onClick={() => setOpenDeleteDialog(true)} color="danger">
+                  <Button
+                    onClick={() => setOpenDeleteDialog(true)}
+                    variant="contained"
+                    color="secondary"
+                  >
                     Видалити
                   </Button>
-                  <Button onClick={handleClose} color="primary">
+                  <Button onClick={handleClose} color="primary" variant="contained">
                     Закрити
                   </Button>
                 </div>
