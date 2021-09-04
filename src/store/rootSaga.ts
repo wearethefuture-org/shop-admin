@@ -5,6 +5,7 @@ import {
   ADD_PRODUCT_REQUEST,
   DELETE_PRODUCT_REQUEST,
   GET_PRODUCT_BY_ID_REQUEST,
+  GET_PRODUCTS_BY_QUERY_REQUEST,
   GET_PRODUCTS_REQUEST,
   REQUEST_ADD_CATEGORIES,
   REQUEST_CATEGORIES,
@@ -42,6 +43,7 @@ import {
   GET_ROLES_REQUEST,
   GET_LOTTERY_REQUEST, ADD_LOTTERY_REQUEST,
 
+  DISABLE_PRODUCT_REQUEST,
 } from './types';
 
 import {
@@ -62,22 +64,25 @@ import {
   addProductWorker,
   deleteProductWorker,
   getProductByIdWorker,
+  getProductsByQueryWorker,
   getProductsWorker,
   updateProductWorker,
   uploadMainImgWorker,
   updateAvailabilityProductWorker,
+  disableProductWorker,
 } from './sagas/products.saga';
 import {
   addSlideWorker,
   fetchSlideWorker,
   deleteSlideWorker,
   updateSlideVisibilityWorker,
-  updateSlideWorker } from './sagas/slides.saga';
+  updateSlideWorker,
+} from './sagas/slides.saga';
 import {
   getOrdersWorker,
   getOrdersByIdWorker,
   updateOrderQuantityWorker,
-  updateOrderStatusWorker
+  updateOrderStatusWorker,
 } from './sagas/orders.saga';
 import { deleteCommentWorker, getCommentsWorker } from './sagas/comments.saga';
 import { deleteFeedbackWorker, getFeedbacksWorker } from './sagas/feedbacks.saga';
@@ -108,11 +113,13 @@ export function* sagaCategoriesWatcher(): SagaIterator {
 export function* sagaProductsWatcher(): SagaIterator {
   yield takeEvery(GET_PRODUCTS_REQUEST, getProductsWorker);
   yield takeEvery(GET_PRODUCT_BY_ID_REQUEST, getProductByIdWorker);
+  yield takeEvery(GET_PRODUCTS_BY_QUERY_REQUEST, getProductsByQueryWorker);
   yield takeEvery(ADD_PRODUCT_REQUEST, addProductWorker);
   yield takeEvery(UPLOAD_MAIN_IMG_REQUEST, uploadMainImgWorker);
   yield takeEvery(UPDATE_PRODUCT_REQUEST, updateProductWorker);
   yield takeEvery(DELETE_PRODUCT_REQUEST, deleteProductWorker);
   yield takeEvery(UPDATE_AVAILABILITY_PRODUCT_REQUEST, updateAvailabilityProductWorker);
+  yield takeEvery(DISABLE_PRODUCT_REQUEST, disableProductWorker);
 }
 
 // Settings
