@@ -35,6 +35,11 @@ interface ExpandableBlockProps {
   children: ReactNode;
 }
 
+enum Type {
+  INFO = 'info',
+  EDIT = 'edit',
+}
+
 const ExpandableBlock: FC<ExpandableBlockProps> = ({
   blockName,
   toggleOpen,
@@ -95,6 +100,7 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
   const [addCategoryModalIsOpen, setAddCategoryModalOpen] = useState<boolean>(false);
   const [modalParams, setModalParams] = useState();
   const [addModalParams, setAddModalParams] = useState();
+  const [editMode, setEditMode] = useState<boolean>(false);
 
   const history = useHistory();
 
@@ -138,9 +144,10 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
     setOpenDeleteDialog(null);
   };
 
-  const openCategoryInfo = (category: ITreeCategory) => {
+  const openCategoryModal = (category: ITreeCategory, type: string) => {
     setCategoryModalOpen(true);
     setModalParams({
+      type,
       category,
       closeModal: categoryModalClose,
     });
@@ -150,7 +157,7 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
     <>
       <div className={styles.cardsContainer}>
         {list.map((l) => (
-          <div className={styles.card}>
+          <div className={styles.card} key={l.id}>
             {openDeleteDialog === l.id && (
               <DeleteTreeCategoryModal
                 handleClose={closeDeleteModal}
@@ -170,14 +177,16 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
                 <StyledTree
                   data={l.children}
                   direction
-                  render={(item) => <ChildrenCard dispatch={dispatch} children={item} />}
+                  render={(item) => (
+                    <ChildrenCard key={item.id} dispatch={dispatch} children={item} />
+                  )}
                 />
               </div>
             </ExpandableBlock>
             <hr />
             <div className={styles.icons}>
-              <InfoIcon onClick={() => openCategoryInfo(l)} />
-              <EditIcon />
+              <InfoIcon onClick={() => openCategoryModal(l, Type.INFO)} />
+              <EditIcon onClick={() => openCategoryModal(l, Type.EDIT)} />
               <DeleteIcon onClick={() => setOpenDeleteDialog(l.id)} />
             </div>
           </div>

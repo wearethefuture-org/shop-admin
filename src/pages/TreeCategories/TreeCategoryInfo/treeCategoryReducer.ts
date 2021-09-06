@@ -108,7 +108,6 @@ export const treeCategoryReducer = (
 
     case TreeCategoryActionTypes.setTreeCategoryId:
       if (!state.id) state.id = undefined;
-
       return {
         ...state,
         id: action.id,

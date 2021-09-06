@@ -55,9 +55,12 @@ export function* deleteTreeCategoryWorker({ data: id }: IActions): SagaIterator 
 
 export function* updateTreeCategoryWorker({ data }: IActions): SagaIterator {
 	try {
-		const category = yield call(apiUpdateTreeCategory, data);
+		const updatedCategory = yield call(apiUpdateTreeCategory, data);
+		yield put(getTreeCategoriesRequest());
+		const treeCategoriesData = yield call(fetchedTreeCategories);
+		yield put(getTreeCategoriesSuccess(treeCategoriesData));
 
-		yield put(updateTreeCategorySuccess(category));
+		yield put(updateTreeCategorySuccess(updatedCategory));
 		yield delay(700);
 		yield put(successSnackBar());
 	} catch (error) {

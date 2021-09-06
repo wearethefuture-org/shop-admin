@@ -3,18 +3,29 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
-import TreeCategoryBasicInfo from '../../../../pages/TreeCategories/TreeCategoryInfo/TreeCategoryBasicInfo/TreeCategoryBasicInfo';
+import EditTreeCategoryModalForm from '../../../Forms/TreeCategories/EditTreeCategoryModalForm/EditTreeCategoryModalForm';
+import TreeCategoryInfo from '../TreeCategoryInfo/TreeCategoryInfo';
 import styles from './MainTreeCategoryModal.module.scss';
-import Button from '@material-ui/core/Button';
+
+enum Type {
+  INFO = 'info',
+  EDIT = 'edit',
+}
 
 interface ModalCategoryProps {
+  type: keyof typeof Type;
   category: ITreeCategory;
   closeModal: () => void;
 }
 
-const MainTreeCategoryModal: React.FC<ModalCategoryProps> = ({ category, closeModal }) => {
+const MainTreeCategoryModal: React.FC<ModalCategoryProps> = ({ type, category, closeModal }) => {
   const handleClose = () => {
     closeModal();
+  };
+
+  const ModalContent = {
+    info: <TreeCategoryInfo category={category} closeModal={handleClose} />,
+    edit: <EditTreeCategoryModalForm category={category} closeModal={handleClose} />,
   };
 
   return (
@@ -25,19 +36,14 @@ const MainTreeCategoryModal: React.FC<ModalCategoryProps> = ({ category, closeMo
       fullWidth
       maxWidth="xs"
     >
-      <div>
-        <DialogTitle id="form-dialog-title">Інформація про основну категорію</DialogTitle>
-        <DialogContent dividers>
-          <div className={styles.infoModal}>
-            <TreeCategoryBasicInfo category={category} />
-            <span className={styles.closeBtn}>
-              <Button onClick={handleClose} variant="contained" color="primary">
-                Закрити
-              </Button>
-            </span>
-          </div>
-        </DialogContent>
-      </div>
+      <DialogTitle id="form-dialog-title">
+        {String(type) === String(Type.INFO)
+          ? 'Інформація про категорію'
+          : String(type) === String(Type.EDIT)
+          ? 'Редагування категорії'
+          : null}
+      </DialogTitle>
+      <DialogContent dividers>{ModalContent[type]}</DialogContent>
     </Dialog>
   );
 };

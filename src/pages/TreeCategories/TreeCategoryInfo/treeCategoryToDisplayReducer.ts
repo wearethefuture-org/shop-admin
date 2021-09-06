@@ -9,9 +9,9 @@ export interface GroupToDisplay {
 
 export interface IParent extends Common {
   description?: string;
-  key: string;
+  key?: string;
   mpath?: string;
-  name: string;
+  name?: string;
 }
 
 export interface TreeCategoryToDisplay {

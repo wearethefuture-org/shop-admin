@@ -75,7 +75,7 @@ const CategoryInfo: React.FC = () => {
     name: category && category.name ? category.name : '',
     description: category && category.description ? category.description : '',
     key: category && category.key ? category.key : '',
-    mainCategory:  (category.mainCategory && category.mainCategory.name) || '',
+    mainCategory: (category.mainCategory && category.mainCategory.name) || '',
   };
 
   const formik = useFormik({

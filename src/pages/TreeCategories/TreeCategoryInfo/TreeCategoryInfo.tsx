@@ -11,7 +11,7 @@ import { AppDispatch, RootState } from '../../../store/store';
 import AddBtn from '../../../components/AddBtn/AddBtn';
 import DeleteTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/DeleteTreeCategoryModal/DeleteTreeCategoryModal';
 import TreeCategoryGroupModal from '../../../components/Modals/TreeCategoryGroupModal/TreeCategoryGroupModal';
-import { IGetTreeCategoriesResponse, IAddTreeCategory } from '../../../interfaces/ITreeCategory';
+import { IGetTreeCategoriesResponse, ITreeCategory } from '../../../interfaces/ITreeCategory';
 import TreeCategoryEditForm from '../../../components/Forms/TreeCategoryEditForm/TreeCategoryEditForm';
 import TreeCategoryBasicInfo from './TreeCategoryBasicInfo/TreeCategoryBasicInfo';
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -88,18 +88,18 @@ const TreeCategoryInfo: React.FC = () => {
   };
 
   // FORMIK;
-  const initialValues: IAddTreeCategory = {
+  const initialValues = {
     name: treeCategory && treeCategory.name ? treeCategory.name : '',
     description: treeCategory && treeCategory.description ? treeCategory.description : '',
     key: treeCategory && treeCategory.key ? treeCategory.key : '',
-    parentId: treeCategory?.parent && treeCategory.parent.id ? treeCategory.parent.id : null,
+    parentId: treeCategory?.parent?.id ? treeCategory.parent.id : null,
   };
 
   const formik = useFormik({
     initialValues,
     validationSchema: treeCategoryValidationShema,
     enableReinitialize: true,
-    onSubmit: (values: IAddTreeCategory): void => {
+    onSubmit: (values): void => {
       const { name, key, description, parentId } = values;
 
       const existingName =
@@ -135,7 +135,6 @@ const TreeCategoryInfo: React.FC = () => {
           parentCategory: parentId,
         })
       );
-      treeCategoryDispatch({ type: TreeCategoryActionTypes.resetTreeCategory });
       finishOperation();
       formik.setSubmitting(false);
     },

@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import { api } from '../../../api/api';
+import { failSnackBar } from '../../../store/actions/snackbar.actions';
 import { Dispatch } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { IChildren, ITreeCategory } from '../../../interfaces/ITreeCategory';
@@ -21,18 +22,6 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({ dispatch, children }) =
   const [hasChar, setHasChar] = useState<boolean>(false);
   const [modalParams, setModalParams] = useState();
 
-  const checkCategoryChar = async (id: number) => {
-    const { data: category } = await api.treeCategories.getById(id);
-
-    if (category && category?.characteristicGroup?.length) {
-      setHasChar(true);
-    }
-  };
-
-  if (children && !children?.children?.length) {
-    checkCategoryChar(children.id);
-  }
-
   const history = useHistory();
 
   const addCategoryModalClose = () => {
@@ -43,16 +32,28 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({ dispatch, children }) =
     setCategoryModalOpen(false);
   };
 
-  const showAddCategoryModal = (parent: ITreeCategory) => {
+  const showAddCategoryModal = async (parent: ITreeCategory) => {
+    if (!parent?.children?.length) {
+      const { data: category } = await api.treeCategories.getById(parent.id);
+
+      if (category?.characteristicGroup?.length) {
+        dispatch(
+          failSnackBar('Неможливо створити підкатегорію. Дана категорія містить характеристики!')
+        );
+        return;
+      }
+    }
+
     const parentInfo = {
       id: parent.id,
       name: parent.name,
     };
-    setAddCategoryModalOpen(true);
+
     setModalParams({
       parentInfo,
       closeModal: addCategoryModalClose,
     });
+    setAddCategoryModalOpen(true);
   };
 
   const openCategoryInfo = (category: ITreeCategory) => {
@@ -79,11 +80,9 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({ dispatch, children }) =
           >
             <span className={styles.title}>{children.name}</span>
           </div>
-          {!hasChar && (
-            <span onClick={() => showAddCategoryModal(children)} className={styles.addIcon}>
-              <VscAdd />
-            </span>
-          )}
+          <span onClick={() => showAddCategoryModal(children)} className={styles.addIcon}>
+            <VscAdd />
+          </span>
         </div>
       ) : null}
       {categoryModalIsOpen && <TreeCategoryModal {...modalParams} />}

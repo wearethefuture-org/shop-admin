@@ -6,10 +6,10 @@ import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import { formatKey } from '../Products/ProductForm/productFormHelpers';
 import styles from './TreeCategoryEditForm.module.scss';
 import { IGetMainCategoriesResponse } from '../../../interfaces/IMainCategory';
-import { IAddTreeCategory } from '../../../interfaces/ITreeCategory';
+import { ITreeCategory } from '../../../interfaces/ITreeCategory';
 
 const TreeCategoryEditForm = () => {
-  const formik = useFormikContext<IAddTreeCategory>();
+  const formik = useFormikContext<ITreeCategory>();
 
   return (
     <Card>
@@ -44,6 +44,18 @@ const TreeCategoryEditForm = () => {
           type="textarea"
           label="Опис"
           name="description"
+          makegreen="true"
+          className={styles['edit-field']}
+        />
+
+        <Field
+          fullWidth
+          multiline
+          rowsMax={6}
+          component={TextFieldWrapped}
+          type="textarea"
+          label="ID надкатегорії"
+          name="parentId"
           makegreen="true"
           className={styles['edit-field']}
         />

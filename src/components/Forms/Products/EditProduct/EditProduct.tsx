@@ -105,7 +105,6 @@ const EditProduct: React.FC = () => {
   const handleDeleteImg = (img, idx) => {
     const imgName = !img.includes('blob') && img.split('/static/uploads/')[1];
     const existingImg = imgName && product.files.filter((file) => file.name.includes(imgName));
-    console.log(imgName, existingImg);
 
     if (existingImg.length) {
       setImagesToDelete(imagesToDelete.concat(existingImg.map((img) => img.name)));

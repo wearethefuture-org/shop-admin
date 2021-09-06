@@ -5,7 +5,7 @@ export interface ITreeCategory extends Common {
 	name: string;
 	description?: string;
 	mpath?: string;
-	parent?: IParent[] | null;
+	parent?: IParent | null;
 	children?: IChildren[];
 }
 
@@ -14,7 +14,7 @@ export interface IChildren extends Common {
 	name: string;
 	description?: string;
 	mpath?: string;
-	parent?: IParent[] | null;
+	parent?: IParent | null;
 	children?: IChildren[];
 }
 

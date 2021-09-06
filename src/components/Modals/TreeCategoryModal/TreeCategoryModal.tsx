@@ -4,7 +4,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { ITreeCategory } from '../../../interfaces/ITreeCategory';
 import TreeCategoryBasicInfo from '../../../pages/TreeCategories/TreeCategoryInfo/TreeCategoryBasicInfo/TreeCategoryBasicInfo';
-import TreeCategoryEditForm from '../../Forms/TreeCategoryEditForm/TreeCategoryEditForm';
+import EditTreeCategoryModalForm from '../../Forms/TreeCategories/EditTreeCategoryModalForm/EditTreeCategoryModalForm';
 import DeleteTreeCategoryModal from '../TreeCategoryModal/DeleteTreeCategoryModal/DeleteTreeCategoryModal';
 import styles from './TreeCategoryModal.module.scss';
 import Button from '@material-ui/core/Button';
@@ -68,7 +68,7 @@ const TreeCategoryModal: React.FC<ModalCategoryProps> = ({ category, closeModal 
               </div>
             ) : (
               <div className={styles.editModal}>
-                <TreeCategoryEditForm />
+                <EditTreeCategoryModalForm category={category} closeModal={handleClose} />
               </div>
             )}
           </DialogContent>

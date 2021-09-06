@@ -4,6 +4,9 @@ import {
   GET_TREE_CATEGORIES_REQUEST,
   GET_TREE_CATEGORIES_SUCCESS,
   ADD_TREE_CATEGORY,
+  UPDATE_TREE_CATEGORY_REQUEST,
+  UPDATE_TREE_CATEGORY_SUCCESS,
+  UPDATE_TREE_CATEGORY_ERROR,
   DELETE_TREE_CATEGORY,
   GET_TREE_CATEGORIES_BY_ID_REQUEST,
   GET_TREE_CATEGORIES_BY_ID_SUCCESS,
@@ -80,6 +83,31 @@ const treeCategories = (state = initialState, { type, data }: IActions) => {
     }
 
     case GET_TREE_CATEGORIES_BY_ID_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+
+    // update
+    case UPDATE_TREE_CATEGORY_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case UPDATE_TREE_CATEGORY_SUCCESS: {
+      return {
+        ...state,
+        currentTreeCategory: data,
+        loading: false,
+      };
+    }
+
+    case UPDATE_TREE_CATEGORY_ERROR: {
       return {
         ...state,
         loading: false,
