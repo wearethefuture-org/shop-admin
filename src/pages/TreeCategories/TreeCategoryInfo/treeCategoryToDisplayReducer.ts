@@ -14,10 +14,10 @@ export interface IParent extends Common {
   name?: string;
 }
 
-export interface TreeCategoryToDisplay {
+export interface TreeCategoryToDisplay extends Common {
   id: number;
-  name?: string;
-  key?: string;
+  name: string;
+  key: string;
   description?: string;
   parent?: IParent | null;
   characteristicGroup?: GroupToDisplay[];

@@ -52,7 +52,7 @@ const Router: React.FC = () => {
               <PrivateRoute path="/dashboard" component={Dashboard} />
               <PrivateRoute path="/sub-categories" component={Categories} />
               <PrivateRoute path="/main-categories" component={MainCategories} />
-              <PrivateRoute path="/tree-categories" component={TreeCategories} />
+              <PrivateRoute path="/tree-categories" exact={true} component={TreeCategories} />
               <PrivateRoute path="/products/" exact={true} component={Products} />
               <PrivateRoute path="/statistic" component={Statistic} />
               <PrivateRoute path="/users" component={Users} />

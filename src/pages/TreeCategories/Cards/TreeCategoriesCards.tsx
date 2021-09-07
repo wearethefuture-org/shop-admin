@@ -1,6 +1,7 @@
 import React, { FC, useState, ReactNode } from 'react';
 import { useHistory } from 'react-router';
 import { Dispatch } from 'redux';
+import { setExpandedTrees, getExpandedTrees } from '../../../services/local-storage-controller';
 
 import { ITreeCategory, IGetTreeCategoriesResponse } from '../../../interfaces/ITreeCategory';
 import styles from './TreeCategoriesCards.module.scss';
@@ -25,9 +26,8 @@ interface TreeCategoriesDataProps {
 }
 
 interface ExpandableBlockProps {
-  blockName: string;
-  toggleOpen: (section: string) => void;
-  openSections: string[];
+  toggleOpen: (section: number) => void;
+  openSections: number[];
   title: string;
   id: number;
   hasTree: boolean;
@@ -41,7 +41,6 @@ enum Type {
 }
 
 const ExpandableBlock: FC<ExpandableBlockProps> = ({
-  blockName,
   toggleOpen,
   openSections,
   title,
@@ -52,10 +51,10 @@ const ExpandableBlock: FC<ExpandableBlockProps> = ({
 }) => {
   return (
     <div>
-      <Accordion className={styles.expandBlock} expanded={openSections.includes(blockName)}>
-        <div onClick={() => toggleOpen(blockName)}>
+      <Accordion className={styles.expandBlock} expanded={openSections.includes(id)}>
+        <div onClick={() => toggleOpen(id)}>
           <span className={styles.expandBlockArrow}>
-            {openSections.includes(blockName) ? (
+            {openSections.includes(id) ? (
               <IoIosArrowUp size={23} style={{ color: 'green' }} />
             ) : (
               <IoIosArrowDown size={23} />
@@ -94,7 +93,7 @@ const ExpandableBlock: FC<ExpandableBlockProps> = ({
 };
 
 const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) => {
-  const [openSections, setOpenSections] = useState<string[]>([]);
+  const [openSections, setOpenSections] = useState<number[]>(getExpandedTrees);
   const [categoryModalIsOpen, setCategoryModalOpen] = useState<boolean>(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState<number | null>(null);
   const [addCategoryModalIsOpen, setAddCategoryModalOpen] = useState<boolean>(false);
@@ -114,10 +113,9 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
 
   const StyledTree = withStyles(customStyles)(Tree);
 
-  const toggleOpen = (section: string) => {
-    openSections.includes(section)
-      ? setOpenSections(openSections.filter((sec) => sec !== section))
-      : setOpenSections(openSections.concat(section));
+  const toggleOpen = (section: number) => {
+    setExpandedTrees(section);
+    setOpenSections(getExpandedTrees);
   };
 
   const addCategoryModalClose = () => {
@@ -165,7 +163,6 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
               />
             )}
             <ExpandableBlock
-              blockName={l.key}
               toggleOpen={toggleOpen}
               openSections={openSections}
               title={l.name}

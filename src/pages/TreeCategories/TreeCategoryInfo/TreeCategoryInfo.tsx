@@ -6,6 +6,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
+import { categoryValidation } from '../../../components/Forms/TreeCategories/EditTreeCategoryModalForm/EditTreeCategoryModalForm';
 import { updateTreeCategoryRequest } from '../../../store/actions/treeCategories.actions';
 import { AppDispatch, RootState } from '../../../store/store';
 import AddBtn from '../../../components/AddBtn/AddBtn';
@@ -99,7 +100,7 @@ const TreeCategoryInfo: React.FC = () => {
     initialValues,
     validationSchema: treeCategoryValidationShema,
     enableReinitialize: true,
-    onSubmit: (values): void => {
+    onSubmit: async (values) => {
       const { name, key, description, parentId } = values;
 
       const existingName =
@@ -124,6 +125,15 @@ const TreeCategoryInfo: React.FC = () => {
         formik.setFieldError('key', 'Такий URL-ключ вже існує');
         formik.setSubmitting(false);
         return;
+      }
+
+      const validation = await categoryValidation(
+        dispatch,
+        parentId ? parentId : treeCategory?.parent?.id
+      );
+
+      if (!validation) {
+        return false;
       }
 
       dispatch(

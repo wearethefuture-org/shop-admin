@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { api } from '../../../../api/api';
 import { Button, TextField, Select, MenuItem } from '@material-ui/core';
 import styles from './EditTreeCategoryModalForm.module.scss';
 import { useFormik } from 'formik';
+import { Dispatch } from 'redux';
 import { useDispatch } from 'react-redux';
 import { updateTreeCategoryRequest } from '../../../../store/actions/treeCategories.actions';
 import * as Yup from 'yup';
@@ -11,9 +13,26 @@ import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
 import { failSnackBar } from '../../../../store/actions/snackbar.actions';
 
 interface FormDialogProps {
-  category: ITreeCategory | null;
+  category: ITreeCategory;
   closeModal: () => void;
 }
+
+export const categoryValidation = async (dispatch: Dispatch, parentId?: number) => {
+  if (parentId) {
+    const { data: parentCategory } = await api.treeCategories.getById(parentId);
+
+    if (parentCategory?.characteristicGroup?.length) {
+      dispatch(
+        failSnackBar(
+          'Неможливо змінити надкатегорію. Надкатегорія містить характеристики, тому не може мати підкатегорії.'
+        )
+      );
+      return false;
+    }
+  }
+
+  return true;
+};
 
 const EditTreeCategoryModalForm: React.FC<FormDialogProps> = ({ category, closeModal }) => {
   const validationSchema = Yup.object().shape({
@@ -34,7 +53,15 @@ const EditTreeCategoryModalForm: React.FC<FormDialogProps> = ({ category, closeM
     initialValues: initialValues,
     validationSchema,
     onSubmit: async (_values, { setSubmitting }) => {
-      setSubmitting(true);
+      const validation = await categoryValidation(
+        dispatch,
+        _values.parent ? _values.parent : category?.parent?.id
+      );
+
+      if (!validation) {
+        return false;
+      }
+
       dispatch(
         updateTreeCategoryRequest({
           id: category?.id,
@@ -44,6 +71,7 @@ const EditTreeCategoryModalForm: React.FC<FormDialogProps> = ({ category, closeM
           parentCategory: _values.parent ? _values.parent : null,
         })
       );
+      setSubmitting(true);
       closeModal();
     },
   });
