@@ -38,7 +38,7 @@ export interface IGroupResponse extends Common {
 }
 
 export interface IGetTreeCategoriesResponse extends ITreeCategory {
-	characteristicGroup?: IGroupResponse[];
+	characteristicGroup: IGroupResponse[];
 }
 
 export interface IAddTreeCategory {

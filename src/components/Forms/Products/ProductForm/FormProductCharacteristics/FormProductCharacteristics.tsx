@@ -7,12 +7,12 @@ import { IconButton } from '@material-ui/core';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 import { AppDispatch, RootState } from '../../../../../store/store';
-import { getCategoryByIdRequest } from '../../../../../store/actions/categories.actions';
-import { ICharResponse } from '../../../../../interfaces/ICategory';
+import { getTreeCategoryByIdRequest } from '../../../../../store/actions/treeCategories.actions';
+import { ICharResponse } from '../../../../../interfaces/ITreeCategory';
 import { charDynamicFields } from './charDynamicFields';
 import { getValidationSchema } from './charDynamicValidation';
 import { productValidationShema } from '../productFormHelpers';
-import { getIcon } from '../../../../Modals/CategoryCharModal/categoryCharModalHelpers';
+import { getIcon } from '../../../../Modals/TreeCategoryCharModal/treeCategoryCharModalHelpers';
 import { Type } from '../../../../../interfaces/IProducts';
 import styles from './FormProductCharacteristics.module.scss';
 
@@ -36,7 +36,9 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
 }) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const { list, currentCategory: category } = useSelector((state: RootState) => state.categories);
+  const { list, currentTreeCategory: category } = useSelector(
+    (state: RootState) => state.treeCategories
+  );
   const { currentProduct: product } = useSelector((state: RootState) => state.products);
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
@@ -76,7 +78,7 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
   useEffect(() => {
     const category = list.find((category) => category.name === categoryName);
 
-    category && dispatch(getCategoryByIdRequest(category.id));
+    category && dispatch(getTreeCategoryByIdRequest(category.id));
   }, [categoryName, dispatch, list]);
 
   // EXPANDED GROUPS

@@ -1,6 +1,6 @@
 import { FormikProps } from 'formik';
 
-import { ICharResponse } from '../../../../interfaces/ICategory';
+import { ICharResponse } from '../../../../interfaces/ITreeCategory';
 import {
   ICharValue,
   IGetProductById,

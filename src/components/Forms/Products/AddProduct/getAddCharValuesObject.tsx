@@ -1,4 +1,4 @@
-import { ICharResponse } from '../../../../interfaces/ICategory';
+import { ICharResponse } from '../../../../interfaces/ITreeCategory';
 import { ICharValue, Type } from '../../../../interfaces/IProducts';
 
 export const getAddCharValuesObject = (subForm, chars: ICharResponse[]) => {

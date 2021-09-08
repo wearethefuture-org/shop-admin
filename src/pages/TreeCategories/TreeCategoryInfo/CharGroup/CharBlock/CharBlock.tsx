@@ -6,7 +6,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 import { RootState } from '../../../../../store/store';
-import { getIcon } from '../../../../../components/Modals/CategoryCharModal/categoryCharModalHelpers';
+import { getIcon } from '../../../../../components/Modals/TreeCategoryCharModal/treeCategoryCharModalHelpers';
 import { TreeCategoryAction, TreeCategoryActionTypes, Char } from '../../treeCategoryReducer';
 import {
   TreeCategoryToDispalayAction,

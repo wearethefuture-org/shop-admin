@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import Sidebar from '../Sidebar/Sidebar';
 import SnackBar from '../Common/SnackBar';
 import Dashboard from '../../pages/Dashboard/Dashboard';
-import Categories from '../../pages/Categories/Categories';
 import Products from '../../pages/Products/ProductsPage';
 import Statistic from '../../pages/Statistic/Statistic';
 import Users from '../../pages/Users/Users';
@@ -17,12 +16,9 @@ import styles from './Router.module.scss';
 import ViewProduct from '../../pages/Products/ProductRouter';
 import AddProduct from '../Forms/Products/AddProduct/AddProduct';
 import TreeCategoryRouter from '../../pages/TreeCategories/TreeCategoryRouter';
-import CategoryRouter from '../../pages/Categories/CategoryRouter';
 import OrdersPage from '../../pages/Orders/OrdersPage';
 import OrderRouter from '../../pages/Orders/OrderRouter';
 import TreeCategories from '../../pages/TreeCategories/TreeCategories';
-import MainCategories from '../../pages/MainCategories/MainCategory';
-import MainCategoryRouter from '../../pages/MainCategories/MainCategoryRouter';
 import Home from '../../pages/Home/Home';
 import PrivateRoute from './PrivateRoute';
 import { RootState } from '../../store/store';
@@ -50,8 +46,6 @@ const Router: React.FC = () => {
           <Content>
             <Switch>
               <PrivateRoute path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/sub-categories" component={Categories} />
-              <PrivateRoute path="/main-categories" component={MainCategories} />
               <PrivateRoute path="/tree-categories" exact={true} component={TreeCategories} />
               <PrivateRoute path="/products/" exact={true} component={Products} />
               <PrivateRoute path="/statistic" component={Statistic} />
@@ -64,8 +58,6 @@ const Router: React.FC = () => {
               <PrivateRoute path="/orders" component={OrdersPage} />
               <PrivateRoute component={ViewProduct} path="/product/:id" />
               <PrivateRoute component={TreeCategoryRouter} path="/tree-category/:id" />
-              <PrivateRoute component={CategoryRouter} path="/sub-category/:id" />
-              <PrivateRoute component={MainCategoryRouter} path="/main-category/:id" />
               <PrivateRoute component={OrderRouter} path="/order/:id" />
               {!user && !token ? (
                 <Route path="/home" component={Home} />

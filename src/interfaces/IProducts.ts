@@ -1,4 +1,4 @@
-import { GeneralCategory, ICharResponse } from './ICategory';
+import { ITreeCategory, ICharResponse } from './ITreeCategory';
 
 export interface Common {
   id: number;
@@ -23,7 +23,7 @@ export interface GeneralProductInfo {
 }
 
 export interface IGetProducts extends IBasicProduct {
-  category: GeneralCategory;
+  category: ITreeCategory;
   files: IImg[];
   mainImg: IImg | null;
 }
@@ -67,7 +67,7 @@ export interface IUpdateProduct {
 }
 
 export interface IProductItem extends IBasicProduct {
-  category: GeneralCategory;
+  category: ITreeCategory;
   files?: IImg[];
   mainImg?: IImg;
 }
@@ -77,8 +77,8 @@ export interface IProductsData {
   loading: boolean;
   currentProduct: IGetProductById | null;
   error: string | null;
-  count: number,
-  totalPages: number,
+  count: number;
+  totalPages: number;
 }
 
 export interface CharValues {

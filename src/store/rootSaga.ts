@@ -6,19 +6,15 @@ import {
   DELETE_PRODUCT_REQUEST,
   GET_PRODUCT_BY_ID_REQUEST,
   GET_PRODUCTS_REQUEST,
-  REQUEST_ADD_CATEGORIES,
   GET_TREE_CATEGORIES_REQUEST,
   ADD_TREE_CATEGORY,
   DELETE_TREE_CATEGORY,
   UPDATE_TREE_CATEGORY_REQUEST,
   GET_TREE_CATEGORIES_BY_ID_REQUEST,
-  REQUEST_CATEGORIES,
   REQUEST_SETTINGS,
   REQUEST_UPDATE_SETTINGS,
   UPDATE_PRODUCT_REQUEST,
   UPLOAD_MAIN_IMG_REQUEST,
-  GET_CATEGORY_BY_ID_REQUEST,
-  UPDATE_CATEGORY_REQUEST,
   REQUEST_SLIDES,
   REQUEST_UPDATE_SLIDES,
   REQUEST_ADD_SLIDES,
@@ -39,10 +35,6 @@ import {
   USER_SIGN_IN_FETCHING,
   USER_SIGN_OUT,
   USER_FETCH_REQUEST,
-  REQUEST_MAIN_CATEGORIES,
-  REQUEST_ADD_MAIN_CATEGORIES,
-  GET_MAIN_CATEGORY_BY_ID_REQUEST,
-  UPDATE_MAIN_CATEGORY_REQUEST,
   UPDATE_AVAILABILITY_PRODUCT_REQUEST,
   GET_ROLES_REQUEST,
 } from './types';
@@ -55,19 +47,6 @@ import {
   getTreeCategoriesByIdWorker,
 } from './sagas/treeCategories.saga';
 
-import {
-  fetchMainCategoryWorker,
-  addMainCategoryWorker,
-  getMainCategoryByIdWorker,
-  updateMainCategoryWorker,
-} from './sagas/mainCategories.saga';
-
-import {
-  fetchCategoryWorker,
-  addCategoryWorker,
-  getCategoryByIdWorker,
-  updateCategoryWorker,
-} from './sagas/categories.saga';
 import { fetchSettingsWorker, updateSettingsWorker } from './sagas/settings.saga';
 import {
   addProductWorker,
@@ -108,20 +87,6 @@ export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(DELETE_TREE_CATEGORY, deleteTreeCategoryWorker);
   yield takeEvery(UPDATE_TREE_CATEGORY_REQUEST, updateTreeCategoryWorker);
   yield takeEvery(GET_TREE_CATEGORIES_BY_ID_REQUEST, getTreeCategoriesByIdWorker);
-}
-
-export function* sagaMainCategoriesWatcher(): SagaIterator {
-  yield takeEvery(REQUEST_MAIN_CATEGORIES, fetchMainCategoryWorker);
-  yield takeEvery(REQUEST_ADD_MAIN_CATEGORIES, addMainCategoryWorker);
-  yield takeEvery(GET_MAIN_CATEGORY_BY_ID_REQUEST, getMainCategoryByIdWorker);
-  yield takeEvery(UPDATE_MAIN_CATEGORY_REQUEST, updateMainCategoryWorker);
-}
-
-export function* sagaCategoriesWatcher(): SagaIterator {
-  yield takeEvery(REQUEST_CATEGORIES, fetchCategoryWorker);
-  yield takeEvery(REQUEST_ADD_CATEGORIES, addCategoryWorker);
-  yield takeEvery(GET_CATEGORY_BY_ID_REQUEST, getCategoryByIdWorker);
-  yield takeEvery(UPDATE_CATEGORY_REQUEST, updateCategoryWorker);
 }
 
 export function* sagaProductsWatcher(): SagaIterator {
@@ -191,8 +156,6 @@ export function* getRolesWatcher(): SagaIterator {
 export default function* rootSaga(): SagaIterator {
   yield all([
     fork(sagaTreeCategoriesWatcher),
-    fork(sagaCategoriesWatcher),
-    fork(sagaMainCategoriesWatcher),
     fork(sagaProductsWatcher),
     fork(sagaSettingsWatcher),
     fork(sagaSlidesWatcher),

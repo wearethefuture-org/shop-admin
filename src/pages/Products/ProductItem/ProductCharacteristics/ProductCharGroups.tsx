@@ -6,9 +6,9 @@ import AddIcon from '@material-ui/icons/Add';
 
 import ProductChar from './ProductChar/ProductChar';
 import { AppDispatch, RootState } from '../../../../store/store';
-import { getCategoryByIdRequest } from '../../../../store/actions/categories.actions';
-import { ICategoryResponse } from '../../../../interfaces/ICategory';
-import useCategories from '../../../../hooks/useCategories';
+import { getTreeCategoryByIdRequest } from '../../../../store/actions/treeCategories.actions';
+import { IGetTreeCategoriesResponse } from '../../../../interfaces/ITreeCategory';
+import useTreeCategories from '../../../../hooks/useTreeCategories';
 import styles from './ProductCharGroups.module.scss';
 
 interface IProductChar {
@@ -19,17 +19,17 @@ const ProductCharGroups: React.FC<IProductChar> = ({ categoryName }) => {
   const dispatch: AppDispatch = useDispatch();
   const location = useLocation();
 
-  const { data: categories } = useCategories();
+  const { data: categories } = useTreeCategories();
 
-  const category: ICategoryResponse = useSelector(
-    (state: RootState) => state.categories.currentCategory
+  const category: IGetTreeCategoriesResponse = useSelector(
+    (state: RootState) => state.treeCategories.currentTreeCategory
   );
 
   // CATEGORY
   useEffect(() => {
     const category = categories.find((category) => category.name === categoryName);
 
-    category && dispatch(getCategoryByIdRequest(category.id));
+    category && dispatch(getTreeCategoryByIdRequest(category.id));
   }, [categoryName, dispatch, categories]);
 
   return (

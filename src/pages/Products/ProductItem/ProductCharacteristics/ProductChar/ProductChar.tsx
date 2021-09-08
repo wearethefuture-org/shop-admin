@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { IGetProductById } from '../../../../../interfaces/IProducts';
 import { RootState } from '../../../../../store/store';
-import { ICharResponse } from '../../../../../interfaces/ICategory';
+import { ICharResponse } from '../../../../../interfaces/ITreeCategory';
 import { getValue } from './getValue';
 import styles from './ProductChar.module.scss';
 

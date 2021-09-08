@@ -2,20 +2,6 @@ import { root } from './config';
 import { AxiosResponse } from 'axios';
 
 import {
-  IAddMainCategory,
-  GeneralMainCategory,
-  IMainCategoryResponse,
-  IGetMainCategoriesResponse,
-} from '../interfaces/IMainCategory';
-
-import {
-  IAddCategory,
-  GeneralCategory,
-  ICategoryResponse,
-  IGetCategoriesResponse,
-} from '../interfaces/ICategory';
-
-import {
   IGetTreeCategoriesResponse,
   ITreeCategory,
   IAddTreeCategory,
@@ -33,8 +19,6 @@ import {
   IUpdateAvailabilityProduct,
 } from '../interfaces/IProducts';
 import { IBasicOrder } from '../interfaces/IOrders';
-import { MainCategory } from '../pages/MainCategories/MainCategoryInfo/mainCategoryReducer';
-import { Category } from '../pages/Categories/CategoryInfo/categoryReducer';
 import { TreeCategory } from '../pages/TreeCategories/TreeCategoryInfo/treeCategoryReducer';
 
 import { IActions, IActionsImage } from '../interfaces/actions';
@@ -57,20 +41,6 @@ import { IRole } from '../interfaces/IRoles';
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
 type ApiFetchedDataType = {
-  mainCategories: {
-    get: () => FetchedDataType<IGetMainCategoriesResponse>;
-    add: (mainCategory: IAddMainCategory) => FetchedDataType<GeneralMainCategory>;
-    getById: (id: number) => FetchedDataType<IMainCategoryResponse>;
-    update: (data: MainCategory) => FetchedDataType<IMainCategoryResponse>;
-  };
-
-  categories: {
-    get: () => FetchedDataType<IGetCategoriesResponse>;
-    add: (category: IAddCategory) => FetchedDataType<GeneralCategory>;
-    getById: (id: number) => FetchedDataType<ICategoryResponse>;
-    update: (data: Category) => FetchedDataType<ICategoryResponse>;
-  };
-
   treeCategories: {
     get: () => FetchedDataType<IGetTreeCategoriesResponse>;
     getById: (id: number) => FetchedDataType<IGetTreeCategoriesResponse>;
@@ -149,20 +119,6 @@ type ApiFetchedDataType = {
 };
 
 export const api: ApiFetchedDataType = {
-  mainCategories: {
-    get: () => instance.get(`${root}/mainCategory`),
-    add: (mainCategory) => instance.post(`${root}/mainCategory`, mainCategory),
-    getById: (id) => instance.get(`${root}/mainCategory/${id}`),
-    update: (data) => instance.patch(`${root}/mainCategory`, data),
-  },
-
-  categories: {
-    get: () => instance.get(`${root}/category`),
-    add: (category) => instance.post(`${root}/category`, category),
-    getById: (id) => instance.get(`${root}/category/${id}`),
-    update: (data) => instance.patch(`${root}/category`, data),
-  },
-
   treeCategories: {
     get: () => instance.get(`${root}/category/tree`),
     getById: (id) => instance.get(`${root}/category/tree/${id}`),

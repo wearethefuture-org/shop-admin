@@ -5,7 +5,6 @@ import { Card, MenuItem } from '@material-ui/core';
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import { formatKey } from '../Products/ProductForm/productFormHelpers';
 import styles from './TreeCategoryEditForm.module.scss';
-import { IGetMainCategoriesResponse } from '../../../interfaces/IMainCategory';
 import { ITreeCategory } from '../../../interfaces/ITreeCategory';
 
 const TreeCategoryEditForm = () => {

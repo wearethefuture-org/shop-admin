@@ -12,7 +12,6 @@ import EditIcon from '@material-ui/icons/Edit';
 import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import CategoryInfoModal from '../../../components/Modals/CategoryInfoModal/CategoryInfoModal';
 import ChildrenCard from '../ChildrenCard/ChildrenCard';
 import { ImTree } from 'react-icons/im';
 import Tree, { withStyles } from 'react-vertical-tree';

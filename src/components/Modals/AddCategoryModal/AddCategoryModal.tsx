@@ -2,15 +2,13 @@ import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dialog, DialogContent, DialogTitle, Button, MenuItem } from '@material-ui/core';
 
-import { IAddCategory, ICategoryResponse } from '../../../interfaces/ICategory';
-import { fetchAddCategories } from '../../../store/actions/categories.actions';
+import { IAddTreeCategory, IGetTreeCategoriesResponse } from '../../../interfaces/ITreeCategory';
+import { addTreeCategory } from '../../../store/actions/treeCategories.actions';
 import { AppDispatch, RootState } from '../../../store/store';
 import { Field, Form, FormikProvider, useFormik } from 'formik';
-import { categoryValidationShema } from '../../../pages/Categories/CategoryInfo/categoryValidationShema';
+import { treeCategoryValidationShema } from '../../../pages/TreeCategories/TreeCategoryInfo/treeCategoryValidationShema';
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import styles from './AddCategoryModal.module.scss';
-import { GeneralMainCategory, IGetMainCategoriesResponse } from "../../../interfaces/IMainCategory";
-import { fetchMainCategories } from "../../../store/actions/mainCategories.actions";
 
 interface FormDialogProps {
   openAddModal: boolean;
@@ -20,29 +18,22 @@ interface FormDialogProps {
 const AddCategoryModal: React.FC<FormDialogProps> = ({ openAddModal, setOpenAddModal }) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const categoryList: ICategoryResponse[] = useSelector(
-    (state: RootState) => state.categories.list
+  const categoryList: IGetTreeCategoriesResponse[] = useSelector(
+    (state: RootState) => state.treeCategories.list
   );
 
-  const mainCategorisList = useSelector<RootState, GeneralMainCategory[]>((state) => state.mainCategories.list);
-
-  useEffect(() => {
-    dispatch(fetchMainCategories());
-  }, [])
-
-  const initialValues: IAddCategory = {
+  const initialValues: IAddTreeCategory = {
     name: '',
     description: '',
     key: '',
-    mainCategory: ''
   };
 
   const formik = useFormik({
     initialValues,
-    validationSchema: categoryValidationShema,
+    validationSchema: treeCategoryValidationShema,
     enableReinitialize: true,
     onSubmit: (values): void => {
-      const { name, key, description, mainCategory } = values;
+      const { name, key, description } = values;
 
       const existingName =
         categoryList.length &&
@@ -64,7 +55,7 @@ const AddCategoryModal: React.FC<FormDialogProps> = ({ openAddModal, setOpenAddM
         return;
       }
 
-      dispatch(fetchAddCategories({ name, key, description, mainCategory }));
+      dispatch(addTreeCategory({ name, key, description }));
       formik.setSubmitting(false);
       setOpenAddModal(false);
     },
@@ -109,25 +100,6 @@ const AddCategoryModal: React.FC<FormDialogProps> = ({ openAddModal, setOpenAddM
               name="description"
               makegreen="true"
             />
-            <Field
-              select
-              fullWidth
-              component={ TextFieldWrapped }
-              label="Основна категорія *"
-              name="mainCategory"
-              makegreen="true"
-              className={ styles['edit-field'] }
-              value={ formik.values.mainCategory ?? '' }
-            >
-              { mainCategorisList.length
-                ? mainCategorisList.map(({ id, name }: IGetMainCategoriesResponse) => (
-                  <MenuItem value={ name } key={ id }>
-                    { name }
-                  </MenuItem>
-                ))
-                : [] }
-            </Field>
-
             <div className={styles['form-btn-wrapper']}>
               <Button
                 onClick={() => setOpenAddModal(false)}

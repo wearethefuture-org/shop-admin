@@ -4,13 +4,13 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 import ProductForm from '../ProductForm/ProductForm';
-import useCategories from '../../../../hooks/useCategories';
+import useTreeCategories from '../../../../hooks/useTreeCategories';
 import { IGetProductById, IUpdateProduct } from '../../../../interfaces/IProducts';
 import { AppDispatch, RootState } from '../../../../store/store';
 import { root } from '../../../../api/config';
 import { updateProductRequest } from '../../../../store/actions/products.actions';
 import { productValidationShema } from '../ProductForm/productFormHelpers';
-import { ICategoryResponse, ICharResponse } from '../../../../interfaces/ICategory';
+import { IGetTreeCategoriesResponse, ICharResponse } from '../../../../interfaces/ITreeCategory';
 import { getEditCharValuesObject } from './getEditCharValuesObject';
 
 interface ILocation {
@@ -22,10 +22,10 @@ const EditProduct: React.FC = () => {
   const history = useHistory();
   const location = useLocation<ILocation>();
 
-  const { data: categories } = useCategories();
+  const { data: categories } = useTreeCategories();
 
-  const category: ICategoryResponse = useSelector(
-    (state: RootState) => state.categories.currentCategory
+  const category: IGetTreeCategoriesResponse = useSelector(
+    (state: RootState) => state.treeCategories.currentTreeCategory
   );
   const product: IGetProductById = useSelector((state: RootState) => state.products.currentProduct);
 

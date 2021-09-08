@@ -10,7 +10,7 @@ import ExpandBtn from '../../../ExpandBtn/ExpandBtn';
 import GoBackBtn from '../../../GoBackBtn/GoBackBtn';
 import FormProductCharacteristics from './FormProductCharacteristics/FormProductCharacteristics';
 import { formatKey } from './productFormHelpers';
-import { IGetCategoriesResponse } from '../../../../interfaces/ICategory';
+import { IGetTreeCategoriesResponse } from '../../../../interfaces/ITreeCategory';
 import { ErrorsAlert } from '../../../ErrorsAlert';
 import styles from './ProductForm.module.scss';
 
@@ -18,7 +18,7 @@ export interface IProductFormProps {
   editMode: boolean;
   formik: FormikProps<any>;
   handleGoBack: () => void;
-  categories: IGetCategoriesResponse[];
+  categories: IGetTreeCategoriesResponse[];
   handleImageChange: (fileList: File[]) => void;
   imagesPreview: string[];
   handleDeleteImg: (img: string, idx: number) => void;
@@ -126,7 +126,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                   value={formik.values.categoryName ?? ''}
                 >
                   {categories.length
-                    ? categories.map(({ id, name }: IGetCategoriesResponse) => (
+                    ? categories.map(({ id, name }: IGetTreeCategoriesResponse) => (
                         <MenuItem value={name} key={id}>
                           {name}
                         </MenuItem>
