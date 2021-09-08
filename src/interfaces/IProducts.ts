@@ -12,6 +12,7 @@ export interface IBasicProduct extends Common {
   description: string;
   price: number;
   availability: boolean;
+  disabled: boolean;
 }
 
 export interface GeneralProductInfo {
@@ -35,6 +36,12 @@ export interface IImg extends Common {
 
 export interface IGetProductById extends IGetProducts {
   characteristicValue: ICharResponse[];
+}
+
+export interface IProductsSearchResponse {
+  data: IGetProducts[];
+  count: number;
+  totalPages: number;
 }
 
 interface GroupChar extends Common {
@@ -139,10 +146,18 @@ export enum Type {
 export interface ProductsTableProps {
   list: IGetProducts[];
   activeColumns: string[];
+  isSearchEnabled: boolean;
+  searchValue: string;
 }
 
 export interface IUpdateAvailabilityProduct {
   productId: number;
   availability: boolean;
+  categoryName: string;
+}
+
+export interface IDisableProduct {
+  productId: number;
+  disabled: boolean;
   categoryName: string;
 }
