@@ -1,11 +1,11 @@
 import React from 'react';
 import { Field, useFormikContext } from 'formik';
-import { Card, MenuItem } from '@material-ui/core';
+import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
+import { Card } from '@material-ui/core';
 
-import TextFieldWrapped from '../../../hocs/TextFieldHOC';
-import { formatKey } from '../Products/ProductForm/productFormHelpers';
+import TextFieldWrapped from '../../../../hocs/TextFieldHOC';
+import { formatKey } from '../../Products/ProductForm/productFormHelpers';
 import styles from './TreeCategoryEditForm.module.scss';
-import { ITreeCategory } from '../../../interfaces/ITreeCategory';
 
 const TreeCategoryEditForm = () => {
   const formik = useFormikContext<ITreeCategory>();

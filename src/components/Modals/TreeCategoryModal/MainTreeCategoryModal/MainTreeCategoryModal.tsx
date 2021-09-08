@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
+
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
-import EditTreeCategoryModalForm from '../../../Forms/TreeCategories/EditTreeCategoryModalForm/EditTreeCategoryModalForm';
+import TreeCategoryEditModalForm from '../../../Forms/TreeCategories/TreeCategoryEditModalForm/TreeCategoryEditModalForm';
 import TreeCategoryInfo from '../TreeCategoryInfo/TreeCategoryInfo';
-import styles from './MainTreeCategoryModal.module.scss';
 
 enum Type {
   INFO = 'info',
@@ -25,7 +25,7 @@ const MainTreeCategoryModal: React.FC<ModalCategoryProps> = ({ type, category, c
 
   const ModalContent = {
     info: <TreeCategoryInfo category={category} closeModal={handleClose} />,
-    edit: <EditTreeCategoryModalForm category={category} closeModal={handleClose} />,
+    edit: <TreeCategoryEditModalForm category={category} closeModal={handleClose} />,
   };
 
   return (

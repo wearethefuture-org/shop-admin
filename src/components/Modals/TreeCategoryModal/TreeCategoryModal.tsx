@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { ITreeCategory } from '../../../interfaces/ITreeCategory';
+
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { ITreeCategory } from '../../../interfaces/ITreeCategory';
+import Button from '@material-ui/core/Button';
+
 import TreeCategoryBasicInfo from '../../../pages/TreeCategories/TreeCategoryInfo/TreeCategoryBasicInfo/TreeCategoryBasicInfo';
-import EditTreeCategoryModalForm from '../../Forms/TreeCategories/EditTreeCategoryModalForm/EditTreeCategoryModalForm';
+import TreeCategoryEditModalForm from '../../Forms/TreeCategories/TreeCategoryEditModalForm/TreeCategoryEditModalForm';
 import DeleteTreeCategoryModal from '../TreeCategoryModal/DeleteTreeCategoryModal/DeleteTreeCategoryModal';
 import styles from './TreeCategoryModal.module.scss';
-import Button from '@material-ui/core/Button';
 
 interface ModalCategoryProps {
   category: ITreeCategory;
@@ -68,7 +70,7 @@ const TreeCategoryModal: React.FC<ModalCategoryProps> = ({ category, closeModal 
               </div>
             ) : (
               <div className={styles.editModal}>
-                <EditTreeCategoryModalForm category={category} closeModal={handleClose} />
+                <TreeCategoryEditModalForm category={category} closeModal={handleClose} />
               </div>
             )}
           </DialogContent>

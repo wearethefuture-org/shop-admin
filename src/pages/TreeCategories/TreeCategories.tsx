@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import useTreeCategories from '../../hooks/useTreeCategories';
+import useCategoriesModal from '../../hooks/useCategoriesModal';
+
+import FormDialog from '../../components/Modals/MainTreeCategoryAddModal';
+import TreeCategoriesCards from './Cards/TreeCategoriesCards';
 import { Button, LinearProgress } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-
-import useTreeCategories from '../../hooks/useTreeCategories';
-import FormDialog from '../../components/Modals/MainTreeCategoryAddModal';
-import useCategoriesModal from '../../hooks/useCategoriesModal';
-import TreeCategoriesCards from './Cards/TreeCategoriesCards';
-import { RootState } from '../../store/store';
 import styles from './TreeCategories.module.scss';
 
 const TreeCategories: React.FC = () => {

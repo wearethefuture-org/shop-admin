@@ -1,11 +1,11 @@
-import { LinearProgress } from '@material-ui/core';
 import React, { lazy, Suspense, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch, Switch, Route, useHistory } from 'react-router-dom';
-
-import { getTreeCategoryByIdRequest } from '../../store/actions/treeCategories.actions';
 import { AppDispatch, RootState } from '../../store/store';
 import { IGetTreeCategoriesResponse } from '../../interfaces/ITreeCategory';
+import { getTreeCategoryByIdRequest } from '../../store/actions/treeCategories.actions';
+
+import { LinearProgress } from '@material-ui/core';
 
 interface MatchParams {
   id: string;
@@ -32,7 +32,7 @@ const TreeCategoryRouter: React.FC = () => {
     if (!treeCategory && error?.length) {
       history.push('/tree-categories');
     }
-  }, [loading, treeCategory]);
+  }, [history, error, loading, treeCategory]);
 
   return (
     <>

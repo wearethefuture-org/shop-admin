@@ -1,10 +1,12 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { useSelector } from 'react-redux';
 import { Field, Form, FormikProvider, useFormik } from 'formik';
-import { Button, Dialog, MenuItem } from '@material-ui/core';
-
-import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import { IGetTreeCategoriesResponse, ICharToAdd } from '../../../interfaces/ITreeCategory';
+import { RootState } from '../../../store/store';
+import { Type } from '../../../interfaces/IProducts';
+
+import { Button, Dialog, MenuItem } from '@material-ui/core';
+import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import { charTypes, charValidationSchema, getIcon } from './treeCategoryCharModalHelpers';
 import {
   TreeCategoryAction,
@@ -16,8 +18,6 @@ import {
   TreeCategoryToDisplayActionTypes,
   GroupToDisplay,
 } from '../../../pages/TreeCategories/TreeCategoryInfo/treeCategoryToDisplayReducer';
-import { RootState } from '../../../store/store';
-import { Type } from '../../../interfaces/IProducts';
 import styles from './TreeCategoryCharModal.module.scss';
 
 interface IModalProps {

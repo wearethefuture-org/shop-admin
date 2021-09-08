@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, DialogActions, LinearProgress } from '@material-ui/core';
+import { Button, DialogActions } from '@material-ui/core';
 import { Field, Form, FormikProps } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -61,7 +61,7 @@ const InnerForm: React.FC<InnerTreeCategoryFormProps & FormikProps<IAddTreeCateg
 
       <DialogActions>
         <Button
-          onClick={props.closeModal}
+          onClick={closeModal}
           color="secondary"
           variant="contained"
           className={classes.customBtn}

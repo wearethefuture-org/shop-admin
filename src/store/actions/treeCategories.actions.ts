@@ -1,9 +1,5 @@
 import { IActions } from '../../interfaces/actions';
-import {
-	ITreeCategory,
-	IAddTreeCategory,
-	IGetTreeCategoriesResponse,
-} from '../../interfaces/ITreeCategory';
+import { IAddTreeCategory, IGetTreeCategoriesResponse } from '../../interfaces/ITreeCategory';
 import { TreeCategory } from '../../pages/TreeCategories/TreeCategoryInfo/treeCategoryReducer';
 import {
 	GET_TREE_CATEGORIES_REQUEST,

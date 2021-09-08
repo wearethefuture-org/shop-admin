@@ -1,21 +1,17 @@
 import React, { useEffect, useReducer, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Button, Card, IconButton, LinearProgress } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
-
-import { categoryValidation } from '../../../components/Forms/TreeCategories/EditTreeCategoryModalForm/EditTreeCategoryModalForm';
+import { Form, FormikProvider, useFormik } from 'formik';
 import { updateTreeCategoryRequest } from '../../../store/actions/treeCategories.actions';
 import { AppDispatch, RootState } from '../../../store/store';
+import { IGetTreeCategoriesResponse } from '../../../interfaces/ITreeCategory';
+
+import { categoryValidation } from '../../../components/Forms/TreeCategories/TreeCategoryEditModalForm/TreeCategoryEditModalForm';
 import AddBtn from '../../../components/AddBtn/AddBtn';
 import DeleteTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/DeleteTreeCategoryModal/DeleteTreeCategoryModal';
 import TreeCategoryGroupModal from '../../../components/Modals/TreeCategoryGroupModal/TreeCategoryGroupModal';
-import { IGetTreeCategoriesResponse, ITreeCategory } from '../../../interfaces/ITreeCategory';
-import TreeCategoryEditForm from '../../../components/Forms/TreeCategoryEditForm/TreeCategoryEditForm';
+import TreeCategoryEditForm from '../../../components/Forms/TreeCategories/TreeCategoryEditForm/TreeCategoryEditForm';
 import TreeCategoryBasicInfo from './TreeCategoryBasicInfo/TreeCategoryBasicInfo';
-import { Form, FormikProvider, useFormik } from 'formik';
 import ExpandBtn from '../../../components/ExpandBtn/ExpandBtn';
 import GoBackBtn from '../../../components/GoBackBtn/GoBackBtn';
 import CharGroup from './CharGroup/CharGroup';
@@ -28,7 +24,12 @@ import {
   GroupToDisplay,
 } from './treeCategoryToDisplayReducer';
 import { ErrorsAlert } from '../../../components/ErrorsAlert';
+
 import styles from './TreeCategoryInfo.module.scss';
+import { Button, Card, IconButton, LinearProgress } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 const TreeCategoryInfo: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();

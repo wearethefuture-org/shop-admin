@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
 import { AppDispatch } from '../../../../store/store';
-import CustomConfirm from '../../../../components/CustomConfirm/CustomConfirm';
 import { deleteTreeCategory } from '../../../../store/actions/treeCategories.actions';
+
+import CustomConfirm from '../../../../components/CustomConfirm/CustomConfirm';
 
 interface ICategoryInfo {
   id: number;

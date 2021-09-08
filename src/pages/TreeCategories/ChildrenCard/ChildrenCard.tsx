@@ -2,34 +2,45 @@ import React, { FC, useState } from 'react';
 import { api } from '../../../api/api';
 import { failSnackBar } from '../../../store/actions/snackbar.actions';
 import { Dispatch } from 'redux';
-import { useDispatch, useSelector } from 'react-redux';
-import { IChildren, ITreeCategory } from '../../../interfaces/ITreeCategory';
-import styles from './ChildrenCard.module.scss';
-import { AiOutlineExclamation } from 'react-icons/ai';
-import { VscAdd } from 'react-icons/vsc';
 import { useHistory } from 'react-router';
+import { IChildren, ITreeCategory } from '../../../interfaces/ITreeCategory';
+
+import styles from './ChildrenCard.module.scss';
+import { VscAdd } from 'react-icons/vsc';
 import TreeCategoryModal from '../../../components/Modals/TreeCategoryModal/TreeCategoryModal';
 import AddTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/AddTreeCategoryModal/AddTreeCategoryModal';
 
 interface ChildrenCategoriesDataProps {
   dispatch: Dispatch;
-  children: IChildren | undefined;
+  children: IChildren;
+}
+
+export interface ModalsState {
+  categoryModalIsOpen: boolean;
+  addCategoryModalIsOpen: boolean;
 }
 
 const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({ dispatch, children }) => {
-  const [addCategoryModalIsOpen, setAddCategoryModalOpen] = useState(false);
-  const [categoryModalIsOpen, setCategoryModalOpen] = useState(false);
-  const [hasChar, setHasChar] = useState<boolean>(false);
+  const [modalsState, setModalsState] = useState<ModalsState>({
+    categoryModalIsOpen: false,
+    addCategoryModalIsOpen: false,
+  });
   const [modalParams, setModalParams] = useState();
 
   const history = useHistory();
 
   const addCategoryModalClose = () => {
-    setAddCategoryModalOpen(false);
+    setModalsState((prevState) => ({
+      ...prevState,
+      addCategoryModalIsOpen: false,
+    }));
   };
 
   const categoryModalClose = () => {
-    setCategoryModalOpen(false);
+    setModalsState((prevState) => ({
+      ...prevState,
+      categoryModalIsOpen: false,
+    }));
   };
 
   const showAddCategoryModal = async (parent: ITreeCategory) => {
@@ -53,11 +64,17 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({ dispatch, children }) =
       parentInfo,
       closeModal: addCategoryModalClose,
     });
-    setAddCategoryModalOpen(true);
+    setModalsState((prevState) => ({
+      ...prevState,
+      addCategoryModalIsOpen: true,
+    }));
   };
 
   const openCategoryInfo = (category: ITreeCategory) => {
-    setCategoryModalOpen(true);
+    setModalsState((prevState) => ({
+      ...prevState,
+      categoryModalIsOpen: true,
+    }));
     setModalParams({
       category,
       closeModal: categoryModalClose,
@@ -85,8 +102,10 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({ dispatch, children }) =
           </span>
         </div>
       ) : null}
-      {categoryModalIsOpen && <TreeCategoryModal {...modalParams} />}
-      {addCategoryModalIsOpen && <AddTreeCategoryModal {...modalParams} dispatch={dispatch} />}
+      {modalsState.categoryModalIsOpen && <TreeCategoryModal {...modalParams} />}
+      {modalsState.addCategoryModalIsOpen && (
+        <AddTreeCategoryModal {...modalParams} dispatch={dispatch} />
+      )}
     </>
   );
 };

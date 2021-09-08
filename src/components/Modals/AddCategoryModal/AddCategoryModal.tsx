@@ -1,11 +1,11 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dialog, DialogContent, DialogTitle, Button, MenuItem } from '@material-ui/core';
-
+import { Field, Form, FormikProvider, useFormik } from 'formik';
 import { IAddTreeCategory, IGetTreeCategoriesResponse } from '../../../interfaces/ITreeCategory';
 import { addTreeCategory } from '../../../store/actions/treeCategories.actions';
 import { AppDispatch, RootState } from '../../../store/store';
-import { Field, Form, FormikProvider, useFormik } from 'formik';
+
+import { Dialog, DialogContent, DialogTitle, Button } from '@material-ui/core';
 import { treeCategoryValidationShema } from '../../../pages/TreeCategories/TreeCategoryInfo/treeCategoryValidationShema';
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import styles from './AddCategoryModal.module.scss';

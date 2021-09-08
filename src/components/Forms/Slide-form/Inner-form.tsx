@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, DialogActions, LinearProgress, CircularProgress } from '@material-ui/core';
+import { Button, DialogActions, LinearProgress } from '@material-ui/core';
 import { Field, Form, FormikProps } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';

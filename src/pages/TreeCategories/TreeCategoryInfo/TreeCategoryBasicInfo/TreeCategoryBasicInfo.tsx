@@ -1,15 +1,14 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { Card } from '@material-ui/core';
-
-import { IGetTreeCategoriesResponse } from '../../../../interfaces/ITreeCategory';
 import { RootState } from '../../../../store/store';
 import { formatISODate } from '../../../../utils/formatISODate';
-import styles from './TreeCategoryBasicInfo.module.scss';
 import { IChildren } from '../../../../interfaces/ITreeCategory';
 
+import { Card } from '@material-ui/core';
+import styles from './TreeCategoryBasicInfo.module.scss';
+
 interface TreeCategoryBasicInfoProps {
-  category?: IChildren | undefined;
+  category?: IChildren;
 }
 
 const TreeCategoryBasicInfo: FC<TreeCategoryBasicInfoProps> = ({ category }) => {

@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { api } from '../../../../api/api';
-import { Button, TextField, Select, MenuItem } from '@material-ui/core';
-import styles from './EditTreeCategoryModalForm.module.scss';
+import React from 'react';
 import { useFormik } from 'formik';
 import { Dispatch } from 'redux';
 import { useDispatch } from 'react-redux';
-import { updateTreeCategoryRequest } from '../../../../store/actions/treeCategories.actions';
+import { api } from '../../../../api/api';
 import * as Yup from 'yup';
 
 import { AppDispatch } from '../../../../store/store';
 import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
+import { updateTreeCategoryRequest } from '../../../../store/actions/treeCategories.actions';
+
+import { Button, TextField } from '@material-ui/core';
 import { failSnackBar } from '../../../../store/actions/snackbar.actions';
+import styles from './TreeCategoryEditModalForm.module.scss';
 
 interface FormDialogProps {
   category: ITreeCategory;
@@ -34,7 +35,7 @@ export const categoryValidation = async (dispatch: Dispatch, parentId?: number) 
   return true;
 };
 
-const EditTreeCategoryModalForm: React.FC<FormDialogProps> = ({ category, closeModal }) => {
+const TreeCategoryEditModalForm: React.FC<FormDialogProps> = ({ category, closeModal }) => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Це поле не повинно бути пустим!'),
     key: Yup.string().required('Це поле не повинно бути пустим!'),
@@ -162,4 +163,4 @@ const EditTreeCategoryModalForm: React.FC<FormDialogProps> = ({ category, closeM
   );
 };
 
-export default EditTreeCategoryModalForm;
+export default TreeCategoryEditModalForm;

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Dispatch } from 'redux';
+
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
 import styles from './AddTreeCategoryModal.module.scss';
 import AddTreeCategoryForm from '../../../Forms/TreeCategories/AddTreeCategoryForm/AddTreeCategoryForm';
 

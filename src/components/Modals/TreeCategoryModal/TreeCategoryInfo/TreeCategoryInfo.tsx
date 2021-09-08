@@ -1,6 +1,7 @@
-import React, { FC, useState } from 'react';
-import TreeCategoryBasicInfo from '../../../../pages/TreeCategories/TreeCategoryInfo/TreeCategoryBasicInfo/TreeCategoryBasicInfo';
+import React, { FC } from 'react';
 import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
+
+import TreeCategoryBasicInfo from '../../../../pages/TreeCategories/TreeCategoryInfo/TreeCategoryBasicInfo/TreeCategoryBasicInfo';
 import Button from '@material-ui/core/Button';
 import styles from './TreeCategoryInfo.module.scss';
 

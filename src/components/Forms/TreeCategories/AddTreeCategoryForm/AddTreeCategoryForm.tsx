@@ -1,6 +1,5 @@
 import { withFormik } from 'formik';
 import { Dispatch } from 'redux';
-import { AppDispatch } from '../../../../store/store';
 
 import { addTreeCategory } from '../../../../store/actions/treeCategories.actions';
 import InnerForm from './InnerForm';
