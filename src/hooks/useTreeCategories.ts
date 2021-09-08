@@ -5,17 +5,17 @@ import { getTreeCategoriesRequest } from '../store/actions/treeCategories.action
 import { AppDispatch, RootState } from '../store/store';
 
 const useTreeCategories = () => {
-	const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
-	useEffect(() => {
-		dispatch(getTreeCategoriesRequest());
-	}, [dispatch]);
+  useEffect(() => {
+    dispatch(getTreeCategoriesRequest());
+  }, [dispatch]);
 
-	const data: IGetTreeCategoriesResponse[] = useSelector(
-		(state: RootState) => state.treeCategories.list
-	);
+  const data: IGetTreeCategoriesResponse[] = useSelector(
+    (state: RootState) => state.treeCategories.list
+  );
 
-	return { data, dispatch };
+  return { data, dispatch };
 };
 
 export default useTreeCategories;

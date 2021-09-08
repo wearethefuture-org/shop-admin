@@ -1,84 +1,84 @@
 .cardsContainer {
-	display: flex;
-	justify-content: space-between;
-	flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 
-	li {
-		z-index: 1;
-	}
+  li {
+    z-index: 1;
+  }
 
-	.card {
-		display: flex;
-		flex-direction: column;
-		background-color: white;
-		width: 100%;
-		overflow: auto;
-		border-radius: 3px;
-		padding: 20px;
-		margin-bottom: 20px;
-		box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  .card {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 100%;
+    overflow: auto;
+    border-radius: 3px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 
-		.childrensBlock {
-			display: flex;
-			width: max-content;
-			margin-top: 35px;
+    .childrensBlock {
+      display: flex;
+      width: max-content;
+      margin-top: 35px;
 
-			ul {
-				padding-left: 0;
-			}
+      ul {
+        padding-left: 0;
+      }
 
-			> div {
-				display: flex;
-			}
-		}
+      > div {
+        display: flex;
+      }
+    }
 
-		hr {
-			margin-top: auto;
-			width: 100%;
-		}
+    hr {
+      margin-top: auto;
+      width: 100%;
+    }
 
-		h5 {
-			cursor: pointer;
-			text-align: center;
-		}
+    h5 {
+      cursor: pointer;
+      text-align: center;
+    }
 
-		.icons {
-			display: flex;
-			justify-content: center;
-			column-gap: 100px;
+    .icons {
+      display: flex;
+      justify-content: center;
+      column-gap: 100px;
 
-			> :first-child {
-				cursor: pointer;
-				color: rgb(52, 132, 237);
-				transition: 0.3s all;
+      > :first-child {
+        cursor: pointer;
+        color: rgb(52, 132, 237);
+        transition: 0.3s all;
 
-				:hover {
-					color: rgb(0, 85, 196);
-				}
-			}
+        :hover {
+          color: rgb(0, 85, 196);
+        }
+      }
 
-			:nth-child(2):hover {
-				cursor: pointer;
-				color: grey;
-			}
+      :nth-child(2):hover {
+        cursor: pointer;
+        color: grey;
+      }
 
-			:nth-child(3) {
-				cursor: pointer;
-				transition: 0.3s all;
-				color: red;
+      :nth-child(3) {
+        cursor: pointer;
+        transition: 0.3s all;
+        color: red;
 
-				:hover {
-					color: rgb(216, 0, 0);
-				}
-			}
-		}
-	}
+        :hover {
+          color: rgb(216, 0, 0);
+        }
+      }
+    }
+  }
 }
 
 .cardsContainer-dark {
-	@extend .cardsContainer;
+  @extend .cardsContainer;
 
-	.card {
-		background-color: inherit;
-	}
+  .card {
+    background-color: inherit;
+  }
 }

@@ -1,53 +1,53 @@
 .expandBlock {
-	box-shadow: none !important;
+  box-shadow: none !important;
 
-	.expandBlockArrow {
-		cursor: pointer;
-	}
+  .expandBlockArrow {
+    cursor: pointer;
+  }
 
-	.treeHeader {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin-top: 25px;
+  .treeHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 25px;
 
-		.title,
-		.emptyTitle {
-			cursor: default;
-			color: gray;
-			font-weight: 500;
-			font-size: 17px;
-			margin-left: 10px;
-		}
+    .title,
+    .emptyTitle {
+      cursor: default;
+      color: gray;
+      font-weight: 500;
+      font-size: 17px;
+      margin-left: 10px;
+    }
 
-		.forkIcon {
-			display: inline-block;
-			border-radius: 60px;
-			box-shadow: 0px 0px 2px #888;
-			padding: 0.25em 0.5em;
-			color: rgb(1, 196, 57);
-			font-size: 18px;
-			margin-right: 10px;
-		}
+    .forkIcon {
+      display: inline-block;
+      border-radius: 60px;
+      box-shadow: 0px 0px 2px #888;
+      padding: 0.25em 0.5em;
+      color: rgb(1, 196, 57);
+      font-size: 18px;
+      margin-right: 10px;
+    }
 
-		.emptyTitle {
-			align-self: center;
-		}
+    .emptyTitle {
+      align-self: center;
+    }
 
-		.addSubBtn {
-			margin-top: 20px;
-			color: white;
-			background-color: rgb(31, 116, 186);
+    .addSubBtn {
+      margin-top: 20px;
+      color: white;
+      background-color: rgb(31, 116, 186);
 
-			:first-child {
-				margin-right: 10px;
-			}
-		}
-	}
+      :first-child {
+        margin-right: 10px;
+      }
+    }
+  }
 }
 
 .expandBlock-dark {
-	@extend .expandBlock;
+  @extend .expandBlock;
 
-	background-color: inherit !important;
+  background-color: inherit !important;
 }
