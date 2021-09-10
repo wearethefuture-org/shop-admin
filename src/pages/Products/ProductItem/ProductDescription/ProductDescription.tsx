@@ -8,7 +8,6 @@ import styles from './ProductDescription.module.scss';
 
 const ProductDescription: React.FC = () => {
   const product: IGetProductById = useSelector((state: RootState) => state.products.currentProduct);
-  
 
   return (
     <div className={styles.description}>
@@ -22,7 +21,9 @@ const ProductDescription: React.FC = () => {
       </div>
       <div className={styles.field}>
         <p className={styles.title}>Категорія:</p>
-        <p className={styles.value}>{product.category?.name ? product.category.name : 'select category'}</p>
+        <p className={styles.value}>
+          {product.category?.name ? product.category.name : 'select category'}
+        </p>
       </div>
       <div className={styles.field}>
         <p className={styles.title}>Ключ:</p>
@@ -34,7 +35,9 @@ const ProductDescription: React.FC = () => {
       </div>
       <div className={styles.field}>
         <p className={styles.title}>Опис:</p>
-        <p className={styles.value}>{product.description}</p>
+        <p className={styles.value}>
+          {product.description ? product.description : 'Опис відсутній'}
+        </p>
       </div>
       <div className={styles.field}>
         <p className={styles.title}>Створено:</p>

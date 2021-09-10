@@ -112,7 +112,11 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       sortable: true,
       minWidth: '150px',
       format: (row) =>
-        row.description.length <= 30 ? row.description : `${row.description.slice(0, 30)}...`,
+        row.description?.length <= 30
+          ? row.description
+          : row.description
+          ? `${row.description?.slice(0, 30)}...`
+          : (row.description = 'Опис відсутній'),
       omit: !activeColumns.includes('Опис'),
     },
     {
