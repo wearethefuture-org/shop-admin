@@ -14,12 +14,10 @@ import {
   IGetProductById,
   IGetProducts,
   IProductCharRequest,
-  IProductsInCart,
   IUpdateProduct,
   IUpdateAvailabilityProduct,
   IProductsSearchResponse,
   IDisableProduct,
-
 } from '../interfaces/IProducts';
 import { IBasicOrder } from '../interfaces/IOrders';
 import { TreeCategory } from '../pages/TreeCategories/TreeCategoryInfo/treeCategoryReducer';
@@ -69,7 +67,6 @@ type ApiFetchedDataType = {
     }) => FetchedDataType<IGetProductById>;
     deleteImg: (imgName: string) => FetchedDataType<IGetProductById>;
     deleteProduct: (id: number) => FetchedDataType<JSON>;
-    getProductsInCart: () => FetchedDataType<IProductsInCart>;
     addProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateAvailabilityProduct: (
@@ -147,7 +144,6 @@ export const api: ApiFetchedDataType = {
     updateMainImg: (data) => instance.patch(`${root}/product/img/preview`, data),
     deleteImg: (imgName) => instance.delete(`${root}/product/img/${imgName}`),
     deleteProduct: (id) => instance.delete(`${root}/product/${id}`),
-    getProductsInCart: () => instance.get(`${root}/products-in-cart`),
     addProductCharValues: (data) => instance.post(`${root}/characteristics-values`, data),
     updateProductCharValues: (data) => instance.patch(`${root}/characteristics-values`, data),
     updateAvailabilityProduct: ({ productId, ...product }) =>

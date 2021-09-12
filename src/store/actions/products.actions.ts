@@ -131,6 +131,7 @@ export const uploadMainImgError = (message: string): IActions => ({
 // update product
 export const updateProductRequest = (
   id: number,
+  categoryID: number,
   productValues: IUpdateProduct,
   characteristicValues: {
     charsToAdd: ICharValue[];
@@ -140,7 +141,7 @@ export const updateProductRequest = (
   imagesToDelete: string[]
 ): IActions => ({
   type: UPDATE_PRODUCT_REQUEST,
-  data: { id, productValues, characteristicValues, imagesToDelete },
+  data: { id, categoryID, productValues, characteristicValues, imagesToDelete },
 });
 
 export const updateProductSuccess = (product: IProductItem): IActions => ({

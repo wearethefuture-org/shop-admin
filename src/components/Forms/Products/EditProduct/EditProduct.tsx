@@ -61,6 +61,7 @@ const EditProduct: React.FC = () => {
       dispatch(
         updateProductRequest(
           product.id,
+          product.category.id,
           productValues,
           getEditCharValuesObject(chars, product, formik),
           imagesToDelete

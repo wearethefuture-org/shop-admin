@@ -49,7 +49,7 @@ const ProductItem: React.FC = () => {
     const data = {
       availability: e.target.checked,
       productId: product.id,
-      categoryName: product.category.name,
+      categoryID: product.category.id,
     };
     setProductStatus((prevState) => ({ ...prevState, availability: data.availability }));
     dispatch(updateAvailabilityProductRequest(data));
@@ -59,7 +59,7 @@ const ProductItem: React.FC = () => {
     const data = {
       disabled: e.target.checked,
       productId: product.id,
-      categoryName: product.category.name,
+      categoryID: product.category.id,
     };
     setProductStatus((prevState) => ({ ...prevState, disabled: data.disabled }));
     dispatch(disableProductRequest(data));
