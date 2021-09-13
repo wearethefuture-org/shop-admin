@@ -1,15 +1,17 @@
 .childrenCard {
-  display: inline-flex;
+  display: flex;
   align-items: center;
 
   .addIcon {
     display: inline-block;
+    margin-left: 15px;
     border-radius: 60px;
     box-shadow: 0px 0px 2px #888;
     padding: 0.3em 0.5em;
     color: rgb(1, 196, 57);
     cursor: pointer;
     transition: 0.3s all;
+    background-color: white;
 
     &:hover {
       color: black;
@@ -27,13 +29,15 @@
 
 .childrenBody {
   display: flex;
+  width: 100%;
+  min-width: 300px;
+  flex-direction: column;
   margin: 10px;
-  padding: 10px;
+  padding: 20px;
   border-radius: 6px;
   cursor: pointer;
+  background-color: rgb(237, 237, 237);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  background-color: green;
-  color: white;
 
   .title {
     display: flex;

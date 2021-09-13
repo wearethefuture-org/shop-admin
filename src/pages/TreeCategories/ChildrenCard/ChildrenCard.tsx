@@ -5,14 +5,17 @@ import { Dispatch } from 'redux';
 import { useHistory } from 'react-router';
 import { IChildren, ITreeCategory } from '../../../interfaces/ITreeCategory';
 
+import TreeItem from '@material-ui/lab/TreeItem';
 import styles from './ChildrenCard.module.scss';
 import { VscAdd } from 'react-icons/vsc';
 import TreeCategoryModal from '../../../components/Modals/TreeCategoryModal/TreeCategoryModal';
 import AddTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/AddTreeCategoryModal/AddTreeCategoryModal';
 
 interface ChildrenCategoriesDataProps {
+  renderTree: (nodes: any) => JSX.Element;
   dispatch: Dispatch;
-  children: IChildren;
+  nodes: IChildren;
+  toggleOpen: (id: string) => void;
 }
 
 export interface ModalsState {
@@ -20,12 +23,18 @@ export interface ModalsState {
   addCategoryModalIsOpen: boolean;
 }
 
-const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({ dispatch, children }) => {
+const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
+  renderTree,
+  dispatch,
+  nodes,
+  toggleOpen,
+}) => {
   const [modalsState, setModalsState] = useState<ModalsState>({
     categoryModalIsOpen: false,
     addCategoryModalIsOpen: false,
   });
   const [modalParams, setModalParams] = useState();
+  const [addModalParams, setAddModalParams] = useState();
 
   const history = useHistory();
 
@@ -44,6 +53,10 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({ dispatch, children }) =
   };
 
   const showAddCategoryModal = async (parent: ITreeCategory) => {
+    const parentInfo = {
+      id: parent.id,
+      name: parent.name,
+    };
     if (!parent?.children?.length) {
       const { data: category } = await api.treeCategories.getById(parent.id);
 
@@ -54,13 +67,7 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({ dispatch, children }) =
         return;
       }
     }
-
-    const parentInfo = {
-      id: parent.id,
-      name: parent.name,
-    };
-
-    setModalParams({
+    setAddModalParams({
       parentInfo,
       closeModal: addCategoryModalClose,
     });
@@ -87,24 +94,41 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({ dispatch, children }) =
 
   return (
     <>
-      {children ? (
+      {nodes ? (
         <div className={styles.childrenCard}>
-          <div
-            className={styles.childrenBody}
-            onClick={() => {
-              children.children?.length ? openCategoryInfo(children) : routeOnClick(children.id);
-            }}
-          >
-            <span className={styles.title}>{children.name}</span>
+          <div className={styles.childrenBody}>
+            <TreeItem
+              onIconClick={() => toggleOpen(String(nodes.id))}
+              onLabelClick={(event) => {
+                event.preventDefault();
+              }}
+              key={nodes.id}
+              nodeId={String(nodes.id)}
+              label={
+                <div>
+                  <span
+                    onClick={() => {
+                      nodes.children?.length ? openCategoryInfo(nodes) : routeOnClick(nodes.id);
+                    }}
+                  >
+                    {nodes.name}
+                  </span>{' '}
+                  <span onClick={() => showAddCategoryModal(nodes)} className={styles.addIcon}>
+                    <VscAdd />
+                  </span>
+                </div>
+              }
+            >
+              {Array.isArray(nodes.children)
+                ? nodes.children.map((node) => renderTree(node))
+                : null}
+            </TreeItem>
           </div>
-          <span onClick={() => showAddCategoryModal(children)} className={styles.addIcon}>
-            <VscAdd />
-          </span>
         </div>
       ) : null}
       {modalsState.categoryModalIsOpen && <TreeCategoryModal {...modalParams} />}
       {modalsState.addCategoryModalIsOpen && (
-        <AddTreeCategoryModal {...modalParams} dispatch={dispatch} />
+        <AddTreeCategoryModal {...addModalParams} dispatch={dispatch} />
       )}
     </>
   );

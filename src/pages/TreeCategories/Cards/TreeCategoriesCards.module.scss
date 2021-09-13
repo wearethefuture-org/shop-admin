@@ -19,8 +19,9 @@
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 
     .childrensBlock {
-      display: flex;
       width: max-content;
+      height: auto;
+      max-height: 800px;
       margin-top: 35px;
 
       ul {

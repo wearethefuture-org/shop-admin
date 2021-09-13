@@ -10,7 +10,11 @@ import { AppDispatch, RootState } from '../../../../store/store';
 import { root } from '../../../../api/config';
 import { updateProductRequest } from '../../../../store/actions/products.actions';
 import { productValidationShema } from '../ProductForm/productFormHelpers';
-import { IGetTreeCategoriesResponse, ICharResponse } from '../../../../interfaces/ITreeCategory';
+import {
+  ITreeCategory,
+  IGetTreeCategoriesResponse,
+  ICharResponse,
+} from '../../../../interfaces/ITreeCategory';
 import { getEditCharValuesObject } from './getEditCharValuesObject';
 
 interface ILocation {
@@ -21,8 +25,23 @@ const EditProduct: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
   const location = useLocation<ILocation>();
-
   const { data: categories } = useTreeCategories();
+  const childCategories: ITreeCategory[] = [];
+
+  const getChildCategories = (categories: ITreeCategory[]) => {
+    for (const category of categories) {
+      const { children, ...baseFields } = category;
+
+      if (!children?.length) {
+        childCategories.push({ ...baseFields });
+      } else {
+        getChildCategories(children);
+      }
+    }
+    console.log(childCategories);
+
+    return childCategories;
+  };
 
   const category: IGetTreeCategoriesResponse = useSelector(
     (state: RootState) => state.treeCategories.currentTreeCategory
@@ -43,7 +62,7 @@ const EditProduct: React.FC = () => {
     name: product ? product.name : '',
     price: product.price ? product.price : '',
     description: product ? product.description : '',
-    categoryName: product ? product.category?.name : '',
+    categoryID: product ? product.category?.id : '',
     files: product ? product.files : {},
     key: product ? product.key : '',
     subForm: {},
@@ -61,7 +80,6 @@ const EditProduct: React.FC = () => {
       dispatch(
         updateProductRequest(
           product.id,
-          product.category.id,
           productValues,
           getEditCharValuesObject(chars, product, formik),
           imagesToDelete
@@ -121,7 +139,7 @@ const EditProduct: React.FC = () => {
       editMode={true}
       formik={formik}
       handleGoBack={handleGoBack}
-      categories={categories}
+      categories={getChildCategories(categories)}
       handleImageChange={handleImageChange}
       imagesPreview={imagesPreview}
       handleDeleteImg={handleDeleteImg}

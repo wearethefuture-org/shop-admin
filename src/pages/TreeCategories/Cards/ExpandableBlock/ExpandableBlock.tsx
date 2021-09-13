@@ -4,17 +4,14 @@ import styles from './ExpandableBlock.module.scss';
 import Accordion from '@material-ui/core/Accordion';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { ImTree } from 'react-icons/im';
-import Button from '@material-ui/core/Button';
-import { VscAdd } from 'react-icons/vsc';
 
 interface ExpandableBlockProps {
   darkMode: boolean;
-  toggleOpen: (section: number) => void;
-  openSections: number[];
+  toggleOpen: (section: string) => void;
+  openSections: string[];
   title: string;
-  id: number;
+  id: string;
   hasTree: boolean;
-  showAddCategoryModal: (id: number, name: string) => void;
   children: ReactNode;
 }
 
@@ -25,7 +22,6 @@ const ExpandableBlock: FC<ExpandableBlockProps> = ({
   title,
   id,
   hasTree,
-  showAddCategoryModal,
   children,
 }) => {
   return (
@@ -56,16 +52,6 @@ const ExpandableBlock: FC<ExpandableBlockProps> = ({
         ) : (
           <span className={styles.emptyTitle}>Дерево категорій пусте</span>
         )}
-        <div>
-          <Button
-            variant="contained"
-            className={styles.addSubBtn}
-            onClick={() => showAddCategoryModal(id, title)}
-          >
-            <VscAdd />
-            Створити підкатегорію
-          </Button>
-        </div>
       </div>
       <div className={styles.children}>{children}</div>
     </Accordion>

@@ -1,4 +1,6 @@
 .expandBlock {
+  height: auto;
+  overflow: auto;
   box-shadow: none !important;
 
   .expandBlockArrow {
@@ -44,6 +46,11 @@
       }
     }
   }
+}
+
+.children {
+  display: flex;
+  justify-content: center;
 }
 
 .expandBlock-dark {

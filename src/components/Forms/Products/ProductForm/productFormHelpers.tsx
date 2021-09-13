@@ -15,7 +15,7 @@ export const productValidationShema = Yup.object().shape({
     .min(2, 'Мінімальна довжина 2 символа')
     .max(360, 'Максимальна довжина 360 символів')
     .required('Обов`язкове поле'),
-  categoryName: Yup.string().trim().required('Обов`язкове поле'),
+  categoryID: Yup.number().required('Обов`язкове поле'),
   key: Yup.string()
     .trim()
     .min(2, 'Мінімальна довжина 2 символа')

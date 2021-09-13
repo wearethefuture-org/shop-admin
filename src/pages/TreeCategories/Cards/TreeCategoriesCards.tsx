@@ -5,17 +5,18 @@ import { RootState } from '../../../store/store';
 import { setExpandedTrees, getExpandedTrees } from '../../../services/local-storage-controller';
 import { ITreeCategory, IGetTreeCategoriesResponse } from '../../../interfaces/ITreeCategory';
 
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import TreeView from '@material-ui/lab/TreeView';
 import styles from './TreeCategoriesCards.module.scss';
 import EditIcon from '@material-ui/icons/Edit';
 import InfoIcon from '@material-ui/icons/Info';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import Tree, { withStyles } from 'react-vertical-tree';
 import ExpandableBlock from './ExpandableBlock/ExpandableBlock';
 import ChildrenCard from '../ChildrenCard/ChildrenCard';
 import MainTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/MainTreeCategoryModal/MainTreeCategoryModal';
 import DeleteTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/DeleteTreeCategoryModal/DeleteTreeCategoryModal';
-import AddTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/AddTreeCategoryModal/AddTreeCategoryModal';
 
 interface TreeCategoriesDataProps {
   dispatch: Dispatch;
@@ -25,7 +26,6 @@ interface TreeCategoriesDataProps {
 export interface ModalsState {
   categoryModalIsOpen: boolean;
   deleteModal: number | null;
-  addCategoryModalIsOpen: boolean;
 }
 
 enum Type {
@@ -34,52 +34,17 @@ enum Type {
 }
 
 const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) => {
-  const [openSections, setOpenSections] = useState<number[]>(getExpandedTrees);
+  const [openSections, setOpenSections] = useState<string[]>(getExpandedTrees);
+  const [modalParams, setModalParams] = useState();
+  const { darkMode } = useSelector((state: RootState) => state.theme);
   const [modalsState, setModalsState] = useState<ModalsState>({
     categoryModalIsOpen: false,
     deleteModal: null,
-    addCategoryModalIsOpen: false,
   });
-  const [modalParams, setModalParams] = useState();
-  const [addModalParams, setAddModalParams] = useState();
-  const { darkMode } = useSelector((state: RootState) => state.theme);
 
-  const customStyles = {
-    lines: {
-      color: 'green',
-      height: '60px',
-      zIndex: '5',
-    },
-  };
-
-  const StyledTree = withStyles(customStyles)(Tree);
-
-  const toggleOpen = (section: number) => {
+  const toggleOpen = (section: string) => {
     setExpandedTrees(section);
     setOpenSections(getExpandedTrees);
-  };
-
-  const addCategoryModalClose = () => {
-    setModalsState((prevState) => ({
-      ...prevState,
-      addCategoryModalIsOpen: false,
-    }));
-  };
-
-  const showAddCategoryModal = (id: number, name: string) => {
-    const parentInfo = {
-      id,
-      name,
-    };
-    setModalsState((prevState) => ({
-      ...prevState,
-      addCategoryModalIsOpen: true,
-    }));
-
-    setAddModalParams({
-      parentInfo,
-      closeModal: addCategoryModalClose,
-    });
   };
 
   const categoryModalClose = () => {
@@ -108,6 +73,16 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
     });
   };
 
+  const renderTree = (nodes) => (
+    <ChildrenCard
+      key={nodes.id}
+      renderTree={renderTree}
+      dispatch={dispatch}
+      nodes={nodes}
+      toggleOpen={toggleOpen}
+    />
+  );
+
   return (
     <>
       <div className={darkMode ? styles['cardsContainer-dark'] : styles['cardsContainer']}>
@@ -121,21 +96,22 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
             )}
             <ExpandableBlock
               darkMode={darkMode}
-              toggleOpen={toggleOpen}
+              toggleOpen={() => toggleOpen(String(l.id))}
               openSections={openSections}
               title={l.name}
-              id={l.id}
+              id={String(l.id)}
               hasTree={l.children?.length ? true : false}
-              showAddCategoryModal={showAddCategoryModal}
             >
-              <div className={styles.childrensBlock}>
-                <StyledTree
-                  data={l.children}
-                  direction
-                  render={(item) => (
-                    <ChildrenCard key={item.id} dispatch={dispatch} children={item} />
-                  )}
-                />
+              <div>
+                <TreeView
+                  expanded={openSections}
+                  className={styles.childrensBlock}
+                  disableSelection={true}
+                  defaultCollapseIcon={<ExpandMoreIcon />}
+                  defaultExpandIcon={<ChevronRightIcon />}
+                >
+                  {renderTree(l)}
+                </TreeView>
               </div>
             </ExpandableBlock>
             <hr />
@@ -155,9 +131,6 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
         ))}
       </div>
       {modalsState.categoryModalIsOpen && <MainTreeCategoryModal {...modalParams} />}
-      {modalsState.addCategoryModalIsOpen && (
-        <AddTreeCategoryModal {...addModalParams} dispatch={dispatch} />
-      )}
     </>
   );
 };
