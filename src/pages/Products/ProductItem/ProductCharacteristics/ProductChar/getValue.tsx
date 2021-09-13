@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ICharResponse } from '../../../../../interfaces/ICategory';
+import { ICharResponse } from '../../../../../interfaces/ITreeCategory';
 import { IProductCharResponse, Type } from '../../../../../interfaces/IProducts';
 import styles from './ProductChar.module.scss';
 

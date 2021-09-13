@@ -2,18 +2,10 @@ import { root } from './config';
 import { AxiosResponse } from 'axios';
 
 import {
-  IAddMainCategory,
-  GeneralMainCategory,
-  IMainCategoryResponse,
-  IGetMainCategoriesResponse,
-} from '../interfaces/IMainCategory';
-
-import {
-  IAddCategory,
-  GeneralCategory,
-  ICategoryResponse,
-  IGetCategoriesResponse,
-} from '../interfaces/ICategory';
+  IGetTreeCategoriesResponse,
+  ITreeCategory,
+  IAddTreeCategory,
+} from '../interfaces/ITreeCategory';
 
 import {
   IAddCharResponse,
@@ -22,16 +14,13 @@ import {
   IGetProductById,
   IGetProducts,
   IProductCharRequest,
-  IProductsInCart,
   IUpdateProduct,
   IUpdateAvailabilityProduct,
   IProductsSearchResponse,
   IDisableProduct,
-
 } from '../interfaces/IProducts';
 import { IBasicOrder } from '../interfaces/IOrders';
-import { MainCategory } from '../pages/MainCategories/MainCategoryInfo/mainCategoryReducer';
-import { Category } from '../pages/Categories/CategoryInfo/categoryReducer';
+import { TreeCategory } from '../pages/TreeCategories/TreeCategoryInfo/treeCategoryReducer';
 
 import { IActions, IActionsImage } from '../interfaces/actions';
 import { ISettingsItem } from '../interfaces/ISettings';
@@ -53,18 +42,12 @@ import { IRole } from '../interfaces/IRoles';
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
 type ApiFetchedDataType = {
-  mainCategories: {
-    get: () => FetchedDataType<IGetMainCategoriesResponse>;
-    add: (mainCategory: IAddMainCategory) => FetchedDataType<GeneralMainCategory>;
-    getById: (id: number) => FetchedDataType<IMainCategoryResponse>;
-    update: (data: MainCategory) => FetchedDataType<IMainCategoryResponse>;
-  };
-
-  categories: {
-    get: () => FetchedDataType<IGetCategoriesResponse>;
-    add: (category: IAddCategory) => FetchedDataType<GeneralCategory>;
-    getById: (id: number) => FetchedDataType<ICategoryResponse>;
-    update: (data: Category) => FetchedDataType<ICategoryResponse>;
+  treeCategories: {
+    get: () => FetchedDataType<IGetTreeCategoriesResponse>;
+    getById: (id: number) => FetchedDataType<IGetTreeCategoriesResponse>;
+    add: (category: IAddTreeCategory) => FetchedDataType<ITreeCategory>;
+    delete: (id: number) => FetchedDataType<JSON>;
+    update: (data: TreeCategory) => FetchedDataType<IGetTreeCategoriesResponse>;
   };
 
   products: {
@@ -84,7 +67,6 @@ type ApiFetchedDataType = {
     }) => FetchedDataType<IGetProductById>;
     deleteImg: (imgName: string) => FetchedDataType<IGetProductById>;
     deleteProduct: (id: number) => FetchedDataType<JSON>;
-    getProductsInCart: () => FetchedDataType<IProductsInCart>;
     addProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateAvailabilityProduct: (
@@ -143,18 +125,12 @@ type ApiFetchedDataType = {
 };
 
 export const api: ApiFetchedDataType = {
-  mainCategories: {
-    get: () => instance.get(`${root}/mainCategory`),
-    add: (mainCategory) => instance.post(`${root}/mainCategory`, mainCategory),
-    getById: (id) => instance.get(`${root}/mainCategory/${id}`),
-    update: (data) => instance.patch(`${root}/mainCategory`, data),
-  },
-
-  categories: {
-    get: () => instance.get(`${root}/category`),
-    add: (category) => instance.post(`${root}/category`, category),
-    getById: (id) => instance.get(`${root}/category/${id}`),
-    update: (data) => instance.patch(`${root}/category`, data),
+  treeCategories: {
+    get: () => instance.get(`${root}/category/tree`),
+    getById: (id) => instance.get(`${root}/category/tree/${id}`),
+    add: (category) => instance.post(`${root}/category/tree`, category),
+    delete: (id) => instance.delete(`${root}/category/tree/${id}`),
+    update: (data) => instance.patch(`${root}/category/tree`, data),
   },
 
   products: {
@@ -168,14 +144,12 @@ export const api: ApiFetchedDataType = {
     updateMainImg: (data) => instance.patch(`${root}/product/img/preview`, data),
     deleteImg: (imgName) => instance.delete(`${root}/product/img/${imgName}`),
     deleteProduct: (id) => instance.delete(`${root}/product/${id}`),
-    getProductsInCart: () => instance.get(`${root}/products-in-cart`),
     addProductCharValues: (data) => instance.post(`${root}/characteristics-values`, data),
     updateProductCharValues: (data) => instance.patch(`${root}/characteristics-values`, data),
     updateAvailabilityProduct: ({ productId, ...product }) =>
       instance.patch(`${root}/product/${productId}`, product),
     disableProduct: ({ productId, ...product }) =>
       instance.patch(`${root}/product/${productId}`, product),
-
   },
 
   slides: {

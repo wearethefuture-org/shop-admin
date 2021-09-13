@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import Sidebar from '../Sidebar/Sidebar';
 import SnackBar from '../Common/SnackBar';
 import Dashboard from '../../pages/Dashboard/Dashboard';
-import Categories from '../../pages/Categories/Categories';
 import Products from '../../pages/Products/ProductsPage';
 import Statistic from '../../pages/Statistic/Statistic';
 import Users from '../../pages/Users/Users';
@@ -16,11 +15,10 @@ import Content from '../Content/Content';
 import styles from './Router.module.scss';
 import ViewProduct from '../../pages/Products/ProductRouter';
 import AddProduct from '../Forms/Products/AddProduct/AddProduct';
-import CategoryRouter from '../../pages/Categories/CategoryRouter';
+import TreeCategoryRouter from '../../pages/TreeCategories/TreeCategoryRouter';
 import OrdersPage from '../../pages/Orders/OrdersPage';
 import OrderRouter from '../../pages/Orders/OrderRouter';
-import MainCategories from '../../pages/MainCategories/MainCategory';
-import MainCategoryRouter from '../../pages/MainCategories/MainCategoryRouter';
+import TreeCategories from '../../pages/TreeCategories/TreeCategories';
 import Home from '../../pages/Home/Home';
 import PrivateRoute from './PrivateRoute';
 import { RootState } from '../../store/store';
@@ -37,19 +35,18 @@ const Router: React.FC = () => {
   return (
     <BrowserRouter>
       <Route exact path="/">
-        {user ? <Redirect to="/dashboard"/> : <Redirect to="/home"/>}
+        {user ? <Redirect to="/dashboard" /> : <Redirect to="/home" />}
       </Route>
       <div className={styles.container}>
         <Sidebar isOpen={isOpenSidebar} onSidebarToggle={toggleSidebar} />
         <SnackBar />
 
         <div className={isOpenSidebar ? styles.main : styles['main-expanded']}>
-          <HeaderBar onSidebarToggle={toggleSidebar} isShrink={isOpenSidebar}/>
+          <HeaderBar onSidebarToggle={toggleSidebar} isShrink={isOpenSidebar} />
           <Content>
             <Switch>
               <PrivateRoute path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/sub-categories" component={Categories} />
-              <PrivateRoute path="/main-categories" component={MainCategories} />
+              <PrivateRoute path="/tree-categories" exact={true} component={TreeCategories} />
               <PrivateRoute path="/products/" exact={true} component={Products} />
               <PrivateRoute path="/statistic" component={Statistic} />
               <PrivateRoute path="/users" component={Users} />
@@ -58,15 +55,14 @@ const Router: React.FC = () => {
               <PrivateRoute path="/feedbacks" component={FeedbacksPage} />
               <PrivateRoute path="/settings" component={Settings} />
               <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
-              <PrivateRoute path="/orders" component={OrdersPage}/>
+              <PrivateRoute path="/orders" component={OrdersPage} />
               <PrivateRoute component={ViewProduct} path="/product/:id" />
-              <PrivateRoute component={CategoryRouter} path="/sub-category/:id" />
-              <PrivateRoute component={MainCategoryRouter} path="/main-category/:id" />
-              <PrivateRoute component={OrderRouter} path="/order/:id"/>
+              <PrivateRoute component={TreeCategoryRouter} path="/tree-category/:id" />
+              <PrivateRoute component={OrderRouter} path="/order/:id" />
               {!user && !token ? (
-                <Route path="/home" component={Home}/>
+                <Route path="/home" component={Home} />
               ) : (
-                <Redirect to="/dashboard"/>
+                <Redirect to="/dashboard" />
               )}
             </Switch>
           </Content>

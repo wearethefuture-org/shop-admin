@@ -4,13 +4,17 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 import ProductForm from '../ProductForm/ProductForm';
-import useCategories from '../../../../hooks/useCategories';
+import useTreeCategories from '../../../../hooks/useTreeCategories';
 import { IGetProductById, IUpdateProduct } from '../../../../interfaces/IProducts';
 import { AppDispatch, RootState } from '../../../../store/store';
 import { root } from '../../../../api/config';
 import { updateProductRequest } from '../../../../store/actions/products.actions';
 import { productValidationShema } from '../ProductForm/productFormHelpers';
-import { ICategoryResponse, ICharResponse } from '../../../../interfaces/ICategory';
+import {
+  ITreeCategory,
+  IGetTreeCategoriesResponse,
+  ICharResponse,
+} from '../../../../interfaces/ITreeCategory';
 import { getEditCharValuesObject } from './getEditCharValuesObject';
 
 interface ILocation {
@@ -21,11 +25,25 @@ const EditProduct: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
   const location = useLocation<ILocation>();
+  const { data: categories } = useTreeCategories();
+  const childCategories: ITreeCategory[] = [];
 
-  const { data: categories } = useCategories();
+  const getChildCategories = (categories: ITreeCategory[]) => {
+    for (const category of categories) {
+      const { children, ...baseFields } = category;
 
-  const category: ICategoryResponse = useSelector(
-    (state: RootState) => state.categories.currentCategory
+      if (!children?.length) {
+        childCategories.push({ ...baseFields });
+      } else {
+        getChildCategories(children);
+      }
+    }
+
+    return childCategories;
+  };
+
+  const category: IGetTreeCategoriesResponse = useSelector(
+    (state: RootState) => state.treeCategories.currentTreeCategory
   );
   const product: IGetProductById = useSelector((state: RootState) => state.products.currentProduct);
 
@@ -43,7 +61,7 @@ const EditProduct: React.FC = () => {
     name: product ? product.name : '',
     price: product.price ? product.price : '',
     description: product ? product.description : '',
-    categoryName: product ? product.category?.name : '',
+    categoryID: product ? product.category?.id : '',
     files: product ? product.files : {},
     key: product ? product.key : '',
     subForm: {},
@@ -105,7 +123,6 @@ const EditProduct: React.FC = () => {
   const handleDeleteImg = (img, idx) => {
     const imgName = !img.includes('blob') && img.split('/static/uploads/')[1];
     const existingImg = imgName && product.files.filter((file) => file.name.includes(imgName));
-    console.log(imgName, existingImg);
 
     if (existingImg.length) {
       setImagesToDelete(imagesToDelete.concat(existingImg.map((img) => img.name)));
@@ -121,7 +138,7 @@ const EditProduct: React.FC = () => {
       editMode={true}
       formik={formik}
       handleGoBack={handleGoBack}
-      categories={categories}
+      categories={getChildCategories(categories)}
       handleImageChange={handleImageChange}
       imagesPreview={imagesPreview}
       handleDeleteImg={handleDeleteImg}

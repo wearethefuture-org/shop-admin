@@ -27,3 +27,16 @@ export const getUser = (): IUserItem | null => {
 export const clearStorage = () => {
   localStorage.clear();
 };
+
+export const getExpandedTrees = (): string[] => {
+  const trees = localStorage.getItem('TREE');
+  return trees ? JSON.parse(trees) : [];
+};
+
+export const setExpandedTrees = (id: string) => {
+  const expandedTrees = getExpandedTrees();
+
+  expandedTrees?.includes(id)
+    ? localStorage.setItem('TREE', JSON.stringify(expandedTrees.filter((sec) => sec !== id)))
+    : localStorage.setItem('TREE', JSON.stringify(expandedTrees.concat(id)));
+};

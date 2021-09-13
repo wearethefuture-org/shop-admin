@@ -49,11 +49,6 @@ export async function apiDeleteImg(imgName: string) {
   return res.data;
 }
 
-export async function apiGetProductsInCart() {
-  const res = await api.products.getProductsInCart();
-  return res.data;
-}
-
 export async function apiDeleteProduct(id: number) {
   await api.products.deleteProduct(id);
   return id;

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Field, Form, FormikProps, FormikProvider } from 'formik';
 import { useDropzone } from 'react-dropzone';
-import { Button, Card, DialogActions, MenuItem } from '@material-ui/core';
+import { Button, Card, DialogActions, MenuItem, Select } from '@material-ui/core';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -10,7 +10,7 @@ import ExpandBtn from '../../../ExpandBtn/ExpandBtn';
 import GoBackBtn from '../../../GoBackBtn/GoBackBtn';
 import FormProductCharacteristics from './FormProductCharacteristics/FormProductCharacteristics';
 import { formatKey } from './productFormHelpers';
-import { IGetCategoriesResponse } from '../../../../interfaces/ICategory';
+import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
 import { ErrorsAlert } from '../../../ErrorsAlert';
 import styles from './ProductForm.module.scss';
 
@@ -18,7 +18,7 @@ export interface IProductFormProps {
   editMode: boolean;
   formik: FormikProps<any>;
   handleGoBack: () => void;
-  categories: IGetCategoriesResponse[];
+  categories: ITreeCategory[];
   handleImageChange: (fileList: File[]) => void;
   imagesPreview: string[];
   handleDeleteImg: (img: string, idx: number) => void;
@@ -115,24 +115,27 @@ const ProductForm: React.FC<IProductFormProps> = ({
                   makegreen="true"
                   className={styles['edit-field']}
                 />
-                <Field
-                  select
+                <Select
+                  type="select"
                   fullWidth
-                  component={TextFieldWrapped}
                   label="Назва категорії"
-                  name="categoryName"
-                  makegreen="true"
+                  name="categoryID"
+                  id={'category_id-field'}
                   className={styles['edit-field']}
-                  value={formik.values.categoryName ?? ''}
+                  value={formik.values.categoryID}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 >
                   {categories.length
-                    ? categories.map(({ id, name }: IGetCategoriesResponse) => (
-                        <MenuItem value={name} key={id}>
-                          {name}
-                        </MenuItem>
-                      ))
+                    ? categories.map((category) => {
+                        return (
+                          <MenuItem key={'option' + category.id} value={category.id}>
+                            {category.name}
+                          </MenuItem>
+                        );
+                      })
                     : []}
-                </Field>
+                </Select>
               </div>
             </Card>
           </div>

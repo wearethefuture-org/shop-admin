@@ -1,4 +1,4 @@
-import { GeneralCategory, ICharResponse } from './ICategory';
+import { ITreeCategory, ICharResponse } from './ITreeCategory';
 
 export interface Common {
   id: number;
@@ -24,7 +24,7 @@ export interface GeneralProductInfo {
 }
 
 export interface IGetProducts extends IBasicProduct {
-  category: GeneralCategory;
+  category: ITreeCategory;
   files: IImg[];
   mainImg: IImg | null;
 }
@@ -74,7 +74,7 @@ export interface IUpdateProduct {
 }
 
 export interface IProductItem extends IBasicProduct {
-  category: GeneralCategory;
+  category: ITreeCategory;
   files?: IImg[];
   mainImg?: IImg;
 }
@@ -153,11 +153,11 @@ export interface ProductsTableProps {
 export interface IUpdateAvailabilityProduct {
   productId: number;
   availability: boolean;
-  categoryName: string;
+  categoryID: number;
 }
 
 export interface IDisableProduct {
   productId: number;
   disabled: boolean;
-  categoryName: string;
+  categoryID: number;
 }

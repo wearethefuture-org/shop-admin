@@ -2,8 +2,7 @@ import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import createSagaMiddleware from 'redux-saga';
 
-import mainCategories from './reducers/mainCategory.reducer';
-import categories from './reducers/categories.reducer';
+import treeCategories from './reducers/treeCategories.reducer';
 import products from './reducers/products.reducer';
 import settings from './reducers/settings.reducer';
 import snackBar from './reducers/snackbar.reducer';
@@ -20,8 +19,7 @@ import roles from './reducers/roles.reducer';
 const saga = createSagaMiddleware();
 
 const rootReducer = combineReducers({
-  mainCategories,
-  categories,
+  treeCategories,
   products,
   settings,
   snackBar,
