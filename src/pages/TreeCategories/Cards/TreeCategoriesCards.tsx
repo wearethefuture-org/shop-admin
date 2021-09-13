@@ -80,6 +80,7 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
       dispatch={dispatch}
       nodes={nodes}
       toggleOpen={toggleOpen}
+      darkMode={darkMode}
     />
   );
 

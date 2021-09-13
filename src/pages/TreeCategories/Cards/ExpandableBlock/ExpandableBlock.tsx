@@ -2,8 +2,9 @@ import React, { FC, ReactNode } from 'react';
 
 import styles from './ExpandableBlock.module.scss';
 import Accordion from '@material-ui/core/Accordion';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import { ImTree } from 'react-icons/im';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
 
 interface ExpandableBlockProps {
   darkMode: boolean;
@@ -32,9 +33,9 @@ const ExpandableBlock: FC<ExpandableBlockProps> = ({
       <div onClick={() => toggleOpen(id)}>
         <span className={styles.expandBlockArrow}>
           {openSections.includes(id) ? (
-            <IoIosArrowUp size={23} style={{ color: 'green' }} />
+            <ExpandMoreIcon fontSize="large" style={{ color: 'green' }} />
           ) : (
-            <IoIosArrowDown size={23} />
+            <ChevronRightIcon fontSize="large" />
           )}
         </span>
         <h5>{title}</h5>
@@ -44,7 +45,7 @@ const ExpandableBlock: FC<ExpandableBlockProps> = ({
           <div>
             <span className={styles.title}>
               <span className={styles.forkIcon}>
-                <ImTree />
+                <AccountTreeOutlinedIcon />
               </span>
               <span>Дерево категорій</span>
             </span>

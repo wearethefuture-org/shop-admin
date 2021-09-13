@@ -7,7 +7,7 @@ import { IChildren, ITreeCategory } from '../../../interfaces/ITreeCategory';
 
 import TreeItem from '@material-ui/lab/TreeItem';
 import styles from './ChildrenCard.module.scss';
-import { VscAdd } from 'react-icons/vsc';
+import AddIcon from '@material-ui/icons/Add';
 import TreeCategoryModal from '../../../components/Modals/TreeCategoryModal/TreeCategoryModal';
 import AddTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/AddTreeCategoryModal/AddTreeCategoryModal';
 
@@ -16,6 +16,7 @@ interface ChildrenCategoriesDataProps {
   dispatch: Dispatch;
   nodes: IChildren;
   toggleOpen: (id: string) => void;
+  darkMode: boolean;
 }
 
 export interface ModalsState {
@@ -28,6 +29,7 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
   dispatch,
   nodes,
   toggleOpen,
+  darkMode,
 }) => {
   const [modalsState, setModalsState] = useState<ModalsState>({
     categoryModalIsOpen: false,
@@ -96,7 +98,7 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
     <>
       {nodes ? (
         <div className={styles.childrenCard}>
-          <div className={styles.childrenBody}>
+          <div className={darkMode ? styles['childrenBody-dark'] : styles['childenBody']}>
             <TreeItem
               onIconClick={() => toggleOpen(String(nodes.id))}
               onLabelClick={(event) => {
@@ -114,7 +116,7 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
                     {nodes.name}
                   </span>{' '}
                   <span onClick={() => showAddCategoryModal(nodes)} className={styles.addIcon}>
-                    <VscAdd />
+                    <AddIcon />
                   </span>
                 </div>
               }
