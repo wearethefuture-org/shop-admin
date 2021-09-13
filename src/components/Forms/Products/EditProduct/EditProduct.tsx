@@ -38,7 +38,6 @@ const EditProduct: React.FC = () => {
         getChildCategories(children);
       }
     }
-    console.log(childCategories);
 
     return childCategories;
   };
