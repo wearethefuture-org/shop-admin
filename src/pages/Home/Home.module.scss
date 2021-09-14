@@ -1,0 +1,36 @@
+.backDrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #efefef;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form {
+  width: 320px;
+  border: 1px solid #8d8d8d;
+  padding: 25px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 1px 1px 4px #b1b0b0;
+  
+  .group {
+    margin: 10px;
+    text-align: center;
+  }
+
+  .btn_group {
+    margin: 40px 10px 20px;
+  }
+  
+  .login {
+    background: #00B746;
+  }
+}

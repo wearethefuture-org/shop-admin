@@ -1,0 +1,54 @@
+.childrenCard {
+  display: flex;
+  align-items: center;
+
+  .row {
+    display: flex;
+    align-items: center;
+  }
+
+  .addIcon {
+    display: inline-block;
+    margin-left: 15px;
+    border-radius: 60px;
+    box-shadow: 0px 0px 2px #888;
+    font-size: 4px;
+    padding: 0.2em 0.2em;
+    color: rgb(1, 196, 57);
+    cursor: pointer;
+    transition: 0.3s all;
+    background-color: white;
+
+    &:hover {
+      color: black;
+      background-color: rgb(229, 227, 227);
+    }
+  }
+}
+
+.childrenBody {
+  display: flex;
+  width: 100%;
+  min-width: 300px;
+  flex-direction: column;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: rgb(237, 237, 237);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
+  .title {
+    display: flex;
+    width: 200px;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+.childrenBody-dark {
+  @extend .childrenBody;
+
+  background-color: inherit !important;
+}

@@ -1,0 +1,36 @@
+.product-name {
+  font-weight: bold;
+}
+
+.bqmFHi {
+  justify-content: center;
+}
+
+.mainImg {
+  height: 50px;
+  border-radius: 4px;
+  margin: 10px 0;
+
+  img {
+    max-height: 100%;
+  }
+}
+
+.placeholder {
+  @extend .mainImg;
+  background: linear-gradient(75deg, #9a4354, #636363, #27524c);
+
+  img {
+    max-height: 100%;
+  }
+}
+
+.quantity {
+  padding: 0 0.3rem;
+}
+
+.table-header-cell {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}

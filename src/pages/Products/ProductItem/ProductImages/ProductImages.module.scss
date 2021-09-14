@@ -1,0 +1,32 @@
+.gallery {
+  border-radius: 4px;
+  position: relative;
+  width: 33vw;
+
+  .placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 4px;
+    background: linear-gradient(75deg, #9a4354, #636363, #27524c);
+
+    img {
+      object-fit: contain;
+      height: 30%;
+      width: 30%;
+    }
+  }
+
+  .favIcon {
+    cursor: pointer;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    border-radius: 50%;
+    background-color: #fff;
+    color: orange;
+    padding: 2px;
+  }
+}

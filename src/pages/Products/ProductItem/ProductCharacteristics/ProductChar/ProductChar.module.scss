@@ -1,0 +1,65 @@
+.char-wrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 0.7rem 1rem 0;
+
+  .char-name {
+    text-transform: capitalize;
+    margin: 0;
+    position: relative;
+    align-self: flex-start;
+    width: 40%;
+    margin-right: 1rem;
+
+    span {
+      position: relative;
+      display: inline-block;
+      background-color: #fff;
+      padding-right: 1rem;
+    }
+
+    &::before {
+      position: absolute;
+      left: 0;
+      bottom: 4px;
+      display: block;
+      width: 100%;
+      border-bottom: 1px dotted #d2d2d2;
+      content: '';
+    }
+  }
+}
+
+.char-values {
+  font-style: italic;
+  flex: 1;
+}
+
+.enum-values {
+  margin: 0;
+  padding: 0;
+
+  li {
+    text-transform: capitalize;
+    line-height: 1.2rem;
+    font-style: italic;
+    list-style: none;
+  }
+}
+
+.jsonValue {
+  margin: 0;
+
+  span:first-child {
+    margin-right: 0.6rem;
+  }
+}
+
+.char-wrapper-dark {
+  @extend .char-wrapper;
+}
+
+.char-wrapper-dark .char-name span {
+  background-color: #212121 !important;
+}

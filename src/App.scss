@@ -1,0 +1,160 @@
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+body *:active,
+body *:focus {
+  outline: none;
+}
+
+a,
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.wraper {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* input type number hide arrows */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: darkgreen;
+  border-radius: 10px;
+}
+
+/* expandable blocks */
+.expanded {
+  transform: scaleY(1);
+  max-height: auto;
+  transform-origin: 0 0;
+  transition: all 0.3s ease;
+}
+
+.shrinked {
+  transform: scaleY(0);
+  max-height: 0;
+  transform-origin: 0 0;
+  transition: all 0.1s ease;
+}
+
+/* gallery */
+.image-gallery {
+  min-width: 300px;
+  max-width: 33vw;
+
+  .image-gallery-swipe {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1/1;
+    border-radius: 4px;
+
+    .image-gallery-image {
+      padding: 0.2rem;
+      aspect-ratio: 1/1;
+    }
+  }
+}
+
+.image-gallery-left-nav {
+  left: -20px !important;
+}
+
+.image-gallery-right-nav {
+  right: -20px !important;
+}
+
+.image-gallery-icon {
+  filter: none !important;
+  color: #ccc !important;
+
+  svg {
+    transform: scale(0.5);
+    transition: all ease 0.25s;
+  }
+}
+
+.image-gallery-icon:hover .image-gallery-svg {
+  transform: scale(0.6) !important;
+}
+
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:hover,
+.image-gallery-thumbnail:focus {
+  border: 3px solid darkgreen !important;
+}
+
+.image-gallery-bullets .image-gallery-bullet {
+  border: 1px solid #ccc !important;
+  box-shadow: none !important;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: #bbb !important;
+  }
+}
+
+.image-gallery-bullets .image-gallery-bullet.active {
+  background: darkgreen !important;
+
+  //slides-row
+  .row-table-id {
+    width: 8%;
+    text-align: center;
+  }
+
+  .row-table-button {
+    width: 15%;
+  }
+}
+
+// Tables Styles
+
+.MuiCard-root {
+  .rdt_Pagination {
+    justify-content: center;
+  }
+  header {
+    padding-left: 16px;
+  }
+}
+
+.btns-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem;
+
+  button:first-child {
+    margin-right: 1rem;
+  }
+}
+
+.content-wrapper {
+  padding: 1rem;
+}
