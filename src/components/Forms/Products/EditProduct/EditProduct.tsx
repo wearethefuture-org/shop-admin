@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -26,18 +26,22 @@ const EditProduct: React.FC = () => {
   const history = useHistory();
   const location = useLocation<ILocation>();
   const { data: categories } = useTreeCategories();
-  const childCategories: ITreeCategory[] = [];
 
   const getChildCategories = (categories: ITreeCategory[]) => {
-    for (const category of categories) {
-      const { children, ...baseFields } = category;
+    const childCategories: ITreeCategory[] = [];
 
-      if (!children?.length) {
-        childCategories.push({ ...baseFields });
-      } else {
-        getChildCategories(children);
+    (function buildRecursive(categories: ITreeCategory[], parent?: string) {
+      for (const category of categories) {
+        const { children, ...baseFields } = category;
+        baseFields.name = parent ? parent.concat(` -> ${baseFields.name}`) : baseFields.name;
+
+        if (!children?.length) {
+          childCategories.push({ ...baseFields });
+        } else {
+          buildRecursive(children, baseFields.name);
+        }
       }
-    }
+    })(categories);
 
     return childCategories;
   };
@@ -138,7 +142,7 @@ const EditProduct: React.FC = () => {
       editMode={true}
       formik={formik}
       handleGoBack={handleGoBack}
-      categories={getChildCategories(categories)}
+      categories={useMemo(() => getChildCategories(categories), [categories])}
       handleImageChange={handleImageChange}
       imagesPreview={imagesPreview}
       handleDeleteImg={handleDeleteImg}
