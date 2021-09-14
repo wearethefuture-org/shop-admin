@@ -98,7 +98,7 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
     <>
       {nodes ? (
         <div className={styles.childrenCard}>
-          <div className={darkMode ? styles['childrenBody-dark'] : styles['childenBody']}>
+          <div className={darkMode ? styles['childrenBody-dark'] : styles['childrenBody']}>
             <TreeItem
               onIconClick={() => toggleOpen(String(nodes.id))}
               onLabelClick={(event) => {
@@ -107,7 +107,7 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
               key={nodes.id}
               nodeId={String(nodes.id)}
               label={
-                <div>
+                <div className={styles.row}>
                   <span
                     onClick={() => {
                       nodes.children?.length ? openCategoryInfo(nodes) : routeOnClick(nodes.id);

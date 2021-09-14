@@ -2,13 +2,18 @@
   display: flex;
   align-items: center;
 
+  .row {
+    display: flex;
+    align-items: center;
+  }
+
   .addIcon {
     display: inline-block;
     margin-left: 15px;
     border-radius: 60px;
     box-shadow: 0px 0px 2px #888;
-    font-size: 8px;
-    padding: 0.5em 0.5em;
+    font-size: 4px;
+    padding: 0.2em 0.2em;
     color: rgb(1, 196, 57);
     cursor: pointer;
     transition: 0.3s all;
