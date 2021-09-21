@@ -98,7 +98,10 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
     <>
       {nodes ? (
         <div className={styles.childrenCard}>
-          <div className={darkMode ? styles['childrenBody-dark'] : styles['childrenBody']}>
+          <div
+            id={String(nodes.id)}
+            className={darkMode ? styles['childrenBody-dark'] : styles['childrenBody']}
+          >
             <TreeItem
               onIconClick={() => toggleOpen(String(nodes.id))}
               onLabelClick={(event) => {

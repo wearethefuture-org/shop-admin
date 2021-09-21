@@ -24,6 +24,7 @@ import PrivateRoute from './PrivateRoute';
 import { RootState } from '../../store/store';
 import CommentsPage from '../../pages/Comments/CommentsPage';
 import FeedbacksPage from '../../pages/Feedbacks/FeedbacksPage';
+import Search from '../../pages/Search/Search';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -58,6 +59,7 @@ const Router: React.FC = () => {
               <PrivateRoute path="/orders" component={OrdersPage} />
               <PrivateRoute component={ViewProduct} path="/product/:id" />
               <PrivateRoute component={TreeCategoryRouter} path="/tree-category/:id" />
+              <PrivateRoute component={Search} path="/search" />
               <PrivateRoute component={OrderRouter} path="/order/:id" />
               {!user && !token ? (
                 <Route path="/home" component={Home} />

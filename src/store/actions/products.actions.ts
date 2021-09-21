@@ -59,12 +59,12 @@ export const getProductsError = (message: string): IActions => ({
 // get by search query
 
 export const getProductsByQueryRequest = (
-  searchQuery: string,
+  searchValue: string,
   page: number,
   limit: number
 ): IActions => ({
   type: GET_PRODUCTS_BY_QUERY_REQUEST,
-  data: { searchQuery, page, limit },
+  data: { searchValue, page, limit },
 });
 
 export const getProductsByQuerySuccess = (products: IProductsSearchResponse): IActions => ({

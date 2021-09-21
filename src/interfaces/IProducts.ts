@@ -146,7 +146,7 @@ export enum Type {
 export interface ProductsTableProps {
   list: IGetProducts[];
   activeColumns: string[];
-  isSearchEnabled: boolean;
+  isSearch: boolean;
   searchValue: string;
 }
 
