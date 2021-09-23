@@ -114,7 +114,10 @@ const Search: React.FC<SearchProps> = (props) => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} onClick={(e) => e.stopPropagation()}>
+    <form
+      onSubmit={formik.handleSubmit}
+      onClick={(e: React.MouseEvent<HTMLElement>) => e.stopPropagation()}
+    >
       <div className={classes.search}>
         <div className={classes.searchIcon}>
           <SearchIcon />

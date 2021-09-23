@@ -39,6 +39,7 @@ import {
   UPDATE_AVAILABILITY_PRODUCT_REQUEST,
   GET_ROLES_REQUEST,
   DISABLE_PRODUCT_REQUEST,
+  GET_SEARCH_ITEMS_REQUEST,
 } from './types';
 
 import {
@@ -84,6 +85,7 @@ import {
 } from './sagas/users.saga';
 import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
 import { getRolesWorker } from './sagas/roles.saga';
+import { getSearchItemsWorker } from './sagas/search.saga';
 
 export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(GET_TREE_CATEGORIES_REQUEST, fetchTreeCategoryWorker);
@@ -158,6 +160,11 @@ export function* getRolesWatcher(): SagaIterator {
   yield takeEvery(GET_ROLES_REQUEST, getRolesWorker);
 }
 
+// Search
+export function* sagaSearchWatcher(): SagaIterator {
+  yield takeEvery(GET_SEARCH_ITEMS_REQUEST, getSearchItemsWorker);
+}
+
 // RootSaga
 export default function* rootSaga(): SagaIterator {
   yield all([
@@ -171,5 +178,6 @@ export default function* rootSaga(): SagaIterator {
     fork(sagaUsersWatcher),
     fork(sagaUserWatcher),
     fork(getRolesWatcher),
+    fork(sagaSearchWatcher),
   ]);
 }

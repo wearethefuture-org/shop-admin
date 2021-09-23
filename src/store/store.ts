@@ -15,6 +15,7 @@ import user from './reducers/user.reducer';
 import comments from './reducers/comments.reducer';
 import feedbacks from './reducers/feedbacks.reducer';
 import roles from './reducers/roles.reducer';
+import search from './reducers/search.reducer';
 
 const saga = createSagaMiddleware();
 
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   feedbacks,
   user,
   roles,
+  search,
 });
 
 const store = createStore(

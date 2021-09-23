@@ -18,7 +18,7 @@ import {
   IUpdateAvailabilityProduct,
   IDisableProduct,
 } from '../interfaces/IProducts';
-import { ISearchItemsResponse } from '../interfaces/ISearch';
+import { ISearchItems, ISearchItemsResponse } from '../interfaces/ISearch';
 import { IBasicOrder } from '../interfaces/IOrders';
 import { TreeCategory } from '../pages/TreeCategories/TreeCategoryInfo/treeCategoryReducer';
 
@@ -118,12 +118,7 @@ type ApiFetchedDataType = {
     get: () => FetchedDataType<IRole[]>;
   };
   search: {
-    getSearchItems: (
-      option: string,
-      query: string,
-      page: number,
-      limit: number
-    ) => FetchedDataType<ISearchItemsResponse>;
+    getSearchItems: (fields: ISearchItems) => FetchedDataType<ISearchItemsResponse>;
   };
 };
 
@@ -198,7 +193,9 @@ export const api: ApiFetchedDataType = {
     get: () => instance.get(`${root}/roles`),
   },
   search: {
-    getSearchItems: (option, query, page, limit) =>
-      instance.get(`${root}/search/admin?${option}=${query}&page=${page}&limit=${limit}`),
+    getSearchItems: (fields) =>
+      instance.get(
+        `${root}/search/admin?${fields.option}=${fields.query}&page=${fields.page}&limit=${fields.limit}`
+      ),
   },
 };

@@ -20,7 +20,12 @@ export async function apiGetProductById(id: number) {
 }
 
 export async function apiGetProductsByQuery(searchValue: string, page: number, limit: number) {
-  const product = await api.search.getSearchItems('products', searchValue, page, limit);
+  const product = await api.search.getSearchItems({
+    query: searchValue,
+    option: 'products',
+    page,
+    limit,
+  });
   return product.data;
 }
 

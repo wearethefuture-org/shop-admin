@@ -1,45 +1,36 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-
-import { api } from '../../api/api';
-import CategoriesItems from './CategoriesItems/CategoriesItems';
+import useSearchItems from '../../hooks/useSearchItems';
+import Categories from './Categories/Categories';
 
 const SearchPage: FC = () => {
   const history = useHistory();
   const { searchValue, searchOption } = Object(history.location.state);
-  const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
-  const [searchResults, setSearchResult] = useState<any>();
+  const [page, setCurrentPage] = useState<number>(1);
 
-  useEffect(() => {
-    setLoading(true);
-    const getItemsSearch = async () => {
-      if (!searchOption || !searchValue) {
-        history.push('/');
-        return;
-      }
-      const { data: response } = await api.search.getSearchItems(
-        searchOption,
-        searchValue,
-        page,
-        7
-      );
-      setSearchResult(response.data);
-      setTotalPages(response.totalPages);
-      setLoading(false);
-    };
-    getItemsSearch();
-  }, [searchValue, page, history, searchOption]);
+  if (!searchValue && !searchOption) {
+    history.push('/');
+  }
+
+  const { list, totalPages, loading } = useSearchItems({
+    query: searchValue,
+    option: searchOption,
+    page,
+    limit: 10,
+  });
+
+  const onPageChanged = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <>
       {searchOption === 'categories' && (
-        <CategoriesItems
-          searchResults={searchResults}
+        <Categories
+          searchResults={list}
           searchValue={searchValue}
           page={page}
-          setPage={setPage}
+          onPageChanged={onPageChanged}
           totalPages={totalPages}
           loading={loading}
         />

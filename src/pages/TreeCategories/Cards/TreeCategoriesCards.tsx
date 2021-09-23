@@ -46,7 +46,7 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
   });
 
   useEffect(() => {
-    let tempTreeState: any = [];
+    const tempTreeState: string[] = [];
 
     if (targetId) {
       mpath.slice(0, -1);

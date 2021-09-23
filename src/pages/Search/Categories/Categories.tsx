@@ -1,4 +1,4 @@
-import React, { FC, Dispatch, SetStateAction, useState, useEffect, useMemo } from 'react';
+import React, { FC, useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../../store/store';
 import { getTreeCategoriesRequest } from '../../../store/actions/treeCategories.actions';
@@ -6,40 +6,39 @@ import { getTreeCategoriesRequest } from '../../../store/actions/treeCategories.
 import { LinearProgress } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import styles from './CategoriesItems.module.scss';
+import styles from './Categories.module.scss';
 import Pagination from '@material-ui/lab/Pagination';
 
 import { useHistory } from 'react-router-dom';
 import { IGetTreeCategoriesResponse } from '../../../interfaces/ITreeCategory';
+import CategoriesItems from './CategoriesItems/CategoriesItems';
 
 interface CategoriesItemsProps {
   searchResults: IGetTreeCategoriesResponse[];
   searchValue: string;
   page: number;
-  setPage: Dispatch<SetStateAction<number>>;
+  onPageChanged: (page: number) => void;
   totalPages: number;
   loading: boolean;
 }
 
-const CategoriesItems: FC<CategoriesItemsProps> = ({
+const Categories: FC<CategoriesItemsProps> = ({
   searchResults,
   searchValue,
   page,
-  setPage,
+  onPageChanged,
   totalPages,
   loading,
 }) => {
   const handleChange = (event, value) => {
-    setPage(value);
+    onPageChanged(value);
   };
-  const [updatedResults, setResults] = useState<any>();
+  const [updatedResults, setResults] = useState<IGetTreeCategoriesResponse[]>();
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
   const list = useSelector((state: RootState) => state.treeCategories.list);
 
-  const handleClick = (id: number, mpath: string) => {
+  const handleClick = (id: number, mpath?: string) => {
     const mpathSplit = mpath?.split('.');
     history.push({
       pathname: '/tree-categories',
@@ -78,14 +77,13 @@ const CategoriesItems: FC<CategoriesItemsProps> = ({
   useEffect(() => {
     if (categoriesMap && searchResults) {
       searchResults.forEach((category) => {
-        const mpath = category?.mpath?.split('.');
+        const mpath = category?.mpath?.split('.').slice(0, -1);
         let breadcrumbs = '';
-        mpath?.forEach((n) => {
-          if (!n) {
-            breadcrumbs = breadcrumbs.substring(0, breadcrumbs.length - 3);
-            return;
+        mpath?.forEach((n, i) => {
+          breadcrumbs += `${categoriesMap[n].name}`;
+          if (i < mpath.length - 1) {
+            breadcrumbs += ' > ';
           }
-          breadcrumbs += `${categoriesMap[n].name} > `;
         });
         category.name = breadcrumbs;
       });
@@ -104,28 +102,7 @@ const CategoriesItems: FC<CategoriesItemsProps> = ({
               <Typography variant="h6" className={styles.title}>
                 Результати пошуку за запитом "{searchValue}" по категоріям:
               </Typography>
-              <div className={styles.resultsBlock}>
-                <List>
-                  {updatedResults?.length && !loading ? (
-                    <>
-                      {updatedResults.map((res) => {
-                        return (
-                          <ListItem key={res.id}>
-                            <span
-                              className={styles.listItem}
-                              onClick={() => handleClick(res.id, res.mpath)}
-                            >
-                              {res.name}
-                            </span>
-                          </ListItem>
-                        );
-                      })}
-                    </>
-                  ) : (
-                    <p>Нажаль, нічого не знайдено.</p>
-                  )}
-                </List>
-              </div>
+              <CategoriesItems list={updatedResults} handleClick={handleClick} />
             </Grid>
           </Grid>
           <Pagination
@@ -140,4 +117,4 @@ const CategoriesItems: FC<CategoriesItemsProps> = ({
   );
 };
 
-export default CategoriesItems;
+export default Categories;
