@@ -187,14 +187,14 @@ const ProductForm: React.FC<IProductFormProps> = ({
           <ExpandBtn
             expandBlock={expandedBlocks.includes('additional')}
             handleExpand={() => handleExpand('additional')}
-            disabled={!formik.values.categoryName}
+            disabled={!formik.values.categoryID}
           >
             <h4>Характеристики</h4>
           </ExpandBtn>
           <div className={expandedBlocks.includes('additional') ? 'expanded' : 'shrinked'}>
             <FormProductCharacteristics
               formik={formik}
-              categoryName={formik.values.categoryName}
+              categoryId={formik.values.categoryID}
               setValidation={setValidation}
             />
           </div>
