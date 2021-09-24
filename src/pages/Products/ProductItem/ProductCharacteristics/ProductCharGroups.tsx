@@ -12,10 +12,10 @@ import useTreeCategories from '../../../../hooks/useTreeCategories';
 import styles from './ProductCharGroups.module.scss';
 
 interface IProductChar {
-  categoryName: string;
+  categoryId: number;
 }
 
-const ProductCharGroups: React.FC<IProductChar> = ({ categoryName }) => {
+const ProductCharGroups: React.FC<IProductChar> = ({ categoryId }) => {
   const dispatch: AppDispatch = useDispatch();
   const location = useLocation();
 
@@ -27,10 +27,8 @@ const ProductCharGroups: React.FC<IProductChar> = ({ categoryName }) => {
 
   // CATEGORY
   useEffect(() => {
-    const category = categories.find((category) => category.name === categoryName);
-
-    category && dispatch(getTreeCategoryByIdRequest(category.id));
-  }, [categoryName, dispatch, categories]);
+    dispatch(getTreeCategoryByIdRequest(categoryId));
+  }, [categoryId, dispatch, categories]);
 
   return (
     <>
