@@ -17,7 +17,7 @@ import { Type } from '../../../../../interfaces/IProducts';
 import styles from './FormProductCharacteristics.module.scss';
 
 interface IProductChar {
-  categoryName: string;
+  categoryId: number;
   formik: any;
   setValidation: (v: any) => void;
 }
@@ -29,11 +29,7 @@ interface ICharArr {
   type: string;
 }
 
-const ProductCharacteristics: React.FC<IProductChar> = ({
-  categoryName,
-  formik,
-  setValidation,
-}) => {
+const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, setValidation }) => {
   const dispatch: AppDispatch = useDispatch();
 
   const { list, currentTreeCategory: category } = useSelector(
@@ -76,10 +72,8 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
 
   // CATEGORY
   useEffect(() => {
-    const category = list.find((category) => category.name === categoryName);
-
-    category && dispatch(getTreeCategoryByIdRequest(category.id));
-  }, [categoryName, dispatch, list]);
+    dispatch(getTreeCategoryByIdRequest(categoryId));
+  }, [categoryId, dispatch, list]);
 
   // EXPANDED GROUPS
   const [expandedGroups, setExpandedGroups] = useState<(number | undefined)[]>([]);
@@ -232,4 +226,4 @@ const ProductCharacteristics: React.FC<IProductChar> = ({
   );
 };
 
-export default ProductCharacteristics;
+export default React.memo(ProductCharacteristics);

@@ -157,7 +157,7 @@ const ProductItem: React.FC = () => {
           </ExpandBtn>
 
           <div className={expandBlock ? 'expanded' : 'shrinked'}>
-            <ProductCharGroups categoryName={product.category?.name} />
+            <ProductCharGroups categoryId={product.category?.id} />
           </div>
         </div>
       </Card>
