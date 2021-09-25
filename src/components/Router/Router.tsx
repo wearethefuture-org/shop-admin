@@ -27,6 +27,7 @@ import { RootState } from '../../store/store';
 import CommentsPage from '../../pages/Comments/CommentsPage';
 import Lottery from '../../pages/Lottery/Lottery';
 import FeedbacksPage from '../../pages/Feedbacks/FeedbacksPage';
+import AddLotteryForm from '../Forms/Lottery/AddLottery/AddLottery';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -65,6 +66,7 @@ const Router: React.FC = () => {
               <PrivateRoute component={MainCategoryRouter} path="/main-category/:id" />
               <PrivateRoute component={OrderRouter} path="/order/:id"/>
               <PrivateRoute path="/lottery" component={Lottery}/>
+              <PrivateRoute path="/lottery/add" exact={true} component={AddLotteryForm} />
               {!user && !token ? (
                 <Route path="/home" component={Home}/>
               ) : (
