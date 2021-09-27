@@ -25,9 +25,9 @@ enum cols {
 const Products: React.FC = () => {
   const location = useLocation();
   const history = useHistory();
-  const { isSearch, searchValue } = Object(history.location.state);
+  const { searchValue } = Object(history.location.state);
 
-  const { list, loading } = useProducts();
+  const { list, loading, isSearch } = useProducts();
 
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [activeColumns, setActiveColumns] = useState<string[]>([

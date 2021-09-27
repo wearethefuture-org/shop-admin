@@ -40,12 +40,17 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
   searchSelect: {
     color: 'white',
     width: '140px',
   },
   inputRoot: {
-    color: 'inherit',
+    '& :-webkit-autofill': {
+      '-webkit-box-shadow': '0 0 0px 1000px darkgreen inset',
+      '-webkit-text-fill-color': 'white',
+    },
+    'color': 'inherit',
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -94,7 +99,6 @@ const Search: React.FC<SearchProps> = (props) => {
         history.push({
           pathname: '/products',
           state: {
-            isSearch: true,
             searchValue: values.searchValue,
           },
         });
@@ -140,7 +144,7 @@ const Search: React.FC<SearchProps> = (props) => {
           })}
         </Select>
         <InputBase
-          type="text"
+          type="search"
           name="searchValue"
           id="searchValue-field"
           onChange={(e) => {

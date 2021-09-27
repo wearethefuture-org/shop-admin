@@ -36,8 +36,12 @@ enum Type {
 
 const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) => {
   const history = useHistory();
-  const { id: targetId, mpath } = Object(history.location.state);
-  const [openSections, setOpenSections] = useState<string[]>(mpath ? mpath : getExpandedTrees());
+  const searchProps = (({ id: targetId, mpath }) => ({ targetId, mpath }))(
+    Object(history.location.state)
+  );
+  const [openSections, setOpenSections] = useState<string[]>(
+    searchProps.mpath ? searchProps.mpath : getExpandedTrees()
+  );
   const [modalParams, setModalParams] = useState();
   const { darkMode } = useSelector((state: RootState) => state.theme);
   const [modalsState, setModalsState] = useState<ModalsState>({
@@ -48,18 +52,21 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
   useEffect(() => {
     const tempTreeState: string[] = [];
 
-    if (targetId) {
-      mpath.slice(0, -1);
-      mpath.forEach((m) => {
+    if (searchProps.targetId) {
+      searchProps.mpath.slice(0, -1);
+      searchProps.mpath.forEach((m) => {
         tempTreeState.push(m);
       });
-      const element = document.getElementById(targetId);
+      const element = document.getElementById(searchProps.targetId);
       element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       element?.style.setProperty('transition', '3s all');
       element?.style.setProperty('background-color', 'orange');
+      setTimeout(() => {
+        element?.style.setProperty('background-color', 'inherit');
+      }, 10000);
       return;
     }
-  }, [targetId, mpath]);
+  }, [searchProps]);
 
   const toggleOpen = (section: string) => {
     setExpandedTrees(section);
@@ -94,6 +101,7 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
 
   const renderTree = (nodes) => (
     <ChildrenCard
+      searchProps={searchProps}
       key={nodes.id}
       renderTree={renderTree}
       dispatch={dispatch}
