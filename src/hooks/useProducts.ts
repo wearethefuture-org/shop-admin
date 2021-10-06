@@ -8,7 +8,9 @@ const useProducts = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProductsRequest(1, 10));
+    if (!isSearch) {
+      dispatch(getProductsRequest(1, 10));
+    }
   }, [dispatch]);
 
   const { list, loading, isSearch }: Partial<IProductsData> = useSelector(
