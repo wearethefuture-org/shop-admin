@@ -33,6 +33,7 @@ import { IProductsData } from '../../interfaces/IProducts';
 const initialState: IProductsData = {
   loading: false,
   list: [],
+  isSearch: false,
   currentProduct: null,
   error: null,
   count: 0,
@@ -56,6 +57,7 @@ const products = (state = initialState, { type, data }: IActions) => {
         ...state,
         list: data.data,
         loading: false,
+        isSearch: false,
         count: data.count,
         totalPages: data.totalPages,
       };
@@ -84,6 +86,7 @@ const products = (state = initialState, { type, data }: IActions) => {
         ...state,
         list: data.data,
         count: data.count,
+        isSearch: true,
         totalPages: data.totalPages,
         loading: false,
       };
@@ -111,6 +114,7 @@ const products = (state = initialState, { type, data }: IActions) => {
         ...state,
         currentProduct: data,
         loading: false,
+        isSearch: false,
       };
     }
 

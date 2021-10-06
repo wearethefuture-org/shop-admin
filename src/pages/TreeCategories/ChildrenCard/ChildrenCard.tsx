@@ -11,12 +11,18 @@ import AddIcon from '@material-ui/icons/Add';
 import TreeCategoryModal from '../../../components/Modals/TreeCategoryModal/TreeCategoryModal';
 import AddTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/AddTreeCategoryModal/AddTreeCategoryModal';
 
+interface ISearchProps {
+  targetId: number;
+  mpath: string[];
+}
+
 interface ChildrenCategoriesDataProps {
   renderTree: (nodes: any) => JSX.Element;
   dispatch: Dispatch;
   nodes: IChildren;
   toggleOpen: (id: string) => void;
   darkMode: boolean;
+  searchProps?: ISearchProps;
 }
 
 export interface ModalsState {
@@ -30,6 +36,7 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
   nodes,
   toggleOpen,
   darkMode,
+  searchProps,
 }) => {
   const [modalsState, setModalsState] = useState<ModalsState>({
     categoryModalIsOpen: false,
@@ -91,14 +98,22 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
   };
 
   const routeOnClick = (id: number) => {
-    history.push(`/tree-category/${id}`);
+    history.push({
+      pathname: `/tree-category/${id}`,
+      state: {
+        searchProps,
+      },
+    });
   };
 
   return (
     <>
       {nodes ? (
         <div className={styles.childrenCard}>
-          <div className={darkMode ? styles['childrenBody-dark'] : styles['childrenBody']}>
+          <div
+            id={String(nodes.id)}
+            className={darkMode ? styles['childrenBody-dark'] : styles['childrenBody']}
+          >
             <TreeItem
               onIconClick={() => toggleOpen(String(nodes.id))}
               onLabelClick={(event) => {

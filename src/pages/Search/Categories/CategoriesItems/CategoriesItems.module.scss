@@ -1,0 +1,14 @@
+.resultsBlock {
+  width: 100%;
+  margin-left: 40px;
+
+  .listItem {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

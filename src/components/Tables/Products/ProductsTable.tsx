@@ -26,7 +26,7 @@ const MainImgName = () => (
 const ProductsTable: React.FC<ProductsTableProps> = ({
   list,
   activeColumns,
-  isSearchEnabled,
+  isSearch,
   searchValue,
 }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -37,7 +37,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
   const onChangePage = (page) => {
     setPage(page);
 
-    if (isSearchEnabled) {
+    if (isSearch) {
       dispatch(getProductsByQueryRequest(searchValue, page, limit));
       return;
     }
@@ -47,7 +47,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
   const onChangeLimit = (limit) => {
     setLimit(limit);
 
-    if (isSearchEnabled) {
+    if (isSearch) {
       dispatch(getProductsByQueryRequest(searchValue, page, limit));
       return;
     }
@@ -173,7 +173,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
     <AppDataTable
       data={sortedList}
       columns={productsColumns}
-      title={isSearchEnabled ? 'Результати пошуку' : 'Продукти'}
+      title={isSearch ? 'Результати пошуку' : 'Продукти'}
       onRowClicked={(row) => onRowClicked(row.id)}
       count={count}
       setLimit={(e) => onChangeLimit(e)}

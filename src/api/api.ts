@@ -16,9 +16,9 @@ import {
   IProductCharRequest,
   IUpdateProduct,
   IUpdateAvailabilityProduct,
-  IProductsSearchResponse,
   IDisableProduct,
 } from '../interfaces/IProducts';
+import { ISearchItems, ISearchItemsResponse } from '../interfaces/ISearch';
 import { IBasicOrder } from '../interfaces/IOrders';
 import { TreeCategory } from '../pages/TreeCategories/TreeCategoryInfo/treeCategoryReducer';
 
@@ -53,11 +53,6 @@ type ApiFetchedDataType = {
   products: {
     get: (page: number, limit: number) => FetchedDataType<IGetProducts>;
     getById: (id: number) => FetchedDataType<IGetProductById>;
-    getSearchProducts: (
-      searchQuery: string,
-      page: number,
-      limit: number
-    ) => FetchedDataType<IProductsSearchResponse>;
     add: (product: IAddProduct) => FetchedDataType<IGetProductById>;
     update: (product: IUpdateProduct) => FetchedDataType<IGetProductById>;
     updateImg: (data: FormData) => FetchedDataType<IAddImgResponse>;
@@ -122,6 +117,9 @@ type ApiFetchedDataType = {
   roles: {
     get: () => FetchedDataType<IRole[]>;
   };
+  search: {
+    getSearchItems: (fields: ISearchItems) => FetchedDataType<ISearchItemsResponse>;
+  };
 };
 
 export const api: ApiFetchedDataType = {
@@ -137,8 +135,6 @@ export const api: ApiFetchedDataType = {
     get: (page, limit) => instance.get(`${root}/product/admin?page=${page}&limit=${limit}`),
     add: (product) => instance.post(`${root}/product`, product),
     getById: (id) => instance.get(`${root}/product/${id}`),
-    getSearchProducts: (searchQuery, page, limit) =>
-      instance.get(`/product/multiSearch/${searchQuery}?page=${page}&limit=${limit}`),
     update: ({ id, ...product }) => instance.patch(`${root}/product/${id}`, product),
     updateImg: (data) => instance.post(`${root}/product/multipleimages`, data),
     updateMainImg: (data) => instance.patch(`${root}/product/img/preview`, data),
@@ -195,5 +191,11 @@ export const api: ApiFetchedDataType = {
   },
   roles: {
     get: () => instance.get(`${root}/roles`),
+  },
+  search: {
+    getSearchItems: (fields) =>
+      instance.get(
+        `${root}/search/admin?${fields.option}=${fields.query}&page=${fields.page}&limit=${fields.limit}`
+      ),
   },
 };

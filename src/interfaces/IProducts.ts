@@ -86,6 +86,7 @@ export interface IProductsData {
   error: string | null;
   count: number;
   totalPages: number;
+  isSearch: boolean;
 }
 
 export interface CharValues {
@@ -146,7 +147,7 @@ export enum Type {
 export interface ProductsTableProps {
   list: IGetProducts[];
   activeColumns: string[];
-  isSearchEnabled: boolean;
+  isSearch: boolean;
   searchValue: string;
 }
 

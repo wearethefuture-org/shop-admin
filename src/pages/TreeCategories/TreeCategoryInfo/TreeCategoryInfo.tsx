@@ -34,6 +34,7 @@ import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 const TreeCategoryInfo: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
+  const { searchProps } = Object(history.location.state);
 
   // Delete Modal
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
@@ -204,7 +205,17 @@ const TreeCategoryInfo: React.FC = () => {
       )}
       <div className={styles['block-wrapper']}>
         <Card className={styles['block-card']}>
-          <GoBackBtn handleGoBack={() => history.push('/tree-categories')} />
+          <GoBackBtn
+            handleGoBack={() =>
+              history.push({
+                pathname: '/tree-categories',
+                state: {
+                  id: searchProps.targetId,
+                  mpath: searchProps.mpath,
+                },
+              })
+            }
+          />
           <h1>
             {treeCategoryDisplayState
               ? treeCategoryDisplayState.name

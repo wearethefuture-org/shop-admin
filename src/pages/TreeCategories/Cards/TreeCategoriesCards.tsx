@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Dispatch } from 'redux';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
@@ -17,6 +17,7 @@ import ExpandableBlock from './ExpandableBlock/ExpandableBlock';
 import ChildrenCard from '../ChildrenCard/ChildrenCard';
 import MainTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/MainTreeCategoryModal/MainTreeCategoryModal';
 import DeleteTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/DeleteTreeCategoryModal/DeleteTreeCategoryModal';
+import { useHistory } from 'react-router';
 
 interface TreeCategoriesDataProps {
   dispatch: Dispatch;
@@ -34,13 +35,38 @@ enum Type {
 }
 
 const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) => {
-  const [openSections, setOpenSections] = useState<string[]>(getExpandedTrees);
+  const history = useHistory();
+  const searchProps = (({ id: targetId, mpath }) => ({ targetId, mpath }))(
+    Object(history.location.state)
+  );
+  const [openSections, setOpenSections] = useState<string[]>(
+    searchProps.mpath ? searchProps.mpath : getExpandedTrees()
+  );
   const [modalParams, setModalParams] = useState();
   const { darkMode } = useSelector((state: RootState) => state.theme);
   const [modalsState, setModalsState] = useState<ModalsState>({
     categoryModalIsOpen: false,
     deleteModal: null,
   });
+
+  useEffect(() => {
+    const tempTreeState: string[] = [];
+
+    if (searchProps.targetId) {
+      searchProps.mpath.slice(0, -1);
+      searchProps.mpath.forEach((m) => {
+        tempTreeState.push(m);
+      });
+      const element = document.getElementById(searchProps.targetId);
+      element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element?.style.setProperty('transition', '3s all');
+      element?.style.setProperty('background-color', 'orange');
+      setTimeout(() => {
+        element?.style.setProperty('background-color', 'inherit');
+      }, 10000);
+      return;
+    }
+  }, [searchProps]);
 
   const toggleOpen = (section: string) => {
     setExpandedTrees(section);
@@ -75,6 +101,7 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
 
   const renderTree = (nodes) => (
     <ChildrenCard
+      searchProps={searchProps}
       key={nodes.id}
       renderTree={renderTree}
       dispatch={dispatch}
@@ -136,4 +163,4 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
   );
 };
 
-export default TreeCategoriesCards;
+export default React.memo(TreeCategoriesCards);
