@@ -11,11 +11,11 @@ const useProducts = () => {
     dispatch(getProductsRequest(1, 10));
   }, [dispatch]);
 
-  const { list, loading }: Partial<IProductsData> = useSelector(
+  const { list, loading, isSearch }: Partial<IProductsData> = useSelector(
     (state: RootState) => state.products
   );
 
-  return { list, loading };
+  return { list, loading, isSearch };
 };
 
 export default useProducts;

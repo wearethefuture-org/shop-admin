@@ -61,10 +61,10 @@ export function* getProductByIdWorker({ data: id }: IActions): SagaIterator {
 }
 
 export function* getProductsByQueryWorker({
-  data: { searchQuery, page, limit },
+  data: { searchValue, page, limit },
 }: IActions): SagaIterator {
   try {
-    const products = yield call(apiGetProductsByQuery, searchQuery, page, limit);
+    const products = yield call(apiGetProductsByQuery, searchValue, page, limit);
     yield put(getProductsByQuerySuccess(products));
   } catch (error) {
     yield put(failSnackBar(error.message));

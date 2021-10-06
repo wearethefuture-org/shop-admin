@@ -19,8 +19,13 @@ export async function apiGetProductById(id: number) {
   return product.data;
 }
 
-export async function apiGetProductsByQuery(searchQuery: string, page: number, limit: number) {
-  const product = await api.products.getSearchProducts(searchQuery, page, limit);
+export async function apiGetProductsByQuery(searchValue: string, page: number, limit: number) {
+  const product = await api.search.getSearchItems({
+    query: searchValue,
+    option: 'products',
+    page,
+    limit,
+  });
   return product.data;
 }
 
