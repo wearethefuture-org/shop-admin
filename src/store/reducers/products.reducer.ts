@@ -77,6 +77,7 @@ const products = (state = initialState, { type, data }: IActions) => {
       return {
         ...state,
         loading: true,
+        isSearch: true,
         error: null,
       };
     }
@@ -86,7 +87,6 @@ const products = (state = initialState, { type, data }: IActions) => {
         ...state,
         list: data.data,
         count: data.count,
-        isSearch: true,
         totalPages: data.totalPages,
         loading: false,
       };
