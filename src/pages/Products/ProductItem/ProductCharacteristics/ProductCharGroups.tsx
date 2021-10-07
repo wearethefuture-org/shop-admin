@@ -39,7 +39,7 @@ const ProductCharGroups: React.FC<IProductChar> = ({ categoryId }) => {
               <p>Відсутні характеристики для даної категорії</p>
               <Link
                 to={{
-                  pathname: `/category/${category.id}`,
+                  pathname: `/tree-category/${category.id}`,
                   state: { from: `${location.pathname}` },
                 }}
               >
