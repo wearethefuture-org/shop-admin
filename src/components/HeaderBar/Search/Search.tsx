@@ -10,10 +10,11 @@ import {
   getProductsByQueryRequest,
 } from '../../../store/actions/products.actions';
 
-import { Button, MenuItem, Select } from '@material-ui/core';
+import { Button, IconButton, MenuItem, Select } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
+import ClearIcon from '@material-ui/icons/Clear';
 
 interface SearchProps {}
 
@@ -67,6 +68,10 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
     marginLeft: '40px',
   },
+  crossIcon: {
+    color: 'white',
+    transition: '0.5s ease',
+  },
 }));
 
 const searchOptions = [
@@ -96,13 +101,13 @@ const Search: React.FC<SearchProps> = (props) => {
       setSubmitting(true);
       setIsSearch(true);
       if (values.searchOption === 'products') {
+        dispatch(getProductsByQueryRequest(values.searchValue, 1, 10));
         history.push({
           pathname: '/products',
           state: {
             searchValue: values.searchValue,
           },
         });
-        dispatch(getProductsByQueryRequest(values.searchValue, 1, 10));
       }
       if (values.searchOption === 'categories') {
         history.push({
@@ -116,6 +121,34 @@ const Search: React.FC<SearchProps> = (props) => {
       setSubmitting(false);
     },
   });
+
+  const handleMouseDown = (event) => {
+    event.preventDefault();
+  };
+
+  const handleChange = (field?: string) => {
+    if (!field?.trim().length && isSearch) {
+      dispatch(getProductsRequest(1, 10));
+      setIsSearch(false);
+    }
+  };
+
+  const endAdornment = () => {
+    return (
+      <IconButton
+        className={classes.crossIcon}
+        disabled={formik.isSubmitting || !formik.values.searchValue.trim().length}
+        style={!formik.values.searchValue.trim().length ? { opacity: '0' } : { opacity: '1' }}
+        onClick={() => {
+          formik.setFieldValue('searchValue', '');
+          handleChange();
+        }}
+        onMouseDown={handleMouseDown}
+      >
+        <ClearIcon />
+      </IconButton>
+    );
+  };
 
   return (
     <form
@@ -144,15 +177,11 @@ const Search: React.FC<SearchProps> = (props) => {
           })}
         </Select>
         <InputBase
-          type="search"
           name="searchValue"
           id="searchValue-field"
           onChange={(e) => {
             formik.handleChange(e);
-            if (!e.target.value.trim().length && isSearch) {
-              dispatch(getProductsRequest(1, 10));
-              setIsSearch(false);
-            }
+            handleChange(e.target.value);
           }}
           onBlur={formik.handleBlur}
           placeholder="Пошук…"
@@ -162,6 +191,7 @@ const Search: React.FC<SearchProps> = (props) => {
             input: classes.inputInput,
           }}
           inputProps={{ 'aria-label': 'search' }}
+          endAdornment={endAdornment()}
         />
         <Button
           style={!formik.values.searchValue.trim().length ? { opacity: '0' } : { opacity: '1' }}
