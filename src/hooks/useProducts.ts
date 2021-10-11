@@ -7,15 +7,16 @@ import { AppDispatch, RootState } from '../store/store';
 const useProducts = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  useEffect(() => {
-    if (!isSearch) {
-      dispatch(getProductsRequest(1, 10));
-    }
-  }, [dispatch]);
-
   const { list, loading, isSearch }: Partial<IProductsData> = useSelector(
     (state: RootState) => state.products
   );
+
+  useEffect(() => {
+    console.log(isSearch);
+    if (!isSearch) {
+      dispatch(getProductsRequest(1, 10));
+    }
+  }, [dispatch, isSearch]);
 
   return { list, loading, isSearch };
 };
