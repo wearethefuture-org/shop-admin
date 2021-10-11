@@ -12,7 +12,6 @@ const useProducts = () => {
   );
 
   useEffect(() => {
-    console.log(isSearch);
     if (!isSearch) {
       dispatch(getProductsRequest(1, 10));
     }
