@@ -210,8 +210,8 @@ const TreeCategoryInfo: React.FC = () => {
               history.push({
                 pathname: '/tree-categories',
                 state: {
-                  id: searchProps.targetId,
-                  mpath: searchProps.mpath,
+                  id: searchProps?.targetId,
+                  mpath: searchProps?.mpath,
                 },
               })
             }
