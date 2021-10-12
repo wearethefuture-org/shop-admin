@@ -141,10 +141,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
   ];
 
   const handleClick = (url: string) => {
-    if (url === '/products') {
-      if (isSearch) {
-        dispatch(getProductsRequest(1, 10));
-      }
+    if (url === '/products' && isSearch) {
+      dispatch(getProductsRequest(1, 10));
     }
   };
 
