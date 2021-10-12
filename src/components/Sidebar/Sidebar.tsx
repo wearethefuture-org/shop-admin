@@ -20,8 +20,12 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store/store';
 import useDidUpdate from '../../hooks/useDidUpdate';
 import styles from './Sidebar.module.scss';
+import { getProductsRequest } from '../../store/actions/products.actions';
+import { IProductsData } from '../../interfaces/IProducts';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -85,7 +89,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
 
   const { pathname: activePath } = useLocation();
 
+  const { isSearch }: Partial<IProductsData> = useSelector((state: RootState) => state.products);
   const classes = useStyles(isOpen);
+  const dispatch: AppDispatch = useDispatch();
   const sidebarItems = [
     {
       pageURL: '/dashboard',
@@ -134,6 +140,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
     { pageURL: '/settings', title: 'Налаштування' },
   ];
 
+  const handleClick = (url: string) => {
+    if (url === '/products' && isSearch) {
+      dispatch(getProductsRequest(1, 10));
+    }
+  };
+
   return (
     <Drawer
       variant="permanent"
@@ -154,6 +166,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
             <NavLink to={pageURL} key={pageURL}>
               <ListItem
                 button
+                onClick={() => handleClick(pageURL)}
                 className={classes.listButton}
                 classes={{
                   root: pageURL === activePath ? classes.activeButton : void 0,
