@@ -1,35 +1,42 @@
 .edit_quantity {
-    display: flex;
-    align-items: center;
-    width: 70%;
+  display: flex;
+  align-items: center;
+  width: 70%;
 
-    input {
-        width: 100%;
-    }
+  input {
+    width: 100%;
+  }
 }
 
 .quantity {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 40%;
 }
 
 .orderHeader {
-    padding-top: 20px;
+  padding-top: 20px;
 }
 
 .headerUserData {
-    font-size: 16px;
-    margin-bottom: 5px;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.commentBlock {
+  width: 60vw;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 16px;
 }
 
 .headerTitle {
-    font-size: 26px;
+  font-size: 26px;
 }
 
 .amount {
-    text-align: end;
-    margin-right: 8%;
-    font-size: 18px;
+  text-align: end;
+  margin-right: 8%;
+  font-size: 18px;
 }
-

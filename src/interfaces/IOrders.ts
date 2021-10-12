@@ -55,5 +55,6 @@ export interface ICurrentOrder extends Common {
   additionalLastName?: string;
   additionalEmail?: string;
   additionalNumber?: string;
+  comment?: string;
   delivery: IDelivery;
 }

@@ -106,6 +106,13 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
       omit: !activeColumns.includes('Відділення'),
     },
     {
+      name: 'Коментар',
+      selector: (row) => `${row.comment ? row.comment : 'Відсутній'}`,
+      maxWidth: '600px',
+      sortable: true,
+      omit: !activeColumns.includes('Коментар'),
+    },
+    {
       name: 'Сума',
       selector: (row) => row.amount,
       maxWidth: '100px',
