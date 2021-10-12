@@ -18,6 +18,7 @@ enum cols {
   email = 'Email',
   name = "Ім'я",
   street = 'Відділення',
+  comment = 'Коментар',
   sum = 'Сума',
   status = 'Статус',
 }
@@ -36,6 +37,7 @@ const OrdersPage: React.FC = () => {
     cols.email,
     cols.name,
     cols.street,
+    cols.comment,
     cols.sum,
     cols.status,
   ]);
