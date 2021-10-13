@@ -13,22 +13,19 @@ const WithAxios: FC<WithAxiosProps> = ({ children }) => {
   const dispatch: AppDispatch = useDispatch();
 
   instance.interceptors.response.use(
-    (res) => res,
-    async (err) => {
+    (res) => {
+      return res;
+    },
+    (err) => {
       switch (err.response.status) {
         case 401: {
           dispatch(signOutUser());
           clearStorage();
-
           throw new Error(err.response.data.message);
         }
 
         default: {
-          return {
-            error: {
-              message: err.response.data.message,
-            },
-          };
+          throw new Error(err.response.data.message);
         }
       }
     }
