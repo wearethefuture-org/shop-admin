@@ -61,10 +61,10 @@ const Router: React.FC = () => {
               <PrivateRoute component={TreeCategoryRouter} path="/tree-category/:id" />
               <PrivateRoute component={Search} path="/search" />
               <PrivateRoute component={OrderRouter} path="/order/:id" />
-              {!user && !token ? (
-                <Route path="/home" component={Home} />
-              ) : (
+              {user && token ? (
                 <Redirect to="/dashboard" />
+              ) : (
+                <Route path="/home" component={Home} />
               )}
             </Switch>
           </Content>
