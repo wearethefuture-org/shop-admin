@@ -50,8 +50,8 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
     <Form onDrop={dropHandler} onDragOver={dragOverHandler}>
       <Field fullWidth component={TextField} type="name" label="Name" name="name" />
       <Field fullWidth multiline component={TextField} type="text" label="Text" name="text" />
-      <Field fullWidth multiline component={FileUpload} type="file" label="Image" name="image" />
-      <Field fullWidth multiline component={FileUpload} type="file" label="ImageMobile" name="imageMobile" />
+      <Field fullWidth multiline component={FileUpload} type="file" label="Image" name="image" caption="An image for desktop" />
+      <Field fullWidth multiline component={FileUpload} type="file" label="ImageMobile" name="imageMobile" caption="An image for mobile" />
       <div className={classes.linkField}>
         <Field
           fullWidth

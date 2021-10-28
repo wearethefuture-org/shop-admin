@@ -10,12 +10,14 @@ export interface SimpleFileUploadProps extends FieldProps {
   accept: string;
   disabled?: boolean;
   InputProps?: Omit<InputProps, 'name' | 'type' | 'label'>;
+  caption?: string;
 }
 
 const FileUpload = ({
   field,
   form: { setFieldValue },
   InputProps: inputProps,
+  caption
 }: SimpleFileUploadProps) => {
   const image = field.value;
 
@@ -66,7 +68,7 @@ const FileUpload = ({
     <div>
       <div className={classes.form_group}>
         <label htmlFor="file" className={classes.label}>
-          <span className={classes.title}>Add file</span>
+          <span className={classes.title}>{caption}</span>
           <Input
             inputProps={{
               id: 'file',
