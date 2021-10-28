@@ -84,6 +84,9 @@ const SlideTableBody: React.FC<TableBodyProps> = ({
             <TableCell>
               <img width="50px" src={`${root}/static/uploads/cropped-${row.image}`} alt="" />
             </TableCell>
+            <TableCell>
+              <img width="50px" src={`${root}/static/uploads/cropped-${row.imageMobile}`} alt="" />
+            </TableCell>
             <TableCell>{row.href}</TableCell>
             <TableCell>
               <Switch checked={row.isShown} onChange={() => changeShown(row.id, !row.isShown)} />

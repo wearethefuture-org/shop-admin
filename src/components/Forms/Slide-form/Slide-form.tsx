@@ -13,12 +13,14 @@ interface SlideFormProps {
   initialName?: string;
   initialText?: string;
   initialImage?: string;
+  initialImageMobile?: string;
   initialHref?: string;
   initialIsShown?: boolean;
   initialPriority?: number;
 }
 
 const FILE_SIZE = 9000 * 1024;
+const FILE_SIZE_MOBILE = 9000 * 1024;
 const SUPPORTED_FORMATS = [
   "image/jpg",
   "image/jpeg",
@@ -41,6 +43,18 @@ const slideValidationShema = Yup.object().shape({
       "Unsupported Format",
       value => value && (typeof value === "string" || SUPPORTED_FORMATS.includes(value.type))
     ),
+    imageMobile: Yup
+    .mixed()
+    .test(
+      "fileSize",
+      "File too large",
+      value => value && (typeof value === "string" || value.size <= FILE_SIZE_MOBILE)
+    )
+    .test(
+      "fileFormat",
+      "Unsupported Format",
+      value => value && (typeof value === "string" || SUPPORTED_FORMATS.includes(value.type))
+    ),
   href: Yup.string().min(2, 'Minimum 2 symbols').max(360, 'Too long').required('Required'),
   priority: Yup.number().min(1, 'The number must been more 0').max(360, 'Too long').required('Required')
 })
@@ -52,6 +66,7 @@ const SlideForm = withFormik<SlideFormProps, ISlideFormValues>({
         name: props.initialName || "",
         text: props.initialText || "",
         image: props.initialImage || "",
+        imageMobile: props.initialImageMobile || "",
         href: props.initialHref || "",
         isShown: props.initialIsShown || false,
         priority: props.initialPriority || 1,
@@ -63,6 +78,7 @@ const SlideForm = withFormik<SlideFormProps, ISlideFormValues>({
       if (props.initialId === undefined) {
         const formData = new FormData()
         formData.append("image", values.image);
+        formData.append("imageMobile", values.imageMobile);
         formData.append("name", values.name);
         formData.append("isShown", "" + values.isShown);
         formData.append("priority", "" + values.priority);
@@ -74,6 +90,8 @@ const SlideForm = withFormik<SlideFormProps, ISlideFormValues>({
         const formData = new FormData()
         if (typeof values.image != 'string')
           formData.append("image", values.image);
+        if (typeof values.imageMobile != 'string')
+          formData.append("imageMobile", values.imageMobile);
         if (values.name !== props.initialName)
           formData.append("name", values.name);
         if (values.isShown !== props.initialIsShown)

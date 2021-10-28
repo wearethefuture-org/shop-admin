@@ -23,11 +23,12 @@ function createData(
   name: string,
   text: string,
   image: string,
+  imageMobile: string,
   href: string,
   isShown: boolean,
   priority: number
 ) {
-  return {id, name, createdAt, updatedAt, text, image, href, isShown, priority};
+  return {id, name, createdAt, updatedAt, text, image, imageMobile, href, isShown, priority};
 }
 
 const useTableStyles = makeStyles({
@@ -50,6 +51,7 @@ const SlidesTable: React.FC<SlideDataProps> = ({data, dispatch, modalData}) => {
       slide.name,
       slide.text,
       slide.image as string,
+      slide.imageMobile as string,
       slide.href,
       slide.isShown,
       slide.priority

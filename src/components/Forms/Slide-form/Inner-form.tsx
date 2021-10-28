@@ -51,6 +51,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
       <Field fullWidth component={TextField} type="name" label="Name" name="name" />
       <Field fullWidth multiline component={TextField} type="text" label="Text" name="text" />
       <Field fullWidth multiline component={FileUpload} type="file" label="Image" name="image" />
+      <Field fullWidth multiline component={FileUpload} type="file" label="ImageMobile" name="imageMobile" />
       <div className={classes.linkField}>
         <Field
           fullWidth
