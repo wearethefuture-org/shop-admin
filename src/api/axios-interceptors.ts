@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { clearStorage, getToken } from '../services/local-storage-controller';
+import { getToken } from '../services/local-storage-controller';
 import { root as apiUrl } from './config';
 
 axios.defaults.baseURL = apiUrl;
@@ -19,19 +19,6 @@ instance.interceptors.request.use(
   },
   (error) => {
     return error.data.message;
-  }
-);
-
-instance.interceptors.response.use(
-  (res) => {
-    return res;
-  },
-  (err) => {
-    if (err.response.status === 401) {
-      clearStorage();
-    }
-
-    throw new Error(err.response.data.message);
   }
 );
 

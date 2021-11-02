@@ -37,7 +37,7 @@ export function App() {
   });
 
   useEffect(() => {
-    window.location.pathname !== '/home' && dispatch(fetchUserRequest());
+    dispatch(fetchUserRequest());
   }, []);
 
   return (
