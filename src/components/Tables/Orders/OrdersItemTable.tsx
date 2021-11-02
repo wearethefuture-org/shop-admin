@@ -89,6 +89,16 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       selector: (row) => row.amount,
       sortable: true,
     },
+    {
+      name: 'Розмір',
+      selector: (row) => row.size,
+      sortable: false,
+    },
+    {
+      name: 'Колір',
+      selector: (row) => row.color,
+      sortable: false,
+    },
   ];
 
   return (

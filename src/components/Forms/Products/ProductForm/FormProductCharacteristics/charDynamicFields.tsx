@@ -1,6 +1,13 @@
 import React from 'react';
 import { Field } from 'formik';
-import { FormControlLabel, IconButton, Radio, RadioGroup } from '@material-ui/core';
+import {
+  FormControlLabel,
+  IconButton,
+  Radio,
+  RadioGroup,
+  Checkbox,
+  FormGroup,
+} from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 
 import TextFieldWrapped from '../../../../../hocs/TextFieldHOC';
@@ -8,6 +15,29 @@ import { Type } from '../../../../../interfaces/IProducts';
 import styles from './FormProductCharacteristics.module.scss';
 
 export const charDynamicFields = (char, formik, product) => {
+  console.log(formik.values.subForm);
+
+  const changeEnum = (e) => {
+    const { value, checked } = e.target;
+
+    const values = [...formik.values.subForm[name]];
+
+    if (checked) {
+      values.push(value);
+    } else {
+      const find = values.findIndex((item) => item === value);
+      values.splice(find, 1);
+    }
+
+    formik.setValues({
+      ...formik.values,
+      subForm: {
+        ...formik.values.subForm,
+        [name]: values,
+      },
+    });
+  };
+
   if (!char) return;
   const { name, type, defaultValues } = char;
 
@@ -184,26 +214,27 @@ export const charDynamicFields = (char, formik, product) => {
             >
               <ClearIcon />
             </IconButton>
-            <RadioGroup
-              name={name}
-              value={formik.values.subForm[name][0] || ''}
-              onChange={(e) =>
-                formik.setValues({
-                  ...formik.values,
-                  subForm: {
-                    ...formik.values.subForm,
-                    [name]: [e.target.value],
-                  },
-                })
-              }
-            >
+            <FormGroup>
               {char.defaultValues &&
                 char.defaultValues.values &&
                 char.defaultValues.values.length &&
                 char.defaultValues.values.map((value) => (
-                  <FormControlLabel key={value} value={value} control={<Radio />} label={value} />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        value={value}
+                        checked={
+                          !formik.values?.subForm[name]
+                            ? false
+                            : formik.values.subForm[name].find((item) => item === value)
+                        }
+                        onChange={changeEnum}
+                      />
+                    }
+                    label={value}
+                  />
                 ))}
-            </RadioGroup>
+            </FormGroup>
           </div>
 
           {formik.errors.subForm && formik.errors.subForm[name] ? (
