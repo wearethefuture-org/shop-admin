@@ -4,6 +4,7 @@ import { clearStorage } from '../services/local-storage-controller';
 import { signOutUser } from '../store/actions/user.action';
 import { AppDispatch } from '../store/store';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 interface WithAxiosProps {
   children: any;
@@ -11,6 +12,7 @@ interface WithAxiosProps {
 
 const WithAxios: FC<WithAxiosProps> = ({ children }) => {
   const dispatch: AppDispatch = useDispatch();
+  const history = useHistory();
 
   instance.interceptors.response.use(
     (res) => {
@@ -19,6 +21,7 @@ const WithAxios: FC<WithAxiosProps> = ({ children }) => {
     (err) => {
       switch (err.response.status) {
         case 401: {
+          history.push('/home');
           dispatch(signOutUser());
           clearStorage();
           throw new Error(err.response.data.message);
