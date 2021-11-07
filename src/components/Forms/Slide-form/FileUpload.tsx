@@ -8,6 +8,7 @@ import grey from '@material-ui/core/colors/grey';
 export interface SimpleFileUploadProps extends FieldProps {
   label: string;
   accept: string;
+  fieldId: string;
   disabled?: boolean;
   InputProps?: Omit<InputProps, 'name' | 'type' | 'label'>;
   caption?: string;
@@ -17,7 +18,8 @@ const FileUpload = ({
   field,
   form: { setFieldValue },
   InputProps: inputProps,
-  caption
+  caption,
+  fieldId
 }: SimpleFileUploadProps) => {
   const image = field.value;
 
@@ -67,11 +69,11 @@ const FileUpload = ({
   return (
     <div>
       <div className={classes.form_group}>
-        <label htmlFor="file" className={classes.label}>
+        <label htmlFor={fieldId} className={classes.label}>
           <span className={classes.title}>{caption}</span>
           <Input
             inputProps={{
-              id: 'file',
+              id: fieldId,
               type: 'file',
               name: field.name,
               onChange: (event: React.ChangeEvent<any>) => {

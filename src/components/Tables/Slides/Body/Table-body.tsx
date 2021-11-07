@@ -82,10 +82,10 @@ const SlideTableBody: React.FC<TableBodyProps> = ({
             <TableCell align="left">{row.name}</TableCell>
             <TableCell align="left">{row.text}</TableCell>
             <TableCell>
-              <img width="50px" src={`${root}/static/uploads/cropped-${row.image}`} alt="" />
+              <img width="50px" src={`${root}/static/uploads/${row.image}`} alt="" />
             </TableCell>
             <TableCell>
-              <img width="50px" src={`${root}/static/uploads/cropped-${row.imageMobile}`} alt="" />
+              <img width="50px" src={`${root}/static/uploads/${row.imageMobile}`} alt="" />
             </TableCell>
             <TableCell>{row.href}</TableCell>
             <TableCell>

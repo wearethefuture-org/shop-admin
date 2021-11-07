@@ -126,7 +126,7 @@ const SlideTableFooter: React.FC<SlideTableFooterProps> = ({
             native: true,
           }}
           onPageChange={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
           ActionsComponent={TablePaginationActions}
         />
       </TableRow>

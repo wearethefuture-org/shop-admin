@@ -35,23 +35,27 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
 
   const dropHandler = (event: React.DragEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    // @ts-ignore
+    //console.log(event.target.closest("label").getAttribute("for"))
     if (event.dataTransfer.items) {
       for (let i = 0; i < event.dataTransfer.items.length; i++) {
         if (event.dataTransfer.items[i].kind === 'file') {
           let file = event.dataTransfer.items[i].getAsFile();
-          props.setFieldValue('image', file);
+          // @ts-ignore
+          const aname = event.target.closest("label").getAttribute("for").toString()
+          console.log("aname",aname)
+          props.setFieldValue(aname, file);
         }
       }
     }
   };
 
   return (
-    <Form onDrop={dropHandler} onDragOver={dragOverHandler}>
+    <Form onDrop={dropHandler} onDragOver={dragOverHandler} >
       <Field fullWidth component={TextField} type="name" label="Name" name="name" />
       <Field fullWidth multiline component={TextField} type="text" label="Text" name="text" />
-      <Field fullWidth multiline component={FileUpload} type="file" label="Image" name="image" caption="An image for desktop" />
-      <Field fullWidth multiline component={FileUpload} type="file" label="ImageMobile" name="imageMobile" caption="An image for mobile" />
+      <Field fullWidth multiline component={FileUpload} type="file" label="Image" name="image" caption="An image for desktop" fieldId="file"/>
+      <Field fullWidth multiline component={FileUpload} type="file" label="ImageMobile" name="imageMobile" caption="An image for mobile" fieldId="fileMobile"/>
       <div className={classes.linkField}>
         <Field
           fullWidth

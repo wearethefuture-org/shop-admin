@@ -20,7 +20,10 @@ interface SlideFormProps {
 }
 
 const FILE_SIZE = 9000 * 1024;
-const FILE_SIZE_MOBILE = 9000 * 1024;
+const FILE_SIZE_MOBILE = 1000 * 1024;
+// leave it till basic is implemented
+// https://stackoverflow.com/questions/65002123/validating-images-aspect-ratio-width-height-with-yup-formik
+// const FILE_WH_MOBILE = {"widthMax": 400, "heightMax": 200};
 const SUPPORTED_FORMATS = [
   "image/jpg",
   "image/jpeg",
