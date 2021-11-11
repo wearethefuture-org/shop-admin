@@ -33,20 +33,19 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
     event.preventDefault();
   };
 
-  const dropHandler = (event: React.DragEvent<HTMLFormElement>) => {
+  // todo? define own element based on HTMLElement
+  const dropHandler = (event: React.DragEvent<HTMLElement>) => {
     event.preventDefault();
-    // @ts-ignore
-    //console.log(event.target.closest("label").getAttribute("for"))
+    console.log("event.dataTransfer", event.dataTransfer)
     if (event.dataTransfer.items) {
-      for (let i = 0; i < event.dataTransfer.items.length; i++) {
-        if (event.dataTransfer.items[i].kind === 'file') {
-          let file = event.dataTransfer.items[i].getAsFile();
-          // @ts-ignore
-          const aname = event.target.closest("label").getAttribute("for").toString()
-          console.log("aname",aname)
-          props.setFieldValue(aname, file);
-        }
-      }
+          // todo SnackBar (redux dispatch action) if 2+ files
+          let file = event.dataTransfer.items[0].getAsFile();
+          const domNode = event.target as HTMLElement;
+          const labelElement = domNode.closest("label") as HTMLElement;
+          const inputElement = labelElement.querySelector("input") as HTMLInputElement;
+          if(inputElement != null){
+            props.setFieldValue(inputElement.name, file);
+          }
     }
   };
 

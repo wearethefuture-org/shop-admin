@@ -39,7 +39,7 @@ const slideValidationShema = Yup.object().shape({
     .test(
       "fileSize",
       "File too large",
-      value => value && (typeof value === "string" || value.size <= FILE_SIZE)
+      value => { console.log("value", value); return value && (typeof value === "string" || value.size <= FILE_SIZE) }
     )
     .test(
       "fileFormat",

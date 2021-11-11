@@ -46,6 +46,7 @@ const FormDialog: React.FC<FormDialogProps> = ({
             initialName={row.name}
             initialText={row.text}
             initialImage={row.image as string}
+            initialImageMobile={row.imageMobile as string}
             initialHref={row.href}
             initialIsShown={row.isShown}
             initialPriority={row.priority}
