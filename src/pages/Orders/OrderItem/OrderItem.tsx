@@ -7,7 +7,7 @@ import { ICurrentOrder } from '../../../interfaces/IOrders';
 
 const OrderItem = () => {
   const order = useSelector((state: RootState): ICurrentOrder => state.orders.currentOrder);
-
+  console.log(order);
   return <OrdersItemTable order={order} />;
 };
 

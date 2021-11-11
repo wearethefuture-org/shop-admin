@@ -4,6 +4,8 @@ import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import OrdersEditQuantity from '../../../components/Tables/Orders/OrdersEditQuantity';
 import OrdersItemTableHeader from './OrdersItemTableHeader';
 import { ICurrentOrder } from '../../../interfaces/IOrders';
+import OrdersItemEditColor from './OrdersItemEditColor';
+import OrdersItemEditSize from './OrdersItemEditSize';
 
 interface OrdersItemTableProps {
   order: ICurrentOrder;
@@ -93,11 +95,17 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       name: 'Розмір',
       selector: (row) => row.size,
       sortable: false,
+      cell: (row) => {
+        return <OrdersItemEditSize row={row} orderId={order.id} />;
+      },
     },
     {
       name: 'Колір',
       selector: (row) => row.color,
       sortable: false,
+      cell: (row) => {
+        return <OrdersItemEditColor row={row} orderId={order.id} />;
+      },
     },
   ];
 
