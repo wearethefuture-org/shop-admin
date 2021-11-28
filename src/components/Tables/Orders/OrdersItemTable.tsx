@@ -1,17 +1,23 @@
 import { useSelector, useDispatch } from 'react-redux';
-import React, { FC } from 'react';
+import React, { FC, ChangeEvent } from 'react';
 
-import { updateOrderQuantityRequest } from '../../../store/actions/orders.actions';
+import { updateOrderRequest } from '../../../store/actions/orders.actions';
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import OrdersEditQuantity from '../../../components/Tables/Orders/OrdersEditQuantity';
 import OrdersItemTableHeader from './OrdersItemTableHeader';
 import { ICurrentOrder } from '../../../interfaces/IOrders';
 import OrdersSelector from './OrdersSelector';
 import { RootState } from '../../../store/store';
+import { IProductCharResponse } from '../../../interfaces/IProducts';
 
 interface OrdersItemTableProps {
   order: ICurrentOrder;
 }
+
+type handleChangeType = (arg: {
+  productId: number;
+  field: 'color' | 'size';
+}) => (e: ChangeEvent<{ value: unknown }>) => void;
 
 const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
   const loading = useSelector((state: RootState) => state.orders.loading);
@@ -21,25 +27,30 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
     return { ...item, delivery: order.delivery };
   });
 
-  const handleChange =
-    ({ productId, field }: { productId: number; field: 'color' | 'size' }) =>
+  const handleChange: handleChangeType =
+    ({ productId, field }) =>
     (e) => {
-      const target = e.target as HTMLSelectElement;
+      const target = e.target;
       e.stopPropagation();
-      dispatch(updateOrderQuantityRequest(order.id, productId, { [field]: target.value }));
+      dispatch(updateOrderRequest(order.id, productId, { [field]: target.value }));
     };
 
   const getCharEnumByName = ({
     characteristicValue,
     charName,
   }: {
-    characteristicValue: Array<any>;
+    characteristicValue: Array<IProductCharResponse>;
     charName: 'sizes' | 'colors';
   }) => {
-    if (!characteristicValue.length) return null;
-    const charEnum = characteristicValue.find((val) => val.name === charName);
-    if (!charEnum || !charEnum.enumValue.length) return null;
-    return charEnum.enumValue;
+    if (characteristicValue.length) {
+      const charEnum = characteristicValue.find(
+        (val) => val.name === charName && val.type === 'enum'
+      );
+      return !charEnum || !charEnum.enumValue || !charEnum.enumValue.length
+        ? null
+        : charEnum.enumValue;
+    }
+    return null;
   };
 
   const columns = [
@@ -123,16 +134,15 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       sortable: false,
       cell: (row) => {
         const { characteristicValue } = row.product;
-        const sizeEnum = getCharEnumByName({ characteristicValue, charName: 'sizes' });
-        if (!sizeEnum) return null;
-        return (
+        const sizes = getCharEnumByName({ characteristicValue, charName: 'sizes' });
+        return sizes ? (
           <OrdersSelector
-            value={sizeEnum.find((val) => val === row.size)}
+            value={row.size}
             handleChange={handleChange({ productId: row.product.id, field: 'size' })}
-            menuItems={sizeEnum}
+            menuItems={sizes}
             disabled={loading}
           />
-        );
+        ) : null;
       },
     },
     {
@@ -141,16 +151,15 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       sortable: false,
       cell: function (row) {
         const { characteristicValue } = row.product;
-        const colorEnum = getCharEnumByName({ characteristicValue, charName: 'colors' });
-        if (!colorEnum) return null;
-        return (
+        const colors = getCharEnumByName({ characteristicValue, charName: 'colors' });
+        return colors ? (
           <OrdersSelector
-            value={colorEnum.find((val) => val === row.color)}
+            value={row.color}
             handleChange={handleChange({ productId: row.product.id, field: 'color' })}
-            menuItems={colorEnum}
+            menuItems={colors}
             disabled={loading}
           />
-        );
+        ) : null;
       },
     },
   ];

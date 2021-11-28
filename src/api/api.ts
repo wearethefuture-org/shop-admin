@@ -86,10 +86,10 @@ type ApiFetchedDataType = {
   orders: {
     get: (page: number, limit: number) => FetchedDataType<IBasicOrder>;
     updateStatus: (id: number, status: Status) => FetchedDataType<IBasicOrder>;
-    updateQuantity: (
+    update: (
       orderId: number,
       productId: number,
-      quantity: number
+      data: { quantity?: number; color?: string; size?: string }
     ) => FetchedDataType<IBasicOrder>;
     getById: (id: number) => FetchedDataType<IBasicOrder>;
   };
@@ -166,8 +166,8 @@ export const api: ApiFetchedDataType = {
     get: (page, limit) => instance.get(`${root}/orders?page=${page}&limit=${limit}`),
     getById: (id) => instance.get(`${root}/orders/${id}`),
     updateStatus: (id, status) => instance.patch(`${root}/orders/status/${id}`, status),
-    updateQuantity: (orderId, productId, quantity) =>
-      instance.put(`${root}/orders/${orderId}/${productId}`, quantity),
+    update: (orderId, productId, data) =>
+      instance.put(`${root}/orders/${orderId}/${productId}`, data),
   },
 
   users: {

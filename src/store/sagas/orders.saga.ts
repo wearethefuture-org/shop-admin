@@ -3,7 +3,7 @@ import { SagaIterator } from 'redux-saga';
 import {
   apiGetOrders,
   apiGetOrderById,
-  apiUpdateOrderQuantity,
+  apiUpdateOrder,
   apiUpdateOrderStatus,
 } from './services/orders.service';
 
@@ -13,16 +13,14 @@ import {
   getOrdersError,
   getOrderByIdSuccess,
   getOrderByIdError,
-  updateOrderQuantitySuccess,
-  updateOrderQuantityError,
+  updateOrderSuccess,
+  updateOrderError,
   updateOrderStatusSuccess,
   updateOrderStatusError,
 } from '../actions/orders.actions';
 import { IActions } from '../../interfaces/actions';
 
-export function* getOrdersWorker({
-  data: {page, limit}
-}: IActions): SagaIterator<void> {
+export function* getOrdersWorker({ data: { page, limit } }: IActions): SagaIterator<void> {
   try {
     const orders = yield call(apiGetOrders, page, limit);
     yield put(getOrdersSuccess(orders));
@@ -42,16 +40,16 @@ export function* getOrdersByIdWorker({ data: id }: IActions): SagaIterator {
   }
 }
 
-export function* updateOrderQuantityWorker({
+export function* updateOrderWorker({
   data: { orderId, productId, quantity },
 }: IActions): SagaIterator<void> {
   try {
-    const order = yield call(apiUpdateOrderQuantity, orderId, productId, quantity);
-    yield put(updateOrderQuantitySuccess(order));
+    const order = yield call(apiUpdateOrder, orderId, productId, quantity);
+    yield put(updateOrderSuccess(order));
     yield put(successSnackBar());
   } catch (error) {
     yield put(failSnackBar(error.message));
-    yield put(updateOrderQuantityError(error.message));
+    yield put(updateOrderError(error.message));
   }
 }
 

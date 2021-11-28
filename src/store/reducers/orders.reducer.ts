@@ -6,9 +6,9 @@ import {
   GET_ORDER_BY_ID_REQUEST,
   GET_ORDER_BY_ID_SUCCESS,
   GET_ORDER_BY_ID_ERROR,
-  UPDATE_ORDER_QUANTITY_REQUEST,
-  UPDATE_ORDER_QUANTITY_SUCCESS,
-  UPDATE_ORDER_QUANTITY_ERROR,
+  UPDATE_ORDER_REQUEST,
+  UPDATE_ORDER_SUCCESS,
+  UPDATE_ORDER_ERROR,
   UPDATE_ORDER_STATUS_REQUEST,
   UPDATE_ORDER_STATUS_SUCCESS,
   UPDATE_ORDER_STATUS_ERROR,
@@ -90,8 +90,8 @@ const orders = (state = initialState, { type, data }: IActions) => {
       return {
         ...state,
         list: [
-          ...state.list.map(item => {
-            if(item.id === data.id) return { ...item, status: data.status.status };
+          ...state.list.map((item) => {
+            if (item.id === data.id) return { ...item, status: data.status.status };
             return item;
           }),
         ],
@@ -108,7 +108,7 @@ const orders = (state = initialState, { type, data }: IActions) => {
       };
     }
 
-    case UPDATE_ORDER_QUANTITY_REQUEST: {
+    case UPDATE_ORDER_REQUEST: {
       return {
         ...state,
         loading: true,
@@ -116,8 +116,8 @@ const orders = (state = initialState, { type, data }: IActions) => {
       };
     }
 
-    case UPDATE_ORDER_QUANTITY_SUCCESS: {
-      if(state.currentOrder) {
+    case UPDATE_ORDER_SUCCESS: {
+      if (state.currentOrder) {
         return {
           ...state,
           loading: false,
@@ -132,7 +132,7 @@ const orders = (state = initialState, { type, data }: IActions) => {
       }
     }
 
-    case UPDATE_ORDER_QUANTITY_ERROR: {
+    case UPDATE_ORDER_ERROR: {
       return {
         ...state,
         loading: false,

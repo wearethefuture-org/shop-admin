@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 import { updateOrderStatusRequest } from '../../../store/actions/orders.actions';
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
@@ -24,7 +24,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
 
   const loading = useSelector((state: RootState) => state.orders.loading);
 
-  const onChangeStatus = (orderdId) => (e) => {
+  const onChangeStatus = (orderdId: number) => (e: ChangeEvent<{ value: unknown }>) => {
     e.stopPropagation();
     dispatch(updateOrderStatusRequest(orderdId, { status: `${e.target.value}` }));
   };

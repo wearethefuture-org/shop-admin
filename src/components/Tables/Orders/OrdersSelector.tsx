@@ -1,10 +1,10 @@
 import { FormControl, Select, MenuItem } from '@material-ui/core';
-import React, { FC } from 'react';
+import React, { FC, ChangeEvent } from 'react';
 
 interface OrdersSelectorProps {
   disabled: boolean;
   value: string;
-  handleChange: (e: any) => void;
+  handleChange: (event: ChangeEvent<{ value: unknown }>) => void;
   menuItems: Array<string>;
 }
 

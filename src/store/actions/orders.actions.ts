@@ -10,9 +10,9 @@ import {
   UPDATE_ORDER_STATUS_REQUEST,
   UPDATE_ORDER_STATUS_SUCCESS,
   UPDATE_ORDER_STATUS_ERROR,
-  UPDATE_ORDER_QUANTITY_REQUEST,
-  UPDATE_ORDER_QUANTITY_SUCCESS,
-  UPDATE_ORDER_QUANTITY_ERROR,
+  UPDATE_ORDER_REQUEST,
+  UPDATE_ORDER_SUCCESS,
+  UPDATE_ORDER_ERROR,
 } from '../types';
 
 export const getOrdersRequest = (page: number, limit: number): IActions => ({
@@ -20,7 +20,7 @@ export const getOrdersRequest = (page: number, limit: number): IActions => ({
   data: {
     page,
     limit,
-  }
+  },
 });
 
 export const getOrdersSuccess = (orders): IActions => ({
@@ -63,8 +63,8 @@ export const updateOrderStatusError = (message: string): IActions => ({
   data: message,
 });
 
-export const updateOrderQuantityRequest = (orderId, productId, quantity): IActions => ({
-  type: UPDATE_ORDER_QUANTITY_REQUEST,
+export const updateOrderRequest = (orderId, productId, quantity): IActions => ({
+  type: UPDATE_ORDER_REQUEST,
   data: {
     orderId,
     productId,
@@ -72,12 +72,12 @@ export const updateOrderQuantityRequest = (orderId, productId, quantity): IActio
   },
 });
 
-export const updateOrderQuantitySuccess = (order): IActions => ({
-  type: UPDATE_ORDER_QUANTITY_SUCCESS,
+export const updateOrderSuccess = (order): IActions => ({
+  type: UPDATE_ORDER_SUCCESS,
   data: order,
 });
 
-export const updateOrderQuantityError = (message: string): IActions => ({
-  type: UPDATE_ORDER_QUANTITY_ERROR,
+export const updateOrderError = (message: string): IActions => ({
+  type: UPDATE_ORDER_ERROR,
   data: message,
 });
