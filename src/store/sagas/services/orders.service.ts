@@ -10,8 +10,8 @@ export async function apiGetOrderById(id: number) {
   return order.data;
 }
 
-export async function apiUpdateOrderQuantity(orderId: number, productId: number, quantity: number) {
-  const order = await api.orders.updateQuantity(orderId, productId, quantity);
+export async function apiUpdateOrder(orderId: number, productId: number, data) {
+  const order = await api.orders.update(orderId, productId, data);
   return order.data;
 }
 

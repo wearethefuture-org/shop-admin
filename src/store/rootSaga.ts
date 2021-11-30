@@ -22,7 +22,7 @@ import {
   REQUEST_DELETE_SLIDES,
   GET_ORDERS_REQUEST,
   GET_ORDER_BY_ID_REQUEST,
-  UPDATE_ORDER_QUANTITY_REQUEST,
+  UPDATE_ORDER_REQUEST,
   UPDATE_ORDER_STATUS_REQUEST,
   GET_COMMENTS_REQUEST,
   DELETE_COMMENT_REQUEST,
@@ -72,7 +72,7 @@ import {
 import {
   getOrdersWorker,
   getOrdersByIdWorker,
-  updateOrderQuantityWorker,
+  updateOrderWorker,
   updateOrderStatusWorker,
 } from './sagas/orders.saga';
 import { deleteCommentWorker, getCommentsWorker } from './sagas/comments.saga';
@@ -138,7 +138,7 @@ export function* sagaFeedbacksWatcher(): SagaIterator {
 function* sagaOrdersWatcher(): SagaIterator {
   yield takeEvery(GET_ORDERS_REQUEST, getOrdersWorker);
   yield takeEvery(GET_ORDER_BY_ID_REQUEST, getOrdersByIdWorker);
-  yield takeEvery(UPDATE_ORDER_QUANTITY_REQUEST, updateOrderQuantityWorker);
+  yield takeEvery(UPDATE_ORDER_REQUEST, updateOrderWorker);
   yield takeEvery(UPDATE_ORDER_STATUS_REQUEST, updateOrderStatusWorker);
 }
 
