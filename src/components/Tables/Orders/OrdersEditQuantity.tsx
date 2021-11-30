@@ -5,7 +5,7 @@ import DoneIcon from '@material-ui/icons/Done';
 import CancelIcon from '@material-ui/icons/Cancel';
 
 import { AppDispatch, RootState } from '../../../store/store';
-import { updateOrderQuantityRequest } from '../../../store/actions/orders.actions';
+import { updateOrderRequest } from '../../../store/actions/orders.actions';
 import styles from './OrdersTable.module.scss';
 
 const OrdersEditQuantity = ({ row, orderId }) => {
@@ -21,7 +21,7 @@ const OrdersEditQuantity = ({ row, orderId }) => {
 
   const onQuantityChanged = (e, orderId, productId) => {
     e.stopPropagation();
-    dispatch(updateOrderQuantityRequest(orderId, productId, { quantity: value }));
+    dispatch(updateOrderRequest(orderId, productId, { quantity: value }));
     setEditable(false);
   };
 
@@ -40,17 +40,13 @@ const OrdersEditQuantity = ({ row, orderId }) => {
   let cell = !editable ? (
     <div className={styles.quantity}>
       {row.quantity}
-      <EditIcon
-        onClick={isEditable}
-        color={loading ? 'disabled' : 'primary'}
-        fontSize="small"
-      />
+      <EditIcon onClick={isEditable} color={loading ? 'disabled' : 'primary'} fontSize="small" />
     </div>
   ) : (
     <div className={styles.edit_quantity}>
-      <input type="number" value={value} onChange={handleChange}/>
-      <DoneIcon color="primary" onClick={(e) => onQuantityChanged(e, orderId, row.product.id)}/>
-      <CancelIcon color="secondary" onClick={onQuantityChangedCancel}/>
+      <input type="number" value={value} onChange={handleChange} />
+      <DoneIcon color="primary" onClick={(e) => onQuantityChanged(e, orderId, row.product.id)} />
+      <CancelIcon color="secondary" onClick={onQuantityChangedCancel} />
     </div>
   );
 
