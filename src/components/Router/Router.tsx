@@ -25,51 +25,52 @@ import { RootState } from '../../store/store';
 import CommentsPage from '../../pages/Comments/CommentsPage';
 import FeedbacksPage from '../../pages/Feedbacks/FeedbacksPage';
 import Search from '../../pages/Search/Search';
+import WithAxios from '../../api/withAxios';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
   const toggleSidebar = () => setOpenSidebar(!isOpenSidebar);
 
   const user = useSelector<RootState>((state) => state.user.user);
-  const token = localStorage.getItem('TOKEN');
 
   return (
     <BrowserRouter>
-      <Route exact path="/">
-        {user ? <Redirect to="/dashboard" /> : <Redirect to="/home" />}
-      </Route>
-      <div className={styles.container}>
-        <Sidebar isOpen={isOpenSidebar} onSidebarToggle={toggleSidebar} />
-        <SnackBar />
+      <WithAxios>
+        <Route exact path="/">
+          {user ? <Redirect to="/dashboard" /> : <Redirect to="/home" />}
+        </Route>
+        <Route exact path="/home">
+          {user ? <Redirect to="/dashboard" /> : null}
+        </Route>
+        <div className={styles.container}>
+          <Sidebar isOpen={isOpenSidebar} onSidebarToggle={toggleSidebar} />
+          <SnackBar />
 
-        <div className={isOpenSidebar ? styles.main : styles['main-expanded']}>
-          <HeaderBar onSidebarToggle={toggleSidebar} isShrink={isOpenSidebar} />
-          <Content>
-            <Switch>
-              <PrivateRoute path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/tree-categories" exact={true} component={TreeCategories} />
-              <PrivateRoute path="/products/" exact={true} component={Products} />
-              <PrivateRoute path="/statistic" component={Statistic} />
-              <PrivateRoute path="/users" component={Users} />
-              <PrivateRoute path="/slides" component={Slides} />
-              <PrivateRoute path="/comments" component={CommentsPage} />
-              <PrivateRoute path="/feedbacks" component={FeedbacksPage} />
-              <PrivateRoute path="/settings" component={Settings} />
-              <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
-              <PrivateRoute path="/orders" component={OrdersPage} />
-              <PrivateRoute component={ViewProduct} path="/product/:id" />
-              <PrivateRoute component={TreeCategoryRouter} path="/tree-category/:id" />
-              <PrivateRoute component={Search} path="/search" />
-              <PrivateRoute component={OrderRouter} path="/order/:id" />
-              {!user && !token ? (
+          <div className={isOpenSidebar ? styles.main : styles['main-expanded']}>
+            <HeaderBar onSidebarToggle={toggleSidebar} isShrink={isOpenSidebar} />
+            <Content>
+              <Switch>
+                <PrivateRoute path="/dashboard" component={Dashboard} />
+                <PrivateRoute path="/tree-categories" exact={true} component={TreeCategories} />
+                <PrivateRoute path="/products/" exact={true} component={Products} />
+                <PrivateRoute path="/statistic" component={Statistic} />
+                <PrivateRoute path="/users" component={Users} />
+                <PrivateRoute path="/slides" component={Slides} />
+                <PrivateRoute path="/comments" component={CommentsPage} />
+                <PrivateRoute path="/feedbacks" component={FeedbacksPage} />
+                <PrivateRoute path="/settings" component={Settings} />
+                <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
+                <PrivateRoute path="/orders" component={OrdersPage} />
+                <PrivateRoute component={ViewProduct} path="/product/:id" />
+                <PrivateRoute component={TreeCategoryRouter} path="/tree-category/:id" />
+                <PrivateRoute component={Search} path="/search" />
+                <PrivateRoute component={OrderRouter} path="/order/:id" />
                 <Route path="/home" component={Home} />
-              ) : (
-                <Redirect to="/dashboard" />
-              )}
-            </Switch>
-          </Content>
+              </Switch>
+            </Content>
+          </div>
         </div>
-      </div>
+      </WithAxios>
     </BrowserRouter>
   );
 };

@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import React, { ChangeEvent, useState } from 'react';
 
+import { updateOrderStatusRequest } from '../../../store/actions/orders.actions';
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import { getOrdersRequest } from '../../../store/actions/orders.actions';
+import { Status as enumStatus } from '../../../enums/orderStatus';
 import { AppDispatch, RootState } from '../../../store/store';
-import OrdersEditStatus from './OrdersEditStatus';
 import { IGetOrders } from '../../../interfaces/IOrders';
+import OrdersSelector from './OrdersSelector';
 
 interface OrdersTableProps {
   list: IGetOrders[];
@@ -19,6 +21,13 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const count = useSelector((state: RootState) => state.orders.count);
+
+  const loading = useSelector((state: RootState) => state.orders.loading);
+
+  const onChangeStatus = (orderdId: number) => (e: ChangeEvent<{ value: unknown }>) => {
+    e.stopPropagation();
+    dispatch(updateOrderStatusRequest(orderdId, { status: `${e.target.value}` }));
+  };
 
   const onChangePage = (page) => {
     setPage(page);
@@ -124,7 +133,14 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
       selector: (row) => row.status,
       sortable: true,
       cell: (row) => {
-        return <OrdersEditStatus row={row} />;
+        return (
+          <OrdersSelector
+            disabled={loading}
+            handleChange={onChangeStatus(row.id)}
+            value={row.status}
+            menuItems={Object.values(enumStatus)}
+          />
+        );
       },
       omit: !activeColumns.includes('Статус'),
     },
