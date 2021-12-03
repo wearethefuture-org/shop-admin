@@ -33,10 +33,8 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
     event.preventDefault();
   };
 
-  // todo? define own element based on HTMLElement
   const dropHandler = (event: React.DragEvent<HTMLElement>) => {
     event.preventDefault();
-    console.log("event.dataTransfer", event.dataTransfer)
     if (event.dataTransfer.items) {
           // todo SnackBar (redux dispatch action) if 2+ files
           let file = event.dataTransfer.items[0].getAsFile();
