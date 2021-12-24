@@ -36,23 +36,41 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
   const dropHandler = (event: React.DragEvent<HTMLElement>) => {
     event.preventDefault();
     if (event.dataTransfer.items) {
-          // todo SnackBar (redux dispatch action) if 2+ files
-          let file = event.dataTransfer.items[0].getAsFile();
-          const domNode = event.target as HTMLElement;
-          const labelElement = domNode.closest("label") as HTMLElement;
-          const inputElement = labelElement.querySelector("input") as HTMLInputElement;
-          if(inputElement != null){
-            props.setFieldValue(inputElement.name, file);
-          }
+      // todo SnackBar (redux dispatch action) if 2+ files
+      let file = event.dataTransfer.items[0].getAsFile();
+      const domNode = event.target as HTMLElement;
+      const labelElement = domNode.closest('label') as HTMLElement;
+      const inputElement = labelElement.querySelector('input') as HTMLInputElement;
+      if (inputElement != null) {
+        props.setFieldValue(inputElement.name, file);
+      }
     }
   };
 
   return (
-    <Form onDrop={dropHandler} onDragOver={dragOverHandler} >
+    <Form onDrop={dropHandler} onDragOver={dragOverHandler}>
       <Field fullWidth component={TextField} type="name" label="Name" name="name" />
       <Field fullWidth multiline component={TextField} type="text" label="Text" name="text" />
-      <Field fullWidth multiline component={FileUpload} type="file" label="Image" name="image" caption="An image for desktop" fieldId="file"/>
-      <Field fullWidth multiline component={FileUpload} type="file" label="ImageMobile" name="imageMobile" caption="An image for mobile" fieldId="fileMobile"/>
+      <Field
+        fullWidth
+        multiline
+        component={FileUpload}
+        type="file"
+        label="Image"
+        name="image"
+        caption="An image for desktop. Allowed formats: jpg, png, gif. Max size: 9 MB. Optimal aspect ratio: 3.5 (e.g., 1920x548 etc.)"
+        fieldId="file"
+      />
+      <Field
+        fullWidth
+        multiline
+        component={FileUpload}
+        type="file"
+        label="ImageMobile"
+        name="imageMobile"
+        caption="An image for mobile. Allowed formats: jpg, png, gif. Max size: 1 MB. Optimal aspect ratio: 3.5 (e.g., 382x109 or 330x94  etc.)"
+        fieldId="fileMobile"
+      />
       <div className={classes.linkField}>
         <Field
           fullWidth

@@ -19,7 +19,7 @@ const FileUpload = ({
   form: { setFieldValue },
   InputProps: inputProps,
   caption,
-  fieldId
+  fieldId,
 }: SimpleFileUploadProps) => {
   const image = field.value;
 

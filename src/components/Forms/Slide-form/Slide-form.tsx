@@ -31,7 +31,6 @@ const slideValidationShema = Yup.object().shape({
   text: Yup.string().min(2, 'Minimum 2 symbols').max(360, 'Too long').required('Required'),
   image: Yup.mixed()
     .test('fileSize', 'File too large', (value) => {
-      console.log('value', value);
       return value && (typeof value === 'string' || value.size <= FILE_SIZE);
     })
     .test(
