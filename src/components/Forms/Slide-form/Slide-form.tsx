@@ -85,8 +85,9 @@ const SlideForm = withFormik<SlideFormProps, ISlideFormValues>({
       props.dispatch(fetchAddSlides(formData));
     } else {
       const formData = new FormData();
-      if (typeof values.image != 'string') formData.append('image', values.image);
-      if (typeof values.imageMobile != 'string') formData.append('imageMobile', values.imageMobile);
+      if (typeof values.image !== 'string') formData.append('image', values.image);
+      if (typeof values.imageMobile !== 'string')
+        formData.append('imageMobile', values.imageMobile);
       if (values.name !== props.initialName) formData.append('name', values.name);
       if (values.isShown !== props.initialIsShown) formData.append('isShown', '' + values.isShown);
       if (values.priority !== props.initialPriority)

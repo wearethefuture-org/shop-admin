@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { FieldProps } from 'formik';
-import Input, { InputProps } from '@material-ui/core/Input';
-import { root } from '../../../api/config';
+import Input from '@material-ui/core/Input';
 import grey from '@material-ui/core/colors/grey';
 
-export interface SimpleFileUploadProps extends FieldProps {
-  label: string;
-  accept: string;
-  fieldId: string;
-  disabled?: boolean;
-  InputProps?: Omit<InputProps, 'name' | 'type' | 'label'>;
-  caption?: string;
-}
+import { root } from '../../../api/config';
+import { SimpleFileUploadProps } from '../../../interfaces/SimpleFileUploadProps';
 
 const FileUpload = ({
   field,

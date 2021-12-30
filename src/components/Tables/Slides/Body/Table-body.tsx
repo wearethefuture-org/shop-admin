@@ -6,7 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import { Switch } from '@material-ui/core';
 
-import { ISlideItem, SlideTableData } from '../../../../interfaces/ISlides';
+import { ISlideItem } from '../../../../interfaces/ISlides';
 
 import {
   fetchDeleteSlides,
@@ -19,7 +19,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { ISlidesModal } from '../../../../interfaces/modals';
 
 interface TableBodyProps {
-  rows: SlideTableData[];
+  rows: ISlideItem[];
   rowsPerPage: number;
   page: number;
   emptyRows: number;
@@ -64,7 +64,7 @@ const SlideTableBody: React.FC<TableBodyProps> = ({
     };
   };
 
-  const handleClickDelete = (item: SlideTableData) => {
+  const handleClickDelete = (item: ISlideItem) => {
     dispatch(fetchDeleteSlides(item));
   };
 
