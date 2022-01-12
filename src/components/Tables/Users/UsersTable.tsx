@@ -8,9 +8,9 @@ import UserRemoveDialog from '../../Modals/UserRemoveDialog/UserRemoveDialog';
 import { AppDispatch, RootState } from '../../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUsersRequest } from '../../../store/actions/users.actions';
+import { IUserItem } from '../../../interfaces/IUsers';
 
-const UsersTable = ({ list }) => {
-
+const UsersTable = ({ list }: { list: IUserItem[] }) => {
   const dispatch: AppDispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -50,14 +50,14 @@ const UsersTable = ({ list }) => {
     setUserDialogIsOpen(true);
     setModalParams({
       isNew: false,
-      user: list.find(item => item.id == event.currentTarget.value),
+      user: list.find((item) => item.id == event.currentTarget.value),
       closeModal: userDialogClose,
     });
   };
   const openDialogRemoveUser = (event) => {
     setRemoveUserDialogIsOpen(true);
     setModalRemoveParams({
-      user: list.find(item => item.id == event.currentTarget.value),
+      user: list.find((item) => item.id == event.currentTarget.value),
       closeModal: removeUserDialogClose,
     });
   };
@@ -68,14 +68,14 @@ const UsersTable = ({ list }) => {
         onClick={openDialogNewUser}
         variant="contained"
         color="primary"
-        startIcon={<AddIcon/>}
+        startIcon={<AddIcon />}
       >
         Створити
       </Button>
       {userDialogIsOpen && <UserDialog {...modalParams} />}
       {removeUserDialogIsOpen && <UserRemoveDialog {...modalRemoveParams} />}
     </Box>
-  )
+  );
 
   const userColumns = [
     {
@@ -112,7 +112,7 @@ const UsersTable = ({ list }) => {
       selector: (row) => row.telegramId,
     },
     {
-      name: 'Ім\'я',
+      name: "Ім'я",
       selector: (row) => `${row.firstName} ${row.lastName}`,
       sortable: true,
     },
