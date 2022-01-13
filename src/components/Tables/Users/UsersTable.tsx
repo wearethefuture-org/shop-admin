@@ -27,13 +27,13 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
   };
 
   const [userDialogIsOpen, setUserDialogIsOpen] = useState(false);
-  const [removeUserDialogIsOpen, setRemoveUserDialogIsOpen] = useState(false);
+  const [confirmRemoveUserIsOpen, setConfirmRemoveUserIsOpen] = useState(false);
 
   const userDialogClose = () => {
     setUserDialogIsOpen(false);
   };
   const removeUserDialogClose = () => {
-    setRemoveUserDialogIsOpen(false);
+    setConfirmRemoveUserIsOpen(false);
   };
   const [modalParams, setModalParams] = useState();
   const [modalRemoveParams, setModalRemoveParams] = useState();
@@ -55,7 +55,7 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
     });
   };
   const openDialogRemoveUser = (event) => {
-    setRemoveUserDialogIsOpen(true);
+    setConfirmRemoveUserIsOpen(true);
     setModalRemoveParams({
       user: list.find((item) => item.id == event.currentTarget.value),
       closeModal: removeUserDialogClose,
@@ -73,7 +73,7 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
         Створити
       </Button>
       {userDialogIsOpen && <UserDialog {...modalParams} />}
-      {removeUserDialogIsOpen && <UserRemoveDialog {...modalRemoveParams} />}
+      {confirmRemoveUserIsOpen && <UserRemoveDialog {...modalRemoveParams} />}
     </Box>
   );
 
