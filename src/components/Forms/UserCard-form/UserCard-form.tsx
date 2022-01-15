@@ -178,6 +178,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.firstName && Boolean(formik.errors.firstName)}
           helperText={formik.touched.firstName && formik.errors.firstName}
+          InputProps={{ disableUnderline: true }}
         />
       </div>
       <div className={classes.row}>
@@ -193,6 +194,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.lastName && Boolean(formik.errors.lastName)}
           helperText={formik.touched.lastName && formik.errors.lastName}
+          InputProps={{ disableUnderline: true }}
         />
       </div>
       <div className={classes.row}>
@@ -208,6 +210,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
           helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+          InputProps={{ disableUnderline: true }}
         />
       </div>
       <div className={classes.row}>
@@ -223,6 +226,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.email && Boolean(formik.errors.email)}
           helperText={formik.touched.email && formik.errors.email}
+          InputProps={{ disableUnderline: true }}
         />
       </div>
       <div className={classes.row}>
@@ -238,6 +242,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.telegramId && Boolean(formik.errors.telegramId)}
           helperText={formik.touched.telegramId && formik.errors.telegramId}
+          InputProps={{ disableUnderline: true }}
         />
       </div>
       <div className={classes.row}>
@@ -251,6 +256,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           placeholder={'роль'}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          disableUnderline
         >
           {roles.map((role) => {
             return (
@@ -275,6 +281,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             onBlur={formik.handleBlur}
             error={formik.touched.currentPassword && Boolean(formik.errors.currentPassword)}
             helperText={formik.touched.currentPassword && formik.errors.currentPassword}
+            InputProps={{ disableUnderline: true }}
           />
         </div>
       ) : null}
@@ -291,6 +298,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.newPassword && Boolean(formik.errors.newPassword)}
           helperText={formik.touched.newPassword && formik.errors.newPassword}
+          InputProps={{ disableUnderline: true }}
         />
       </div>
       <div className={classes.row}>
@@ -306,6 +314,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.confirmNewPassword && Boolean(formik.errors.confirmNewPassword)}
           helperText={formik.touched.confirmNewPassword && formik.errors.confirmNewPassword}
+          InputProps={{ disableUnderline: true }}
         />
       </div>
       <div className={classes.row}>
