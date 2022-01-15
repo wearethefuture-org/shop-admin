@@ -179,6 +179,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           error={formik.touched.firstName && Boolean(formik.errors.firstName)}
           helperText={formik.touched.firstName && formik.errors.firstName}
           InputProps={{ disableUnderline: true }}
+          margin="dense"
         />
       </div>
       <div className={classes.row}>
@@ -195,6 +196,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           error={formik.touched.lastName && Boolean(formik.errors.lastName)}
           helperText={formik.touched.lastName && formik.errors.lastName}
           InputProps={{ disableUnderline: true }}
+          margin="dense"
         />
       </div>
       <div className={classes.row}>
@@ -211,6 +213,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
           helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
           InputProps={{ disableUnderline: true }}
+          margin="dense"
         />
       </div>
       <div className={classes.row}>
@@ -227,6 +230,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           error={formik.touched.email && Boolean(formik.errors.email)}
           helperText={formik.touched.email && formik.errors.email}
           InputProps={{ disableUnderline: true }}
+          margin="dense"
         />
       </div>
       <div className={classes.row}>
@@ -243,6 +247,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           error={formik.touched.telegramId && Boolean(formik.errors.telegramId)}
           helperText={formik.touched.telegramId && formik.errors.telegramId}
           InputProps={{ disableUnderline: true }}
+          margin="dense"
         />
       </div>
       <div className={classes.row}>
@@ -282,6 +287,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             error={formik.touched.currentPassword && Boolean(formik.errors.currentPassword)}
             helperText={formik.touched.currentPassword && formik.errors.currentPassword}
             InputProps={{ disableUnderline: true }}
+            margin="dense"
           />
         </div>
       ) : null}
@@ -299,6 +305,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           error={formik.touched.newPassword && Boolean(formik.errors.newPassword)}
           helperText={formik.touched.newPassword && formik.errors.newPassword}
           InputProps={{ disableUnderline: true }}
+          margin="dense"
         />
       </div>
       <div className={classes.row}>
@@ -315,6 +322,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           error={formik.touched.confirmNewPassword && Boolean(formik.errors.confirmNewPassword)}
           helperText={formik.touched.confirmNewPassword && formik.errors.confirmNewPassword}
           InputProps={{ disableUnderline: true }}
+          margin="dense"
         />
       </div>
       <div className={classes.row}>
