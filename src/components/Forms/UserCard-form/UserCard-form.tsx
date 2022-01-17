@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
+import InputMask from 'react-input-mask';
 
 import { AppDispatch } from '../../../store/store';
 import { addUserRequest, updateUserRequest } from '../../../store/actions/users.actions';
@@ -11,11 +12,24 @@ import { IUserItem } from '../../../interfaces/IUsers';
 import { failSnackBar } from '../../../store/actions/snackbar.actions';
 import useRoles from '../../../hooks/useRoles';
 
+// todo
+// how to avoid code duplication in input and inputError fields?
+// see input, inputError
 const useStyles = makeStyles({
   input: {
     width: '270px',
     height: '44px',
     border: '1px solid #e2e6e7',
+    boxSizing: 'border-box',
+    borderRadius: ' 60px',
+    padding: '11px',
+    outline: 'none',
+    margin: '10px',
+  },
+  inputError: {
+    width: '270px',
+    height: '44px',
+    border: '1px solid #ff0000',
     boxSizing: 'border-box',
     borderRadius: ' 60px',
     padding: '11px',
@@ -73,8 +87,20 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     lastName: Yup.string()
       .min(2, 'Введіть коректне прізвище')
       .required('Це поле не повинно бути пустим!'),
-    tel: Yup.string().matches(phoneRegExp, 'Неправильний номер').max(13, 'Неправильний номер'),
-    email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
+    phoneNumber: Yup.string()
+      .required('Це поле не повинно бути пустим!')
+      .test(
+        'length',
+        'Неправильний номер телефону',
+        (value: string | null | undefined): boolean => {
+          if (typeof value === 'string') {
+            const lengthOnlyNumbers = value.replace(/-|_/g, '').length;
+            return lengthOnlyNumbers === 17;
+          }
+          return false;
+        }
+      ),
+    email: Yup.string().email('Неправильна адреса!').required('Це поле не повинно бути пустим!'),
     telegramId: Yup.string().notRequired().nullable(),
     roleId: Yup.string().required('Це поле не повинно бути пустим!'),
     newPassword: Yup.string()
@@ -159,6 +185,12 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     },
   });
 
+  const getInputClass = (fieldName): string => {
+    return formik.touched[fieldName] && Boolean(formik.errors[fieldName])
+      ? classes.inputError
+      : classes.input;
+  };
+
   return (
     <form
       onSubmit={formik.handleSubmit}
@@ -167,7 +199,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     >
       <div className={classes.row}>
         <TextField
-          className={classes.input}
+          className={getInputClass('firstName')}
           value={formik.values.firstName}
           disabled={!isEdit}
           type="text"
@@ -184,7 +216,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       </div>
       <div className={classes.row}>
         <TextField
-          className={classes.input}
+          className={getInputClass('lastName')}
           value={formik.values.lastName}
           disabled={!isEdit}
           type="text"
@@ -200,14 +232,15 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
         />
       </div>
       <div className={classes.row}>
-        <TextField
-          className={classes.input}
+        <InputMask
+          className={getInputClass('phoneNumber')}
           value={formik.values.phoneNumber}
           disabled={!isEdit}
           type="tel"
           name="phoneNumber"
           id="tel-field"
-          placeholder="Номер телефону"
+          mask="+380\ 99 999 99 99"
+          placeholder="+380 __ ___ __ __"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
@@ -218,7 +251,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       </div>
       <div className={classes.row}>
         <TextField
-          className={classes.input}
+          className={getInputClass('email')}
           value={formik.values.email}
           disabled={!isEdit}
           type="email"
@@ -235,7 +268,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       </div>
       <div className={classes.row}>
         <TextField
-          className={classes.input}
+          className={getInputClass('telegramId')}
           value={formik.values.telegramId}
           disabled={!isEdit}
           type="text"
@@ -275,7 +308,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       {!isNew ? (
         <div className={classes.row}>
           <TextField
-            className={classes.input}
+            className={getInputClass('currentPassword')}
             autoComplete={'false'}
             disabled={!isEdit}
             type="password"
@@ -293,7 +326,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       ) : null}
       <div className={classes.row}>
         <TextField
-          className={classes.input}
+          className={getInputClass('newPassword')}
           autoComplete={'false'}
           disabled={!isEdit}
           type="password"
@@ -310,7 +343,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       </div>
       <div className={classes.row}>
         <TextField
-          className={classes.input}
+          className={getInputClass('confirmNewPassword')}
           autoComplete={'false'}
           disabled={!isEdit}
           type="password"
