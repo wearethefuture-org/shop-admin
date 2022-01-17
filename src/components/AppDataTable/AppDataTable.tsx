@@ -16,6 +16,7 @@ interface DataTableProps {
   paginationServer?: boolean;
   setPage?: Dispatch<SetStateAction<number>>;
   defaultSortFieldId?: string;
+  customStyles?: any;
 }
 
 const AppDataTable: React.FC<DataTableProps> = ({
@@ -29,9 +30,10 @@ const AppDataTable: React.FC<DataTableProps> = ({
   setLimit = () => {},
   paginationServer = false,
   defaultSortFieldId = '',
+  customStyles = '',
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
-  
+
   return (
     <Card>
       <DataTable
@@ -57,6 +59,7 @@ const AppDataTable: React.FC<DataTableProps> = ({
           rowsPerPageText: 'Рядків на сторінці:',
           rangeSeparatorText: 'з',
         }}
+        customStyles={customStyles}
       />
     </Card>
   );
