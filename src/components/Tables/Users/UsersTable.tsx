@@ -159,6 +159,11 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
         setPage={(e) => onChangePage(e)}
         paginationServer={true}
         defaultSortFieldId={'created'}
+        customStyles={{
+          cells: {
+            style: { cursor: 'default' },
+          },
+        }}
       />
     </React.Fragment>
   );
