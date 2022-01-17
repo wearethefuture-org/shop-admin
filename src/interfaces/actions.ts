@@ -8,6 +8,7 @@ export interface IActionsImage extends IActions {
    name: string,
    text: string,
    image: string| File| null,
+   imageMobile: string| File| null,
    href: string,
    isShown: boolean,
    priority: number

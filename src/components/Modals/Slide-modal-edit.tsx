@@ -9,27 +9,22 @@ import { Dispatch } from 'redux';
 
 import { ISlidesModal } from '../../interfaces/modals';
 import SlideForm from '../Forms/Slide-form/Slide-form';
-import { SlideTableData } from "../../interfaces/ISlides";
+import { ISlideItem } from '../../interfaces/ISlides';
 
 interface FormDialogProps {
-  dispatch: Dispatch,
-  slidesLength: number,
-  modalData: ISlidesModal,
-  row: SlideTableData,
+  dispatch: Dispatch;
+  slidesLength: number;
+  modalData: ISlidesModal;
+  row: ISlideItem;
 }
 
-const FormDialog: React.FC<FormDialogProps> = ({
-                                                 dispatch,
-                                                 modalData,
-                                                 row,
-                                               }) => {
-
-  const {handleClickOpen, handleClose, isOpened} = modalData;
+const FormDialog: React.FC<FormDialogProps> = ({ dispatch, modalData, row }) => {
+  const { handleClickOpen, handleClose, isOpened } = modalData;
 
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        <EditIcon/>
+        <EditIcon />
       </Button>
       <Dialog
         open={isOpened}
@@ -46,6 +41,7 @@ const FormDialog: React.FC<FormDialogProps> = ({
             initialName={row.name}
             initialText={row.text}
             initialImage={row.image as string}
+            initialImageMobile={row.imageMobile as string}
             initialHref={row.href}
             initialIsShown={row.isShown}
             initialPriority={row.priority}

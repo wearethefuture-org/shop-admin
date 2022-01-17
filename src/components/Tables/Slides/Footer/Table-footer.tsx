@@ -9,10 +9,10 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { makeStyles, Theme, createStyles, ThemeOptions } from '@material-ui/core/styles';
 
-import { SlideTableData } from '../../../../interfaces/ISlides';
+import { ISlideItem } from '../../../../interfaces/ISlides';
 
 interface SlideTableFooterProps {
-  rows: SlideTableData[];
+  rows: ISlideItem[];
   rowsPerPage: number;
   page: number;
   setPage(page: number): void;
@@ -126,7 +126,7 @@ const SlideTableFooter: React.FC<SlideTableFooterProps> = ({
             native: true,
           }}
           onPageChange={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
           ActionsComponent={TablePaginationActions}
         />
       </TableRow>
