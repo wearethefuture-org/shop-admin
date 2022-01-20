@@ -13,7 +13,7 @@ interface NotificationListProps {
   onNoticeListClose: () => void;
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: any) => ({
   dropdown: {
     width: '20rem',
     fontSize: '15px',

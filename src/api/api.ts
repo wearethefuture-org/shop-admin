@@ -38,6 +38,7 @@ import {
 import instance from './axios-interceptors';
 import { Status } from '../enums/orderStatus';
 import { IRole } from '../interfaces/IRoles';
+import { IDraw, IDrawReqAdd, IDrawResponse } from '../interfaces/IDraw';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -120,6 +121,12 @@ type ApiFetchedDataType = {
   search: {
     getSearchItems: (fields: ISearchItems) => FetchedDataType<ISearchItemsResponse>;
   };
+  draws: {
+    add: (drawValues: IDrawReqAdd) => FetchedDataType<IDraw>;
+    update: (id: number, drawValues: IDrawReqAdd) => FetchedDataType<IDraw>;
+    get: (page: number, limit: number) => FetchedDataType<IDrawResponse>;
+    delete: (id: number) => FetchedDataType<JSON>;
+  };
 };
 
 export const api: ApiFetchedDataType = {
@@ -197,5 +204,11 @@ export const api: ApiFetchedDataType = {
       instance.get(
         `${root}/search/admin?${fields.option}=${fields.query}&page=${fields.page}&limit=${fields.limit}`
       ),
+  },
+  draws: {
+    add: (drawValues) => instance.post(`${root}/draws`, drawValues),
+    update: (id, drawValues) => instance.put(`${root}/draws/${id}`, drawValues),
+    get: (page, limit) => instance.get(`${root}/draws?page=${page}&limit=${limit}`),
+    delete: (id) => instance.delete(`${root}/draws/admin/${id}`),
   },
 };
