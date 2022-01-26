@@ -50,7 +50,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
     },
     {
       name: 'UserID',
-      selector: (row) => row.user.id,
+      selector: (row) => row.user?.id,
       sortable: true,
       maxWidth: '100px',
       minWidth: '60px',
