@@ -10,6 +10,9 @@ import DateMoment from '../../../Common/Date-moment';
 import UserDialog from '../../../Modals/UserDialog/UserDialog';
 import UserRemoveDialog from '../../../Modals/UserRemoveDialog/UserRemoveDialog';
 
+// Is this component used anywhere?
+// I tried to find its usage everywhere in this project code but couldnt.
+
 interface TableBodyProps {
   rows: IUserItem[];
   rowsPerPage: number;

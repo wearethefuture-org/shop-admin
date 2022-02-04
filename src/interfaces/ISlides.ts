@@ -3,6 +3,7 @@ export interface ISlideFormValues {
   name: string;
   text: string;
   image: string;
+  imageMobile: string;
   href: string;
   isShown: boolean;
   priority: number;
@@ -29,6 +30,7 @@ export interface ISlideItem {
   updatedAt: string;
   text: string;
   image: string|File|null;
+  imageMobile: string|File|null;
   href: string;
   isShown: boolean;
   priority: number;
@@ -45,6 +47,7 @@ export interface SlideTableData {
   updatedAt: string;
   text: string;
   image: string|File|null;
+  imageMobile: string|File|null;
   href: string;
   isShown: boolean;
   priority: number;

@@ -11,6 +11,7 @@ const TableHeader:React.FC = () => {
                 <TableCell>Name</TableCell>
                 <TableCell>Text</TableCell>
                 <TableCell>Image</TableCell>
+                <TableCell>Image Mobile</TableCell>
                 <TableCell>Href</TableCell>
                 <TableCell>IsShown</TableCell>
                 <TableCell>Priority</TableCell>

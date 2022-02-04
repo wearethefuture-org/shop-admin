@@ -6,14 +6,14 @@ import TableHeader from './Header/Table-header';
 import SlideTableBody from './Body/Table-body';
 import SlideTableFooter from './Footer/Table-footer';
 import TableContainer from '@material-ui/core/TableContainer';
-import { ISlideItem, SlideTableData } from '../../../interfaces/ISlides';
-import { Dispatch } from "redux";
-import { ISlidesModal } from "../../../interfaces/modals";
+import { ISlideItem } from '../../../interfaces/ISlides';
+import { Dispatch } from 'redux';
+import { ISlidesModal } from '../../../interfaces/modals';
 
 interface SlideDataProps {
-  data: Array<ISlideItem>,
-  dispatch: Dispatch,
-  modalData: ISlidesModal,
+  data: Array<ISlideItem>;
+  dispatch: Dispatch;
+  modalData: ISlidesModal;
 }
 
 function createData(
@@ -23,11 +23,12 @@ function createData(
   name: string,
   text: string,
   image: string,
+  imageMobile: string,
   href: string,
   isShown: boolean,
   priority: number
 ) {
-  return {id, name, createdAt, updatedAt, text, image, href, isShown, priority};
+  return { id, name, createdAt, updatedAt, text, image, imageMobile, href, isShown, priority };
 }
 
 const useTableStyles = makeStyles({
@@ -36,13 +37,12 @@ const useTableStyles = makeStyles({
   },
 });
 
-const SlidesTable: React.FC<SlideDataProps> = ({data, dispatch, modalData}) => {
+const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) => {
   const classes = useTableStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const rows: Array<SlideTableData> = data.map((slide: ISlideItem) => {
-
+  const rows: Array<ISlideItem> = data.map((slide: ISlideItem) => {
     return createData(
       slide.id,
       slide.createdAt,
@@ -50,20 +50,21 @@ const SlidesTable: React.FC<SlideDataProps> = ({data, dispatch, modalData}) => {
       slide.name,
       slide.text,
       slide.image as string,
+      slide.imageMobile as string,
       slide.href,
       slide.isShown,
       slide.priority
-    )
-  })
+    );
+  });
 
-  rows.sort((a, b) => (a.priority - b.priority));
+  rows.sort((a, b) => a.priority - b.priority);
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">
-        <TableHeader/>
+        <TableHeader />
         <SlideTableBody
           data={data}
           dispatch={dispatch}
@@ -83,6 +84,6 @@ const SlidesTable: React.FC<SlideDataProps> = ({data, dispatch, modalData}) => {
       </Table>
     </TableContainer>
   );
-}
+};
 
 export default SlidesTable;
