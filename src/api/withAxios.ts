@@ -16,21 +16,19 @@ const WithAxios: FC<WithAxiosProps> = ({ children }) => {
 
   instance.interceptors.response.use(
     (res) => {
-      return res;
+    return res;
     },
     (err) => {
-      switch (err.response.status) {
-        case 401: {
-          history.push('/home');
+      if (err.response && err.response.data) {
+
+        if(err.response.status === 401) {
+         history.push('/home');
           dispatch(signOutUser());
           clearStorage();
-          throw new Error(err.response.data.message);
-        }
-
-        default: {
-          throw new Error(err.response.data.message);
-        }
-      }
+    }
+        return Promise.reject(err.response.data);
+    }
+    return Promise.reject(err);
     }
   );
 
