@@ -61,7 +61,7 @@ type ApiFetchedDataType = {
       imgName: string;
     }) => FetchedDataType<IGetProductById>;
     deleteImg: (imgName: string) => FetchedDataType<IGetProductById>;
-    deleteProduct: (id: number) => FetchedDataType<JSON>;
+    deleteProduct: (id: number) => FetchedDataType<IGetProductById>;
     addProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateAvailabilityProduct: (

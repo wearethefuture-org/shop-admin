@@ -21,6 +21,7 @@ enum cols {
   comment = 'Коментар',
   sum = 'Сума',
   status = 'Статус',
+  notcall = 'Не передзвонювати',
 }
 
 const OrdersPage: React.FC = () => {
@@ -40,6 +41,7 @@ const OrdersPage: React.FC = () => {
     cols.comment,
     cols.sum,
     cols.status,
+    cols.notcall,
   ]);
 
   const handleColumns = (column: string) =>

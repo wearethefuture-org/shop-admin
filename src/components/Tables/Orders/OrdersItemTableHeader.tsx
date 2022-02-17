@@ -43,7 +43,7 @@ const OrdersItemTableHeader: FC<OrdersItemTableHeaderProps> = ({ order }) => {
       </div>
       {order.comment && (
         <div className={styles.commentBlock}>
-          <SmsIcon color="primary" /> <b>Коментар до замовлення: </b>
+          <SmsIcon color="primary" /> <b>Коментар до замовлення:ф </b>
           <span>{order.comment}</span>
         </div>
       )}

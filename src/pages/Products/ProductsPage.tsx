@@ -20,6 +20,7 @@ enum cols {
   files = 'Зображення',
   createdAt = 'Створено',
   updatedAt = 'Оновлено',
+  notcall = 'Не передзвонювати',
 }
 
 const Products: React.FC = () => {
