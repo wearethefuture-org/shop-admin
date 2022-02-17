@@ -122,6 +122,13 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
       omit: !activeColumns.includes('Коментар'),
     },
     {
+      name: 'Не передзвонювати',
+      selector: (row) => `${row.notcall ? 'true' : 'false'}`,
+      maxWidth: '300px',
+      sortable: true,
+      omit: !activeColumns.includes('Не передзвонювати'),
+    },
+    {
       name: 'Сума',
       selector: (row) => row.amount,
       maxWidth: '100px',
