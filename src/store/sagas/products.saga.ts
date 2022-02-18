@@ -12,11 +12,11 @@ import {
   apiUploadMainImg,
   apiUploadImages,
   apiDeleteImg,
-  apiDeleteChar,
   apiUpdateProductCharValues,
   apiAddProductCharValues,
   apiUpdateAvailabilityProduct,
   disableProduct,
+  deleteProductCharValues
 } from './services/products.service';
 import {
   addProductError,
@@ -152,13 +152,12 @@ export function* updateProductWorker({
       });
     }
 
-    if (charsToDelete.length) {
-      yield call(
-        apiDeleteChar,
-        { url: '/characteristics-values' },
-        { characteristicValuesIds: charsToDelete }
-      );
-    }
+    // if (charsToDelete.length) {
+    //   yield call(
+    //     deleteProductCharValues,
+    //     { characteristicValuesIds: charsToDelete }
+    //   );
+    // }
 
     if (imagesToDelete.length) {
       yield all(imagesToDelete.map((img) => call(apiDeleteImg, img)));
@@ -178,17 +177,17 @@ export function* deleteProductWorker({ data: product }: IActions): SagaIterator 
   try {
     const charValues = product.characteristicValue.map((value) => value.id);
 
-    if (charValues.length)
-      yield call(
-        apiDeleteChar,
-        { url: '/characteristics-values' },
-        { characteristicValuesIds: charValues }
-      );
+    // if (charValues.length)
+    //   yield call(
+    //     deleteProductCharValues,  
+    //     { characteristicValuesIds: charValues }
+    //   );
 
     yield call(apiDeleteProduct, product.id);
     yield put(deleteProductSuccess(product.id));
     yield put(successSnackBar());
   } catch (error) {
+    console.log(error)
     yield put(failSnackBar(error.message));
     yield put(deleteProductError(error.message));
   }

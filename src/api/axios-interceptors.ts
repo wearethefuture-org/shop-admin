@@ -22,4 +22,6 @@ instance.interceptors.request.use(
   }
 );
 
+export const temporaryToken = 'Bearer ' + getToken()
+
 export default instance;

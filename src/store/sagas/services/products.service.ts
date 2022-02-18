@@ -4,10 +4,12 @@ import { api } from '../../../api/api';
 import { root } from '../../../api/config';
 import {
   IAddProduct,
+  IDeleteProductChars,
   IDisableProduct,
   IProductCharRequest,
   IUpdateAvailabilityProduct,
 } from '../../../interfaces/IProducts';
+import { temporaryToken } from '../../../api/axios-interceptors';
 
 export async function apiGetProducts(page: number, limit: number) {
   const products = await api.products.get(page, limit);
@@ -79,14 +81,25 @@ export async function disableProduct(data: IDisableProduct) {
   return res.data;
 }
 
-export const apiDeleteChar = (
-  config: AxiosRequestConfig,
-  data: { characteristicValuesIds: string[] }
-): Promise<string> => {
-  return axios({
-    method: 'delete',
-    url: root && root + config.url,
-    headers: { 'Content-Type': 'application/json' },
-    data: JSON.stringify(data),
-  }).then((res: AxiosResponse) => res.data);
-};
+export async function deleteProductCharValues(data :IDeleteProductChars) {
+  const res = await api.products.deleteProductCharValues(data);
+  return res.data
+}
+
+// export const apiDeleteChar = (
+//   config: AxiosRequestConfig,
+//   data: { characteristicValuesIds: string[] }
+// ): Promise<string> => {
+//   console.log(temporaryToken)
+//   return axios({
+//     method: 'delete',
+//     url: root && root + config.url,
+//     headers: { 'Content-Type': 'application/json',
+//                'Authorization' : temporaryToken
+    
+    
+  
+//   },
+//     data: JSON.stringify(data),
+//   }).then((res: AxiosResponse) => res.data);
+// };
