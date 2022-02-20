@@ -130,6 +130,7 @@ export interface IProductsInCart extends Common {
     updatedAt: string;
     userId: number;
     status: string;
+    notcall: boolean;
   }[];
   product: IGetProducts;
 }
