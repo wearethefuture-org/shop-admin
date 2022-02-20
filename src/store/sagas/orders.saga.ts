@@ -44,9 +44,13 @@ export function* updateOrderWorker({
   data: { orderId, productId, quantity },
 }: IActions): SagaIterator<void> {
   try {
-    const order = yield call(apiUpdateOrder, orderId, productId, quantity);
-    yield put(updateOrderSuccess(order));
-    yield put(successSnackBar());
+    if(Number(quantity.quantity) > 0) {
+      const order = yield call(apiUpdateOrder, orderId, productId, quantity);
+      yield put(updateOrderSuccess(order));
+      yield put(successSnackBar());
+    } else {
+        throw new Error("Значення повинно бути більше нуля!");
+    }
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(updateOrderError(error.message));
