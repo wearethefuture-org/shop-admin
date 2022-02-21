@@ -133,6 +133,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
       title: 'Відгуки',
       itemIcon: <FeedbackIcon fontSize="small" className={styles.icon} />,
     },
+    {
+      pageURL: '/draws',
+      title: 'Розіграші',
+      itemIcon: <FeedbackIcon fontSize="small" className={styles.icon} />,
+    },
   ];
 
   const extraSidebarItems = [

@@ -40,6 +40,10 @@ import {
   GET_ROLES_REQUEST,
   DISABLE_PRODUCT_REQUEST,
   GET_SEARCH_ITEMS_REQUEST,
+  ADD_DRAW_REQUEST,
+  GET_DRAWS_REQUEST,
+  DELETE_DRAW_REQUEST,
+  UPDATE_DRAW_REQUEST,
 } from './types';
 
 import {
@@ -86,6 +90,12 @@ import {
 import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
 import { getRolesWorker } from './sagas/roles.saga';
 import { getSearchItemsWorker } from './sagas/search.saga';
+import {
+  addDrawWorker,
+  deleteDrawWorker,
+  getDrawsWorker,
+  updateDrawWorker,
+} from './sagas/draws.saga';
 
 export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(GET_TREE_CATEGORIES_REQUEST, fetchTreeCategoryWorker);
@@ -134,6 +144,14 @@ export function* sagaFeedbacksWatcher(): SagaIterator {
   yield takeEvery(DELETE_FEEDBACK_REQUEST, deleteFeedbackWorker);
 }
 
+// Draws
+export function* sagaDrawsWatcher(): SagaIterator {
+  yield takeEvery(ADD_DRAW_REQUEST, addDrawWorker);
+  yield takeEvery(UPDATE_DRAW_REQUEST, updateDrawWorker);
+  yield takeEvery(GET_DRAWS_REQUEST, getDrawsWorker);
+  yield takeEvery(DELETE_DRAW_REQUEST, deleteDrawWorker);
+}
+
 //Orders
 function* sagaOrdersWatcher(): SagaIterator {
   yield takeEvery(GET_ORDERS_REQUEST, getOrdersWorker);
@@ -175,6 +193,7 @@ export default function* rootSaga(): SagaIterator {
     fork(sagaOrdersWatcher),
     fork(sagaCommentsWatcher),
     fork(sagaFeedbacksWatcher),
+    fork(sagaDrawsWatcher),
     fork(sagaUsersWatcher),
     fork(sagaUserWatcher),
     fork(getRolesWatcher),

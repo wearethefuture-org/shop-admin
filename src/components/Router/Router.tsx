@@ -26,6 +26,7 @@ import CommentsPage from '../../pages/Comments/CommentsPage';
 import FeedbacksPage from '../../pages/Feedbacks/FeedbacksPage';
 import Search from '../../pages/Search/Search';
 import WithAxios from '../../api/withAxios';
+import DrawsPage from '../../pages/Draws/DrawsPage';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -61,6 +62,7 @@ const Router: React.FC = () => {
                 <PrivateRoute path="/settings" component={Settings} />
                 <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
                 <PrivateRoute path="/orders" component={OrdersPage} />
+                <PrivateRoute path="/draws" component={DrawsPage} />
                 <PrivateRoute component={ViewProduct} path="/product/:id" />
                 <PrivateRoute component={TreeCategoryRouter} path="/tree-category/:id" />
                 <PrivateRoute component={Search} path="/search" />
