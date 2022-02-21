@@ -111,6 +111,11 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       sortable: true,
     },
     {
+      name: 'Спосіб доставки',
+      selector: (row) => row.delivery.deliveryMethod,
+      sortable: true,
+    },
+    {
       name: 'Ціна',
       selector: (row) => row.product.price,
       sortable: true,
