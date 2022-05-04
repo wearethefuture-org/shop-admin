@@ -7,12 +7,14 @@ import {
   SET_INACTIVE_SLIDER_ANIMATION,
 } from '../types';
 
-export const getSliderAnimations = (): IActions => ({
+export const getSliderAnimations = (sliderAnimations: ISliderAnimations): IActions => ({
   type: GET_SLIDER_ANIMATIONS,
+  data: sliderAnimations,
 });
 
-export const getActiveSliderAnimation = (): IActions => ({
+export const getActiveSliderAnimation = (activeSliderAnimation: ISliderAnimation): IActions => ({
   type: GET_ACTIVE_SLIDER_ANIMATION,
+  data: activeSliderAnimation,
 });
 
 export const setActiveSliderAnimation = (id: number): IActions => ({
