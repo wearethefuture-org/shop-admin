@@ -208,7 +208,9 @@ export const api: ApiFetchedDataType = {
   sliderAnimations: {
     getSliderAnimations: () => instance.get(`${root}/slider-animations`),
     getActiveSliderAnimation: () => instance.get(`${root}/slider-animations/active`),
-    setActiveSliderAnimation: (id: number) => instance.post(`${root}/slider-animations/${id}`),
-    setInactiveSliderAnimation: (id: number) => instance.post(`${root}/slider-animations/${id}`),
+    setActiveSliderAnimation: (id: number) =>
+      instance.post(`${root}/slider-animations/active/${id}`),
+    setInactiveSliderAnimation: (id: number) =>
+      instance.post(`${root}/slider-animations/inactive/${id}`),
   },
 };

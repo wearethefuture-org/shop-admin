@@ -12,5 +12,5 @@ export interface ISliderAnimationsData {
   id: number;
   animation: string;
   active: boolean;
-  animations: ISliderAnimations | [];
+  animations: any;
 }

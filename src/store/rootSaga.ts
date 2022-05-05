@@ -44,6 +44,9 @@ import {
   GET_ACTIVE_SLIDER_ANIMATION,
   SET_ACTIVE_SLIDER_ANIMATION,
   SET_INACTIVE_SLIDER_ANIMATION,
+  GET_SLIDER_ANIMATIONS_REQUEST,
+  REQUEST_SET_ACTIVE_SLIDER_ANIMATION,
+  REQUEST_SET_INACTIVE_SLIDER_ANIMATION,
 } from './types';
 
 import {
@@ -90,7 +93,12 @@ import {
 import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
 import { getRolesWorker } from './sagas/roles.saga';
 import { getSearchItemsWorker } from './sagas/search.saga';
-import { getActiveSliderAnimationWorker, getSliderAnimationsWorker, setActiveSliderAnimationWorker, setInactiveSliderAnimationWorker } from './sagas/sliderAnimations.saga';
+import {
+  getActiveSliderAnimationWorker,
+  getSliderAnimationsWorker,
+  setActiveSliderAnimationWorker,
+  setInactiveSliderAnimationWorker,
+} from './sagas/sliderAnimations.saga';
 
 export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(GET_TREE_CATEGORIES_REQUEST, fetchTreeCategoryWorker);
@@ -171,10 +179,11 @@ export function* sagaSearchWatcher(): SagaIterator {
 }
 
 export function* sagaSliderAnimationsWatcher(): SagaIterator {
-  yield takeEvery(GET_SLIDER_ANIMATIONS, getSliderAnimationsWorker);
-  yield takeEvery(GET_ACTIVE_SLIDER_ANIMATION, getActiveSliderAnimationWorker);
-  // yield takeEvery(SET_ACTIVE_SLIDER_ANIMATION, setActiveSliderAnimationWorker);
-  // yield takeEvery(SET_INACTIVE_SLIDER_ANIMATION, setInactiveSliderAnimationWorker);
+  yield takeEvery(GET_SLIDER_ANIMATIONS_REQUEST, getSliderAnimationsWorker);
+  // yield takeEvery(GET_SLIDER_ANIMATIONS, getSliderAnimationsWorker);
+  yield takeEvery(GET_SLIDER_ANIMATIONS_REQUEST, getActiveSliderAnimationWorker);
+  yield takeEvery(REQUEST_SET_ACTIVE_SLIDER_ANIMATION, setActiveSliderAnimationWorker);
+  yield takeEvery(REQUEST_SET_INACTIVE_SLIDER_ANIMATION, setInactiveSliderAnimationWorker);
 }
 
 // RootSaga

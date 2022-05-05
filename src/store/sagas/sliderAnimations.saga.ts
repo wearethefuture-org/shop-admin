@@ -32,18 +32,20 @@ export function* getActiveSliderAnimationWorker(): SagaIterator {
   }
 }
 
-export function* setActiveSliderAnimationWorker(id: number): SagaIterator {
+type Params = { data: number; type: string };
+
+export function* setActiveSliderAnimationWorker({ data }: Params): SagaIterator {
   try {
-    const animation = yield call(apiSetActiveSliderAnimation, id);
+    const animation = yield call(apiSetActiveSliderAnimation, data);
     yield put(setActiveSliderAnimation(animation));
   } catch (e) {
     yield put(failSnackBar(e.message));
   }
 }
 
-export function* setInactiveSliderAnimationWorker(id: number): SagaIterator {
+export function* setInactiveSliderAnimationWorker({ data }: Params): SagaIterator {
   try {
-    const animation = yield call(apiSetInactiveSliderAnimation, id);
+    const animation = yield call(apiSetInactiveSliderAnimation, data);
     yield put(setInactiveSliderAnimation(animation));
   } catch (e) {
     yield put(failSnackBar(e.message));
