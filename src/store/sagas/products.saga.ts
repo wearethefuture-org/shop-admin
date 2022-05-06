@@ -152,13 +152,6 @@ export function* updateProductWorker({
       });
     }
 
-    // if (charsToDelete.length) {
-    //   yield call(
-    //     deleteProductCharValues,
-    //     { characteristicValuesIds: charsToDelete }
-    //   );
-    // }
-
     if (imagesToDelete.length) {
       yield all(imagesToDelete.map((img) => call(apiDeleteImg, img)));
     }
@@ -176,13 +169,6 @@ export function* updateProductWorker({
 export function* deleteProductWorker({ data: product }: IActions): SagaIterator {
   try {
     const charValues = product.characteristicValue.map((value) => value.id);
-
-    // if (charValues.length)
-    //   yield call(
-    //     deleteProductCharValues,  
-    //     { characteristicValuesIds: charValues }
-    //   );
-
     yield call(apiDeleteProduct, product.id);
     yield put(deleteProductSuccess(product.id));
     yield put(successSnackBar());
