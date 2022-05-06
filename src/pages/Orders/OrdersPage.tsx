@@ -22,6 +22,8 @@ enum cols {
   sum = 'Сума',
   status = 'Статус',
   notcall = 'Не передзвонювати',
+  deliveryMethod = 'Спосіб доставки',
+  courierDeliveryAddress = "Адреса для кур'єрської доставки",
 }
 
 const OrdersPage: React.FC = () => {
@@ -42,6 +44,8 @@ const OrdersPage: React.FC = () => {
     cols.sum,
     cols.status,
     cols.notcall,
+    cols.deliveryMethod,
+    cols.courierDeliveryAddress,
   ]);
 
   const handleColumns = (column: string) =>
