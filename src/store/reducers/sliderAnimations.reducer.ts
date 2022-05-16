@@ -32,12 +32,9 @@ const sliderAnimations = (state = initialState, action: IActions) => {
     }
     case SET_ACTIVE_SLIDER_ANIMATION: {
       const newAnims = state.animations.map((a) => {
-        if (a.id === action.data.id) {
-          a.active = true;
-          return a;
-        } else {
-          return a;
-        }
+        a.active = a.id === action.data.id ? true : a.active;
+
+        return a;
       });
       return {
         ...state,
@@ -49,12 +46,9 @@ const sliderAnimations = (state = initialState, action: IActions) => {
     }
     case SET_INACTIVE_SLIDER_ANIMATION: {
       const newAnims = state.animations.map((a) => {
-        if (a.id === action.data.id) {
-          a.active = false;
-          return a;
-        } else {
-          return a;
-        }
+        a.active = a.id === action.data.id ? false : a.active;
+
+        return a;
       });
 
       return {
