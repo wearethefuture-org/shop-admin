@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Field, Form, FormikProps, FormikProvider } from 'formik';
 import { useDropzone } from 'react-dropzone';
-import { Button, Card, DialogActions, MenuItem, Select } from '@material-ui/core';
+import { Button, Card, DialogActions, FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -115,27 +115,30 @@ const ProductForm: React.FC<IProductFormProps> = ({
                   makegreen="true"
                   className={styles['edit-field']}
                 />
-                <Select
-                  type="select"
-                  fullWidth
-                  label="Назва категорії"
-                  name="categoryID"
-                  id={'category_id-field'}
-                  className={styles['edit-field']}
-                  value={formik.values.categoryID}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  {categories.length
-                    ? categories.map((category) => {
-                        return (
-                          <MenuItem key={'option' + category.id} value={category.id}>
-                            {category.name}
-                          </MenuItem>
-                        );
-                      })
-                    : []}
-                </Select>
+                <FormControl className={styles['block-wrapper-select']}>
+                  <InputLabel id="demo-simple-select-label">Категорія товару</InputLabel>
+                  <Select
+                    type="select"
+                    fullWidth
+                    label="Назва категорії"
+                    name="categoryID"
+                    id={'category_id-field'}
+                    className={styles['edit-field']}
+                    value={formik.values.categoryID}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  >
+                    {categories.length
+                      ? categories.map((category) => {
+                          return (
+                            <MenuItem key={'option' + category.id} value={category.id}>
+                              {category.name}
+                            </MenuItem>
+                          );
+                        })
+                      : []}
+                  </Select>
+                </FormControl>
               </div>
             </Card>
           </div>
