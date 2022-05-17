@@ -1,10 +1,9 @@
 import { IActions } from '../../interfaces/actions';
 import { ISliderAnimationsData } from '../../interfaces/ISliderAnimations';
 import {
+  CHANGE_ACTIVE_SLIDER_ANIMATION,
   GET_ACTIVE_SLIDER_ANIMATION,
   GET_SLIDER_ANIMATIONS,
-  SET_ACTIVE_SLIDER_ANIMATION,
-  SET_INACTIVE_SLIDER_ANIMATION,
 } from '../types';
 
 const initialState: ISliderAnimationsData = {
@@ -30,9 +29,9 @@ const sliderAnimations = (state = initialState, action: IActions) => {
         active: action.data.active,
       };
     }
-    case SET_ACTIVE_SLIDER_ANIMATION: {
+    case CHANGE_ACTIVE_SLIDER_ANIMATION: {
       const newAnims = state.animations.map((a) => {
-        a.active = a.id === action.data.id ? true : a.active;
+        a.active = a.id === action.data.id ? (action.data.isActive ? true : false) : a.active;
 
         return a;
       });
@@ -40,19 +39,7 @@ const sliderAnimations = (state = initialState, action: IActions) => {
         ...state,
         id: action.data.id,
         animation: state.animations.find((a) => a.id === action.data.id).animation,
-        active: true,
-        animations: newAnims,
-      };
-    }
-    case SET_INACTIVE_SLIDER_ANIMATION: {
-      const newAnims = state.animations.map((a) => {
-        a.active = a.id === action.data.id ? false : a.active;
-
-        return a;
-      });
-
-      return {
-        ...state,
+        active: action.data.isActive ? true : false,
         animations: newAnims,
       };
     }

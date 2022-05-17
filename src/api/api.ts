@@ -124,8 +124,10 @@ type ApiFetchedDataType = {
   sliderAnimations: {
     getSliderAnimations: () => FetchedDataType<ISliderAnimations>;
     getActiveSliderAnimation: () => FetchedDataType<ISliderAnimation>;
-    setActiveSliderAnimation: (id: number) => FetchedDataType<ISliderAnimation>;
-    setInactiveSliderAnimation: (id: number) => FetchedDataType<ISliderAnimation>;
+    changeActiveSliderAnimation: (
+      id: number,
+      isActive: boolean
+    ) => FetchedDataType<ISliderAnimation>;
   };
 };
 
@@ -208,9 +210,7 @@ export const api: ApiFetchedDataType = {
   sliderAnimations: {
     getSliderAnimations: () => instance.get(`${root}/slider-animations`),
     getActiveSliderAnimation: () => instance.get(`${root}/slider-animations/active`),
-    setActiveSliderAnimation: (id: number) =>
-      instance.post(`${root}/slider-animations/active/${id}`),
-    setInactiveSliderAnimation: (id: number) =>
-      instance.post(`${root}/slider-animations/inactive/${id}`),
+    changeActiveSliderAnimation: (id: number, isActive: boolean) =>
+      instance.patch(`${root}/slider-animations/change-active/${id}/${isActive}`),
   },
 };

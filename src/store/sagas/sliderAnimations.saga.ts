@@ -1,17 +1,15 @@
 import { SagaIterator } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 import {
+  changeActiveSliderAnimation,
   getActiveSliderAnimation,
   getSliderAnimations,
-  setActiveSliderAnimation,
-  setInactiveSliderAnimation,
 } from '../actions/sliderAnimations.actions';
 import { failSnackBar } from '../actions/snackbar.actions';
 import {
+  apiChangeActiveSliderAnimation,
   apiGetActiveSliderAnimation,
   apiGetSliderAnimations,
-  apiSetActiveSliderAnimation,
-  apiSetInactiveSliderAnimation,
 } from './services/sliderAnimations.service';
 
 export function* getSliderAnimationsWorker(): SagaIterator {
@@ -32,21 +30,12 @@ export function* getActiveSliderAnimationWorker(): SagaIterator {
   }
 }
 
-type Params = { data: number; type: string };
+type Params = { data: { id: number; isActive: boolean }; type: string };
 
-export function* setActiveSliderAnimationWorker({ data }: Params): SagaIterator {
+export function* changeActiveSliderAnimationWorker({ data }: Params): SagaIterator {
   try {
-    const animation = yield call(apiSetActiveSliderAnimation, data);
-    yield put(setActiveSliderAnimation(animation));
-  } catch (e) {
-    yield put(failSnackBar(e.message));
-  }
-}
-
-export function* setInactiveSliderAnimationWorker({ data }: Params): SagaIterator {
-  try {
-    const animation = yield call(apiSetInactiveSliderAnimation, data);
-    yield put(setInactiveSliderAnimation(animation));
+    const animation = yield call(apiChangeActiveSliderAnimation, data.id, data.isActive);
+    yield put(changeActiveSliderAnimation(animation.id, animation.active));
   } catch (e) {
     yield put(failSnackBar(e.message));
   }

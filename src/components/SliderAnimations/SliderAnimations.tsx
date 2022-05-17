@@ -2,8 +2,7 @@ import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@ma
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  fetchSetActiveSliderAnimation,
-  fetchSetInActiveSliderAnimation,
+  fetchChangeActiveSliderAnimation,
   fetchSliderAnimations,
 } from '../../store/actions/sliderAnimations.actions';
 import { RootState } from '../../store/store';
@@ -13,19 +12,21 @@ const SliderAnimations: React.FC = () => {
   const dispatch = useDispatch();
   const animationsData = useSelector((state: RootState) => state.sliderAnimations);
 
+  async function fetchData() {
+    await dispatch(fetchSliderAnimations());
+  }
+
   useEffect(() => {
-    async function fetchData() {
-      await dispatch(fetchSliderAnimations());
-    }
     if (animationsData.animations.length === 0) {
       fetchData();
     }
-  }, [animationsData]);
+  }, [animationsData.animations]);
 
   async function handleChangeActiveAnim(e) {
     const newActiveAnim = animationsData.animations.find((a) => a.animation === e.target.value);
-    await dispatch(fetchSetActiveSliderAnimation(newActiveAnim.id));
-    await dispatch(fetchSetInActiveSliderAnimation(animationsData.id));
+    await dispatch(fetchChangeActiveSliderAnimation(newActiveAnim.id, true));
+    await dispatch(fetchChangeActiveSliderAnimation(animationsData.id, false));
+    fetchData();
   }
 
   return (
@@ -38,14 +39,16 @@ const SliderAnimations: React.FC = () => {
           value={animationsData.animation}
           onChange={handleChangeActiveAnim}
         >
-          {animationsData.animations.map((a) => (
-            <FormControlLabel
-              key={a.id}
-              value={a.animation}
-              control={<Radio />}
-              label={a.animation}
-            />
-          ))}
+          {animationsData.animations
+            .sort((a, b) => a.animation.localeCompare(b.animation))
+            .map((a) => (
+              <FormControlLabel
+                key={a.id}
+                value={a.animation}
+                control={<Radio />}
+                label={a.animation}
+              />
+            ))}
         </RadioGroup>
       </FormControl>
     </div>

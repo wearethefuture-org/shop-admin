@@ -1,13 +1,11 @@
 import { IActions } from '../../interfaces/actions';
 import { ISliderAnimation, ISliderAnimations } from '../../interfaces/ISliderAnimations';
 import {
+  CHANGE_ACTIVE_SLIDER_ANIMATION,
   GET_ACTIVE_SLIDER_ANIMATION,
   GET_SLIDER_ANIMATIONS,
   GET_SLIDER_ANIMATIONS_REQUEST,
-  REQUEST_SET_ACTIVE_SLIDER_ANIMATION,
-  REQUEST_SET_INACTIVE_SLIDER_ANIMATION,
-  SET_ACTIVE_SLIDER_ANIMATION,
-  SET_INACTIVE_SLIDER_ANIMATION,
+  REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION,
 } from '../types';
 
 export const fetchSliderAnimations = (): IActions => ({ type: GET_SLIDER_ANIMATIONS_REQUEST });
@@ -22,22 +20,12 @@ export const getActiveSliderAnimation = (activeSliderAnimation: ISliderAnimation
   data: activeSliderAnimation,
 });
 
-export const fetchSetActiveSliderAnimation = (id: number): IActions => ({
-  type: REQUEST_SET_ACTIVE_SLIDER_ANIMATION,
-  data: id,
+export const fetchChangeActiveSliderAnimation = (id: number, isActive: boolean): IActions => ({
+  type: REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION,
+  data: { id, isActive },
 });
 
-export const fetchSetInActiveSliderAnimation = (id: number): IActions => ({
-  type: REQUEST_SET_INACTIVE_SLIDER_ANIMATION,
-  data: id,
-});
-
-export const setActiveSliderAnimation = (id: number): IActions => ({
-  type: SET_ACTIVE_SLIDER_ANIMATION,
-  data: id,
-});
-
-export const setInactiveSliderAnimation = (id: number): IActions => ({
-  type: SET_INACTIVE_SLIDER_ANIMATION,
-  data: id,
+export const changeActiveSliderAnimation = (id: number, isActive: boolean): IActions => ({
+  type: CHANGE_ACTIVE_SLIDER_ANIMATION,
+  data: { id, isActive },
 });

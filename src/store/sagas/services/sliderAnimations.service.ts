@@ -10,12 +10,7 @@ export async function apiGetActiveSliderAnimation() {
   return animation.data;
 }
 
-export async function apiSetActiveSliderAnimation(id: number) {
-  const animation = await api.sliderAnimations.setActiveSliderAnimation(id);
-  return animation.data;
-}
-
-export async function apiSetInactiveSliderAnimation(id: number) {
-  const animation = await api.sliderAnimations.setInactiveSliderAnimation(id);
+export async function apiChangeActiveSliderAnimation(id: number, isActive: boolean) {
+  const animation = await api.sliderAnimations.changeActiveSliderAnimation(id, isActive);
   return animation.data;
 }
