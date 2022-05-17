@@ -174,7 +174,6 @@ export function* sagaSearchWatcher(): SagaIterator {
 
 export function* sagaSliderAnimationsWatcher(): SagaIterator {
   yield takeEvery(GET_SLIDER_ANIMATIONS_REQUEST, getSliderAnimationsWorker);
-  // yield takeEvery(GET_SLIDER_ANIMATIONS, getSliderAnimationsWorker);
   yield takeEvery(GET_SLIDER_ANIMATIONS_REQUEST, getActiveSliderAnimationWorker);
   yield takeEvery(REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION, changeActiveSliderAnimationWorker);
 }
