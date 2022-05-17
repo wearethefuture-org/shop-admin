@@ -114,6 +114,10 @@ export interface IProductCharRequest {
   characteristicValues: ICharValue[];
 }
 
+export interface IDeleteProductChars {
+  characteristicValuesIds : string[]
+}
+
 export interface IAddImgResponse extends Common {
   name: string;
   product: IBasicProduct;

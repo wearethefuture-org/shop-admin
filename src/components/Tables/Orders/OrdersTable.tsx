@@ -129,6 +129,21 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
       omit: !activeColumns.includes('Не передзвонювати'),
     },
     {
+      name: 'Спосіб доставки',
+      selector: (row) => row.delivery.deliveryMethod,
+      maxWidth: '300px',
+      sortable: true,
+      omit: !activeColumns.includes('Спосіб доставки'),
+    },
+    {
+      name: 'Адреса для доставки',
+      selector: (row) =>
+        row.delivery.courierDeliveryAddress ? row.delivery.courierDeliveryAddress : '-',
+      maxWidth: '400px',
+      sortable: true,
+      omit: !activeColumns.includes("Адреса для кур'єрської доставки"),
+    },
+    {
       name: 'Сума',
       selector: (row) => row.amount,
       maxWidth: '100px',

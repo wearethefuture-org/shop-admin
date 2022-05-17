@@ -17,6 +17,7 @@ import {
   IUpdateProduct,
   IUpdateAvailabilityProduct,
   IDisableProduct,
+  IDeleteProductChars
 } from '../interfaces/IProducts';
 import { ISearchItems, ISearchItemsResponse } from '../interfaces/ISearch';
 import { IBasicOrder } from '../interfaces/IOrders';
@@ -65,6 +66,7 @@ type ApiFetchedDataType = {
     deleteProduct: (id: number) => FetchedDataType<JSON>;
     addProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
+    deleteProductCharValues: (data : IDeleteProductChars) => FetchedDataType<JSON>
     updateAvailabilityProduct: (
       data: IUpdateAvailabilityProduct
     ) => FetchedDataType<IAddCharResponse>;
@@ -151,6 +153,8 @@ export const api: ApiFetchedDataType = {
     deleteProduct: (id) => instance.delete(`${root}/product/${id}`),
     addProductCharValues: (data) => instance.post(`${root}/characteristics-values`, data),
     updateProductCharValues: (data) => instance.patch(`${root}/characteristics-values`, data),
+    deleteProductCharValues: (data) => instance.delete(`${root}/characteristics-values`, {data}),
+
     updateAvailabilityProduct: ({ productId, ...product }) =>
       instance.patch(`${root}/product/${productId}`, product),
     disableProduct: ({ productId, ...product }) =>
