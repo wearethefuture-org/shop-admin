@@ -40,13 +40,16 @@ const useStyles = makeStyles({
     margin: '10px',
   },
   submit: {
-    background: '#424D52',
-    borderRadius: ' 60px',
-    color: ' #fff',
-    border: ' none',
-    width: '270px',
-    height: '44px',
-    margin: '10px',
+    'background': '#424D52',
+    'borderRadius': ' 60px',
+    'color': ' #fff',
+    'border': ' none',
+    'width': '270px',
+    'height': '44px',
+    'margin': '10px',
+    '&:hover': {
+      backgroundColor: '#424d52cc',
+    },
   },
   formDiv: {
     alignItems: 'center',
