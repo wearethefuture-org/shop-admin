@@ -47,6 +47,9 @@ const useStyles = makeStyles({
     width: '270px',
     height: '44px',
     margin: '10px',
+    "&:hover": {
+      backgroundColor: "#424d52cc"
+    }
   },
   formDiv: {
     alignItems: 'center',
@@ -168,7 +171,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           })
         );
       } else if (user) {
-        let sendData: { id: number; [key: string]: any } = { id: user.id };
+        let sendData: { id: number;[key: string]: any } = { id: user.id };
         for (let key in _values) {
           if (_values[key] && _values[key] !== initialValues[key]) {
             sendData[key] = _values[key];
