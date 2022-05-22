@@ -50,7 +50,7 @@ const WidgetForm = withFormik<WidgetFormProps, IFormWidgetValues>({
       },
     };
 
-    props.dispatch(fetchUpdateSettings(props.name, parameters));
+    props.dispatch(fetchUpdateSettings(props.name, JSON.stringify(parameters)));
   },
 })(InnerForm);
 

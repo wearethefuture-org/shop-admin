@@ -9,6 +9,7 @@ import { IActions } from '../../interfaces/actions';
 export function* fetchSettingsWorker(): SagaIterator {
   try {
     const settingsData = yield call(fetchedSettings);
+    settingsData[1].settings = JSON.parse(settingsData[1].settings)
     yield put(loadSettings(settingsData));
   } catch (error) {
     yield put(failSnackBar(error.message));
@@ -18,6 +19,9 @@ export function* fetchSettingsWorker(): SagaIterator {
 export function* updateSettingsWorker({ data }: IActions): SagaIterator {
   try {
     const updatedSettings = yield call(updateSettings, data);
+    if(data.name==='widgets') {
+      updatedSettings[1].settings = JSON.parse(data.settings)
+    }
     yield put(updateSetting(updatedSettings));
     yield put(successSnackBar());
   } catch (error) {

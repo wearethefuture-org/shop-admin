@@ -14,7 +14,7 @@ export const loadSettings = (settings: ISettingsItem[]): IActions => ({
   data: settings,
 });
 
-export const fetchUpdateSettings = (name: string, settings: object): IActions => ({
+export const fetchUpdateSettings = (name: string, settings: string): IActions => ({
   type: REQUEST_UPDATE_SETTINGS,
   data: { name, settings },
 });
