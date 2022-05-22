@@ -11,6 +11,7 @@ import { addUserRequest, updateUserRequest } from '../../../store/actions/users.
 import { IUserItem } from '../../../interfaces/IUsers';
 import { failSnackBar } from '../../../store/actions/snackbar.actions';
 import useRoles from '../../../hooks/useRoles';
+import style from "./UserCard-form.module.scss";
 
 // todo
 // how to avoid code duplication in input and inputError fields?
@@ -38,6 +39,9 @@ const useStyles = makeStyles({
   },
   row: {
     margin: '10px',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
   submit: {
     background: '#424D52',
@@ -77,8 +81,23 @@ const phoneRegExp =
   /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
 const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) => {
+  const [showCurrentPassword, setShowCurrentPassword] = React.useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = React.useState<boolean>(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = React.useState<boolean>(false);
   const classes = useStyles();
   const { data: roles } = useRoles();
+
+  const onToggleShowCurrentPassword = () => {
+    setShowCurrentPassword(!showCurrentPassword)
+  }
+
+  const onToggleShowNewPassword = () => {
+    setShowNewPassword(!showNewPassword)
+  }
+
+  const onToggleShowConfirmNewPassword = () => {
+    setShowConfirmNewPassword(!showConfirmNewPassword)
+  }
 
   const baseScheme = {
     firstName: Yup.string()
@@ -139,7 +158,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     email: isNew ? '' : user?.email,
     roleId: isNew ? 1 : user?.role.id,
     telegramId: isNew ? '' : user?.telegramId,
-    currentPassword: '',
+    currentPassword: isNew ? '' : user?.password,
     newPassword: '',
     confirmNewPassword: '',
   };
@@ -309,9 +328,10 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
         <div className={classes.row}>
           <TextField
             className={getInputClass('currentPassword')}
+            value={formik.values.currentPassword}
             autoComplete={'false'}
             disabled={!isEdit}
-            type="password"
+            type={showCurrentPassword ? "text" : "password"}
             name="currentPassword"
             id="currentPassword-field"
             placeholder="Поточний пароль"
@@ -322,6 +342,9 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             InputProps={{ disableUnderline: true }}
             margin="dense"
           />
+          <svg onClick={onToggleShowCurrentPassword} className={style.eye} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+            <path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"/>
+          </svg>
         </div>
       ) : null}
       <div className={classes.row}>
@@ -329,7 +352,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           className={getInputClass('newPassword')}
           autoComplete={'false'}
           disabled={!isEdit}
-          type="password"
+          type={showNewPassword ? "text" : "password"}
           name="newPassword"
           id="newPassword-field"
           placeholder="Новий пароль"
@@ -340,13 +363,16 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           InputProps={{ disableUnderline: true }}
           margin="dense"
         />
+        <svg onClick={onToggleShowNewPassword} className={style.eye} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+          <path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"/>
+        </svg>
       </div>
       <div className={classes.row}>
         <TextField
           className={getInputClass('confirmNewPassword')}
           autoComplete={'false'}
           disabled={!isEdit}
-          type="password"
+          type={showConfirmNewPassword ? "text" : "password"}
           name="confirmNewPassword"
           id="confirmNewPassword-field"
           placeholder="Підтвердіть пароль"
@@ -357,6 +383,9 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           InputProps={{ disableUnderline: true }}
           margin="dense"
         />
+        <svg onClick={onToggleShowConfirmNewPassword} className={style.eye} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+          <path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"/>
+        </svg>
       </div>
       <div className={classes.row}>
         <Button className={classes.submit} type="submit" disabled={formik.isSubmitting}>

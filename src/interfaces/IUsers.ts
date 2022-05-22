@@ -17,6 +17,7 @@ export interface IUserItem {
   phoneNumber: string;
   status: string;
   email: string;
+  password: string;
   telegramId?: string;
   role: {
     name: string;

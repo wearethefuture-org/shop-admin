@@ -1,0 +1,11 @@
+.eye{
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+
+  transition: all .1s;
+  &:hover{
+    background-color: green;
+  }
+}
