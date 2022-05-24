@@ -39,6 +39,7 @@ import {
 import instance from './axios-interceptors';
 import { Status } from '../enums/orderStatus';
 import { IRole } from '../interfaces/IRoles';
+import { ISliderAnimation, ISliderAnimations } from '../interfaces/ISliderAnimations';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -122,6 +123,14 @@ type ApiFetchedDataType = {
   search: {
     getSearchItems: (fields: ISearchItems) => FetchedDataType<ISearchItemsResponse>;
   };
+  sliderAnimations: {
+    getSliderAnimations: () => FetchedDataType<ISliderAnimations>;
+    getActiveSliderAnimation: () => FetchedDataType<ISliderAnimation>;
+    changeActiveSliderAnimation: (
+      id: number,
+      isActive: boolean
+    ) => FetchedDataType<ISliderAnimation>;
+  };
 };
 
 export const api: ApiFetchedDataType = {
@@ -201,5 +210,11 @@ export const api: ApiFetchedDataType = {
       instance.get(
         `${root}/search/admin?${fields.option}=${fields.query}&page=${fields.page}&limit=${fields.limit}`
       ),
+  },
+  sliderAnimations: {
+    getSliderAnimations: () => instance.get(`${root}/slider-animations`),
+    getActiveSliderAnimation: () => instance.get(`${root}/slider-animations/active`),
+    changeActiveSliderAnimation: (id: number, isActive: boolean) =>
+      instance.patch(`${root}/slider-animations/change-active/${id}/${isActive}`),
   },
 };

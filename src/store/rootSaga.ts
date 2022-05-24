@@ -40,6 +40,8 @@ import {
   GET_ROLES_REQUEST,
   DISABLE_PRODUCT_REQUEST,
   GET_SEARCH_ITEMS_REQUEST,
+  GET_SLIDER_ANIMATIONS_REQUEST,
+  REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION,
 } from './types';
 
 import {
@@ -86,6 +88,11 @@ import {
 import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
 import { getRolesWorker } from './sagas/roles.saga';
 import { getSearchItemsWorker } from './sagas/search.saga';
+import {
+  changeActiveSliderAnimationWorker,
+  getActiveSliderAnimationWorker,
+  getSliderAnimationsWorker,
+} from './sagas/sliderAnimations.saga';
 
 export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(GET_TREE_CATEGORIES_REQUEST, fetchTreeCategoryWorker);
@@ -165,6 +172,12 @@ export function* sagaSearchWatcher(): SagaIterator {
   yield takeEvery(GET_SEARCH_ITEMS_REQUEST, getSearchItemsWorker);
 }
 
+export function* sagaSliderAnimationsWatcher(): SagaIterator {
+  yield takeEvery(GET_SLIDER_ANIMATIONS_REQUEST, getSliderAnimationsWorker);
+  yield takeEvery(GET_SLIDER_ANIMATIONS_REQUEST, getActiveSliderAnimationWorker);
+  yield takeEvery(REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION, changeActiveSliderAnimationWorker);
+}
+
 // RootSaga
 export default function* rootSaga(): SagaIterator {
   yield all([
@@ -179,5 +192,6 @@ export default function* rootSaga(): SagaIterator {
     fork(sagaUserWatcher),
     fork(getRolesWatcher),
     fork(sagaSearchWatcher),
+    fork(sagaSliderAnimationsWatcher),
   ]);
 }
