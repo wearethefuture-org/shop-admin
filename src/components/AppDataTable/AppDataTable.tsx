@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import DataTable from 'react-data-table-component';
 import Card from '@material-ui/core/Card';
 import { customStylesDataTable } from './CustomStylesDataTable'
+import CustomTablePaginator from '../Paginator/Paginator';
 
 import { RootState } from '../../store/store';
 
@@ -46,6 +47,7 @@ const AppDataTable: React.FC<DataTableProps> = ({
         onRowClicked={onRowClicked}
         pointerOnHover={true}
         pagination
+        paginationComponent={CustomTablePaginator}
         defaultSortAsc={false}
         defaultSortFieldId={defaultSortFieldId}
         fixedHeader={true}
@@ -56,10 +58,6 @@ const AppDataTable: React.FC<DataTableProps> = ({
         paginationPerPage={limit}
         onChangePage={(p) => setPage(p)}
         onChangeRowsPerPage={(l) => setLimit(l)}
-        paginationComponentOptions={{
-          rowsPerPageText: 'Рядків на сторінці:',
-          rangeSeparatorText: 'з',
-        }}
         customStyles={customStyles}
       />
     </Card>
