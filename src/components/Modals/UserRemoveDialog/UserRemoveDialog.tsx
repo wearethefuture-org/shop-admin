@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -10,6 +10,8 @@ import { AppDispatch } from '../../../store/store';
 import { useDispatch } from 'react-redux';
 import { deleteUserRequest } from '../../../store/actions/users.actions';
 import { IUserItem } from '../../../interfaces/IUsers';
+import useOrders from '../../../hooks/useOrders';
+import { haveUserOrders } from '../../../utils/haveUserOrders';
 
 interface RemoveProps {
   user: IUserItem;
@@ -34,6 +36,8 @@ const useStyles = makeStyles({
 const UserRemoveDialog: React.FC<RemoveProps> = ({ closeModal, user }) => {
   const dispatch: AppDispatch = useDispatch();
   const classes = useStyles();
+  const orders = useOrders();
+  const result = haveUserOrders(orders.list, user);
 
   const handleClose = () => {
     closeModal();
@@ -56,14 +60,20 @@ const UserRemoveDialog: React.FC<RemoveProps> = ({ closeModal, user }) => {
       <DialogTitle id="form-dialog-title">Видалення</DialogTitle>
       <DialogContent dividers>
         <DialogContentText>
-          Ви дійсно бажаєте видалити {user.firstName} {user.lastName}
+          {result.length !== 0
+            ? `Неможливо видалити ${user.firstName} ${user.lastName} він має замовлення`
+            : `Ви дійсно бажаєте видалити ${user.firstName} ${user.lastName}`}
         </DialogContentText>
       </DialogContent>
       <div>
         <Button className={classes.remove} onClick={handleClose}>
           Відміна
         </Button>
-        <Button className={classes.remove} onClick={removeUser}>
+        <Button
+          className={classes.remove}
+          disabled={result.length !== 0 ? true : false}
+          onClick={removeUser}
+        >
           Видалити
         </Button>
       </div>
