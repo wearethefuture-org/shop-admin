@@ -2,13 +2,13 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import useSnackBar from '../../../hooks/useSnackbar';
 
-import { ISettingsParams } from '../../../interfaces/ISettings';
 import { AppDispatch } from '../../../store/store';
+import ParserForm from './ParserSettings/Parser-form';
 import WidgetForm from './WidgetsSettings/Widget-form';
 
 interface SettingsFormProps {
   name: string;
-  parameters: ISettingsParams;
+  parameters: any;
 }
 
 const SettingsForms: React.FC<SettingsFormProps> = ({ name, parameters }) => {
@@ -19,6 +19,15 @@ const SettingsForms: React.FC<SettingsFormProps> = ({ name, parameters }) => {
     case 'widgets':
       return (
         <WidgetForm
+          name={name}
+          parameters={parameters}
+          dispatch={dispath}
+          handleClick={handleClick}
+        />
+      );
+    case 'parser':
+      return (
+        <ParserForm
           name={name}
           parameters={parameters}
           dispatch={dispath}
