@@ -4,3 +4,10 @@ export interface IFormWidgetValues {
   isWidgetActiveNewArrivals: boolean;
   isWidgetActivePopularItems: boolean;
 }
+
+export interface IFormParserValues {
+  bazzilaIdUpdatePhoto: boolean
+  fashionGirlUpdatePhoto: boolean
+  bazzilaIdCreateNewProducts: boolean
+  fashionGirlCreateNewProducts: boolean
+}
