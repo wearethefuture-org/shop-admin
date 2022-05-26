@@ -4,7 +4,6 @@ import { makeStyles, ThemeOptions } from '@material-ui/core/styles';
 import { alpha, Button, createStyles, DialogActions, Switch, Theme, Typography } from '@material-ui/core';
 
 import { IFormParserValues } from '../../../../interfaces/widget-form';
-import { green } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme: Theme): ThemeOptions =>
   createStyles({
