@@ -26,6 +26,7 @@ import CommentsPage from '../../pages/Comments/CommentsPage';
 import FeedbacksPage from '../../pages/Feedbacks/FeedbacksPage';
 import Search from '../../pages/Search/Search';
 import WithAxios from '../../api/withAxios';
+import ResetPassword from '../../pages/ResetPassword/ResetPassward';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -65,6 +66,7 @@ const Router: React.FC = () => {
                 <PrivateRoute component={TreeCategoryRouter} path="/tree-category/:id" />
                 <PrivateRoute component={Search} path="/search" />
                 <PrivateRoute component={OrderRouter} path="/order/:id" />
+                <Route path="/password" component={ResetPassword} />
                 <Route path="/home" component={Home} />
               </Switch>
             </Content>

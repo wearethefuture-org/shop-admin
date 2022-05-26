@@ -88,3 +88,8 @@ export interface IOrderUser {
   lastName: string;
   phoneNumber: string;
 }
+
+export interface IResponseMessage {
+  success?: boolean;
+  message: string;
+}
