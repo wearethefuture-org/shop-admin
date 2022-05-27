@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import grey from '@material-ui/core/colors/grey';
+import { ErrorMessage } from 'formik';
 
 import { root } from '../../../api/config';
 import { SimpleFileUploadProps } from '../../../interfaces/SimpleFileUploadProps';
@@ -14,6 +15,18 @@ const FileUpload = ({
   fieldId,
 }: SimpleFileUploadProps) => {
   const image = field.value;
+
+  function imgRequired() {
+    return (
+      !imageSrc
+          && <div className={classes.errorMy}>
+              <ErrorMessage name='image' />
+            </div>
+          && <div className={classes.errorMy}>
+              <ErrorMessage name='imageMobile' />
+            </div>
+    )
+  }
 
   const [imageSrc, setImageSrc] = useState(image);
   if (typeof image !== 'string') {
@@ -47,6 +60,12 @@ const FileUpload = ({
     title: {
       color: grey,
     },
+    errorMy: {
+      color: 'red'
+    },
+    labelErr: {
+      'border': '2px dashed red',
+    },
     image: {
       zIndex: 1000,
       height: 100,
@@ -77,6 +96,7 @@ const FileUpload = ({
             className={classes.inputCss}
           />
           <img className={classes.image} src={imageSrc} alt={imageSrc} />
+          {imgRequired()}
         </label>
       </div>
     </div>
