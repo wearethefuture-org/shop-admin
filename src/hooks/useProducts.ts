@@ -4,7 +4,7 @@ import { IProductsData } from '../interfaces/IProducts';
 import { getProductsRequest } from '../store/actions/products.actions';
 import { AppDispatch, RootState } from '../store/store';
 
-const useProducts = () => {
+const useProducts = (paginationPage: number) => {
   const dispatch: AppDispatch = useDispatch();
 
   const { list, loading, isSearch }: Partial<IProductsData> = useSelector(
@@ -13,7 +13,7 @@ const useProducts = () => {
 
   useEffect(() => {
     if (!isSearch) {
-      dispatch(getProductsRequest(1, 10));
+      dispatch(getProductsRequest(paginationPage, 10));
     }
   }, [dispatch, isSearch]);
 

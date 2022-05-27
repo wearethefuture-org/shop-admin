@@ -28,11 +28,12 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
   activeColumns,
   isSearch,
   searchValue,
+  count,
+  paginationPage
 }) => {
   const dispatch: AppDispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const count = useSelector((state: RootState) => state.products.count);
 
   const onChangePage = (page) => {
     setPage(page);
@@ -179,6 +180,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       setLimit={(e) => onChangeLimit(e)}
       setPage={(e) => onChangePage(e)}
       paginationServer={true}
+      paginationPage={paginationPage}
     />
   );
 };
