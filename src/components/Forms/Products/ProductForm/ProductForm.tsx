@@ -84,9 +84,8 @@ const ProductForm: React.FC<IProductFormProps> = ({
           onLabelClick={() => {
             if (treeItemData.id !== 'root') {
               setCategoryValue(treeItemData.name);
-              formik.setFieldValue('categoryID', treeItemData.id);
+              formik.setFieldValue('categoryId', treeItemData.id);
               formik.setFieldValue('categoryName', treeItemData.name);
-              console.log(formik.values);
             }
             return;
           }}

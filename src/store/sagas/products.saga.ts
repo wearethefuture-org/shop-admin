@@ -16,7 +16,7 @@ import {
   apiAddProductCharValues,
   apiUpdateAvailabilityProduct,
   disableProduct,
-  deleteProductCharValues
+  deleteProductCharValues,
 } from './services/products.service';
 import {
   addProductError,
@@ -76,8 +76,15 @@ export function* addProductWorker({
   data: { productValues, characteristicValues },
 }: IActions): SagaIterator {
   try {
-    const { name, price, description, categoryName, key, files } = productValues;
-    const product = yield call(apiAddProduct, { name, price, description, categoryName, key });
+    const { name, price, description, categoryName, categoryId, key, files } = productValues;
+    const product = yield call(apiAddProduct, {
+      name,
+      price,
+      description,
+      categoryName,
+      categoryId,
+      key,
+    });
 
     if (product && files instanceof FormData) {
       files.append('productId', product.id);
@@ -173,7 +180,7 @@ export function* deleteProductWorker({ data: product }: IActions): SagaIterator 
     yield put(deleteProductSuccess(product.id));
     yield put(successSnackBar());
   } catch (error) {
-    console.log(error)
+    console.log(error);
     yield put(failSnackBar(error.message));
     yield put(deleteProductError(error.message));
   }
