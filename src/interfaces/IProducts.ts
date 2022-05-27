@@ -88,6 +88,8 @@ export interface IProductsData {
   totalPages: number;
   isSearch: boolean;
   paginationPage: number;
+  searchValue: null | string;
+  paginationPageSearch: number;
 }
 
 export interface CharValues {

@@ -27,12 +27,10 @@ enum cols {
 
 const Products: React.FC = () => {
   const location = useLocation();
-  const history = useHistory();
-  const { searchValue } = Object(history.location.state);
 
-  const {paginationPage, count} = useSelector((state: RootState) => state.products);
+  const {paginationPage, paginationPageSearch, count, searchValue} = useSelector((state: RootState) => state.products);
   
-  const { list, loading, isSearch } = useProducts(paginationPage);
+  const { list, loading, isSearch } = useProducts(paginationPage, paginationPageSearch, searchValue);
 
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [activeColumns, setActiveColumns] = useState<string[]>([
@@ -89,7 +87,7 @@ const Products: React.FC = () => {
               isSearch={isSearch}
               searchValue={searchValue}
               count={count}
-              paginationPage={paginationPage}
+              paginationPage={isSearch ? paginationPageSearch : paginationPage}
             />
           )}
         </div>
