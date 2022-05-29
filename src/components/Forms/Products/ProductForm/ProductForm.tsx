@@ -60,7 +60,9 @@ const ProductForm: React.FC<IProductFormProps> = ({
     accept: 'image/png, image/jpeg, image/jpg, image/gif',
   });
 
-  const [categoryValue, setCategoryValue] = useState<string>('');
+  const [categoryValue, setCategoryValue] = useState<string>(
+    editMode ? formik.values.categoryName : ''
+  );
   const [expandedNodes, setExpandedNodes] = useState<string[]>(['']);
 
   const parentObject = { id: 'root', name: 'Виберіть категорію товару', children: categories };

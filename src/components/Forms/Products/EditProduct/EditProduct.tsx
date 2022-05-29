@@ -27,25 +27,6 @@ const EditProduct: React.FC = () => {
   const location = useLocation<ILocation>();
   const { data: categories } = useTreeCategories();
 
-  const getChildCategories = (categories: ITreeCategory[]) => {
-    const childCategories: ITreeCategory[] = [];
-
-    (function buildRecursive(categories: ITreeCategory[], parent?: string) {
-      for (const category of categories) {
-        const { children, ...baseFields } = category;
-        baseFields.name = parent ? parent.concat(` -> ${baseFields.name}`) : baseFields.name;
-
-        if (!children?.length) {
-          childCategories.push({ ...baseFields });
-        } else {
-          buildRecursive(children, baseFields.name);
-        }
-      }
-    })(categories);
-
-    return childCategories;
-  };
-
   const category: IGetTreeCategoriesResponse = useSelector(
     (state: RootState) => state.treeCategories.currentTreeCategory
   );
@@ -65,7 +46,8 @@ const EditProduct: React.FC = () => {
     name: product ? product.name : '',
     price: product.price ? product.price : '',
     description: product ? product.description : '',
-    categoryID: product ? product.category?.id : '',
+    categoryName: product ? product.category.name : '',
+    categoryId: product ? product.category?.id : '',
     files: product ? product.files : {},
     key: product ? product.key : '',
     subForm: {},
@@ -142,7 +124,7 @@ const EditProduct: React.FC = () => {
       editMode={true}
       formik={formik}
       handleGoBack={handleGoBack}
-      categories={useMemo(() => getChildCategories(categories), [categories])}
+      categories={categories}
       handleImageChange={handleImageChange}
       imagesPreview={imagesPreview}
       handleDeleteImg={handleDeleteImg}
