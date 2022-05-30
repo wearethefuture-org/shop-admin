@@ -15,6 +15,7 @@ const FileUpload = ({
   fieldId,
 }: SimpleFileUploadProps) => {
   const image = field.value;
+  const [error, setError] = useState('');
 
   function imgRequired() {
     return (
@@ -41,6 +42,27 @@ const FileUpload = ({
     setImageSrc(`${root}/static/uploads/${image}`);
   }
 
+  const onUpload = async (event: React.ChangeEvent<any>) => {
+  if (!event.target.files) return;
+    const imageSize = event.target.files[0]?.size;
+  // const imageType = event.target.files[0]?.type;
+  const file = event.currentTarget.files[0];
+    if (imageSize && imageSize > 30000 && fieldId === 'file') {
+      setError('Required')
+      return
+    }
+    if (imageSize && imageSize > 1000 && fieldId === 'fileMobile') {
+      setError('Required')
+      return
+    }
+    // if (imageType && imageType !== ['image/jpg', 'image/jpeg', 'image/gif', 'image/png']) {
+    //   setError('required')
+    //   return
+    // }
+    
+    setFieldValue(field.name, file);
+  }
+
   // @ts-ignore
   const useStyles = makeStyles({
     form_group: {
@@ -63,9 +85,6 @@ const FileUpload = ({
     errorMy: {
       color: 'red'
     },
-    labelErr: {
-      'border': '2px dashed red',
-    },
     image: {
       zIndex: 1000,
       height: 100,
@@ -81,23 +100,22 @@ const FileUpload = ({
     <div>
       <div className={classes.form_group}>
         <label htmlFor={fieldId} className={classes.label}>
-          <span className={classes.title}>{caption}</span>
+          {(!error && <span className={classes.title}>{caption}</span>) || (
+            error && <span className={classes.errorMy}>{caption}</span>
+          )}
           <Input
             inputProps={{
               id: fieldId,
               type: 'file',
               name: field.name,
-              onChange: (event: React.ChangeEvent<any>) => {
-                const file = event.currentTarget.files[0];
-                setFieldValue(field.name, file);
-              },
             }}
+            onChange={onUpload}
             {...inputProps}
             className={classes.inputCss}
-          />
+            />
           <img className={classes.image} src={imageSrc} alt={imageSrc} />
-          {imgRequired()}
         </label>
+        {imgRequired()}
       </div>
     </div>
   );
