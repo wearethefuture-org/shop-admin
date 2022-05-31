@@ -11,6 +11,8 @@ import { addUserRequest, updateUserRequest } from '../../../store/actions/users.
 import { IUserItem } from '../../../interfaces/IUsers';
 import { failSnackBar } from '../../../store/actions/snackbar.actions';
 import useRoles from '../../../hooks/useRoles';
+import styles from './UserCard-form.module.scss'
+import { NavLink } from 'react-router-dom';
 
 // todo
 // how to avoid code duplication in input and inputError fields?
@@ -193,7 +195,6 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       ? classes.inputError
       : classes.input;
   };
-
   return (
     <form
       onSubmit={formik.handleSubmit}
@@ -308,59 +309,13 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           })}
         </Select>
       </div>
-      {!isNew ? (
-        <div className={classes.row}>
-          <TextField
-            className={getInputClass('currentPassword')}
-            autoComplete={'false'}
-            disabled={!isEdit}
-            type="password"
-            name="currentPassword"
-            id="currentPassword-field"
-            placeholder="Поточний пароль"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.currentPassword && Boolean(formik.errors.currentPassword)}
-            helperText={formik.touched.currentPassword && formik.errors.currentPassword}
-            InputProps={{ disableUnderline: true }}
-            margin="dense"
-          />
+   
+      <NavLink to={'/password'} key={'/password'}>
+        <div className={styles.form__resetPassword}>
+            <span>Змінити пароль</span>
         </div>
-      ) : null}
-      <div className={classes.row}>
-        <TextField
-          className={getInputClass('newPassword')}
-          autoComplete={'false'}
-          disabled={!isEdit}
-          type="password"
-          name="newPassword"
-          id="newPassword-field"
-          placeholder="Новий пароль"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.newPassword && Boolean(formik.errors.newPassword)}
-          helperText={formik.touched.newPassword && formik.errors.newPassword}
-          InputProps={{ disableUnderline: true }}
-          margin="dense"
-        />
-      </div>
-      <div className={classes.row}>
-        <TextField
-          className={getInputClass('confirmNewPassword')}
-          autoComplete={'false'}
-          disabled={!isEdit}
-          type="password"
-          name="confirmNewPassword"
-          id="confirmNewPassword-field"
-          placeholder="Підтвердіть пароль"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.confirmNewPassword && Boolean(formik.errors.confirmNewPassword)}
-          helperText={formik.touched.confirmNewPassword && formik.errors.confirmNewPassword}
-          InputProps={{ disableUnderline: true }}
-          margin="dense"
-        />
-      </div>
+      </NavLink>
+
       <div className={classes.row}>
         <Button className={classes.submit} type="submit" disabled={formik.isSubmitting}>
           {isNew ? 'Створити' : isEdit ? 'Змінити' : 'Редагувати'}

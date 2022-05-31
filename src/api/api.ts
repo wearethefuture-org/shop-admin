@@ -1,3 +1,4 @@
+import { IResponseMessage } from './../interfaces/IUsers';
 import { root } from './config';
 import { AxiosResponse } from 'axios';
 
@@ -116,6 +117,7 @@ type ApiFetchedDataType = {
     add: (user: IUserReqAdd) => FetchedDataType<IUserItem>;
     update: (user: IUserReqUp) => FetchedDataType<IUserItem>;
     delete: (id: number) => FetchedDataType<JSON>;
+    requestPasswordInstall: (data: { email: string }) => FetchedDataType<IResponseMessage>;
   };
   roles: {
     get: () => FetchedDataType<IRole[]>;
@@ -193,6 +195,7 @@ export const api: ApiFetchedDataType = {
     update: ({ id, ...user }) => instance.put(`${root}/users/${id}`, user),
     delete: (id) => instance.delete(`${root}/users/${id}`),
     add: (user) => instance.post(`${root}/auth/register-through-admin`, user),
+    requestPasswordInstall: (email) => instance.post(`${root}/users/password/reset`, email)
   },
   comments: {
     get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),
