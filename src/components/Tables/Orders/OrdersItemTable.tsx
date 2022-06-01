@@ -140,6 +140,11 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       sortable: true,
     },
     {
+      name: 'Не передзвонювати',
+      selector: (row) => row.notcall,
+      sortable: true,
+    },
+    {
       name: 'Розмір',
       selector: (row) => row.size,
       sortable: false,

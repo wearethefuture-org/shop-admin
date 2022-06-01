@@ -1,3 +1,4 @@
+import { IResponseMessage } from './../interfaces/IUsers';
 import { root } from './config';
 import { AxiosResponse } from 'axios';
 
@@ -39,6 +40,7 @@ import {
 import instance from './axios-interceptors';
 import { Status } from '../enums/orderStatus';
 import { IRole } from '../interfaces/IRoles';
+import { ISliderAnimation, ISliderAnimations } from '../interfaces/ISliderAnimations';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -115,12 +117,21 @@ type ApiFetchedDataType = {
     add: (user: IUserReqAdd) => FetchedDataType<IUserItem>;
     update: (user: IUserReqUp) => FetchedDataType<IUserItem>;
     delete: (id: number) => FetchedDataType<JSON>;
+    requestPasswordInstall: (data: { email: string }) => FetchedDataType<IResponseMessage>;
   };
   roles: {
     get: () => FetchedDataType<IRole[]>;
   };
   search: {
     getSearchItems: (fields: ISearchItems) => FetchedDataType<ISearchItemsResponse>;
+  };
+  sliderAnimations: {
+    getSliderAnimations: () => FetchedDataType<ISliderAnimations>;
+    getActiveSliderAnimation: () => FetchedDataType<ISliderAnimation>;
+    changeActiveSliderAnimation: (
+      id: number,
+      isActive: boolean
+    ) => FetchedDataType<ISliderAnimation>;
   };
 };
 
@@ -184,6 +195,7 @@ export const api: ApiFetchedDataType = {
     update: ({ id, ...user }) => instance.put(`${root}/users/${id}`, user),
     delete: (id) => instance.delete(`${root}/users/${id}`),
     add: (user) => instance.post(`${root}/auth/register-through-admin`, user),
+    requestPasswordInstall: (email) => instance.post(`${root}/users/password/reset`, email)
   },
   comments: {
     get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),
@@ -201,5 +213,11 @@ export const api: ApiFetchedDataType = {
       instance.get(
         `${root}/search/admin?${fields.option}=${fields.query}&page=${fields.page}&limit=${fields.limit}`
       ),
+  },
+  sliderAnimations: {
+    getSliderAnimations: () => instance.get(`${root}/slider-animations`),
+    getActiveSliderAnimation: () => instance.get(`${root}/slider-animations/active`),
+    changeActiveSliderAnimation: (id: number, isActive: boolean) =>
+      instance.patch(`${root}/slider-animations/change-active/${id}/${isActive}`),
   },
 };

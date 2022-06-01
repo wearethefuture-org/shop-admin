@@ -25,6 +25,23 @@ enum cols {
   notcall = 'Не передзвонювати',
 }
 
+let initialActiveColums: string[] = [
+  cols.id,
+  cols.mainImg,
+  cols.name,
+  cols.price,
+  cols.description,
+  cols.categoryName,
+  cols.key,
+  cols.files,
+  cols.createdAt,
+  cols.updatedAt,
+]
+
+if (localStorage.getItem('PRODUCTS_SETTINGS')) {
+    initialActiveColums = localStorage.getItem('PRODUCTS_SETTINGS')!.split(',')
+} 
+
 const Products: React.FC = () => {
   const location = useLocation();
 
@@ -33,19 +50,10 @@ const Products: React.FC = () => {
   const { list, loading, isSearch } = useProducts(paginationPage, paginationPageSearch, searchValue);
 
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
-  const [activeColumns, setActiveColumns] = useState<string[]>([
-    cols.id,
-    cols.mainImg,
-    cols.name,
-    cols.price,
-    cols.description,
-    cols.categoryName,
-    cols.key,
-    cols.files,
-    cols.createdAt,
-    cols.updatedAt,
-  ]);
+  const [activeColumns, setActiveColumns] = useState<string[]>(initialActiveColums);
 
+  localStorage.setItem('PRODUCTS_SETTINGS', activeColumns.toString());
+  
   const handleColumns = (column: string) =>
     activeColumns.includes(column)
       ? setActiveColumns(activeColumns.filter((col) => col !== column))

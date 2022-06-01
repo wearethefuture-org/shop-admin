@@ -9,3 +9,16 @@
     background-color: green;
   }
 }
+.form{
+  &__resetPassword{
+      display: flex;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: underline;
+  color: #007bff;
+  transition: opacity 0.3s ease;
+  span {
+    margin-left: 15px;
+  }
+  }
+}
