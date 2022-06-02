@@ -80,22 +80,22 @@ const ProductForm: React.FC<IProductFormProps> = ({
         <TreeItem
           style={categoryValue === treeItemData.name ? { backgroundColor: '#e8eaf6' } : undefined}
           key={treeItemData.id}
-          nodeId={treeItemData.id}
+          nodeId={'' + treeItemData.id}
           label={treeItemData.name}
           children={children}
           onLabelClick={() => {
             if (treeItemData.id !== 'root') {
               setCategoryValue(treeItemData.name);
-              formik.setFieldValue('categoryId', treeItemData.id);
+              formik.setFieldValue('categoryId', Number(treeItemData.id));
               formik.setFieldValue('categoryName', treeItemData.name);
             }
             return;
           }}
           onIconClick={() => {
-            if (expandedNodes.includes(treeItemData.id)) {
+            if (expandedNodes.includes('' + treeItemData.id)) {
               setExpandedNodes(expandedNodes.filter((node) => node !== treeItemData.id));
             } else {
-              setExpandedNodes([...expandedNodes, treeItemData.id]);
+              setExpandedNodes([...expandedNodes, '' + treeItemData.id]);
             }
           }}
         />
@@ -166,7 +166,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                 <Field
                   fullWidth
                   multiline
-                  rowsMax={6}
+                  maxRows={6}
                   component={TextFieldWrapped}
                   type="textarea"
                   label="Опис"
@@ -188,7 +188,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                         variant="outlined"
                         onDelete={() => {
                           setCategoryValue('');
-                          formik.setFieldValue('categoryID', '');
+                          formik.setFieldValue('categoryId', '');
                           formik.setFieldValue('categoryName', '');
                         }}
                       />
@@ -248,14 +248,14 @@ const ProductForm: React.FC<IProductFormProps> = ({
           <ExpandBtn
             expandBlock={expandedBlocks.includes('additional')}
             handleExpand={() => handleExpand('additional')}
-            disabled={!formik.values.categoryID}
+            disabled={!formik.values.categoryId}
           >
             <h4>Характеристики</h4>
           </ExpandBtn>
           <div className={expandedBlocks.includes('additional') ? 'expanded' : 'shrinked'}>
             <FormProductCharacteristics
               formik={formik}
-              categoryId={formik.values.categoryID}
+              categoryId={Number(formik.values.categoryId)}
               setValidation={setValidation}
             />
           </div>
