@@ -19,12 +19,12 @@ interface SlideFormProps {
   initialPriority?: number;
 }
 
-const FILE_SIZE = 9000 * 1024;
-const FILE_SIZE_MOBILE = 1000 * 1024;
+export const FILE_SIZE = 9000 * 1024;
+export const FILE_SIZE_MOBILE = 1000 * 1024;
 // leave it till basic is implemented
 // https://stackoverflow.com/questions/65002123/validating-images-aspect-ratio-width-height-with-yup-formik
 // const FILE_WH_MOBILE = {"widthMax": 400, "heightMax": 200};
-const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
+export const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
 
 export const slideValidationShema = Yup.object().shape({
   name: Yup.string().min(2, 'Minimum 2 symbols').max(50, 'Too long').required('Required'),

@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import grey from '@material-ui/core/colors/grey';
 import { ErrorMessage } from 'formik';
-
 import { root } from '../../../api/config';
 import { SimpleFileUploadProps } from '../../../interfaces/SimpleFileUploadProps';
+import { FILE_SIZE, FILE_SIZE_MOBILE, SUPPORTED_FORMATS } from './Slide-form';
 
 const FileUpload = ({
   field,
@@ -15,20 +15,8 @@ const FileUpload = ({
   fieldId,
 }: SimpleFileUploadProps) => {
   const image = field.value;
-  const [error, setError] = useState('');
 
-  function imgRequired() {
-    return (
-      !imageSrc
-          && <div className={classes.errorMy}>
-              <ErrorMessage name='image' />
-            </div>
-          && <div className={classes.errorMy}>
-              <ErrorMessage name='imageMobile' />
-            </div>
-    )
-  }
-
+  const [error, setError] = useState('')
   const [imageSrc, setImageSrc] = useState(image);
   if (typeof image !== 'string') {
     if (image?.size > 100) {
@@ -42,24 +30,35 @@ const FileUpload = ({
     setImageSrc(`${root}/static/uploads/${image}`);
   }
 
+  function imgRequired() {
+    return (
+      !imageSrc
+          && <div className={classes.errorMy}>
+              <ErrorMessage name='image' />
+            </div>
+          && <div className={classes.errorMy}>
+              <ErrorMessage name='imageMobile' />
+            </div>
+    )
+  }
+
   const onUpload = async (event: React.ChangeEvent<any>) => {
   if (!event.target.files) return;
-    const imageSize = event.target.files[0]?.size;
-  // const imageType = event.target.files[0]?.type;
+  const imageSize = event.target.files[0]?.size;
+  const imageType = event.target.files[0]?.type;
   const file = event.currentTarget.files[0];
-    if (imageSize && imageSize > 30000 && fieldId === 'file') {
+    if (imageSize && imageSize >= FILE_SIZE && fieldId === 'file') {
       setError('Required')
       return
     }
-    if (imageSize && imageSize > 1000 && fieldId === 'fileMobile') {
+    if (imageSize && imageSize >= FILE_SIZE_MOBILE && fieldId === 'fileMobile') {
       setError('Required')
       return
     }
-    // if (imageType && imageType !== ['image/jpg', 'image/jpeg', 'image/gif', 'image/png']) {
-    //   setError('required')
-    //   return
-    // }
-    
+    if (!imageType && imageType !== SUPPORTED_FORMATS) {
+      setError('Required')
+      return 
+    }
     setFieldValue(field.name, file);
   }
 
