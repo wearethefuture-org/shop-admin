@@ -93,7 +93,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
           }}
           onIconClick={() => {
             if (expandedNodes.includes('' + treeItemData.id)) {
-              setExpandedNodes(expandedNodes.filter((node) => node !== treeItemData.id));
+              setExpandedNodes(expandedNodes.filter((node) => node !== '' + treeItemData.id));
             } else {
               setExpandedNodes([...expandedNodes, '' + treeItemData.id]);
             }
