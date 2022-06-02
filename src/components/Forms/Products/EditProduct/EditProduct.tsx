@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -10,11 +10,7 @@ import { AppDispatch, RootState } from '../../../../store/store';
 import { root } from '../../../../api/config';
 import { updateProductRequest } from '../../../../store/actions/products.actions';
 import { productValidationShema } from '../ProductForm/productFormHelpers';
-import {
-  ITreeCategory,
-  IGetTreeCategoriesResponse,
-  ICharResponse,
-} from '../../../../interfaces/ITreeCategory';
+import { IGetTreeCategoriesResponse, ICharResponse } from '../../../../interfaces/ITreeCategory';
 import { getEditCharValuesObject } from './getEditCharValuesObject';
 
 interface ILocation {
