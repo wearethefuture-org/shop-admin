@@ -130,10 +130,10 @@ export function* updateProductWorker({
   },
 }: IActions): SagaIterator<void> {
   try {
-    const { categoryID, name, price, description, key, files } = productValues;
+    const { categoryId, name, price, description, key, files } = productValues;
     const editedProduct = yield call(apiUpdateProduct, {
       id,
-      categoryID,
+      categoryId,
       name,
       price,
       description,
