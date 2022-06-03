@@ -15,8 +15,6 @@ import { Type } from '../../../../../interfaces/IProducts';
 import styles from './FormProductCharacteristics.module.scss';
 
 export const charDynamicFields = (char, formik, product) => {
-  console.log(formik.values.subForm);
-
   const changeEnum = (e) => {
     const { value, checked } = e.target;
 
