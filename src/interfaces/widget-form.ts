@@ -11,3 +11,7 @@ export interface IFormParserValues {
   bazzilaIdCreateNewProducts: boolean
   fashionGirlCreateNewProducts: boolean
 }
+
+export interface IFormCashbackValues {
+  currentPercentCashback: number;
+}
