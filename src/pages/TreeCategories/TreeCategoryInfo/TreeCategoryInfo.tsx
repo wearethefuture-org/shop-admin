@@ -26,7 +26,7 @@ import {
 import { ErrorsAlert } from '../../../components/ErrorsAlert';
 
 import styles from './TreeCategoryInfo.module.scss';
-import { Button, Card, IconButton, LinearProgress } from '@material-ui/core';
+import { Button, Card, IconButton, LinearProgress, Switch } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
@@ -235,6 +235,14 @@ const TreeCategoryInfo: React.FC = () => {
                   <h4>Основна інформація</h4>
                 </ExpandBtn>
                 <div>
+                  <div>
+                    <span>Disabled</span>
+                    <Switch
+                    // checked={productStatus.disabled}
+                    // onChange={handleDisableProduct}
+                    // name="isWidgetActiveNewArrivals"
+                    />
+                  </div>
                   <IconButton
                     aria-label="edit"
                     color="default"
