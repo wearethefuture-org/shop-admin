@@ -1,15 +1,7 @@
 import { withFormik } from 'formik';
 import { Dispatch } from 'redux';
-import * as Yup from 'yup';
 import InnerForm from './Inner-form';
 import { fetchUpdateSettings } from '../../../../store/actions/settings.actions';
-
-const validationSchema = Yup.object({
-  ollaParserLimit: Yup.number()
-    .min(1, 'Min value can be 1')
-    .max(100, 'Max value can be 100')
-    .required('Is required'),
-});
 
 const ParserForm = withFormik<ParserFormProps, IFormParserValues>({
   mapPropsToValues: ({parameters}) => {
@@ -28,7 +20,6 @@ const ParserForm = withFormik<ParserFormProps, IFormParserValues>({
       parameters
     }
   },
-  validationSchema: validationSchema,
   handleSubmit: (values: IFormParserValues, { setSubmitting, props }) => {
     setSubmitting(false);
     props.handleClick();

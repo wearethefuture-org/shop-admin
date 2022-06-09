@@ -45,11 +45,9 @@ const useStyles = makeStyles((theme: Theme): ThemeOptions =>
       },
       margin: 'left',
     },
-
     input: {
-      width: '50px',
+      width: '130px',
     },
-    
     secondaryHeading: {
       flexGrow: 1,
       marginLeft: '30px',
@@ -82,6 +80,17 @@ const InnerForm: React.FC<FormikProps<IFormParserValues>> = (props) => {
     props.setFieldValue(event.target.name, event.target.checked);
   };
 
+  const validateNumber = (value: number) => {
+    if (typeof value !== 'number') {return 'Must be number';}
+    if (value < 1) {return 'Must be greater than 1';}
+    if (value > 100) {return  'Must be less than 100';}
+  };
+
+  const validateString = (value: string) => {
+    if (value.length < 3) {return 'To short...';}
+    if (value.length > 200) {return  'To long...';}
+  };
+
   const mappedElements = Object.values(props.values.parameters).map((item: any, index) => {
     return (<div key={index}>
       <div>
@@ -96,26 +105,30 @@ const InnerForm: React.FC<FormikProps<IFormParserValues>> = (props) => {
             const fieldName = ParserSettingsDescription[Object.keys(item)[childrenIndex]] 
             return (
               <div className={classes.lineItem} key={childrenIndex}>
+                <Typography className={classes.title}>{fieldName ? fieldName : Object.keys(item)[childrenIndex]}:</Typography>
                 {(typeof element === 'boolean') &&
-                  <>
-                    <Typography className={classes.title}>{fieldName ? fieldName : Object.keys(item)[childrenIndex]}:</Typography>
-                    <Switch
-                      className={classes.switch}
-                      checked={state[fullName]}
-                      onChange={handleChange}
-                      name={fullName}
-                    />
-                  </>}
-                  {(typeof element === 'number') &&
-                  <>
-                    <Typography className={classes.title}>{fieldName ? fieldName : Object.keys(item)[childrenIndex]}:</Typography>
-                    <Field
-                      component={TextField}
-                      className={classes.input}
-                      type="number"
-                      name={fullName}
-                    />
-                  </>}
+                  <Switch
+                    className={classes.switch}
+                    checked={state[fullName]}
+                    onChange={handleChange}
+                    name={fullName}
+                  />}
+                {(typeof element === 'number') &&
+                <Field
+                  component={TextField}
+                  className={classes.input}
+                  validate={validateNumber}
+                  type="number"
+                  name={fullName}
+                />}
+                {(typeof element === 'string') &&
+                <Field
+                  component={TextField}
+                  className={classes.input}
+                  validate={validateString}
+                  type="string"
+                  name={fullName}
+                />}
               </div>
             )
           })
