@@ -108,14 +108,6 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     email: Yup.string().email('Неправильна адреса!').required('Це поле не повинно бути пустим!'),
     telegramId: Yup.string().notRequired().nullable(),
     roleId: Yup.string().required('Це поле не повинно бути пустим!'),
-    newPassword: Yup.string()
-      .min(6, 'Пароль занадто короткий!')
-      .required('Це поле не повинно бути пустим!')
-      .matches(
-        /^(?=.*[A-ZА-Я])(?=.*\d).*$/,
-        'Пароль має бути не менше 6 символів, містити цифри та великі літери'
-      ),
-    confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
   };
 
   const newScheme = {
@@ -310,11 +302,11 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
         </Select>
       </div>
    
-      <NavLink to={'/password'} key={'/password'}>
+      {!isNew && <NavLink to={'/password'} key={'/password'}>
         <div className={styles.form__resetPassword}>
             <span>Змінити пароль</span>
         </div>
-      </NavLink>
+      </NavLink>}
 
       <div className={classes.row}>
         <Button className={classes.submit} type="submit" disabled={formik.isSubmitting}>
