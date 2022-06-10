@@ -12,3 +12,8 @@ export interface IInvoice {
   url?: string;
   invoiceFile: IInvoiceFile;
 }
+
+export interface IInvoiceData {
+  invoiceFile?: IInvoiceFile;
+  invoicesList?: IInvoice[];
+}
