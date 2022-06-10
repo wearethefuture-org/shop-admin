@@ -18,7 +18,7 @@ import {
   IUpdateProduct,
   IUpdateAvailabilityProduct,
   IDisableProduct,
-  IDeleteProductChars
+  IDeleteProductChars,
 } from '../interfaces/IProducts';
 import { ISearchItems, ISearchItemsResponse } from '../interfaces/ISearch';
 import { IBasicOrder } from '../interfaces/IOrders';
@@ -41,6 +41,7 @@ import instance from './axios-interceptors';
 import { Status } from '../enums/orderStatus';
 import { IRole } from '../interfaces/IRoles';
 import { ISliderAnimation, ISliderAnimations } from '../interfaces/ISliderAnimations';
+import { IInvoice } from '../interfaces/IInvoice';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -67,7 +68,7 @@ type ApiFetchedDataType = {
     deleteProduct: (id: number) => FetchedDataType<JSON>;
     addProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
-    deleteProductCharValues: (data : IDeleteProductChars) => FetchedDataType<JSON>
+    deleteProductCharValues: (data: IDeleteProductChars) => FetchedDataType<JSON>;
     updateAvailabilityProduct: (
       data: IUpdateAvailabilityProduct
     ) => FetchedDataType<IAddCharResponse>;
@@ -133,6 +134,11 @@ type ApiFetchedDataType = {
       isActive: boolean
     ) => FetchedDataType<ISliderAnimation>;
   };
+
+  invoice: {
+    getInvoicesList: () => FetchedDataType<IInvoice[]>;
+    getInvoice: (name: string) => FetchedDataType<File>;
+  };
 };
 
 export const api: ApiFetchedDataType = {
@@ -155,7 +161,7 @@ export const api: ApiFetchedDataType = {
     deleteProduct: (id) => instance.delete(`${root}/product/${id}`),
     addProductCharValues: (data) => instance.post(`${root}/characteristics-values`, data),
     updateProductCharValues: (data) => instance.patch(`${root}/characteristics-values`, data),
-    deleteProductCharValues: (data) => instance.delete(`${root}/characteristics-values`, {data}),
+    deleteProductCharValues: (data) => instance.delete(`${root}/characteristics-values`, { data }),
 
     updateAvailabilityProduct: ({ productId, ...product }) =>
       instance.patch(`${root}/product/${productId}`, product),
@@ -195,7 +201,7 @@ export const api: ApiFetchedDataType = {
     update: ({ id, ...user }) => instance.put(`${root}/users/${id}`, user),
     delete: (id) => instance.delete(`${root}/users/${id}`),
     add: (user) => instance.post(`${root}/auth/register-through-admin`, user),
-    requestPasswordInstall: (email) => instance.post(`${root}/users/password/reset`, email)
+    requestPasswordInstall: (email) => instance.post(`${root}/users/password/reset`, email),
   },
   comments: {
     get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),
@@ -219,5 +225,9 @@ export const api: ApiFetchedDataType = {
     getActiveSliderAnimation: () => instance.get(`${root}/slider-animations/active`),
     changeActiveSliderAnimation: (id: number, isActive: boolean) =>
       instance.patch(`${root}/slider-animations/change-active/${id}/${isActive}`),
+  },
+  invoice: {
+    getInvoicesList: () => instance.get(`${root}/invoice/all`),
+    getInvoice: (name: string) => instance.get(`${root}/invoice/${name}`),
   },
 };
