@@ -18,6 +18,7 @@ import MessageIcon from '@material-ui/icons/Message';
 import FeedbackIcon from '@material-ui/icons/Feedback';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
+import DescriptionIcon from '@material-ui/icons/Description';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -112,6 +113,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
       pageURL: '/statistic',
       title: 'Статистика',
       itemIcon: <EqualizerIcon fontSize="small" className={styles.icon} />,
+    },
+    {
+      pageURL: '/invoices',
+      title: 'Інвойси',
+      itemIcon: <DescriptionIcon fontSize="small" className={styles.icon} />,
     },
     {
       pageURL: '/users',
