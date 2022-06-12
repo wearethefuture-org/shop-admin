@@ -11,8 +11,9 @@
 .quantity {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 40%;
+  justify-content: space-around;
+  min-width: 40%;
+  max-width: max-content;
 }
 
 .orderHeader {
