@@ -105,6 +105,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       selector: (row) => row.price,
       sortable: true,
       format: (row) => <span>&#8372; {priceFormat(row.price)}</span>,
+      omit: !activeColumns.includes('Ціна'),
     },
     {
       name: 'Опис',
