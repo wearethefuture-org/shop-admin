@@ -24,12 +24,14 @@ import {
   GroupToDisplay,
 } from './treeCategoryToDisplayReducer';
 import { ErrorsAlert } from '../../../components/ErrorsAlert';
+import { disableEnableCategoryRequest } from '../../../store/actions/treeCategories.actions';
 
 import styles from './TreeCategoryInfo.module.scss';
 import { Button, Card, IconButton, LinearProgress, Switch } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
+import DisableTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/DisableTreeCategoryModal/DisableTreeCategoryModal';
 
 const TreeCategoryInfo: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -38,8 +40,15 @@ const TreeCategoryInfo: React.FC = () => {
 
   // Delete Modal
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
+
   const closeDeleteModal = () => {
     setOpenDeleteDialog(false);
+  };
+
+  const [openDisableDialog, setOpenDisableDialog] = useState<boolean>(false);
+
+  const closeDisableModal = () => {
+    setOpenDisableDialog(false);
   };
 
   const ref = useRef<HTMLDivElement>(null);
@@ -63,6 +72,8 @@ const TreeCategoryInfo: React.FC = () => {
     treeCategoryDisplayReducer,
     treeCategory as TreeCategoryToDisplay
   );
+
+  const [categoryStatus, setCategoryStatus] = useState(treeCategory.disabledByAdmin);
 
   useEffect(() => {
     if (treeCategory) {
@@ -181,6 +192,22 @@ const TreeCategoryInfo: React.FC = () => {
   // EDIT GROUP
   const [groupToEdit, setGroupToEdit] = useState<GroupToDisplay | null>(null);
 
+  const [disableSwitcherValue, setDisableSwitcherValue] = useState(treeCategory.disabledByAdmin);
+  const handleDisableCategory: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const data = {
+      disable: e.target.checked,
+      id: treeCategory.id,
+    };
+
+    if (treeCategory.parent || treeCategory.children.length) {
+      setDisableSwitcherValue(e.target.checked);
+      setOpenDisableDialog(true);
+    } else {
+      setCategoryStatus(data.disable);
+      dispatch(disableEnableCategoryRequest(data));
+    }
+  };
+
   return (
     <div ref={ref}>
       {loading && <LinearProgress />}
@@ -200,7 +227,17 @@ const TreeCategoryInfo: React.FC = () => {
         <DeleteTreeCategoryModal
           lastCategory={true}
           handleClose={closeDeleteModal}
-          categoryInfo={{ id: treeCategory.id, name: treeCategory?.name ? treeCategory.name : '' }}
+          categoryInfo={{
+            id: treeCategory.id,
+            name: treeCategory?.name ? treeCategory.name : '',
+          }}
+        />
+      )}
+      {openDisableDialog && (
+        <DisableTreeCategoryModal
+          switcherValue={disableSwitcherValue}
+          categoryInfo={treeCategory}
+          handleClose={closeDisableModal}
         />
       )}
       <div className={styles['block-wrapper']}>
@@ -234,15 +271,7 @@ const TreeCategoryInfo: React.FC = () => {
                 >
                   <h4>Основна інформація</h4>
                 </ExpandBtn>
-                <div>
-                  <div>
-                    <span>Disabled</span>
-                    <Switch
-                    // checked={productStatus.disabled}
-                    // onChange={handleDisableProduct}
-                    // name="isWidgetActiveNewArrivals"
-                    />
-                  </div>
+                <div className={styles['control-block']}>
                   <IconButton
                     aria-label="edit"
                     color="default"
@@ -259,55 +288,69 @@ const TreeCategoryInfo: React.FC = () => {
                   >
                     <DeleteIcon />
                   </IconButton>
+                  <div>
+                    <span>Disable</span>
+                    <Switch
+                      checked={treeCategory.disabledByAdmin}
+                      onChange={handleDisableCategory}
+                    />
+                  </div>
                 </div>
               </div>
               <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
                 {editBasicInfo ? <TreeCategoryEditForm /> : <TreeCategoryBasicInfo />}
               </div>
+              {!treeCategory.children.length && (
+                <>
+                  <ExpandBtn
+                    expandBlock={expandedBlocks.includes('characteristics')}
+                    handleExpand={() => handleExpandedBlocks('characteristics')}
+                    disabled={false}
+                  >
+                    <h4>Характеристики</h4>
+                  </ExpandBtn>
 
-              <ExpandBtn
-                expandBlock={expandedBlocks.includes('characteristics')}
-                handleExpand={() => handleExpandedBlocks('characteristics')}
-                disabled={false}
-              >
-                <h4>Характеристики</h4>
-              </ExpandBtn>
+                  <div
+                    className={expandedBlocks.includes('characteristics') ? 'expanded' : 'shrinked'}
+                  >
+                    <div className={styles['add-btn-wrapper']}>
+                      <AddBtn
+                        title="Додати групу"
+                        handleAdd={() => {
+                          setOpenGroupModal(true);
+                        }}
+                      />
+                    </div>
+                    {charGroup &&
+                    charGroup.some(
+                      (group) => group.characteristic && group.characteristic.length
+                    ) ? (
+                      <>
+                        <PriorityHighIcon style={{ color: 'red' }} />
+                        <span>Є обов`язковою характеристикою</span>
+                      </>
+                    ) : null}
 
-              <div className={expandedBlocks.includes('characteristics') ? 'expanded' : 'shrinked'}>
-                <div className={styles['add-btn-wrapper']}>
-                  <AddBtn
-                    title="Додати групу"
-                    handleAdd={() => {
-                      setOpenGroupModal(true);
-                    }}
-                  />
-                </div>
-                {charGroup &&
-                charGroup.some((group) => group.characteristic && group.characteristic.length) ? (
-                  <>
-                    <PriorityHighIcon style={{ color: 'red' }} />
-                    <span>Є обов`язковою характеристикою</span>
-                  </>
-                ) : null}
-
-                {charGroup && charGroup.length
-                  ? charGroup.map(
-                      (group) =>
-                        group && (
-                          <CharGroup
-                            key={group.name}
-                            group={group}
-                            expandedGroups={expandedGroups}
-                            setExpandedGroups={setExpandedGroups}
-                            setOpenGroupModal={setOpenGroupModal}
-                            setGroupToEdit={setGroupToEdit}
-                            treeCategoryDispatch={treeCategoryDispatch}
-                            treeCategoryDisplayDispatch={treeCategoryDisplayDispatch}
-                          />
+                    {charGroup && charGroup.length
+                      ? charGroup.map(
+                          (group) =>
+                            group && (
+                              <CharGroup
+                                key={group.name}
+                                group={group}
+                                expandedGroups={expandedGroups}
+                                setExpandedGroups={setExpandedGroups}
+                                setOpenGroupModal={setOpenGroupModal}
+                                setGroupToEdit={setGroupToEdit}
+                                treeCategoryDispatch={treeCategoryDispatch}
+                                treeCategoryDisplayDispatch={treeCategoryDisplayDispatch}
+                              />
+                            )
                         )
-                    )
-                  : null}
-              </div>
+                      : null}
+                  </div>
+                </>
+              )}
               <div className={styles['form-btn-wrapper']}>
                 <Button
                   variant="contained"

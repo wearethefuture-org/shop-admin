@@ -1,46 +1,72 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { AppDispatch } from '../../../../store/store';
-import { deleteTreeCategory } from '../../../../store/actions/treeCategories.actions';
-
-import CustomConfirm from '../../../../components/CustomConfirm/CustomConfirm';
-
-interface ICategoryInfo {
-  id: number;
-  name: string;
-}
+import { disableEnableCategoryRequest } from '../../../../store/actions/treeCategories.actions';
+import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
+import DisableCategoryConfirm from '../../../../components/CustomConfirm/DisableCategoryConfirm';
 
 interface ModalCategoryProps {
-  categoryInfo: ICategoryInfo;
+  switcherValue: boolean;
   handleClose: () => void;
-  lastCategory?: boolean;
+  categoryInfo: ITreeCategory;
 }
 
 const DisableTreeCategoryModal: React.FC<ModalCategoryProps> = ({
-  categoryInfo,
   handleClose,
-  lastCategory,
+  switcherValue,
+  categoryInfo,
 }) => {
   const dispatch: AppDispatch = useDispatch();
-  const history = useHistory();
-
-  const handleDeleteCategory = () => {
-    dispatch(deleteTreeCategory(categoryInfo.id));
-
-    if (lastCategory) {
-      history.push('/tree-categories');
-    }
+  const handleDisableCategory = () => {
+    const data = {
+      id: categoryInfo.id,
+      disable: switcherValue,
+    };
+    dispatch(disableEnableCategoryRequest(data));
+    handleClose();
   };
+
+  function createWarning(category, disable): string {
+    let verb;
+    if (disable) {
+      verb = 'вимкнено';
+      if (category.children.length && !category.parent) {
+        return 'категорія містить підкатегорії,  їх також буде ' + verb;
+      }
+      if (category.children.length && category.parent) {
+        return 'категорія містить підкатегорії і батьківські категорії,  їх також буде ' + verb;
+      }
+
+      if (!category.children.length && category.parent) {
+        return 'категорія містить батьківські категорії,  їх також буде ' + verb;
+      }
+    } else {
+      verb = 'увімкнено';
+      if (category.children.length && !category.parent) {
+        return 'категорія містить підкатегорії,  їх також буде ' + verb;
+      }
+      if (category.children.length && category.parent) {
+        return 'категорія містить підкатегорії і батьківські категорії,  їх також буде ' + verb;
+      }
+
+      if (!category.children.length && category.parent) {
+        return 'категорія містить батьківські категорії,  їх також буде ' + verb;
+      }
+    }
+    return '';
+  }
+
+  const warning = createWarning(categoryInfo, switcherValue);
 
   return (
     <>
-      <CustomConfirm
-        openDeleteDialog={true}
-        closeDeleteDialog={handleClose}
-        name={`категорію ${categoryInfo.name}`}
-        warning="Категорію та її підкатегорії буде остаточно видалено"
-        handleDelete={handleDeleteCategory}
+      <DisableCategoryConfirm
+        openDisableDialog={true}
+        closeDisableDialog={handleClose}
+        warning={createWarning(categoryInfo, switcherValue)}
+        handleDisable={handleDisableCategory}
+        dialogTitle={switcherValue ? 'Вимкнути категорію?' : 'Увімкнути категорію?'}
       />
     </>
   );

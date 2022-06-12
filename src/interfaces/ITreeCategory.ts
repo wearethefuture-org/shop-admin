@@ -62,3 +62,8 @@ export interface ICharToAdd {
   defaultValues: null | { values: string[] };
   categoryId?: number;
 }
+
+export interface IDisableEnableCategory {
+  id: number;
+  disable: boolean;
+}
