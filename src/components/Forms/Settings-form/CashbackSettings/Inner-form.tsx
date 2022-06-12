@@ -44,6 +44,15 @@ const useStyles = makeStyles((theme: Theme): ThemeOptions =>
 const InnerForm: React.FC<FormikProps<IFormCashbackValues>> = (props) => {
   const classes = useStyles();
 
+  const [state, setState] = React.useState({
+    switchActiveCashback: props.values.switchActiveCashback
+  });
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+    props.setFieldValue(event.target.name, event.target.checked);
+  };
+
   return (
     <Form className={classes.form}>
       <div className={classes.inputContainer}>
@@ -57,6 +66,12 @@ const InnerForm: React.FC<FormikProps<IFormCashbackValues>> = (props) => {
           label="Відсоток кешбеку"
         />
         <Typography className={classes.secondaryHeading}>Від: 1-35%</Typography>
+        <Switch
+            className={classes.switch}
+            checked={state.switchActiveCashback}
+            onChange={handleChange}
+            name="switchActiveCashback"
+          />
       </div>
       <DialogActions>
         <Button color="primary" variant="contained" type="submit" disabled={!props.isValid}>

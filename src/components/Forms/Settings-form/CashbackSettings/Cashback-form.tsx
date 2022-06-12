@@ -13,6 +13,7 @@ interface CashbackFormProps {
     currentCashback: {
       percent: number,
     },
+    enable: boolean
   };
   name: string;
 }
@@ -25,9 +26,10 @@ const validationSchema = Yup.object({
 });
 
 const CashbackFrom = withFormik<CashbackFormProps, IFormCashbackValues>({
-  mapPropsToValues: ({ parameters: { currentCashback } }) => {
+  mapPropsToValues: ({ parameters: { currentCashback, enable} }) => {
     return {
-      currentPercentCashback: currentCashback.percent
+      currentPercentCashback: currentCashback.percent,
+      switchActiveCashback: enable
     };
   },
   validationSchema: validationSchema,
@@ -38,7 +40,8 @@ const CashbackFrom = withFormik<CashbackFormProps, IFormCashbackValues>({
     const parameters: CashbackFormProps["parameters"] = {
       currentCashback: {
         percent: values.currentPercentCashback
-      }
+      },
+      enable: values.switchActiveCashback
     };
 
     props.dispatch(fetchUpdateSettings(props.name, parameters));
