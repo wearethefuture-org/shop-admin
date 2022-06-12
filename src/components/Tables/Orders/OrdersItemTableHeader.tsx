@@ -41,6 +41,7 @@ const OrdersItemTableHeader: FC<OrdersItemTableHeaderProps> = ({ order }) => {
           {order.additionalNumber ? order.additionalNumber : order.user.phoneNumber}
         </a>
       </div>
+      <div className={styles.notcall}> Не Передзвонювати: {order.notcall ? "true" : "false"}</div>
       {order.comment && (
         <div className={styles.commentBlock}>
           <SmsIcon color="primary" /> <b>Коментар до замовлення: </b>
