@@ -7,10 +7,15 @@ import UserDialog from '../../Modals/UserDialog/UserDialog';
 import UserRemoveDialog from '../../Modals/UserRemoveDialog/UserRemoveDialog';
 import { AppDispatch, RootState } from '../../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsersRequest } from '../../../store/actions/users.actions';
-import { IUserItem } from '../../../interfaces/IUsers';
+import { getUsersByQueryRequest, getUsersRequest } from '../../../store/actions/users.actions';
+import { UsersTableProps } from '../../../interfaces/IUsers';
 
-const UsersTable = ({ list }: { list: IUserItem[] }) => {
+const UsersTable: React.FC<UsersTableProps> = ({
+  list,
+  activeColumns,
+  isSearch,
+  searchValue,
+}) => {
   const dispatch: AppDispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -18,11 +23,20 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
 
   const onChangePage = (page) => {
     setPage(page);
+    if (isSearch) {
+      dispatch(getUsersByQueryRequest(searchValue, page, limit));
+      return
+    }
     dispatch(getUsersRequest(page, limit));
   };
 
   const onChangeLimit = (limit) => {
     setLimit(limit);
+
+    if (isSearch) {
+      dispatch(getUsersByQueryRequest(searchValue, page, limit));
+      return
+    }
     dispatch(getUsersRequest(page, limit));
   };
 
@@ -50,14 +64,14 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
     setUserDialogIsOpen(true);
     setModalParams({
       isNew: false,
-      user: list.find((item) => item.id == event.currentTarget.value),
+      user: list.find((item) => item.id === event.currentTarget.value),
       closeModal: userDialogClose,
     });
   };
   const openDialogRemoveUser = (event) => {
     setConfirmRemoveUserIsOpen(true);
     setModalRemoveParams({
-      user: list.find((item) => item.id == event.currentTarget.value),
+      user: list.find((item) => item.id === event.currentTarget.value),
       closeModal: removeUserDialogClose,
     });
   };
@@ -84,6 +98,7 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
       sortable: true,
       maxWidth: '100px',
       minWidth: '60px',
+      omit: !activeColumns.includes('ID'),
     },
     {
       name: 'Створено',
@@ -97,28 +112,34 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
           year: 'numeric',
         });
       },
+      omit: !activeColumns.includes('Створено'),
     },
     {
       name: 'Телефон',
       selector: (row) => row.phoneNumber,
       sortable: true,
+       omit: !activeColumns.includes('Телефон'),
     },
     {
       name: 'Email',
       selector: (row) => row.email,
+      omit: !activeColumns.includes('Email'),
     },
     {
       name: 'TelegramId',
       selector: (row) => row.telegramId,
+       omit: !activeColumns.includes('TelegramId'),
     },
     {
       name: "Ім'я",
       selector: (row) => `${row.firstName} ${row.lastName}`,
       sortable: true,
+       omit: !activeColumns.includes('Ім\'я'),
     },
     {
       name: 'Роль',
       selector: (row) => row.role?.name,
+       omit: !activeColumns.includes('Роль'),
     },
     {
       name: '',

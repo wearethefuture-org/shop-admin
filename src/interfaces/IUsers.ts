@@ -64,8 +64,9 @@ export interface IUsersData {
   loading: boolean;
   currentUser: IUserItem | null;
   error: string | null;
-  count: number,
-  totalPages: number,
+  count: number;
+  totalPages: number;
+  isSearch: boolean;
 }
 
 export interface UserTableData {
@@ -92,4 +93,16 @@ export interface IOrderUser {
 export interface IResponseMessage {
   success?: boolean;
   message: string;
+}
+
+export interface IUsersSearchResponse {
+  data: IUserItem[];
+  count: number;
+  totalPages: number;
+}
+export interface UsersTableProps{
+  list: IUserItem[];
+  activeColumns: string[];
+  isSearch: boolean;
+  searchValue: string;
 }

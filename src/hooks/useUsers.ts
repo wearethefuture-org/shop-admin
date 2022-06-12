@@ -3,17 +3,21 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getUsersRequest } from '../store/actions/users.actions';
 import { AppDispatch, RootState } from '../store/store';
-import { IUserItem } from '../interfaces/IUsers';
+import { IUserItem, IUsersData } from '../interfaces/IUsers';
 
 const useUsers = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getUsersRequest(1, 10));
-  }, [dispatch]);
+  const { list, loading, isSearch }: Partial<IUsersData> = useSelector(
+    (state: RootState) => state.users
+  );
 
-  const data: IUserItem[] = useSelector((state: RootState) => state.users.list);
-  return { data, dispatch };
+  useEffect(() => {
+    if (!isSearch) {
+      dispatch(getUsersRequest(1, 10));
+    }
+  }, [dispatch, isSearch]);
+  return { list, loading, isSearch, dispatch };
 };
 
 export default useUsers;
