@@ -72,7 +72,7 @@ const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, se
 
   // CATEGORY
   useEffect(() => {
-    if (categoryId !== 0) {
+    if (categoryId) {
       dispatch(getTreeCategoryByIdRequest(categoryId));
     }
   }, [categoryId, dispatch, list]);
