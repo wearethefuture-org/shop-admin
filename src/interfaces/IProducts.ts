@@ -87,6 +87,9 @@ export interface IProductsData {
   count: number;
   totalPages: number;
   isSearch: boolean;
+  paginationPage: number;
+  searchValue: null | string;
+  paginationPageSearch: number;
 }
 
 export interface CharValues {
@@ -154,6 +157,8 @@ export interface ProductsTableProps {
   activeColumns: string[];
   isSearch: boolean;
   searchValue: string;
+  count: number;
+  paginationPage: number;
 }
 
 export interface IUpdateAvailabilityProduct {
