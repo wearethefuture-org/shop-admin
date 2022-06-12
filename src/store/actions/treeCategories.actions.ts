@@ -13,9 +13,14 @@ import {
   GET_TREE_CATEGORIES_BY_ID_REQUEST,
   GET_TREE_CATEGORIES_BY_ID_SUCCESS,
   GET_TREE_CATEGORIES_BY_ID_ERROR,
+  DISABLE_ENABLE_CATEGORY_REQUEST,
+  DISABLE_ENABLE_CATEGORY_SUCCESS,
+  DISABLE_ENABLE_CATEGORY_ERROR,
 } from '../types';
 
-export const getTreeCategoriesRequest = (): IActions => ({ type: GET_TREE_CATEGORIES_REQUEST });
+export const getTreeCategoriesRequest = (): IActions => ({
+  type: GET_TREE_CATEGORIES_REQUEST,
+});
 
 export const getTreeCategoriesSuccess = (
   treeCategories: IGetTreeCategoriesResponse[]
@@ -74,5 +79,20 @@ export const updateTreeCategorySuccess = (category: IGetTreeCategoriesResponse):
 
 export const updateTreeCategoryError = (message: string): IActions => ({
   type: UPDATE_TREE_CATEGORY_ERROR,
+  data: message,
+});
+
+// disableEnable category
+export const disableEnableCategoryRequest = (data: TreeCategory): IActions => {
+  return { type: DISABLE_ENABLE_CATEGORY_REQUEST, data };
+};
+export const disableEnableCategorySuccess = (data: TreeCategory): IActions => {
+  return {
+    type: DISABLE_ENABLE_CATEGORY_SUCCESS,
+    data: data,
+  };
+};
+export const disableEnableCategoryError = (message: string): IActions => ({
+  type: DISABLE_ENABLE_CATEGORY_ERROR,
   data: message,
 });

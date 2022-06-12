@@ -41,7 +41,10 @@ const ProductItem: React.FC = () => {
   };
 
   // UPDATE AVAILABILITY PRODUCT
-  const [productStatus, setProductStatus] = useState<{ availability: boolean; disabled: boolean }>({
+  const [productStatus, setProductStatus] = useState<{
+    availability: boolean;
+    disabled: boolean;
+  }>({
     availability: product.availability,
     disabled: product.disabled,
   });
@@ -51,7 +54,10 @@ const ProductItem: React.FC = () => {
       productId: product.id,
       categoryID: product.category.id,
     };
-    setProductStatus((prevState) => ({ ...prevState, availability: data.availability }));
+    setProductStatus((prevState) => ({
+      ...prevState,
+      availability: data.availability,
+    }));
     dispatch(updateAvailabilityProductRequest(data));
   };
 
@@ -61,7 +67,11 @@ const ProductItem: React.FC = () => {
       productId: product.id,
       categoryID: product.category.id,
     };
-    setProductStatus((prevState) => ({ ...prevState, disabled: data.disabled }));
+
+    setProductStatus((prevState) => ({
+      ...prevState,
+      disabled: data.disabled,
+    }));
     dispatch(disableProductRequest(data));
   };
 
@@ -70,11 +80,17 @@ const ProductItem: React.FC = () => {
 
   useEffect(() => {
     if (product.disabled !== productStatus.disabled) {
-      setProductStatus((prevState) => ({ ...prevState, disabled: product.disabled }));
+      setProductStatus((prevState) => ({
+        ...prevState,
+        disabled: product.disabled,
+      }));
     }
 
     if (product.availability !== productStatus.availability) {
-      setProductStatus((prevState) => ({ ...prevState, availability: product.availability }));
+      setProductStatus((prevState) => ({
+        ...prevState,
+        availability: product.availability,
+      }));
     }
   }, [product.availability, product.disabled, productStatus]);
 
