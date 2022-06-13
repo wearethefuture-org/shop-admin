@@ -35,7 +35,9 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({ rows, rowsPerPage, page, e
             <TableCell align="left">{row.createdAt}</TableCell>
             <TableCell align="right">
               <Button variant="contained" color="secondary">
-                <DownloadIcon />
+                <a href={`${process.env.REACT_APP_PROD_DOMAIN}/invoice/${row.name}`} download>
+                  <DownloadIcon />
+                </a>
               </Button>
             </TableCell>
             <TableCell align="right">

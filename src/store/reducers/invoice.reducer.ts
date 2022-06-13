@@ -1,9 +1,8 @@
 import { IActions } from '../../interfaces/actions';
 import { IInvoiceData } from '../../interfaces/IInvoice';
-import { GET_INVOICE, GET_INVOICES_LIST } from '../types';
+import { GET_INVOICES_LIST } from '../types';
 
 const initialState: IInvoiceData = {
-  invoiceFile: undefined,
   invoicesList: [],
 };
 
@@ -13,12 +12,6 @@ const invoice = (state = initialState, action: IActions) => {
       return {
         ...state,
         invoicesList: action.data,
-      };
-    }
-    case GET_INVOICE: {
-      return {
-        ...state,
-        invoiceFile: action.data,
       };
     }
     default:
