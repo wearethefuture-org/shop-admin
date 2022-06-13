@@ -24,6 +24,7 @@ enum cols {
   notcall = 'Не передзвонювати',
   deliveryMethod = 'Спосіб доставки',
   courierDeliveryAddress = "Адреса для кур'єрської доставки",
+  paymentMethod = 'Спосіб оплати',
 }
 
 const OrdersPage: React.FC = () => {
@@ -46,6 +47,7 @@ const OrdersPage: React.FC = () => {
     cols.notcall,
     cols.deliveryMethod,
     cols.courierDeliveryAddress,
+    cols.paymentMethod,
   ]);
 
   const handleColumns = (column: string) =>

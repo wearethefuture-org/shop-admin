@@ -1,17 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import React, { ChangeEvent, useState } from 'react';
+import { TableColumn } from 'react-data-table-component';
 
 import { updateOrderStatusRequest } from '../../../store/actions/orders.actions';
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import { getOrdersRequest } from '../../../store/actions/orders.actions';
 import { Status as enumStatus } from '../../../enums/orderStatus';
 import { AppDispatch, RootState } from '../../../store/store';
-import { IGetOrders } from '../../../interfaces/IOrders';
+import { ICurrentOrder } from '../../../interfaces/IOrders';
 import OrdersSelector from './OrdersSelector';
 
 interface OrdersTableProps {
-  list: IGetOrders[];
+  list: ICurrentOrder[];
   activeColumns: Array<string>;
 }
 
@@ -39,7 +40,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
     dispatch(getOrdersRequest(page, limit));
   };
 
-  const ordersColumns = [
+  const ordersColumns: TableColumn<ICurrentOrder>[] = [
     {
       name: 'OrderID',
       selector: (row) => row.id,
@@ -149,6 +150,12 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
       maxWidth: '100px',
       sortable: true,
       omit: !activeColumns.includes('Сума'),
+    },
+    {
+      name: 'Спосіб оплати',
+      selector: (row) => (row.liqpayOrderId ? 'LiqPay' : 'Післяплата'),
+      maxWidth: '110px',
+      omit: !activeColumns.includes('Спосіб оплати'),
     },
     {
       name: 'Статус',

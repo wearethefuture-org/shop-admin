@@ -29,6 +29,8 @@ export interface IDelivery {
   streetName: string;
   streetRef: string;
   notcall: boolean;
+  deliveryMethod: string;
+  courierDeliveryAddress: string;
 }
 
 export interface IGetOrders extends IBasicOrder {
@@ -60,4 +62,6 @@ export interface ICurrentOrder extends Common {
   comment?: string;
   delivery: IDelivery;
   notcall: boolean;
+  liqpayOrderId?: string;
+  liqpayPaymentStatus?: string;
 }
