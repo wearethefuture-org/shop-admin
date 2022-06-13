@@ -28,8 +28,8 @@ enum cols {
 }
 
 const OrdersPage: React.FC = () => {
-  const { list } = useOrders();
   const loading = useSelector((state: RootState) => state.orders.loading);
+  const { list } = useOrders();
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [activeColumns, setActiveColumns] = useState<string[]>([
