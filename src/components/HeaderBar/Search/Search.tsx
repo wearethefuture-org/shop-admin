@@ -77,6 +77,7 @@ const useStyles = makeStyles((theme) => ({
 const searchOptions = [
   { name: 'продукти', key: 'products' },
   { name: 'категорії', key: 'categories' },
+  { name: 'користувачi', key: 'users' },
 ];
 
 const Search: React.FC<SearchProps> = (props) => {
@@ -112,6 +113,15 @@ const Search: React.FC<SearchProps> = (props) => {
       if (values.searchOption === 'categories') {
         history.push({
           pathname: '/search',
+          state: {
+            searchValue: values.searchValue,
+            searchOption: values.searchOption,
+          },
+        });
+      }
+      if (values.searchOption === 'users') {
+        history.push({
+          pathname: '/users',
           state: {
             searchValue: values.searchValue,
             searchOption: values.searchOption,

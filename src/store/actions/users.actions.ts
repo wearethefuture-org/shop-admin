@@ -1,5 +1,5 @@
 import { IActions } from '../../interfaces/actions';
-import { IUserReqAdd, IUserReqUp, IUserItem } from '../../interfaces/IUsers';
+import { IUserReqAdd, IUserReqUp, IUserItem, IUsersSearchResponse } from '../../interfaces/IUsers';
 import {
   ADD_USER_ERROR,
   ADD_USER_REQUEST,
@@ -13,6 +13,9 @@ import {
   UPDATE_USER_ERROR,
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS,
+  GET_USERS_BY_QUERY_REQUEST,
+  GET_USERS_BY_QUERY_ERROR,
+  GET_USERS_BY_QUERY_SUCCESS,
 } from '../types';
 
 export const getUsersRequest = (page: number, limit: number): IActions => ({
@@ -27,6 +30,26 @@ export const getUsersSuccess = (users: IUserItem[]): IActions => ({
 
 export const getUsersError = (message: string): IActions => ({
   type: GET_USERS_ERROR,
+  data: message,
+});
+
+export const getUsersByQueryRequest = (
+  searchValue: string,
+  page: number,
+  limit: number
+): IActions => ({
+  type: GET_USERS_BY_QUERY_REQUEST,
+  data: { searchValue, page, limit },
+});
+
+export const getUsersByQuerySuccess =
+  (users: IUsersSearchResponse): IActions => ({
+  type: GET_USERS_BY_QUERY_SUCCESS,
+  data: users,
+});
+
+export const getUsersByQueryError = (message: string): IActions => ({
+  type: GET_USERS_BY_QUERY_ERROR,
   data: message,
 });
 

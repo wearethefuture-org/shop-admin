@@ -67,7 +67,8 @@ export const getProductsByQueryRequest = (
   data: { searchValue, page, limit },
 });
 
-export const getProductsByQuerySuccess = (products: IProductsSearchResponse): IActions => ({
+export const getProductsByQuerySuccess = 
+(products: IProductsSearchResponse): IActions => ({
   type: GET_PRODUCTS_BY_QUERY_SUCCESS,
   data: products,
 });
