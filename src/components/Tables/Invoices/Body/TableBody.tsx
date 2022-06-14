@@ -5,11 +5,15 @@ import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import DescriptionIcon from '@material-ui/icons/Description';
+import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 
 import { IInvoiceFile } from '../../../../interfaces/IInvoice';
 import { Dispatch } from 'redux';
-import { removeInvoiceRequest } from '../../../../store/actions/invoice.actions';
+import {
+  removeInvoiceRequest,
+  generateInvoiceRequest,
+} from '../../../../store/actions/invoice.actions';
 
 interface TableBodyProps {
   rows: IInvoiceFile[];
@@ -28,6 +32,10 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
 }) => {
   const removeInvoice = async (name: string) => {
     await dispatch(removeInvoiceRequest(name));
+  };
+
+  const generateInvoice = async () => {
+    await dispatch(generateInvoiceRequest());
   };
 
   return (
@@ -66,6 +74,18 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
           <TableCell colSpan={6} />
         </TableRow>
       )}
+      <TableRow>
+        <TableCell colSpan={2}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => generateInvoice()}
+          >
+            Generate invoice
+          </Button>
+        </TableCell>
+      </TableRow>
     </TableBody>
   );
 };

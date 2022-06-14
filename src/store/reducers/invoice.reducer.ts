@@ -1,6 +1,6 @@
 import { IActions } from '../../interfaces/actions';
 import { IInvoiceData } from '../../interfaces/IInvoice';
-import { GET_INVOICES_LIST, REMOVE_INVOICE } from '../types';
+import { GENERATE_INVOICE, GET_INVOICES_LIST, REMOVE_INVOICE } from '../types';
 
 const initialState: IInvoiceData = {
   invoicesList: [],
@@ -21,6 +21,11 @@ const invoice = (state = initialState, action: IActions) => {
       return {
         ...state,
         invoiceList: newInvoicesList,
+      };
+    }
+    case GENERATE_INVOICE: {
+      return {
+        ...state,
       };
     }
     default:

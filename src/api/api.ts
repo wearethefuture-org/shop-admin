@@ -138,6 +138,7 @@ type ApiFetchedDataType = {
   invoice: {
     getInvoicesList: () => FetchedDataType<IInvoice[]>;
     removeInvoice: (name: string) => FetchedDataType<JSON>;
+    generateInvoice: () => FetchedDataType<JSON>;
   };
 };
 
@@ -229,5 +230,6 @@ export const api: ApiFetchedDataType = {
   invoice: {
     getInvoicesList: () => instance.get(`${root}/invoice/all`),
     removeInvoice: (name: string) => instance.delete(`${root}/invoice/${name}`),
+    generateInvoice: () => instance.post(`${root}/invoice`),
   },
 };

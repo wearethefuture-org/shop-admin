@@ -1,8 +1,12 @@
 import { SagaIterator } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
-import { getInvoicesList, removeInvoice } from '../actions/invoice.actions';
+import { generateInvoice, getInvoicesList, removeInvoice } from '../actions/invoice.actions';
 import { failSnackBar } from '../actions/snackbar.actions';
-import { apiGetInvoicesList, apiRemoveInvoice } from './services/invoice.service';
+import {
+  apiGenerateInvoice,
+  apiGetInvoicesList,
+  apiRemoveInvoice,
+} from './services/invoice.service';
 
 export function* getInvoicesListWorker(): SagaIterator {
   try {
@@ -19,6 +23,15 @@ export function* removeInvoiceWorker({ data }: Params): SagaIterator {
   try {
     const invoice = yield call(apiRemoveInvoice, data.invoiceName);
     yield put(removeInvoice(invoice.deletedInvoice));
+  } catch (e) {
+    yield put(failSnackBar(e.message));
+  }
+}
+
+export function* generateInvoiceWorker(): SagaIterator {
+  try {
+    yield call(apiGenerateInvoice);
+    yield put(generateInvoice());
   } catch (e) {
     yield put(failSnackBar(e.message));
   }
