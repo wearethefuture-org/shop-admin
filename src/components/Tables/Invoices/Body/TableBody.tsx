@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -10,10 +10,8 @@ import Button from '@material-ui/core/Button';
 
 import { IInvoiceFile } from '../../../../interfaces/IInvoice';
 import { Dispatch } from 'redux';
-import {
-  removeInvoiceRequest,
-  generateInvoiceRequest,
-} from '../../../../store/actions/invoice.actions';
+import { generateInvoiceRequest } from '../../../../store/actions/invoice.actions';
+import InvoiceRemoveDialog from '../../../Modals/InvoiceRemoveDialog.tsx/InvoiceRemoveDialog';
 
 interface TableBodyProps {
   rows: IInvoiceFile[];
@@ -30,8 +28,19 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
   emptyRows,
   dispatch,
 }) => {
-  const removeInvoice = async (name: string) => {
-    await dispatch(removeInvoiceRequest(name));
+  const [removeInvoiceDialogIsOpen, setRemoveInvoiceDialogIsOpen] = useState(false);
+  const [modalRemoveParams, setModalRemoveParams] = useState();
+
+  const removeUserDialogClose = () => {
+    setRemoveInvoiceDialogIsOpen(false);
+  };
+
+  const openDialogRemoveInvoice = (event) => {
+    setRemoveInvoiceDialogIsOpen(true);
+    setModalRemoveParams({
+      invoiceName: event.currentTarget.value,
+      closeModal: removeUserDialogClose,
+    });
   };
 
   const generateInvoice = async () => {
@@ -62,10 +71,16 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
               </Button>
             </TableCell>
             <TableCell align="right">
-              <Button variant="contained" color="secondary" onClick={() => removeInvoice(row.name)}>
+              <Button
+                value={row.name}
+                variant="contained"
+                color="secondary"
+                onClick={openDialogRemoveInvoice}
+              >
                 <DeleteIcon />
               </Button>
             </TableCell>
+            {removeInvoiceDialogIsOpen && <InvoiceRemoveDialog {...modalRemoveParams} />}
           </>
         </TableRow>
       ))}
