@@ -28,6 +28,7 @@ const Invoices = () => {
       data={invoiceData.invoicesList.map((i) => {
         return { ...i.invoiceFile };
       })}
+      dispatch={dispatch}
     />
   );
 };

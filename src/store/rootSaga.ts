@@ -43,6 +43,7 @@ import {
   GET_SLIDER_ANIMATIONS_REQUEST,
   REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION,
   GET_INVOICES_LIST_REQUEST,
+  REMOVE_INVOICE_REQUEST,
 } from './types';
 
 import {
@@ -94,7 +95,7 @@ import {
   getActiveSliderAnimationWorker,
   getSliderAnimationsWorker,
 } from './sagas/sliderAnimations.saga';
-import { getInvoicesListWorker } from './sagas/invoice.saga';
+import { getInvoicesListWorker, removeInvoiceWorker } from './sagas/invoice.saga';
 
 export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(GET_TREE_CATEGORIES_REQUEST, fetchTreeCategoryWorker);
@@ -183,6 +184,7 @@ export function* sagaSliderAnimationsWatcher(): SagaIterator {
 // Invoice
 export function* sagaInvoiceWatcher(): SagaIterator {
   yield takeEvery(GET_INVOICES_LIST_REQUEST, getInvoicesListWorker);
+  yield takeEvery(REMOVE_INVOICE_REQUEST, removeInvoiceWorker);
 }
 
 // RootSaga

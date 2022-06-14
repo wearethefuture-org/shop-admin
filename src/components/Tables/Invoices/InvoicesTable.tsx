@@ -13,7 +13,7 @@ import InvoiceTableHeader from './Header/TableHeader';
 
 interface InvoiceDataProps {
   data: Array<IInvoiceFile>;
-  dispatch?: Dispatch;
+  dispatch: Dispatch;
   modalData?: ISlidesModal;
 }
 
@@ -44,7 +44,13 @@ const InvoicesTable: React.FC<InvoiceDataProps> = ({ data, dispatch, modalData }
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">
         <InvoiceTableHeader />
-        <InvoiceTableBody rows={rows} rowsPerPage={rowsPerPage} page={page} emptyRows={emptyRows} />
+        <InvoiceTableBody
+          rows={rows}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          emptyRows={emptyRows}
+          dispatch={dispatch}
+        />
         <InvoiceTableFooter
           rows={rows}
           rowsPerPage={rowsPerPage}

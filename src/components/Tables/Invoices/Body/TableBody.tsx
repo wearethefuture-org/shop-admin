@@ -8,15 +8,28 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import Button from '@material-ui/core/Button';
 
 import { IInvoiceFile } from '../../../../interfaces/IInvoice';
+import { Dispatch } from 'redux';
+import { removeInvoiceRequest } from '../../../../store/actions/invoice.actions';
 
 interface TableBodyProps {
   rows: IInvoiceFile[];
   rowsPerPage: number;
   page: number;
   emptyRows: number;
+  dispatch: Dispatch;
 }
 
-const InvoiceTableBody: React.FC<TableBodyProps> = ({ rows, rowsPerPage, page, emptyRows }) => {
+const InvoiceTableBody: React.FC<TableBodyProps> = ({
+  rows,
+  rowsPerPage,
+  page,
+  emptyRows,
+  dispatch,
+}) => {
+  const removeInvoice = async (name: string) => {
+    await dispatch(removeInvoiceRequest(name));
+  };
+
   return (
     <TableBody>
       {(rowsPerPage > 0
@@ -41,7 +54,7 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({ rows, rowsPerPage, page, e
               </Button>
             </TableCell>
             <TableCell align="right">
-              <Button variant="contained" color="secondary">
+              <Button variant="contained" color="secondary" onClick={() => removeInvoice(row.name)}>
                 <DeleteIcon />
               </Button>
             </TableCell>
