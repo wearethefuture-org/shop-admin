@@ -12,6 +12,7 @@ import { IInvoiceFile } from '../../../../interfaces/IInvoice';
 import { Dispatch } from 'redux';
 import { generateInvoiceRequest } from '../../../../store/actions/invoice.actions';
 import InvoiceRemoveDialog from '../../../Modals/InvoiceRemoveDialog.tsx/InvoiceRemoveDialog';
+import DateMoment from '../../../Common/Date-moment';
 
 interface TableBodyProps {
   rows: IInvoiceFile[];
@@ -59,18 +60,24 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
               {row.id}
             </TableCell>
             <TableCell align="left">
-              <DescriptionIcon />
-              {row.name}
+              <DescriptionIcon fontSize="small" style={{ color: 'darkgreen' }} />
+              {row.name.slice(0, -5)}
             </TableCell>
-            <TableCell align="left">{row.createdAt}</TableCell>
+            <TableCell align="left">
+              <DateMoment date={row.createdAt} />
+            </TableCell>
+            <TableCell align="left">
+              {row.name.indexOf('xlsx') !== -1 ? 'Аркуш Microsoft Excel' : null}
+            </TableCell>
+            <TableCell align="left">7 КБ</TableCell>
             <TableCell align="right">
-              <Button variant="contained" color="secondary">
+              <Button variant="contained">
                 <a href={`${process.env.REACT_APP_PROD_DOMAIN}/invoice/${row.name}`} download>
                   <DownloadIcon />
                 </a>
               </Button>
             </TableCell>
-            <TableCell align="right">
+            <TableCell align="left">
               <Button
                 value={row.name}
                 variant="contained"

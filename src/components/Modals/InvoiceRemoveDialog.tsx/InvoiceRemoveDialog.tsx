@@ -54,7 +54,7 @@ const InvoiceRemoveDialog: React.FC<RemoveProps> = ({ closeModal, invoiceName })
     >
       <DialogTitle id="form-dialog-title">Видалення</DialogTitle>
       <DialogContent dividers>
-        <DialogContentText>Ви дійсно бажаєте видалити {invoiceName}?</DialogContentText>
+        <DialogContentText>Ви дійсно бажаєте видалити файл {invoiceName}?</DialogContentText>
       </DialogContent>
       <div>
         <Button className={classes.remove} onClick={handleClose}>

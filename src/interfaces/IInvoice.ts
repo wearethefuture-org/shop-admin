@@ -10,6 +10,7 @@ export interface IInvoice {
   createdAt: string;
   updatedAt: string;
   url?: string;
+  fileSize: number;
   invoiceFile: IInvoiceFile;
 }
 

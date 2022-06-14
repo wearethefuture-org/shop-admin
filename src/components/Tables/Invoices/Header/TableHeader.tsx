@@ -8,8 +8,10 @@ const InvoiceTableHeader: React.FC = () => {
     <TableHead>
       <TableRow>
         <TableCell>ID</TableCell>
-        <TableCell>Name</TableCell>
-        <TableCell>Created at</TableCell>
+        <TableCell>Назва</TableCell>
+        <TableCell>Дата створення</TableCell>
+        <TableCell>Тип</TableCell>
+        <TableCell>Розмір</TableCell>
         <TableCell></TableCell>
         <TableCell></TableCell>
       </TableRow>
