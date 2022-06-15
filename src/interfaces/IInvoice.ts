@@ -3,6 +3,8 @@ export interface IInvoiceFile {
   createdAt: string;
   updatedAt: string;
   name: string;
+  url?: string;
+  fileSize: number;
 }
 
 export interface IInvoice {

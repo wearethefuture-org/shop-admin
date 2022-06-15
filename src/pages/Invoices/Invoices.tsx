@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InvoicesTable from '../../components/Tables/Invoices/InvoicesTable';
 import { fetchInvoicesList } from '../../store/actions/invoice.actions';
@@ -15,18 +15,20 @@ const Invoices = () => {
   useEffect(() => {
     if (invoiceData.invoicesList.length === 0) {
       fetchData();
-      if (invoiceData.invoicesList.length !== 0) {
-        const invoices = invoiceData.invoicesList.map((i) => {
-          return { ...i.invoiceFile };
-        });
-      }
     }
   }, [invoiceData.invoicesList]);
 
   return (
     <InvoicesTable
       data={invoiceData.invoicesList.map((i) => {
-        return { ...i.invoiceFile };
+        return {
+          id: i.id,
+          createdAt: i.createdAt,
+          updatedAt: i.updatedAt,
+          url: i.url,
+          fileSize: i.fileSize,
+          name: i.invoiceFile.name,
+        };
       })}
       dispatch={dispatch}
     />

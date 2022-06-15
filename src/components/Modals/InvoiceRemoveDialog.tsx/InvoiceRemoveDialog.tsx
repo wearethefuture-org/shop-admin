@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppDispatch } from '../../../store/store';
 import { useDispatch } from 'react-redux';
-import { removeInvoiceRequest } from '../../../store/actions/invoice.actions';
+import { fetchInvoicesList, removeInvoiceRequest } from '../../../store/actions/invoice.actions';
 
 interface RemoveProps {
   invoiceName: string;
@@ -38,8 +38,9 @@ const InvoiceRemoveDialog: React.FC<RemoveProps> = ({ closeModal, invoiceName })
     closeModal();
   };
 
-  const removeUser = () => {
-    dispatch(removeInvoiceRequest(invoiceName));
+  const removeUser = async () => {
+    await dispatch(removeInvoiceRequest(invoiceName));
+    await dispatch(fetchInvoicesList());
     closeModal();
   };
 

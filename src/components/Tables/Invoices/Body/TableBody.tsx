@@ -29,8 +29,8 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
   emptyRows,
   dispatch,
 }) => {
-  const [removeInvoiceDialogIsOpen, setRemoveInvoiceDialogIsOpen] = useState(false);
-  const [modalRemoveParams, setModalRemoveParams] = useState();
+  const [removeInvoiceDialogIsOpen, setRemoveInvoiceDialogIsOpen] = useState<boolean>(false);
+  const [modalRemoveParams, setModalRemoveParams] = useState<any>();
 
   const removeUserDialogClose = () => {
     setRemoveInvoiceDialogIsOpen(false);
@@ -46,6 +46,7 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
 
   const generateInvoice = async () => {
     await dispatch(generateInvoiceRequest());
+    window.location.reload();
   };
 
   return (
@@ -69,7 +70,7 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
             <TableCell align="left">
               {row.name.indexOf('xlsx') !== -1 ? 'Аркуш Microsoft Excel' : null}
             </TableCell>
-            <TableCell align="left">7 КБ</TableCell>
+            <TableCell align="left">{row.fileSize} КБ</TableCell>
             <TableCell align="right">
               <Button variant="contained">
                 <a href={`${process.env.REACT_APP_PROD_DOMAIN}/invoice/${row.name}`} download>
@@ -102,9 +103,9 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
-            onClick={() => generateInvoice()}
+            onClick={generateInvoice}
           >
-            Generate invoice
+            Згенерувати інвойс
           </Button>
         </TableCell>
       </TableRow>

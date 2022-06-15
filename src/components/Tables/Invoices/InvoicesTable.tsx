@@ -5,7 +5,6 @@ import Paper from '@material-ui/core/Paper';
 
 import TableContainer from '@material-ui/core/TableContainer';
 import { Dispatch } from 'redux';
-import { ISlidesModal } from '../../../interfaces/modals';
 import { IInvoiceFile } from '../../../interfaces/IInvoice';
 import InvoiceTableBody from './Body/TableBody';
 import InvoiceTableFooter from './Footer/TableFooter';
@@ -14,11 +13,17 @@ import InvoiceTableHeader from './Header/TableHeader';
 interface InvoiceDataProps {
   data: Array<IInvoiceFile>;
   dispatch: Dispatch;
-  modalData?: ISlidesModal;
 }
 
-function createData(id: number, createdAt: string, updatedAt: string, name: string) {
-  return { id, name, createdAt, updatedAt };
+function createData(
+  id: number,
+  name: string,
+  createdAt: string,
+  updatedAt: string,
+  fileSize: number,
+  url?: string
+) {
+  return { id, name, createdAt, updatedAt, fileSize, url };
 }
 
 const useTableStyles = makeStyles({
@@ -27,16 +32,23 @@ const useTableStyles = makeStyles({
   },
 });
 
-const InvoicesTable: React.FC<InvoiceDataProps> = ({ data, dispatch, modalData }) => {
+const InvoicesTable: React.FC<InvoiceDataProps> = ({ data, dispatch }) => {
   const classes = useTableStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const rows: Array<IInvoiceFile> = data.map((slide: IInvoiceFile) => {
-    return createData(slide.id, slide.createdAt, slide.updatedAt, slide.name);
+  const rows: Array<IInvoiceFile> = data.map((invoice: IInvoiceFile) => {
+    return createData(
+      invoice.id,
+      invoice.name,
+      invoice.createdAt,
+      invoice.updatedAt,
+      invoice.fileSize,
+      invoice.url
+    );
   });
 
-  //   rows.sort((a, b) => b.createdAt - a.createdAt);
+  rows.sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
