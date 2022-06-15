@@ -5,6 +5,7 @@ import {
   apiGetOrderById,
   apiUpdateOrder,
   apiUpdateOrderStatus,
+  apiGetOrdersByParams,
 } from './services/orders.service';
 
 import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
@@ -17,6 +18,8 @@ import {
   updateOrderError,
   updateOrderStatusSuccess,
   updateOrderStatusError,
+  getOrdersByParamsSuccess,
+  getOrdersByParamsError,
 } from '../actions/orders.actions';
 import { IActions } from '../../interfaces/actions';
 
@@ -65,5 +68,15 @@ export function* updateOrderStatusWorker({ data: { id, status } }: IActions): Sa
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(updateOrderStatusError(error.message));
+  }
+}
+
+export function* getOrdersByParamsWorker({ data: { page, limit, searchValue} }: IActions): SagaIterator<void> {
+  try {
+    const orders = yield call(apiGetOrdersByParams, page, limit, searchValue);
+    yield put(getOrdersByParamsSuccess(orders));
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(getOrdersByParamsError(error.message));
   }
 }

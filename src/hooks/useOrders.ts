@@ -1,13 +1,19 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store';
-import { getOrdersRequest } from '../store/actions/orders.actions';
+import { getOrdersRequest, getOrdersByParamsRequest } from '../store/actions/orders.actions';
 
-const useOrders = () => {
+const useOrders = (searchValue: string) => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getOrdersRequest(1,10));
+    if(searchValue){
+      dispatch(getOrdersByParamsRequest(1,10, searchValue));
+    }
+    
+    if(!searchValue){
+      dispatch(getOrdersRequest(1,10));
+    }
   }, [dispatch]);
 
   const list = useSelector((state: RootState) => state.orders.list);

@@ -12,6 +12,9 @@ import {
   UPDATE_ORDER_STATUS_REQUEST,
   UPDATE_ORDER_STATUS_SUCCESS,
   UPDATE_ORDER_STATUS_ERROR,
+  GER_ORDERS_BY_PARAMS_REQUEST,
+  GER_ORDERS_BY_PARAMS_SUCCESS,
+  GER_ORDERS_BY_PARAMS_ERROR,
 } from '../types';
 import { IOrdersData } from '../../interfaces/IOrders';
 
@@ -22,6 +25,7 @@ const initialState: IOrdersData = {
   error: null,
   count: 0,
   totalPages: 0,
+  searchValue: null,
 };
 
 const orders = (state = initialState, { type, data }: IActions) => {
@@ -31,6 +35,7 @@ const orders = (state = initialState, { type, data }: IActions) => {
         ...state,
         loading: true,
         error: null,
+        searchValue: null,
       };
     }
 
@@ -138,6 +143,33 @@ const orders = (state = initialState, { type, data }: IActions) => {
         loading: false,
         error: data,
       };
+    }
+
+    case GER_ORDERS_BY_PARAMS_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+        searchValue: data.searchValue
+      }
+    }
+
+    case GER_ORDERS_BY_PARAMS_SUCCESS: {
+      return {
+        ...state,
+        list: data.data,
+        count: data.count,
+        totalPages: data.totalPages,
+        loading: false,
+      }
+    }
+
+    case GER_ORDERS_BY_PARAMS_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      }
     }
 
     default:

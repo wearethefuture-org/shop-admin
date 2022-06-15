@@ -9,6 +9,7 @@ import {
   getProductsRequest,
   getProductsByQueryRequest,
 } from '../../../store/actions/products.actions';
+import { getOrdersByParamsRequest, getOrdersRequest } from './../../../store/actions/orders.actions';
 
 import { Button, IconButton, MenuItem, Select } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -85,10 +86,12 @@ const Search: React.FC<SearchProps> = (props) => {
   const history = useHistory();
   const dispatch: AppDispatch = useDispatch();
   const [isSearch, setIsSearch] = useState<boolean>(false);
+  const [searchOption, setSearchOption] = useState<string>('');
   const validationSchema = Yup.object().shape({
     searchValue: Yup.string().required('Це поле не повинно бути пустим!'),
     searchOption: Yup.string().required('Це поле не повинно бути пустим!'),
   });
+  
 
   const initialValues = {
     searchValue: '',
@@ -120,6 +123,7 @@ const Search: React.FC<SearchProps> = (props) => {
         });
       }
       if (values.searchOption === 'orders') {
+        dispatch(getOrdersByParamsRequest(1, 10, values.searchValue));
         history.push({
           pathname: '/orders',
         });
@@ -135,6 +139,10 @@ const Search: React.FC<SearchProps> = (props) => {
   const handleChange = (field?: string) => {
     if (!field?.trim().length && isSearch) {
       dispatch(getProductsRequest(1, 10));
+      setIsSearch(false);
+    }
+    if (searchOption === "orders") {
+      dispatch(getOrdersRequest(1, 10));
       setIsSearch(false);
     }
   };
@@ -171,7 +179,10 @@ const Search: React.FC<SearchProps> = (props) => {
           id={'option-field'}
           value={formik.values.searchOption}
           className={classes.searchSelect}
-          onChange={formik.handleChange}
+          onChange={(e) => {
+            setSearchOption(e.target.value as string)
+            formik.handleChange(e)
+          }}
           onBlur={formik.handleBlur}
         >
           {searchOptions.map((option) => {

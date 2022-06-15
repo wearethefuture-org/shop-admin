@@ -43,6 +43,7 @@ import {
   GET_SLIDER_ANIMATIONS_REQUEST,
   REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION,
   DISABLE_ENABLE_CATEGORY_REQUEST,
+  GER_ORDERS_BY_PARAMS_REQUEST,
 } from './types';
 
 import {
@@ -78,6 +79,7 @@ import {
   getOrdersByIdWorker,
   updateOrderWorker,
   updateOrderStatusWorker,
+  getOrdersByParamsWorker,
 } from './sagas/orders.saga';
 import { deleteCommentWorker, getCommentsWorker } from './sagas/comments.saga';
 import { deleteFeedbackWorker, getFeedbacksWorker } from './sagas/feedbacks.saga';
@@ -150,6 +152,7 @@ function* sagaOrdersWatcher(): SagaIterator {
   yield takeEvery(GET_ORDER_BY_ID_REQUEST, getOrdersByIdWorker);
   yield takeEvery(UPDATE_ORDER_REQUEST, updateOrderWorker);
   yield takeEvery(UPDATE_ORDER_STATUS_REQUEST, updateOrderStatusWorker);
+  yield takeEvery(GER_ORDERS_BY_PARAMS_REQUEST, getOrdersByParamsWorker);
 }
 
 export function* sagaUsersWatcher(): SagaIterator {

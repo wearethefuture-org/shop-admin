@@ -13,6 +13,9 @@ import {
   UPDATE_ORDER_REQUEST,
   UPDATE_ORDER_SUCCESS,
   UPDATE_ORDER_ERROR,
+  GER_ORDERS_BY_PARAMS_REQUEST,
+  GER_ORDERS_BY_PARAMS_SUCCESS,
+  GER_ORDERS_BY_PARAMS_ERROR,
 } from '../types';
 
 export const getOrdersRequest = (page: number, limit: number): IActions => ({
@@ -79,5 +82,20 @@ export const updateOrderSuccess = (order): IActions => ({
 
 export const updateOrderError = (message: string): IActions => ({
   type: UPDATE_ORDER_ERROR,
+  data: message,
+});
+
+export const getOrdersByParamsRequest = (page: number, limit: number, searchValue: string) => ({
+  type: GER_ORDERS_BY_PARAMS_REQUEST,
+  data: {page, limit, searchValue},
+});
+
+export const getOrdersByParamsSuccess = (orders): IActions => ({
+  type: GER_ORDERS_BY_PARAMS_SUCCESS,
+  data: orders,
+});
+
+export const getOrdersByParamsError = (message: string) => ({
+  type: GER_ORDERS_BY_PARAMS_ERROR,
   data: message,
 });
