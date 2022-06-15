@@ -115,11 +115,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
       itemIcon: <EqualizerIcon fontSize="small" className={styles.icon} />,
     },
     {
-      pageURL: '/invoices',
-      title: 'Інвойси',
-      itemIcon: <DescriptionIcon fontSize="small" className={styles.icon} />,
-    },
-    {
       pageURL: '/users',
       title: 'Користувачі',
       itemIcon: <GroupIcon fontSize="small" className={styles.icon} />,
@@ -143,6 +138,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
 
   const extraSidebarItems = [
     { pageURL: '/orders', title: 'Замовлення' },
+    { pageURL: '/invoices', title: 'Інвойси' },
     { pageURL: '/settings', title: 'Налаштування' },
   ];
 
@@ -197,10 +193,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
                 }}
               >
                 <ListItemIcon className={classes.itemIcon}>
-                  {index % 2 === 0 ? (
+                  {index === 0 ? (
                     <ReceiptIcon fontSize="small" className={styles.icon} />
-                  ) : (
+                  ) : index === 2 ? (
                     <SettingsIcon fontSize="small" className={styles.icon} />
+                  ) : (
+                    <DescriptionIcon fontSize="small" className={styles.icon} />
                   )}
                 </ListItemIcon>
                 <ListItemText className={classes.itemText} primary={item.title} />
