@@ -59,4 +59,5 @@ export interface ICurrentOrder extends Common {
   additionalNumber?: string;
   comment?: string;
   delivery: IDelivery;
+  notcall: boolean;
 }

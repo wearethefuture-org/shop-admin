@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { LinearProgress } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import { RootState } from './../../store/store';
 
 import ProductsTable from '../../components/Tables/Products/ProductsTable';
 import AddBtn from '../../components/AddBtn/AddBtn';
@@ -42,10 +44,10 @@ if (localStorage.getItem('PRODUCTS_SETTINGS')) {
 
 const Products: React.FC = () => {
   const location = useLocation();
-  const history = useHistory();
-  const { searchValue } = Object(history.location.state);
 
-  const { list, loading, isSearch } = useProducts();
+  const {paginationPage, paginationPageSearch, count, searchValue} = useSelector((state: RootState) => state.products);
+  
+  const { list, loading, isSearch } = useProducts(paginationPage, paginationPageSearch, searchValue);
 
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [activeColumns, setActiveColumns] = useState<string[]>(initialActiveColums);
@@ -92,6 +94,8 @@ const Products: React.FC = () => {
               activeColumns={activeColumns}
               isSearch={isSearch}
               searchValue={searchValue}
+              count={count}
+              paginationPage={isSearch ? paginationPageSearch : paginationPage}
             />
           )}
         </div>

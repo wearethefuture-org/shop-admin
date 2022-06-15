@@ -16,7 +16,7 @@ const OrdersEditQuantity = ({ row, orderId }) => {
 
   const handleChange = (e) => {
     e.stopPropagation();
-    if (!isNaN(+e.target.value)) setValue(+e.target.value);
+    !isNaN(+e.target.value) && e.target.value > 0 ? setValue(+e.target.value) : setValue(1);
   };
 
   const onQuantityChanged = (e, orderId, productId) => {

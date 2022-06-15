@@ -45,6 +45,7 @@ import {
   GET_INVOICES_LIST_REQUEST,
   REMOVE_INVOICE_REQUEST,
   GENERATE_INVOICE_REQUEST,
+  DISABLE_ENABLE_CATEGORY_REQUEST,
 } from './types';
 
 import {
@@ -53,6 +54,7 @@ import {
   deleteTreeCategoryWorker,
   updateTreeCategoryWorker,
   getTreeCategoriesByIdWorker,
+  disableEnableCategoryWorker,
 } from './sagas/treeCategories.saga';
 
 import { fetchSettingsWorker, updateSettingsWorker } from './sagas/settings.saga';
@@ -107,6 +109,7 @@ export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(ADD_TREE_CATEGORY, addTreeCategoryWorker);
   yield takeEvery(DELETE_TREE_CATEGORY, deleteTreeCategoryWorker);
   yield takeEvery(UPDATE_TREE_CATEGORY_REQUEST, updateTreeCategoryWorker);
+  yield takeEvery(DISABLE_ENABLE_CATEGORY_REQUEST, disableEnableCategoryWorker);
   yield takeEvery(GET_TREE_CATEGORIES_BY_ID_REQUEST, getTreeCategoriesByIdWorker);
 }
 

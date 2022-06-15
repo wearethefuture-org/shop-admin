@@ -12,7 +12,7 @@ const SliderAnimations: React.FC = () => {
   const dispatch = useDispatch();
   const animationsData = useSelector((state: RootState) => state.sliderAnimations);
 
-  async function fetchData() {
+  async function fetchData() { 
     await dispatch(fetchSliderAnimations());
   }
 
@@ -26,7 +26,6 @@ const SliderAnimations: React.FC = () => {
     const newActiveAnim = animationsData.animations.find((a) => a.animation === e.target.value);
     await dispatch(fetchChangeActiveSliderAnimation(newActiveAnim.id, true));
     await dispatch(fetchChangeActiveSliderAnimation(animationsData.id, false));
-    fetchData();
   }
 
   return (

@@ -72,7 +72,9 @@ const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, se
 
   // CATEGORY
   useEffect(() => {
-    dispatch(getTreeCategoryByIdRequest(categoryId));
+    if (categoryId) {
+      dispatch(getTreeCategoryByIdRequest(categoryId));
+    }
   }, [categoryId, dispatch, list]);
 
   // EXPANDED GROUPS

@@ -22,7 +22,7 @@ type handleChangeType = (arg: {
 const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
   const loading = useSelector((state: RootState) => state.orders.loading);
   const dispatch = useDispatch();
-
+  
   const currentOrderData = order.productToOrder.map((item) => {
     return { ...item, delivery: order.delivery };
   });
@@ -137,11 +137,6 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
     {
       name: 'Сума',
       selector: (row) => row.amount,
-      sortable: true,
-    },
-    {
-      name: 'Не передзвонювати',
-      selector: (row) => row.notcall,
       sortable: true,
     },
     {

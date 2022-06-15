@@ -1,13 +1,24 @@
+.eye{
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+
+  transition: all .1s;
+  &:hover{
+    background-color: green;
+  }
+}
 .form{
-    &__resetPassword{
-        display: flex;
-    justify-content: center;
-    cursor: pointer;
-    text-decoration: underline;
-    color: #007bff;
-    transition: opacity 0.3s ease;
-    span {
-      margin-left: 15px;
-    }
-    }
+  &__resetPassword{
+      display: flex;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: underline;
+  color: #007bff;
+  transition: opacity 0.3s ease;
+  span {
+    margin-left: 15px;
+  }
+  }
 }

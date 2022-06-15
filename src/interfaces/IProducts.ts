@@ -20,6 +20,7 @@ export interface GeneralProductInfo {
   description: string;
   price: number | string;
   categoryName: string;
+  categoryId: number | string;
   key: string;
 }
 
@@ -87,6 +88,9 @@ export interface IProductsData {
   count: number;
   totalPages: number;
   isSearch: boolean;
+  paginationPage: number;
+  searchValue: null | string;
+  paginationPageSearch: number;
 }
 
 export interface CharValues {
@@ -115,7 +119,7 @@ export interface IProductCharRequest {
 }
 
 export interface IDeleteProductChars {
-  characteristicValuesIds : string[]
+  characteristicValuesIds: string[];
 }
 
 export interface IAddImgResponse extends Common {
@@ -154,6 +158,8 @@ export interface ProductsTableProps {
   activeColumns: string[];
   isSearch: boolean;
   searchValue: string;
+  count: number;
+  paginationPage: number;
 }
 
 export interface IUpdateAvailabilityProduct {

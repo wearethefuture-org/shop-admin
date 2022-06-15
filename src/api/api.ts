@@ -6,6 +6,7 @@ import {
   IGetTreeCategoriesResponse,
   ITreeCategory,
   IAddTreeCategory,
+  IDisableEnableCategory,
 } from '../interfaces/ITreeCategory';
 
 import {
@@ -52,6 +53,7 @@ type ApiFetchedDataType = {
     add: (category: IAddTreeCategory) => FetchedDataType<ITreeCategory>;
     delete: (id: number) => FetchedDataType<JSON>;
     update: (data: TreeCategory) => FetchedDataType<IGetTreeCategoriesResponse>;
+    disableEnable: (data: IDisableEnableCategory) => FetchedDataType<ITreeCategory>;
   };
 
   products: {
@@ -149,6 +151,7 @@ export const api: ApiFetchedDataType = {
     add: (category) => instance.post(`${root}/category/tree`, category),
     delete: (id) => instance.delete(`${root}/category/tree/${id}`),
     update: (data) => instance.patch(`${root}/category/tree`, data),
+    disableEnable: (data) => instance.patch(`${root}/category/tree/disablecategories`, data),
   },
 
   products: {
