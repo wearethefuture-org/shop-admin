@@ -13,6 +13,7 @@ export interface IBasicProduct extends Common {
   price: number;
   availability: boolean;
   disabled: boolean;
+  characteristicValue: ICharResponse[];
 }
 
 export interface GeneralProductInfo {

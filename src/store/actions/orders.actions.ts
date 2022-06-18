@@ -13,6 +13,9 @@ import {
   UPDATE_ORDER_REQUEST,
   UPDATE_ORDER_SUCCESS,
   UPDATE_ORDER_ERROR,
+  UPDATE_PRODUCT_IN_ORDER_REQUEST,
+  UPDATE_PRODUCT_IN_ORDER_SUCCESS,
+  UPDATE_PRODUCT_IN_ORDER_ERROR,
 } from '../types';
 
 export const getOrdersRequest = (page: number, limit: number): IActions => ({
@@ -79,5 +82,20 @@ export const updateOrderSuccess = (order): IActions => ({
 
 export const updateOrderError = (message: string): IActions => ({
   type: UPDATE_ORDER_ERROR,
+  data: message,
+});
+
+export const updateProductInOrderRequest = (value: string, field: string, productId: number, orderId: number): IActions => ({
+  type: UPDATE_PRODUCT_IN_ORDER_REQUEST,
+  data: {value, field, productId, orderId},
+});
+
+export const updateProductInOrderSuccess = (newOrder): IActions => ({
+  type: UPDATE_PRODUCT_IN_ORDER_SUCCESS,
+  data: newOrder
+});
+
+export const updateProductInOrderError = (message: string): IActions => ({
+  type: UPDATE_PRODUCT_IN_ORDER_ERROR,
   data: message,
 });
