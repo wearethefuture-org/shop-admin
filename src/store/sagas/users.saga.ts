@@ -2,12 +2,14 @@ import { put, call } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 
 import { IActions } from '../../interfaces/actions';
-import { apiGetUsers, apiAddUser, apiUpdateUser, apiDeleteUser } from './services/users.service';
+import { apiGetUsers, apiAddUser, apiUpdateUser, apiDeleteUser, apiGetUsersByQuery } from './services/users.service';
 import {
   addUserError,
   addUserSuccess,
   deleteUserError,
   deleteUserSuccess,
+  getUsersByQueryError,
+  getUsersByQuerySuccess,
   getUsersError, getUsersRequest,
   getUsersSuccess,
   updateUserError,
@@ -62,4 +64,17 @@ export function* deleteUserWorker({ data: id }: IActions): SagaIterator {
     yield put(failSnackBar(error.message));
     yield put(deleteUserError(error.message));
   }
+}
+
+export function* getUsersByQueryWorker({
+  data: { searchValue, page, limit },
+}: IActions): SagaIterator {
+  try {
+    const users = yield call(apiGetUsersByQuery, searchValue, page, limit);
+    yield put(getUsersByQuerySuccess(users));
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(getUsersByQueryError(error.message));
+  }
+  
 }

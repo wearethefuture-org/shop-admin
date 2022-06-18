@@ -15,6 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
+import { getUsersByQueryRequest, getUsersRequest } from '../../../store/actions/users.actions';
 
 interface SearchProps {}
 
@@ -77,6 +78,7 @@ const useStyles = makeStyles((theme) => ({
 const searchOptions = [
   { name: 'продукти', key: 'products' },
   { name: 'категорії', key: 'categories' },
+  { name: 'користувачі', key: 'users' },
 ];
 
 const Search: React.FC<SearchProps> = (props) => {
@@ -118,6 +120,15 @@ const Search: React.FC<SearchProps> = (props) => {
           },
         });
       }
+       if (values.searchOption === 'users') {
+        dispatch(getUsersByQueryRequest(values.searchValue, 1, 10));
+        history.push({
+          pathname: '/users',
+          state: {
+            searchValue: values.searchValue,
+          },
+        });
+      }
       setSubmitting(false);
     },
   });
@@ -129,6 +140,7 @@ const Search: React.FC<SearchProps> = (props) => {
   const handleChange = (field?: string) => {
     if (!field?.trim().length && isSearch) {
       dispatch(getProductsRequest(1, 10));
+      dispatch(getUsersRequest(1, 10));
       setIsSearch(false);
     }
   };

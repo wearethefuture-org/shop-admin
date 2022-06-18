@@ -26,3 +26,14 @@ export async function apiDeleteUser(id: number) {
   await api.user.delete(id);
   return id;
 }
+
+export async function apiGetUsersByQuery(searchValue: string, page: number, limit: number) {
+  const user = await api.search.getSearchItems({
+    query: searchValue,
+    option: 'users',
+    page,
+    limit,
+  });
+  
+  return user.data;
+}

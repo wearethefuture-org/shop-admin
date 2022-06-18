@@ -43,6 +43,7 @@ import {
   GET_SLIDER_ANIMATIONS_REQUEST,
   REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION,
   DISABLE_ENABLE_CATEGORY_REQUEST,
+  GET_USERS_BY_QUERY_REQUEST,
 } from './types';
 
 import {
@@ -84,6 +85,7 @@ import { deleteFeedbackWorker, getFeedbacksWorker } from './sagas/feedbacks.saga
 import {
   addUserWorker,
   deleteUserWorker,
+  getUsersByQueryWorker,
   getUsersWorker,
   updateUserWorker,
 } from './sagas/users.saga';
@@ -154,6 +156,7 @@ function* sagaOrdersWatcher(): SagaIterator {
 
 export function* sagaUsersWatcher(): SagaIterator {
   yield takeEvery(GET_USERS_REQUEST, getUsersWorker);
+  yield takeEvery(GET_USERS_BY_QUERY_REQUEST, getUsersByQueryWorker);
   yield takeEvery(ADD_USER_REQUEST, addUserWorker);
   yield takeEvery(UPDATE_USER_REQUEST, updateUserWorker);
   yield takeEvery(DELETE_USER_REQUEST, deleteUserWorker);
