@@ -31,7 +31,10 @@ export function* sigInUser(userValues: IActions): SagaIterator {
 export function* signOutUser(): SagaIterator {
   try {
     clearStorage();
-    yield put(successSnackBar());
+    const urlArr = window.location.href.split('/');
+    if (urlArr[3] !== 'home') {
+      yield put(successSnackBar());
+    }
   } catch (error) {}
 }
 
@@ -41,7 +44,10 @@ export function* fetchUser(): SagaIterator {
     setUser(user);
     yield put(fetchUserSuccess(user));
   } catch (error) {
-    yield put(failSnackBar(error.message));
+    const urlArr = window.location.href.split('/');
+    if (urlArr[3] !== 'home') {
+      yield put(failSnackBar(error.message));
+    }
     yield put(fetchUserError(error.message));
   }
 }

@@ -1,9 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { Field, Form, FormikProps, FormikProvider } from 'formik';
 import { useDropzone } from 'react-dropzone';
-import { Button, Card, DialogActions, MenuItem, Select } from '@material-ui/core';
+import { Box, Button, Card, Chip, DialogActions, FormControl } from '@material-ui/core';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import TextFieldWrapped from '../../../../hocs/TextFieldHOC';
 import ExpandBtn from '../../../ExpandBtn/ExpandBtn';
@@ -13,6 +15,8 @@ import { formatKey } from './productFormHelpers';
 import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
 import { ErrorsAlert } from '../../../ErrorsAlert';
 import styles from './ProductForm.module.scss';
+import TreeItem from '@material-ui/lab/TreeItem';
+import TreeView from '@material-ui/lab/TreeView';
 
 export interface IProductFormProps {
   editMode: boolean;
@@ -55,6 +59,61 @@ const ProductForm: React.FC<IProductFormProps> = ({
     onDrop,
     accept: 'image/png, image/jpeg, image/jpg, image/gif',
   });
+
+  const [categoryValue, setCategoryValue] = useState<string>(
+    editMode ? formik.values.categoryName : ''
+  );
+  const [expandedNodes, setExpandedNodes] = useState<string[]>(['']);
+
+  const parentObject = { id: 'root', name: 'Виберіть категорію товару', children: categories };
+
+  const treeItems: any = [];
+  treeItems.push(parentObject);
+
+  const getTreeItemsFromData = (treeItems) => {
+    return treeItems.map((treeItemData) => {
+      let children = undefined;
+      if (treeItemData.children && treeItemData.children.length > 0) {
+        children = getTreeItemsFromData(treeItemData.children);
+      }
+      return (
+        <TreeItem
+          style={categoryValue === treeItemData.name ? { backgroundColor: '#e8eaf6' } : undefined}
+          key={treeItemData.id}
+          nodeId={'' + treeItemData.id}
+          label={treeItemData.name}
+          children={children}
+          onLabelClick={() => {
+            if (treeItemData.id !== 'root') {
+              setCategoryValue(treeItemData.name);
+              formik.setFieldValue('categoryId', Number(treeItemData.id));
+              formik.setFieldValue('categoryName', treeItemData.name);
+            }
+            return;
+          }}
+          onIconClick={() => {
+            if (expandedNodes.includes('' + treeItemData.id)) {
+              setExpandedNodes(expandedNodes.filter((node) => node !== '' + treeItemData.id));
+            } else {
+              setExpandedNodes([...expandedNodes, '' + treeItemData.id]);
+            }
+          }}
+        />
+      );
+    });
+  };
+
+  const DataTreeView = ({ treeItems }) => {
+    return (
+      <TreeView
+        expanded={expandedNodes}
+        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultExpandIcon={<ChevronRightIcon />}
+      >
+        {getTreeItemsFromData(treeItems)}
+      </TreeView>
+    );
+  };
 
   return (
     <div className={styles['product-form-container']}>
@@ -107,7 +166,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                 <Field
                   fullWidth
                   multiline
-                  rowsMax={6}
+                  maxRows={6}
                   component={TextFieldWrapped}
                   type="textarea"
                   label="Опис"
@@ -115,27 +174,30 @@ const ProductForm: React.FC<IProductFormProps> = ({
                   makegreen="true"
                   className={styles['edit-field']}
                 />
-                <Select
-                  type="select"
-                  fullWidth
-                  label="Назва категорії"
-                  name="categoryID"
-                  id={'category_id-field'}
-                  className={styles['edit-field']}
-                  value={formik.values.categoryID}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  {categories.length
-                    ? categories.map((category) => {
-                        return (
-                          <MenuItem key={'option' + category.id} value={category.id}>
-                            {category.name}
-                          </MenuItem>
-                        );
-                      })
-                    : []}
-                </Select>
+                <FormControl className={styles['block-wrapper-select']}>
+                  {categoryValue ? (
+                    <Box
+                      mt={2}
+                      component="div"
+                      sx={{
+                        display: 'inline',
+                      }}
+                    >
+                      <Chip
+                        label={categoryValue}
+                        variant="outlined"
+                        onDelete={() => {
+                          setCategoryValue('');
+                          formik.setFieldValue('categoryId', '');
+                          formik.setFieldValue('categoryName', '');
+                        }}
+                      />
+                    </Box>
+                  ) : null}
+                  <Box mt={2}>
+                    <DataTreeView treeItems={treeItems} />
+                  </Box>
+                </FormControl>
               </div>
             </Card>
           </div>
@@ -151,7 +213,6 @@ const ProductForm: React.FC<IProductFormProps> = ({
               <div className={styles['block-wrapper']}>
                 <div>
                   <input className={styles['file-input']} onChange={onDrop} {...getInputProps()} />
-
                   <div className={styles.labelHolder}>
                     {imagesPreview.length ? (
                       <>
@@ -187,14 +248,14 @@ const ProductForm: React.FC<IProductFormProps> = ({
           <ExpandBtn
             expandBlock={expandedBlocks.includes('additional')}
             handleExpand={() => handleExpand('additional')}
-            disabled={!formik.values.categoryID}
+            disabled={!formik.values.categoryId}
           >
             <h4>Характеристики</h4>
           </ExpandBtn>
           <div className={expandedBlocks.includes('additional') ? 'expanded' : 'shrinked'}>
             <FormProductCharacteristics
               formik={formik}
-              categoryId={formik.values.categoryID}
+              categoryId={Number(formik.values.categoryId)}
               setValidation={setValidation}
             />
           </div>

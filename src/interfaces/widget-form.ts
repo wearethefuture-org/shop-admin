@@ -4,3 +4,4 @@ export interface IFormWidgetValues {
   isWidgetActiveNewArrivals: boolean;
   isWidgetActivePopularItems: boolean;
 }
+

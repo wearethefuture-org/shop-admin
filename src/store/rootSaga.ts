@@ -40,6 +40,9 @@ import {
   GET_ROLES_REQUEST,
   DISABLE_PRODUCT_REQUEST,
   GET_SEARCH_ITEMS_REQUEST,
+  GET_SLIDER_ANIMATIONS_REQUEST,
+  REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION,
+  DISABLE_ENABLE_CATEGORY_REQUEST,
 } from './types';
 
 import {
@@ -48,6 +51,7 @@ import {
   deleteTreeCategoryWorker,
   updateTreeCategoryWorker,
   getTreeCategoriesByIdWorker,
+  disableEnableCategoryWorker,
 } from './sagas/treeCategories.saga';
 
 import { fetchSettingsWorker, updateSettingsWorker } from './sagas/settings.saga';
@@ -86,12 +90,18 @@ import {
 import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
 import { getRolesWorker } from './sagas/roles.saga';
 import { getSearchItemsWorker } from './sagas/search.saga';
+import {
+  changeActiveSliderAnimationWorker,
+  getActiveSliderAnimationWorker,
+  getSliderAnimationsWorker,
+} from './sagas/sliderAnimations.saga';
 
 export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(GET_TREE_CATEGORIES_REQUEST, fetchTreeCategoryWorker);
   yield takeEvery(ADD_TREE_CATEGORY, addTreeCategoryWorker);
   yield takeEvery(DELETE_TREE_CATEGORY, deleteTreeCategoryWorker);
   yield takeEvery(UPDATE_TREE_CATEGORY_REQUEST, updateTreeCategoryWorker);
+  yield takeEvery(DISABLE_ENABLE_CATEGORY_REQUEST, disableEnableCategoryWorker);
   yield takeEvery(GET_TREE_CATEGORIES_BY_ID_REQUEST, getTreeCategoriesByIdWorker);
 }
 
@@ -165,6 +175,12 @@ export function* sagaSearchWatcher(): SagaIterator {
   yield takeEvery(GET_SEARCH_ITEMS_REQUEST, getSearchItemsWorker);
 }
 
+export function* sagaSliderAnimationsWatcher(): SagaIterator {
+  yield takeEvery(GET_SLIDER_ANIMATIONS_REQUEST, getSliderAnimationsWorker);
+  yield takeEvery(GET_SLIDER_ANIMATIONS_REQUEST, getActiveSliderAnimationWorker);
+  yield takeEvery(REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION, changeActiveSliderAnimationWorker);
+}
+
 // RootSaga
 export default function* rootSaga(): SagaIterator {
   yield all([
@@ -179,5 +195,6 @@ export default function* rootSaga(): SagaIterator {
     fork(sagaUserWatcher),
     fork(getRolesWatcher),
     fork(sagaSearchWatcher),
+    fork(sagaSliderAnimationsWatcher),
   ]);
 }

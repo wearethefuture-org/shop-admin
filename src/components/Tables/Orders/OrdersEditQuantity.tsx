@@ -16,7 +16,7 @@ const OrdersEditQuantity = ({ row, orderId }) => {
 
   const handleChange = (e) => {
     e.stopPropagation();
-    setValue(e.target.value);
+    !isNaN(+e.target.value) && e.target.value > 0 ? setValue(+e.target.value) : setValue(1);
   };
 
   const onQuantityChanged = (e, orderId, productId) => {
@@ -44,7 +44,7 @@ const OrdersEditQuantity = ({ row, orderId }) => {
     </div>
   ) : (
     <div className={styles.edit_quantity}>
-      <input type="number" value={value} onChange={handleChange} />
+      <input type="text" value={value} onChange={handleChange} />
       <DoneIcon color="primary" onClick={(e) => onQuantityChanged(e, orderId, row.product.id)} />
       <CancelIcon color="secondary" onClick={onQuantityChangedCancel} />
     </div>

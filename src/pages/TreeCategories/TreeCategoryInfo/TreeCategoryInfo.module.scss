@@ -22,6 +22,12 @@ h4 {
   margin: 0;
 }
 
+.control-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .add-btn-wrapper {
   display: flex;
   justify-content: flex-end;

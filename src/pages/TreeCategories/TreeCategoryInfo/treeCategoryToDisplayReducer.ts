@@ -1,5 +1,6 @@
 import { Char } from './treeCategoryReducer';
 import { Common } from '../../../interfaces/IProducts';
+import { IChildren } from '../../../interfaces/ITreeCategory';
 
 export interface GroupToDisplay {
   id?: number;
@@ -21,6 +22,8 @@ export interface TreeCategoryToDisplay extends Common {
   description?: string;
   parent?: IParent | null;
   characteristicGroup?: GroupToDisplay[];
+  children: IChildren[] | [];
+  disabledByAdmin: boolean;
 }
 
 export enum TreeCategoryToDisplayActionTypes {

@@ -8,7 +8,7 @@ import { IChildren, ITreeCategory } from '../../../interfaces/ITreeCategory';
 import TreeItem from '@material-ui/lab/TreeItem';
 import styles from './ChildrenCard.module.scss';
 import AddIcon from '@material-ui/icons/Add';
-import TreeCategoryModal from '../../../components/Modals/TreeCategoryModal/TreeCategoryModal';
+
 import AddTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/AddTreeCategoryModal/AddTreeCategoryModal';
 
 interface ISearchProps {
@@ -125,7 +125,7 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
                 <div className={styles.row}>
                   <span
                     onClick={() => {
-                      nodes.children?.length ? openCategoryInfo(nodes) : routeOnClick(nodes.id);
+                      routeOnClick(nodes.id);
                     }}
                   >
                     {nodes.name}
@@ -143,7 +143,7 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
           </div>
         </div>
       ) : null}
-      {modalsState.categoryModalIsOpen && <TreeCategoryModal {...modalParams} />}
+      {/* {modalsState.categoryModalIsOpen && <TreeCategoryModal {...modalParams} />} */}
       {modalsState.addCategoryModalIsOpen && (
         <AddTreeCategoryModal {...addModalParams} dispatch={dispatch} />
       )}

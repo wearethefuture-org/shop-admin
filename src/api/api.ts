@@ -1,3 +1,4 @@
+import { IResponseMessage } from './../interfaces/IUsers';
 import { root } from './config';
 import { AxiosResponse } from 'axios';
 
@@ -5,6 +6,7 @@ import {
   IGetTreeCategoriesResponse,
   ITreeCategory,
   IAddTreeCategory,
+  IDisableEnableCategory,
 } from '../interfaces/ITreeCategory';
 
 import {
@@ -17,6 +19,7 @@ import {
   IUpdateProduct,
   IUpdateAvailabilityProduct,
   IDisableProduct,
+  IDeleteProductChars,
 } from '../interfaces/IProducts';
 import { ISearchItems, ISearchItemsResponse } from '../interfaces/ISearch';
 import { IBasicOrder } from '../interfaces/IOrders';
@@ -38,6 +41,7 @@ import {
 import instance from './axios-interceptors';
 import { Status } from '../enums/orderStatus';
 import { IRole } from '../interfaces/IRoles';
+import { ISliderAnimation, ISliderAnimations } from '../interfaces/ISliderAnimations';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -48,6 +52,7 @@ type ApiFetchedDataType = {
     add: (category: IAddTreeCategory) => FetchedDataType<ITreeCategory>;
     delete: (id: number) => FetchedDataType<JSON>;
     update: (data: TreeCategory) => FetchedDataType<IGetTreeCategoriesResponse>;
+    disableEnable: (data: IDisableEnableCategory) => FetchedDataType<ITreeCategory>;
   };
 
   products: {
@@ -64,6 +69,7 @@ type ApiFetchedDataType = {
     deleteProduct: (id: number) => FetchedDataType<JSON>;
     addProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
+    deleteProductCharValues: (data: IDeleteProductChars) => FetchedDataType<JSON>;
     updateAvailabilityProduct: (
       data: IUpdateAvailabilityProduct
     ) => FetchedDataType<IAddCharResponse>;
@@ -113,12 +119,21 @@ type ApiFetchedDataType = {
     add: (user: IUserReqAdd) => FetchedDataType<IUserItem>;
     update: (user: IUserReqUp) => FetchedDataType<IUserItem>;
     delete: (id: number) => FetchedDataType<JSON>;
+    requestPasswordInstall: (data: { email: string }) => FetchedDataType<IResponseMessage>;
   };
   roles: {
     get: () => FetchedDataType<IRole[]>;
   };
   search: {
     getSearchItems: (fields: ISearchItems) => FetchedDataType<ISearchItemsResponse>;
+  };
+  sliderAnimations: {
+    getSliderAnimations: () => FetchedDataType<ISliderAnimations>;
+    getActiveSliderAnimation: () => FetchedDataType<ISliderAnimation>;
+    changeActiveSliderAnimation: (
+      id: number,
+      isActive: boolean
+    ) => FetchedDataType<ISliderAnimation>;
   };
 };
 
@@ -129,6 +144,7 @@ export const api: ApiFetchedDataType = {
     add: (category) => instance.post(`${root}/category/tree`, category),
     delete: (id) => instance.delete(`${root}/category/tree/${id}`),
     update: (data) => instance.patch(`${root}/category/tree`, data),
+    disableEnable: (data) => instance.patch(`${root}/category/tree/disablecategories`, data),
   },
 
   products: {
@@ -142,6 +158,8 @@ export const api: ApiFetchedDataType = {
     deleteProduct: (id) => instance.delete(`${root}/product/${id}`),
     addProductCharValues: (data) => instance.post(`${root}/characteristics-values`, data),
     updateProductCharValues: (data) => instance.patch(`${root}/characteristics-values`, data),
+    deleteProductCharValues: (data) => instance.delete(`${root}/characteristics-values`, { data }),
+
     updateAvailabilityProduct: ({ productId, ...product }) =>
       instance.patch(`${root}/product/${productId}`, product),
     disableProduct: ({ productId, ...product }) =>
@@ -180,6 +198,7 @@ export const api: ApiFetchedDataType = {
     update: ({ id, ...user }) => instance.put(`${root}/users/${id}`, user),
     delete: (id) => instance.delete(`${root}/users/${id}`),
     add: (user) => instance.post(`${root}/auth/register-through-admin`, user),
+    requestPasswordInstall: (email) => instance.post(`${root}/users/password/reset`, email),
   },
   comments: {
     get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),
@@ -197,5 +216,11 @@ export const api: ApiFetchedDataType = {
       instance.get(
         `${root}/search/admin?${fields.option}=${fields.query}&page=${fields.page}&limit=${fields.limit}`
       ),
+  },
+  sliderAnimations: {
+    getSliderAnimations: () => instance.get(`${root}/slider-animations`),
+    getActiveSliderAnimation: () => instance.get(`${root}/slider-animations/active`),
+    changeActiveSliderAnimation: (id: number, isActive: boolean) =>
+      instance.patch(`${root}/slider-animations/change-active/${id}/${isActive}`),
   },
 };

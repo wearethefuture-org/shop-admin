@@ -12,11 +12,11 @@ import {
   apiUploadMainImg,
   apiUploadImages,
   apiDeleteImg,
-  apiDeleteChar,
   apiUpdateProductCharValues,
   apiAddProductCharValues,
   apiUpdateAvailabilityProduct,
   disableProduct,
+  deleteProductCharValues,
 } from './services/products.service';
 import {
   addProductError,
@@ -76,8 +76,15 @@ export function* addProductWorker({
   data: { productValues, characteristicValues },
 }: IActions): SagaIterator {
   try {
-    const { name, price, description, categoryName, key, files } = productValues;
-    const product = yield call(apiAddProduct, { name, price, description, categoryName, key });
+    const { name, price, description, categoryName, categoryId, key, files } = productValues;
+    const product = yield call(apiAddProduct, {
+      name,
+      price,
+      description,
+      categoryName,
+      categoryId,
+      key,
+    });
 
     if (product && files instanceof FormData) {
       files.append('productId', product.id);
@@ -123,10 +130,10 @@ export function* updateProductWorker({
   },
 }: IActions): SagaIterator<void> {
   try {
-    const { categoryID, name, price, description, key, files } = productValues;
+    const { categoryId, name, price, description, key, files } = productValues;
     const editedProduct = yield call(apiUpdateProduct, {
       id,
-      categoryID,
+      categoryId,
       name,
       price,
       description,
@@ -152,14 +159,6 @@ export function* updateProductWorker({
       });
     }
 
-    if (charsToDelete.length) {
-      yield call(
-        apiDeleteChar,
-        { url: '/characteristics-values' },
-        { characteristicValuesIds: charsToDelete }
-      );
-    }
-
     if (imagesToDelete.length) {
       yield all(imagesToDelete.map((img) => call(apiDeleteImg, img)));
     }
@@ -177,18 +176,11 @@ export function* updateProductWorker({
 export function* deleteProductWorker({ data: product }: IActions): SagaIterator {
   try {
     const charValues = product.characteristicValue.map((value) => value.id);
-
-    if (charValues.length)
-      yield call(
-        apiDeleteChar,
-        { url: '/characteristics-values' },
-        { characteristicValuesIds: charValues }
-      );
-
     yield call(apiDeleteProduct, product.id);
     yield put(deleteProductSuccess(product.id));
     yield put(successSnackBar());
   } catch (error) {
+    console.log(error);
     yield put(failSnackBar(error.message));
     yield put(deleteProductError(error.message));
   }

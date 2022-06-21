@@ -22,7 +22,7 @@ type handleChangeType = (arg: {
 const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
   const loading = useSelector((state: RootState) => state.orders.loading);
   const dispatch = useDispatch();
-
+  
   const currentOrderData = order.productToOrder.map((item) => {
     return { ...item, delivery: order.delivery };
   });
@@ -108,6 +108,17 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
     {
       name: 'Відділення',
       selector: (row) => row.delivery.streetName,
+      sortable: true,
+    },
+    {
+      name: 'Спосіб доставки',
+      selector: (row) => row.delivery.deliveryMethod,
+      sortable: true,
+    },
+    {
+      name: 'Адреса для доставки',
+      selector: (row) =>
+        row.delivery.courierDeliveryAddress ? row.delivery.courierDeliveryAddress : '-',
       sortable: true,
     },
     {

@@ -28,6 +28,7 @@ export interface IDelivery {
   cityRef: string;
   streetName: string;
   streetRef: string;
+  notcall: boolean;
 }
 
 export interface IGetOrders extends IBasicOrder {
@@ -35,6 +36,7 @@ export interface IGetOrders extends IBasicOrder {
   user: UserTableData;
   delivery: IDelivery;
   additionalNumber: string;
+  notcall: boolean;
 }
 
 export interface IOrdersData {
@@ -57,4 +59,5 @@ export interface ICurrentOrder extends Common {
   additionalNumber?: string;
   comment?: string;
   delivery: IDelivery;
+  notcall: boolean;
 }

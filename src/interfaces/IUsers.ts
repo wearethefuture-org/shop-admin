@@ -17,6 +17,7 @@ export interface IUserItem {
   phoneNumber: string;
   status: string;
   email: string;
+  password: string;
   telegramId?: string;
   role: {
     name: string;
@@ -87,4 +88,9 @@ export interface IOrderUser {
   firstName: string;
   lastName: string;
   phoneNumber: string;
+}
+
+export interface IResponseMessage {
+  success?: boolean;
+  message: string;
 }
