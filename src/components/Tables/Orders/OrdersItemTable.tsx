@@ -160,7 +160,7 @@ function getColorsAndSize(arr): [string[], string[]] {
   let allColors: string[] = [];
   let allSizes: string[] = [];
   for (let index of arr) {
-    if (index.name === "Кольори та розміри") {
+    if (index.name === 'Кольори та розміри') {
       allColors = Object.keys(index.jsonValue)
       allSizes = Object.values(index.jsonValue);
     }
