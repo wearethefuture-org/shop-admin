@@ -98,6 +98,7 @@ type ApiFetchedDataType = {
       data: { quantity?: number; color?: string; size?: string }
     ) => FetchedDataType<IBasicOrder>;
     getById: (id: number) => FetchedDataType<IBasicOrder>;
+    updateProductInOrder: (data) => FetchedDataType<IBasicOrder>;
   };
 
   comments: {
@@ -186,6 +187,7 @@ export const api: ApiFetchedDataType = {
     updateStatus: (id, status) => instance.patch(`${root}/orders/status/${id}`, status),
     update: (orderId, productId, data) =>
       instance.put(`${root}/orders/${orderId}/${productId}`, data),
+    updateProductInOrder: (data) => instance.put(`${root}/orders/product/`, data),
   },
 
   users: {

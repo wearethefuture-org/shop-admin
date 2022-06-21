@@ -19,3 +19,8 @@ export async function apiUpdateOrderStatus(id: number, status) {
   const order = await api.orders.updateStatus(id, status);
   return order.data;
 }
+
+export async function apiUpdateProductInOrder(data){
+  const order = await api.orders.updateProductInOrder(data);
+  return order.data;
+}
