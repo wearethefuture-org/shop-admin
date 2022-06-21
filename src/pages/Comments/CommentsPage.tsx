@@ -29,7 +29,7 @@ export default function CommentsPage() {
   const { list, count, loading } = useComments(currentPage, limit);
 
   React.useEffect(() => {
-    if(!list.length){
+    if (!list.length){
       dispatch(getCommentsRequest(currentPage, limit));
     }
   }, [list]);
