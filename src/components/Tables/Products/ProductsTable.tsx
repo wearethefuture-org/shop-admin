@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../store/store';
-import {
-  getProductsRequest,
-  getProductsByQueryRequest,
-} from '../../../store/actions/products.actions';
+import { useDispatch } from 'react-redux';
+import { getProductsRequest } from '../../../store/actions/products.actions';
 import AppDataTable from '../../AppDataTable/AppDataTable';
 import { IGetProducts, ProductsTableProps } from '../../../interfaces/IProducts';
 import DateMoment from '../../Common/Date-moment';
@@ -29,30 +25,24 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
   isSearch,
   searchValue,
   count,
-  paginationPage
+  paginationPage,
+  paginationLimit
 }) => {
-  const dispatch: AppDispatch = useDispatch();
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [sortedList, setSortedList] = useState<IGetProducts[]>([]);
+
+  useEffect(() => {
+    const sortedList: IGetProducts[] = list.length ? list.sort((a, b) => a.id - b.id) : [];
+    setSortedList(sortedList);
+  }, [list]);
 
   const onChangePage = (page) => {
-    setPage(page);
-
-    if (isSearch) {
-      dispatch(getProductsByQueryRequest(searchValue, page, limit));
-      return;
-    }
-    dispatch(getProductsRequest(page, limit));
+    dispatch(getProductsRequest(page, paginationLimit));
   };
 
   const onChangeLimit = (limit) => {
-    setLimit(limit);
-
-    if (isSearch) {
-      dispatch(getProductsByQueryRequest(searchValue, page, limit));
-      return;
-    }
-    dispatch(getProductsRequest(page, limit));
+    dispatch(getProductsRequest(paginationPage, limit));
   };
 
   const productsColumns = [
@@ -159,15 +149,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
     },
   ];
 
-  const history = useHistory();
-  const [sortedList, setSortedList] = useState<IGetProducts[]>([]);
-
-  useEffect(() => {
-    const sortedList: IGetProducts[] = list.length ? list.sort((a, b) => b.id - a.id) : [];
-    setSortedList(sortedList);
-  }, [list]);
-
-  const onRowClicked = (id) => {
+  const onRowClicked = (id: number) => {
     history.push(`/product/${id}`);
   };
 
@@ -182,6 +164,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       setPage={(e) => onChangePage(e)}
       paginationServer={true}
       paginationPage={paginationPage}
+      limit={paginationLimit}
     />
   );
 };

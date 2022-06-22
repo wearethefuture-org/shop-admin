@@ -90,6 +90,7 @@ export interface IProductsData {
   totalPages: number;
   isSearch: boolean;
   paginationPage: number;
+  paginationLimit: number;
   searchValue: null | string;
   paginationPageSearch: number;
 }
@@ -161,6 +162,7 @@ export interface ProductsTableProps {
   searchValue: string;
   count: number;
   paginationPage: number;
+  paginationLimit: number
 }
 
 export interface IUpdateAvailabilityProduct {

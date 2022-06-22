@@ -39,6 +39,7 @@ const initialState: IProductsData = {
   count: 0,
   totalPages: 0,
   paginationPage: 1,
+  paginationLimit: 10,
   searchValue: null,
   paginationPageSearch: 1,
 };
@@ -54,7 +55,8 @@ const products = (state = initialState, { type, data }: IActions) => {
         isSearch: false,
         error: null,
         searchValue: null,
-        paginationPage: data.page
+        paginationPage: data.page,
+        paginationLimit: data.limit
       };
     }
 

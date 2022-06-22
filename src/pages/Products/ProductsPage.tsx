@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
-import { LinearProgress } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './../../store/store';
 
 import ProductsTable from '../../components/Tables/Products/ProductsTable';
 import AddBtn from '../../components/AddBtn/AddBtn';
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
 import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
-import useProducts from '../../hooks/useProducts';
 import styles from './ProductsPage.module.scss';
+import queryString from 'query-string'
+import { getProductsRequest } from '../../store/actions/products.actions';
+import { IProductsData } from '../../interfaces/IProducts';
+import Preloader from '../../components/Preloader/Preloader';
 
 enum cols {
   id = 'ID',
@@ -43,14 +45,44 @@ if (localStorage.getItem('PRODUCTS_SETTINGS')) {
 } 
 
 const Products: React.FC = () => {
-  const location = useLocation();
-
-  const {paginationPage, paginationPageSearch, count, searchValue} = useSelector((state: RootState) => state.products);
+  const location = useLocation()
+  const history = useHistory();
+  const dispatch = useDispatch();
   
-  const { list, loading, isSearch } = useProducts(paginationPage, paginationPageSearch, searchValue);
+  const { count, searchValue, paginationPage, paginationLimit } = useSelector((state: RootState) => state.products);
 
-  const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
-  const [activeColumns, setActiveColumns] = useState<string[]>(initialActiveColums);
+
+  const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false)
+  const [activeColumns, setActiveColumns] = useState<string[]>(initialActiveColums)
+
+  useEffect(() => {
+    const parsed = queryString.parse(location.search) as QueryTypes
+
+    let actualPage = paginationPage
+    if(parsed.page) actualPage = Number(parsed.page)
+    let actualLimit = paginationLimit
+    if(parsed.limit) actualLimit = Number(parsed.limit)
+
+    dispatch(getProductsRequest(actualPage, actualLimit));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  
+  useEffect(() => {
+    const querySearch = {} as QueryTypes
+    if(!!paginationPage && paginationPage !== 1) querySearch.page = String(paginationPage)
+    if(!!paginationLimit && paginationLimit !== 10) querySearch.limit = String(paginationLimit)
+
+    history.push({
+      pathname: '/products',
+      search: queryString.stringify(querySearch),
+      state: {
+        update: true, 
+      },
+    })
+  }, [history, paginationPage, paginationLimit])
+
+  const { list, loading, isSearch }: Partial<IProductsData> = useSelector((state: RootState) => state.products);
+
 
   localStorage.setItem('PRODUCTS_SETTINGS', activeColumns.toString());
   
@@ -60,9 +92,6 @@ const Products: React.FC = () => {
       : setActiveColumns([...activeColumns, column]);
 
   return (
-    <>
-      {loading && <LinearProgress />}
-
       <div className={styles.container}>
         {showColumnsMenu && (
           <ColumnsMenu
@@ -73,7 +102,6 @@ const Products: React.FC = () => {
             handleColumns={handleColumns}
           />
         )}
-
         <div className={styles['header-btn-wrapper']}>
           <div className={styles.headerButtons}>
             <Link
@@ -88,20 +116,27 @@ const Products: React.FC = () => {
           </div>
         </div>
         <div className={styles['table-wrapper']}>
-          {list && (
-            <ProductsTable
-              list={list}
-              activeColumns={activeColumns}
-              isSearch={isSearch}
-              searchValue={searchValue}
-              count={count}
-              paginationPage={isSearch ? paginationPageSearch : paginationPage}
-            />
-          )}
+          {loading ? <Preloader /> :
+            list && (
+              <ProductsTable
+                list={list}
+                activeColumns={activeColumns}
+                isSearch={isSearch}
+                searchValue={searchValue}
+                count={count}
+                paginationPage={paginationPage}
+                paginationLimit={paginationLimit}
+              />
+            )
+          }
         </div>
       </div>
-    </>
   );
 };
 
 export default Products;
+
+type QueryTypes = {
+  page?: string, 
+  limit?: string
+}
