@@ -26,6 +26,7 @@ import useDidUpdate from '../../hooks/useDidUpdate';
 import styles from './Sidebar.module.scss';
 import { getProductsRequest } from '../../store/actions/products.actions';
 import { IProductsData } from '../../interfaces/IProducts';
+import { COLORS } from '../../values/colors';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -52,7 +53,7 @@ const useStyles = makeStyles(
       display: 'flex',
       flexShrink: 0,
       alignItems: 'center',
-      backgroundColor: 'darkgreen',
+      backgroundColor: COLORS.primaryColor,
       color: '#fff',
       padding: theme.spacing(0, 1),
       paddingLeft: '20px',
