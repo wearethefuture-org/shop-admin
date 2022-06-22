@@ -7,7 +7,7 @@ import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
 import CustomConfirm from '../../components/CustomConfirm/CustomConfirm';
 import FeedbacksTable from '../../components/Tables/Feedbacks/FeedbacksTable';
 import useFeedbacks from '../../hooks/useFeedbacks';
-import { deleteFeedbackRequest } from '../../store/actions/feedbacks.actions';
+import { deleteFeedbackRequest, getFeedbacksRequest } from '../../store/actions/feedbacks.actions';
 import { AppDispatch } from '../../store/store';
 import styles from './FeedbacksPage.module.scss';
 
@@ -27,6 +27,12 @@ export default function FeedbacksPage() {
   const [limit, setLimit] = useState<number>(10);
 
   const { list, count, loading } = useFeedbacks(currentPage, limit);
+
+  React.useEffect(() => {
+    if (!list.length){
+      dispatch(getFeedbacksRequest(currentPage, limit));
+    }
+  }, [list]);
 
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [activeColumns, setActiveColumns] = useState<string[]>([

@@ -30,6 +30,7 @@ export const slideValidationShema = Yup.object().shape({
   name: Yup.string().min(2, 'Minimum 2 symbols').max(50, 'Too long').required('Required'),
   text: Yup.string().min(2, 'Minimum 2 symbols').max(360, 'Too long').required('Required'),
   image: Yup.mixed()
+    .required('Required')
     .test('fileSize', 'File too large', (value) => {
       return value && (typeof value === 'string' || value.size <= FILE_SIZE);
     })
@@ -38,8 +39,9 @@ export const slideValidationShema = Yup.object().shape({
       'Unsupported Format',
       (value) => {
         return value && (typeof value === 'string' || SUPPORTED_FORMATS.includes(value.type))
-    }),
+      }),
   imageMobile: Yup.mixed()
+    .required('Required')
     .test(
       'fileSize',
       'File too large',

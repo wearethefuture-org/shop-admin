@@ -6,6 +6,7 @@ import {
   apiUpdateOrder,
   apiUpdateOrderStatus,
   apiGetOrdersByParams,
+  apiUpdateProductInOrder,
 } from './services/orders.service';
 
 import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
@@ -20,6 +21,8 @@ import {
   updateOrderStatusError,
   getOrdersByParamsSuccess,
   getOrdersByParamsError,
+  updateProductInOrderSuccess,
+  updateProductInOrderError,
 } from '../actions/orders.actions';
 import { IActions } from '../../interfaces/actions';
 
@@ -47,12 +50,12 @@ export function* updateOrderWorker({
   data: { orderId, productId, quantity },
 }: IActions): SagaIterator<void> {
   try {
-    if(Number(quantity.quantity) > 0) {
+    if (Number(quantity.quantity) > 0) {
       const order = yield call(apiUpdateOrder, orderId, productId, quantity);
       yield put(updateOrderSuccess(order));
       yield put(successSnackBar());
     } else {
-        throw new Error("Значення повинно бути більше нуля!");
+      throw new Error('Значення повинно бути більше нуля!');
     }
   } catch (error) {
     yield put(failSnackBar(error.message));
@@ -71,12 +74,25 @@ export function* updateOrderStatusWorker({ data: { id, status } }: IActions): Sa
   }
 }
 
-export function* getOrdersByParamsWorker({ data: { page, limit, searchValue} }: IActions): SagaIterator<void> {
+export function* getOrdersByParamsWorker({
+  data: { page, limit, searchValue },
+}: IActions): SagaIterator<void> {
   try {
     const orders = yield call(apiGetOrdersByParams, page, limit, searchValue);
     yield put(getOrdersByParamsSuccess(orders));
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(getOrdersByParamsError(error.message));
+  }
+}
+
+export function* updateProductInOrderWorker({ data }: IActions): SagaIterator {
+  try {
+    const newOrder = yield call(apiUpdateProductInOrder, data);
+    yield put(updateProductInOrderSuccess(newOrder));
+    yield put(successSnackBar());
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(updateProductInOrderError(error.message));
   }
 }

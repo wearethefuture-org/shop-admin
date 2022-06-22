@@ -24,3 +24,8 @@ export async function apiGetOrdersByParams(page: number, limit: number, searchVa
   const order = await api.orders.getByParams(page, limit, searchValue);
   return order.data;
 }
+
+export async function apiUpdateProductInOrder(data) {
+  const order = await api.orders.updateProductInOrder(data);
+  return order.data;
+}
