@@ -9,7 +9,11 @@ const useComments = (currentPage: number, limit: number) => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCommentsRequest(currentPage, limit));
+    let page = 1;
+    if (sessionStorage.getItem('commentsCurrentPage')) {
+      page = Number(sessionStorage.getItem('commentsCurrentPage'));
+    }
+    dispatch(getCommentsRequest(page, limit));
   }, [dispatch, currentPage, limit]);
 
   const { list, count, page, totalPages, loading, error }: ICommentsState = useSelector(

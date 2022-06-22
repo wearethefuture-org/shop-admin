@@ -120,7 +120,15 @@ const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
           limit={limit}
           setLimit={setLimit}
           paginationServer={paginationServer}
-          setPage={setPage}
+          setPage={(e) => {
+            sessionStorage.setItem('feedbacksCurrentPage', String(e));
+            setPage(e);
+          }}
+          currentPage={
+            sessionStorage.getItem('feedbacksCurrentPage')
+              ? Number(sessionStorage.getItem('feedbacksCurrentPage'))
+              : 1
+          }
         />
       ) : null}
     </>

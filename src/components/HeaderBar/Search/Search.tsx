@@ -98,10 +98,17 @@ const Search: React.FC<SearchProps> = (props) => {
     initialValues: initialValues,
     validationSchema,
     onSubmit: (values, { setSubmitting }) => {
+      sessionStorage.setItem('productsCurrentPage', '1');
       setSubmitting(true);
       setIsSearch(true);
       if (values.searchOption === 'products') {
-        dispatch(getProductsByQueryRequest(values.searchValue, 1, 10));
+        dispatch(
+          getProductsByQueryRequest(
+            values.searchValue,
+            Number(sessionStorage.getItem('productsCurrentPage')),
+            10
+          )
+        );
         history.push({
           pathname: '/products',
           state: {
@@ -140,6 +147,8 @@ const Search: React.FC<SearchProps> = (props) => {
         disabled={formik.isSubmitting || !formik.values.searchValue.trim().length}
         style={!formik.values.searchValue.trim().length ? { opacity: '0' } : { opacity: '1' }}
         onClick={() => {
+          sessionStorage.setItem('searchValue', '');
+          sessionStorage.setItem('productsCurrentPage', '1');
           formik.setFieldValue('searchValue', '');
           handleChange();
         }}
@@ -180,6 +189,7 @@ const Search: React.FC<SearchProps> = (props) => {
           name="searchValue"
           id="searchValue-field"
           onChange={(e) => {
+            sessionStorage.setItem('searchValue', e.target.value);
             formik.handleChange(e);
             handleChange(e.target.value);
           }}

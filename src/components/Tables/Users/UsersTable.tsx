@@ -10,13 +10,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUsersRequest } from '../../../store/actions/users.actions';
 import { IUserItem } from '../../../interfaces/IUsers';
 
-const UsersTable = ({ list }: { list: IUserItem[] }) => {
+interface UsersTableProps {
+  list: IUserItem[];
+  currentPage: number;
+}
+
+const UsersTable: React.FC<UsersTableProps> = ({ list, currentPage }) => {
   const dispatch: AppDispatch = useDispatch();
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(currentPage);
   const [limit, setLimit] = useState(10);
   const count = useSelector((state: RootState) => state.users.count);
 
   const onChangePage = (page) => {
+    sessionStorage.setItem('usersCurrentPage', String(page));
     setPage(page);
     dispatch(getUsersRequest(page, limit));
   };
@@ -164,6 +170,7 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
             style: { cursor: 'default' },
           },
         }}
+        currentPage={page}
       />
     </React.Fragment>
   );

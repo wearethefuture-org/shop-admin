@@ -44,4 +44,5 @@ export interface CommentsTableProps {
   limit: number;
   setLimit: Dispatch<SetStateAction<number>>;
   paginationServer: boolean;
+  currentPage: number;
 }

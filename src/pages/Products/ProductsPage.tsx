@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { LinearProgress } from '@material-ui/core';
 
 import ProductsTable from '../../components/Tables/Products/ProductsTable';
@@ -34,24 +34,32 @@ let initialActiveColums: string[] = [
   cols.files,
   cols.createdAt,
   cols.updatedAt,
-]
+];
 
 if (localStorage.getItem('PRODUCTS_SETTINGS')) {
-    initialActiveColums = localStorage.getItem('PRODUCTS_SETTINGS')!.split(',')
-} 
+  initialActiveColums = localStorage.getItem('PRODUCTS_SETTINGS')!.split(',');
+}
 
 const Products: React.FC = () => {
   const location = useLocation();
-  const history = useHistory();
-  const { searchValue } = Object(history.location.state);
 
   const { list, loading, isSearch } = useProducts();
 
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [activeColumns, setActiveColumns] = useState<string[]>(initialActiveColums);
 
+  let searchValue = '';
+  if (sessionStorage.getItem('searchValue')) {
+    searchValue = String(sessionStorage.getItem('searchValue'));
+  }
+
+  let currentPage = 1;
+  if (sessionStorage.getItem('productsCurrentPage')) {
+    currentPage = Number(sessionStorage.getItem('productsCurrentPage'));
+  }
+
   localStorage.setItem('PRODUCTS_SETTINGS', activeColumns.toString());
-  
+
   const handleColumns = (column: string) =>
     activeColumns.includes(column)
       ? setActiveColumns(activeColumns.filter((col) => col !== column))
@@ -92,6 +100,7 @@ const Products: React.FC = () => {
               activeColumns={activeColumns}
               isSearch={isSearch}
               searchValue={searchValue}
+              currentPage={currentPage}
             />
           )}
         </div>

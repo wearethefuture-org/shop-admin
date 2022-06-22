@@ -93,6 +93,7 @@ export default function CommentsPage() {
               limit={limit}
               setLimit={setLimit}
               paginationServer={true}
+              currentPage={currentPage}
             />
           )}
         </div>

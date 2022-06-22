@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IProductsData } from '../interfaces/IProducts';
-import { getProductsRequest } from '../store/actions/products.actions';
+import { getProductsRequest, getProductsByQueryRequest } from '../store/actions/products.actions';
 import { AppDispatch, RootState } from '../store/store';
 
 const useProducts = () => {
@@ -12,8 +12,14 @@ const useProducts = () => {
   );
 
   useEffect(() => {
-    if (!isSearch) {
-      dispatch(getProductsRequest(1, 10));
+    let page = 1;
+    if (sessionStorage.getItem('productsCurrentPage')) {
+      page = Number(sessionStorage.getItem('productsCurrentPage'));
+    }
+    if (sessionStorage.getItem('searchValue')) {
+      dispatch(getProductsByQueryRequest(String(sessionStorage.getItem('searchValue')), page, 10));
+    } else {
+      dispatch(getProductsRequest(page, 10));
     }
   }, [dispatch, isSearch]);
 

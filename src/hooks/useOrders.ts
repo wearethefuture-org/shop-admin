@@ -7,7 +7,11 @@ const useOrders = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getOrdersRequest(1,10));
+    let page = 1;
+    if (sessionStorage.getItem('ordersCurrentPage')) {
+      page = Number(sessionStorage.getItem('ordersCurrentPage'));
+    }
+    dispatch(getOrdersRequest(page, 10));
   }, [dispatch]);
 
   const list = useSelector((state: RootState) => state.orders.list);

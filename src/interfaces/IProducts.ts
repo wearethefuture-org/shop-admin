@@ -115,7 +115,7 @@ export interface IProductCharRequest {
 }
 
 export interface IDeleteProductChars {
-  characteristicValuesIds : string[]
+  characteristicValuesIds: string[];
 }
 
 export interface IAddImgResponse extends Common {
@@ -154,6 +154,7 @@ export interface ProductsTableProps {
   activeColumns: string[];
   isSearch: boolean;
   searchValue: string;
+  currentPage: number;
 }
 
 export interface IUpdateAvailabilityProduct {

@@ -9,7 +9,11 @@ const useUsers = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUsersRequest(1, 10));
+    let page = 1;
+    if (sessionStorage.getItem('usersCurrentPage')) {
+      page = Number(sessionStorage.getItem('usersCurrentPage'));
+    }
+    dispatch(getUsersRequest(page, 10));
   }, [dispatch]);
 
   const data: IUserItem[] = useSelector((state: RootState) => state.users.list);

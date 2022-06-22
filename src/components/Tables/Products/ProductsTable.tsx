@@ -28,13 +28,15 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
   activeColumns,
   isSearch,
   searchValue,
+  currentPage,
 }) => {
   const dispatch: AppDispatch = useDispatch();
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(currentPage);
   const [limit, setLimit] = useState(10);
   const count = useSelector((state: RootState) => state.products.count);
 
   const onChangePage = (page) => {
+    sessionStorage.setItem('productsCurrentPage', String(page));
     setPage(page);
 
     if (isSearch) {
@@ -179,6 +181,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       setLimit={(e) => onChangeLimit(e)}
       setPage={(e) => onChangePage(e)}
       paginationServer={true}
+      currentPage={page}
     />
   );
 };

@@ -13,12 +13,13 @@ import OrdersSelector from './OrdersSelector';
 interface OrdersTableProps {
   list: IGetOrders[];
   activeColumns: Array<string>;
+  currentPage: number;
 }
 
-const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
+const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns, currentPage }) => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(currentPage);
   const [limit, setLimit] = useState(10);
   const count = useSelector((state: RootState) => state.orders.count);
 
@@ -30,6 +31,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
   };
 
   const onChangePage = (page) => {
+    sessionStorage.setItem('ordersCurrentPage', page);
     setPage(page);
     dispatch(getOrdersRequest(page, limit));
   };
@@ -181,6 +183,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns }) => {
       setPage={(e) => onChangePage(e)}
       paginationServer={true}
       count={count}
+      currentPage={page}
     />
   );
 };

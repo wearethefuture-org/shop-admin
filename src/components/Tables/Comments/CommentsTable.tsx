@@ -117,7 +117,15 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
           limit={limit}
           setLimit={setLimit}
           paginationServer={paginationServer}
-          setPage={setPage}
+          setPage={(e) => {
+            sessionStorage.setItem('commentsCurrentPage', String(e));
+            setPage(e);
+          }}
+          currentPage={
+            sessionStorage.getItem('commentsCurrentPage')
+              ? Number(sessionStorage.getItem('commentsCurrentPage'))
+              : 1
+          }
         />
       ) : null}
     </>

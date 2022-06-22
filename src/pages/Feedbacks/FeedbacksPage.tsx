@@ -91,6 +91,7 @@ export default function FeedbacksPage() {
               limit={limit}
               setLimit={setLimit}
               paginationServer={true}
+              currentPage={currentPage}
             />
           )}
         </div>

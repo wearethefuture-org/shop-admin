@@ -48,6 +48,11 @@ const OrdersPage: React.FC = () => {
     cols.courierDeliveryAddress,
   ]);
 
+  let currentPage = 1;
+  if (sessionStorage.getItem('ordersCurrentPage')) {
+    currentPage = Number(sessionStorage.getItem('ordersCurrentPage'));
+  }
+
   const handleColumns = (column: string) =>
     activeColumns.includes(column)
       ? setActiveColumns(activeColumns.filter((col) => col !== column))
@@ -74,7 +79,9 @@ const OrdersPage: React.FC = () => {
       <div className="content-wrapper">
         <AddCategoryModal openAddModal={openAddModal} setOpenAddModal={setOpenAddModal} />
 
-        {list ? <OrdersTable list={list} activeColumns={activeColumns} /> : null}
+        {list ? (
+          <OrdersTable list={list} activeColumns={activeColumns} currentPage={currentPage} />
+        ) : null}
       </div>
     </>
   );
