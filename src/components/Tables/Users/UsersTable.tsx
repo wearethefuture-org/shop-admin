@@ -8,7 +8,7 @@ import UserRemoveDialog from '../../Modals/UserRemoveDialog/UserRemoveDialog';
 import { AppDispatch } from '../../../store/store';
 import { useDispatch } from 'react-redux';
 import { getUsersByQueryRequest, getUsersRequest } from '../../../store/actions/users.actions';
-import { IUserItem, UsersTableProps } from '../../../interfaces/IUsers';
+import { UsersTableProps } from '../../../interfaces/IUsers';
 
 const UsersTable: React.FC<UsersTableProps> = ({ 
   list,
@@ -21,7 +21,6 @@ const UsersTable: React.FC<UsersTableProps> = ({
   const dispatch: AppDispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  // const count = useSelector((state: RootState) => state.users.count);
 
   const onChangePage = (page) => {
     setPage(page);

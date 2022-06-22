@@ -20,7 +20,6 @@ const useUsers = (paginationPage: number, paginationPageSearch: number, searchVa
     }
   }, [dispatch, isSearch]);
 
-  // const data: IUsersData[] = useSelector((state: RootState) => state.users.data);
   return { list, loading, isSearch };
 };
 

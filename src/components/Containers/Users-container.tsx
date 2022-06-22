@@ -27,7 +27,6 @@ let initialActiveColumns: string[] = [
 ]
 
 const UsersContainer: React.FC = () => {
-  // const { data } = useUsers();
 
   const { paginationPage, paginationPageSearch, count, searchValue } = useSelector((state: RootState) => state.users);
 
