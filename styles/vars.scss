@@ -2,6 +2,14 @@
 $primary-color: #26bd62;
 $accent-light-color: #ffffff;
 $font-color: #4e5a5e;
-$font-color-gray: #727272;
 $blue-button: #4096e3;
 $gray-button: #6c757d;
+
+/* exports */
+:export {
+  primaryColor: $primary-color;
+  accentLightColor: $accent-light-color;
+  fontColor: $font-color;
+  blueButton: $blue-button;
+  grayButton: $gray-button;
+}
