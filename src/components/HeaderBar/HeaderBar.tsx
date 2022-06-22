@@ -11,6 +11,7 @@ import AppBarMenu from './Menu/Menu';
 import AccountList from './AccountList/AccountMenuList';
 import MailList from './MailList/MailList';
 import NotificationList from './NotificationList/NotificationList';
+import { COLORS } from '../../values/colors';
 
 interface HeaderBarProps {
   onSidebarToggle: () => void;
@@ -25,13 +26,13 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   appBar: {
-    backgroundColor: 'darkgreen',
+    backgroundColor: COLORS.primaryColor,
     paddingLeft: 0,
     zIndex: 3,
     transition: `all 0.3s ease-in-out`,
   },
   appBarShrinked: {
-    backgroundColor: 'darkgreen',
+    backgroundColor: COLORS.primaryColor,
     paddingLeft: '240px',
     zIndex: 3,
     transition: `all 0.3s ease-in-out`,
