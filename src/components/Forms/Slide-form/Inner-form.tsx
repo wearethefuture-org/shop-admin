@@ -64,7 +64,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
         caption="An image for desktop. Allowed formats: jpg, png, gif. Max size: 9 MB. Optimal aspect ratio: 3.5 (e.g., 1920x548 etc.)"
         fieldId="file"
       />
-      {<ErrorMessage name='image' component="div" className={classes.errorMy} />}
+      <ErrorMessage name='image' component="div" className={classes.errorMy} />
       <Field
         fullWidth
         multiline
