@@ -54,7 +54,7 @@ const useStyles = makeStyles(
       flexShrink: 0,
       alignItems: 'center',
       backgroundColor: COLORS.primaryGreen,
-      color: '#fff',
+      color: COLORS.primaryLight,
       padding: theme.spacing(0, 1),
       paddingLeft: '20px',
       fontSize: '18px',
@@ -65,13 +65,16 @@ const useStyles = makeStyles(
       padding: '4px 10px',
     },
     listButton: {
-      color: theme.palette.grey[700],
-      height: '45px',
+      'color': COLORS.fontColor,
+      'height': '45px',
+      '&:hover': {
+        backgroundColor: COLORS.primaryOttoman,
+      },
     },
     activeButton: {
       borderRadius: '3px',
       color: 'inherit',
-      backgroundColor: theme.palette.action.selected,
+      backgroundColor: COLORS.secondaryOttoman,
     },
     itemIcon: {
       minWidth: '0',
