@@ -41,9 +41,9 @@ import {
 } from '../types';
 
 // get all
-export const getProductsRequest = (page: number, limit: number): IActions => ({
+export const getProductsRequest = (page: number, limit: number, sort: string, sortDirect: string): IActions => ({
   type: GET_PRODUCTS_REQUEST,
-  data: { page, limit },
+  data: { page, limit, sort, sortDirect },
 });
 
 export const getProductsSuccess = (products: IGetProducts[]): IActions => ({

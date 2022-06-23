@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 import { getProductsRequest } from '../../../store/actions/products.actions';
-import AppDataTable from '../../AppDataTable/AppDataTable';
-import { IGetProducts, ProductsTableProps } from '../../../interfaces/IProducts';
+import { ProductsTableProps } from '../../../interfaces/IProducts';
 import DateMoment from '../../Common/Date-moment';
 import { root } from '../../../api/config';
 import { priceFormat } from '../../../utils/priceFormat';
 import styles from './ProductsTable.module.scss';
+import { cols } from '../../../pages/Products/ProductsPage';
+import AppProductsDataTable from '../../AppDataTable/AppProductsDataTable';
 
 const placeholder = `${root}/static/uploads/empty-preview.png`;
 
@@ -26,24 +27,13 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
   searchValue,
   count,
   paginationPage,
-  paginationLimit
+  paginationLimit,
+  sort,
+  sortDirect
 }) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const [sortedList, setSortedList] = useState<IGetProducts[]>([]);
-
-  useEffect(() => {
-    const sortedList: IGetProducts[] = list.length ? list.sort((a, b) => a.id - b.id) : [];
-    setSortedList(sortedList);
-  }, [list]);
-
-  const onChangePage = (page) => {
-    dispatch(getProductsRequest(page, paginationLimit));
-  };
-
-  const onChangeLimit = (limit) => {
-    dispatch(getProductsRequest(paginationPage, limit));
-  };
+  const defaultSortFieldId = Object.keys(cols).indexOf(sort) + 1
 
   const productsColumns = [
     {
@@ -153,18 +143,29 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
     history.push(`/product/${id}`);
   };
 
+  const setSortColumn = (column: any, direction: any) => {
+    const fieldName = Object.keys(cols)[Object.values(cols).indexOf(column.name)];
+    dispatch(getProductsRequest(paginationPage, paginationLimit, fieldName, direction));
+  };
+
+  const onChangeLimit = (limit: any) => {
+    dispatch(getProductsRequest(paginationPage, limit, sort, sortDirect));
+  };
+  
   return (
-    <AppDataTable
-      data={sortedList}
+    <AppProductsDataTable
+      data={list}
       columns={productsColumns}
       title={isSearch ? 'Результати пошуку' : 'Продукти'}
       onRowClicked={(row) => onRowClicked(row.id)}
       count={count}
-      setLimit={(e) => onChangeLimit(e)}
-      setPage={(e) => onChangePage(e)}
+      setLimit={(limit) => onChangeLimit(limit)}
+      setSortColumn={(column, direction) => setSortColumn(column, direction)}
       paginationServer={true}
       paginationPage={paginationPage}
       limit={paginationLimit}
+      defaultSortFieldId={defaultSortFieldId}
+      sortDirect={sortDirect}
     />
   );
 };

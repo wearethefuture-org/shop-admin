@@ -1,7 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-
 import { api } from '../../../api/api';
-import { root } from '../../../api/config';
 import {
   IAddProduct,
   IDeleteProductChars,
@@ -9,10 +6,9 @@ import {
   IProductCharRequest,
   IUpdateAvailabilityProduct,
 } from '../../../interfaces/IProducts';
-import { temporaryToken } from '../../../api/axios-interceptors';
 
-export async function apiGetProducts(page: number, limit: number) {
-  const products = await api.products.get(page, limit);
+export async function apiGetProducts(page: number, limit: number, sort: string, sortDirect: string) {
+  const products = await api.products.get(page, limit, sort, sortDirect);
   return products.data;
 }
 

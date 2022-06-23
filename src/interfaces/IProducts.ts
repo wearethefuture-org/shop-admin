@@ -93,6 +93,8 @@ export interface IProductsData {
   paginationLimit: number;
   searchValue: null | string;
   paginationPageSearch: number;
+  sort: string;
+  sortDirect: string;
 }
 
 export interface CharValues {
@@ -162,7 +164,9 @@ export interface ProductsTableProps {
   searchValue: string;
   count: number;
   paginationPage: number;
-  paginationLimit: number
+  paginationLimit: number;
+  sort: string;
+  sortDirect: string;
 }
 
 export interface IUpdateAvailabilityProduct {

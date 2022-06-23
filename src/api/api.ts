@@ -56,7 +56,7 @@ type ApiFetchedDataType = {
   };
 
   products: {
-    get: (page: number, limit: number) => FetchedDataType<IGetProducts>;
+    get: (page: number, limit: number, sort: string, sortDirect: string) => FetchedDataType<IGetProducts>;
     getById: (id: number) => FetchedDataType<IGetProductById>;
     add: (product: IAddProduct) => FetchedDataType<IGetProductById>;
     update: (product: IUpdateProduct) => FetchedDataType<IGetProductById>;
@@ -149,7 +149,7 @@ export const api: ApiFetchedDataType = {
   },
 
   products: {
-    get: (page, limit) => instance.get(`${root}/product/admin?page=${page}&limit=${limit}`),
+    get: (page, limit, sort, sortDirect) => instance.get(`${root}/product/admin?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}`),
     add: (product) => instance.post(`${root}/product`, product),
     getById: (id) => instance.get(`${root}/product/${id}`),
     update: ({ id, ...product }) => instance.patch(`${root}/product/${id}`, product),
