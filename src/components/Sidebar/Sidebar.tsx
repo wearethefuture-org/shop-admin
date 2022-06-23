@@ -53,7 +53,7 @@ const useStyles = makeStyles(
       display: 'flex',
       flexShrink: 0,
       alignItems: 'center',
-      backgroundColor: COLORS.primaryColor,
+      backgroundColor: COLORS.primaryGreen,
       color: '#fff',
       padding: theme.spacing(0, 1),
       paddingLeft: '20px',

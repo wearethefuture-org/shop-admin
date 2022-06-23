@@ -26,13 +26,13 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   appBar: {
-    backgroundColor: COLORS.primaryColor,
+    backgroundColor: COLORS.primaryGreen,
     paddingLeft: 0,
     zIndex: 3,
     transition: `all 0.3s ease-in-out`,
   },
   appBarShrinked: {
-    backgroundColor: COLORS.primaryColor,
+    backgroundColor: COLORS.primaryGreen,
     paddingLeft: '240px',
     zIndex: 3,
     transition: `all 0.3s ease-in-out`,

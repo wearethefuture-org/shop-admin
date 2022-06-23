@@ -1,7 +1,10 @@
 export const COLORS = {
-  primaryColor: '#26bd62',
-  primaryLightColor: '#ffffff',
+  primaryGreen: '#26bd62',
+  secondaryGreen: '#1ba34f',
+  primaryLight: '#ffffff',
   fontColor: '#4e5a5e',
-  blueButton: '#4096e3',
-  grayButton: '#6c757d',
+  primaryBlue: '#007bff',
+  secondaryBlue: '#0069d9',
+  primaryGray: '#6c757d',
+  secondaryGray: '#5a6268',
 };

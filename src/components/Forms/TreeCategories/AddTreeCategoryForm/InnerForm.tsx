@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { IAddTreeCategory } from '../../../../interfaces/ITreeCategory';
 import TextFieldWrapped from '../../../../hocs/TextFieldHOC';
+import styled from 'styled-components';
+import { COLORS } from '../../../../values/colors';
 
 const useStyles = makeStyles({
   customBtn: {
@@ -22,6 +24,24 @@ const useStyles = makeStyles({
 interface InnerTreeCategoryFormProps {
   closeModal: () => void;
 }
+
+const CloseButton = styled(Button)`
+  background-color: ${COLORS.primaryGray};
+  border-radius: 30px;
+  color: ${COLORS.primaryLight};
+  &:hover {
+    background-color: ${COLORS.secondaryGray};
+  }
+`;
+
+const SubmitButton = styled(Button)`
+  background-color: ${COLORS.primaryGreen};
+  border-radius: 30px;
+  color: ${COLORS.primaryLight};
+  &:hover {
+    background-color: ${COLORS.secondaryGreen};
+  }
+`;
 
 const InnerForm: React.FC<InnerTreeCategoryFormProps & FormikProps<IAddTreeCategory>> = (props) => {
   const { submitForm, closeModal, isSubmitting, dirty, isValid } = props;
@@ -60,23 +80,17 @@ const InnerForm: React.FC<InnerTreeCategoryFormProps & FormikProps<IAddTreeCateg
       />
 
       <DialogActions>
-        <Button
-          onClick={closeModal}
-          color="secondary"
-          variant="contained"
-          className={classes.customBtn}
-        >
+        <CloseButton onClick={closeModal} variant="contained" className={classes.customBtn}>
           Закрити
-        </Button>
-        <Button
+        </CloseButton>
+        <SubmitButton
           className={classes.customBtn}
           variant="contained"
-          color="primary"
           disabled={isSubmitting || !(dirty && isValid)}
           onClick={submitForm}
         >
           Створити
-        </Button>
+        </SubmitButton>
       </DialogActions>
     </Form>
   );
