@@ -48,7 +48,7 @@ const initialState: IProductsData = {
     id: null,
     name: '',
     category: '',
-    price: [0,100]
+    price: [0,2000]
   }
 };
 

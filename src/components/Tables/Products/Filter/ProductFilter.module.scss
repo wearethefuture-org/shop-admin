@@ -3,12 +3,34 @@
   flex-direction: column;
   gap: 10px;
 
+  .price {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .box {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: row;
+    gap: 20px;
+
+    .checkbox {
+      margin-bottom: 10px;
+      transform: scale(1.5);
+    }
+  }
+
   button {
     margin-top: 30px;
   }
 
   .rail {
     height: 4px;
+  }
+
+  .root {
+    width: 100%;
   }
 
   .track {
@@ -20,7 +42,7 @@
     width: 15px;
   }
 
-  p {
+  .inputSlider {
     margin-top: 20px;
     margin-bottom: -15px;
     color: rgba(0, 0, 0, 0.54)
