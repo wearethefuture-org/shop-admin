@@ -44,6 +44,12 @@ const initialState: IProductsData = {
   paginationPageSearch: 1,
   sort: 'id',
   sortDirect: 'asc',
+  filter: {
+    id: null,
+    name: '',
+    category: '',
+    price: [0,100]
+  }
 };
 
 const products = (state = initialState, { type, data }: IActions) => {
@@ -61,6 +67,7 @@ const products = (state = initialState, { type, data }: IActions) => {
         paginationLimit: data.limit,
         sort: data.sort,
         sortDirect: data.sortDirect,
+        filter: {...data.filter}
       };
     }
 

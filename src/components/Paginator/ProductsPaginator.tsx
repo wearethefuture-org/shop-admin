@@ -16,28 +16,28 @@ const getNumberOfPages = (count: number, rowsPerPage: number): number => {
 
 function TablePaginationActions({ count, page, rowsPerPage, onPageChange }) {
     const dispatch = useDispatch()
-    const { paginationLimit, sort, sortDirect } = useSelector(
+    const { paginationLimit, sort, sortDirect, filter } = useSelector(
         (state: RootState) => state.products
       );
 
     const handleFirstPageButtonClick = () => {
         onPageChange(1);
-        dispatch(getProductsRequest(1, paginationLimit, sort, sortDirect));
+        dispatch(getProductsRequest(1, paginationLimit, sort, sortDirect, filter));
     };
 
     const handleBackButtonClick = () => {
         onPageChange(page);
-        dispatch(getProductsRequest(page, paginationLimit, sort, sortDirect));
+        dispatch(getProductsRequest(page, paginationLimit, sort, sortDirect, filter));
     };
 
     const handleNextButtonClick = () => {
         onPageChange(page + 2);
-        dispatch(getProductsRequest(page + 2, paginationLimit, sort, sortDirect));
+        dispatch(getProductsRequest(page + 2, paginationLimit, sort, sortDirect, filter));
     };
 
     const handleLastPageButtonClick = () => {
         onPageChange(getNumberOfPages(count, rowsPerPage));
-        dispatch(getProductsRequest(getNumberOfPages(count, rowsPerPage), paginationLimit, sort, sortDirect));
+        dispatch(getProductsRequest(getNumberOfPages(count, rowsPerPage), paginationLimit, sort, sortDirect, filter));
     };
 
     return (

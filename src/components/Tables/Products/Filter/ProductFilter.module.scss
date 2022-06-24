@@ -1,0 +1,28 @@
+.mainForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  button {
+    margin-top: 30px;
+  }
+
+  .rail {
+    height: 4px;
+  }
+
+  .track {
+    height: 4px;
+  }
+
+  .thumb {
+    height: 15px;
+    width: 15px;
+  }
+
+  p {
+    margin-top: 20px;
+    margin-bottom: -15px;
+    color: rgba(0, 0, 0, 0.54)
+  }
+}

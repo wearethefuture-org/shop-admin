@@ -12,6 +12,7 @@ import queryString from 'query-string';
 import { getProductsRequest } from '../../store/actions/products.actions';
 import { IProductsData } from '../../interfaces/IProducts';
 import Preloader from '../../components/Preloader/Preloader';
+import ProductFilter from '../../components/Tables/Products/Filter/ProductFilter';
 
 export enum cols {
   id = 'ID',
@@ -49,7 +50,7 @@ const Products: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { count, searchValue, paginationPage, paginationLimit, sort, sortDirect } = useSelector(
+  const { count, paginationPage, paginationLimit, sort, sortDirect, filter } = useSelector(
     (state: RootState) => state.products
   );
 
@@ -67,8 +68,17 @@ const Products: React.FC = () => {
     if (parsed.sort) actualSort = parsed.sort;
     let actualSortDirect = sortDirect;
     if (parsed.sortDirect) actualSortDirect = parsed.sortDirect;
-
-    dispatch(getProductsRequest(actualPage, actualLimit, actualSort, actualSortDirect));
+    const actualFilter = {
+      id: parsed.filterId ? parsed.filterId : filter.id,
+      name: parsed.filterName ? parsed.filterName : filter.name,
+      category: parsed.filterCategory ? parsed.filterCategory : filter.category,
+      price: [
+        parsed.filterPriceMin ? parsed.filterPriceMin : filter.price[0],
+        parsed.filterPriceMax ? parsed.filterPriceMax : filter.price[1],
+      ]
+    };
+  
+    dispatch(getProductsRequest(actualPage, actualLimit, actualSort, actualSortDirect, actualFilter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -78,6 +88,11 @@ const Products: React.FC = () => {
     if (!!paginationLimit && paginationLimit !== 10) querySearch.limit = String(paginationLimit);
     if (!!sort && sort !== 'id') querySearch.sort = sort;
     if (!!sortDirect && sortDirect !== 'asc') querySearch.sortDirect = sortDirect;
+    if (!!filter.id && filter.id !== null) querySearch.filterId = filter.id;
+    if (!!filter.name && filter.name !== '') querySearch.filterName = filter.name;
+    if (!!filter.category && filter.category !== '') querySearch.filterCategory = filter.category;
+    if (!!filter.price && filter.price[0] !== 0) querySearch.filterPriceMin = filter.price[0];
+    if (!!filter.price && filter.price[1] !== 100) querySearch.filterPriceMax = filter.price[1];
 
     history.push({
       pathname: '/products',
@@ -86,7 +101,7 @@ const Products: React.FC = () => {
         update: true,
       },
     });
-  }, [dispatch, history, paginationPage, paginationLimit, sort, sortDirect]);
+  }, [dispatch, history, paginationPage, paginationLimit, sort, sortDirect, filter]);
 
   const { list, loading, isSearch }: Partial<IProductsData> = useSelector(
     (state: RootState) => state.products
@@ -112,6 +127,7 @@ const Products: React.FC = () => {
       )}
       <div className={styles['header-btn-wrapper']}>
         <div className={styles.headerButtons}>
+          <ProductFilter />
           <Link
             to={{
               pathname: '/product/add',
@@ -132,12 +148,12 @@ const Products: React.FC = () => {
               list={list}
               activeColumns={activeColumns}
               isSearch={isSearch}
-              searchValue={searchValue}
               count={count}
               paginationPage={paginationPage}
               paginationLimit={paginationLimit}
               sort={sort}
               sortDirect={sortDirect}
+              filter={filter}
             />
           )
         )}
@@ -153,4 +169,9 @@ type QueryTypes = {
   limit?: string;
   sort?: string;
   sortDirect?: string;
+  filterId?: string;
+  filterName?: string;
+  filterCategory?: string;
+  filterPriceMin?: number[];
+  filterPriceMax?: number[];
 };

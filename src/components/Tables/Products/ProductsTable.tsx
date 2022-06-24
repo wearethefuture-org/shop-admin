@@ -24,7 +24,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
   list,
   activeColumns,
   isSearch,
-  searchValue,
+  filter,
   count,
   paginationPage,
   paginationLimit,
@@ -57,8 +57,8 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
             <img src={placeholder} alt="placeholder" />
           </div>
         ),
-      maxWidth: '12%',
-      minWidth: '12%',
+      maxWidth: '8%',
+      minWidth: '7%',
       omit: !activeColumns.includes('Головне зображення'),
     },
     {
@@ -105,19 +105,21 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       name: 'Категорія',
       selector: (row) => (row.category?.name ? row.category.name : 'Без категорії'),
       sortable: true,
-      minWidth: '12%',
+      minWidth: '5%',
       omit: !activeColumns.includes('Категорія'),
     },
     {
       name: 'URL ключ',
       selector: (row) => row.key,
+      minWidth: '250px',
+      // maxWidth: '12%',
       omit: !activeColumns.includes('URL ключ'),
     },
     {
-      name: 'Зображення',
+      name: 'img',
       selector: (row) => row.files,
-      minWidth: '10%',
-      maxWidth: '12%',
+      minWidth: '4%',
+      maxWidth: '5%',
       format: (row) => (
         <span className={styles.quantity}>{row?.files?.length ? row?.files?.length / 2 : 0}</span>
       ),
@@ -145,11 +147,11 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
 
   const setSortColumn = (column: any, direction: any) => {
     const fieldName = Object.keys(cols)[Object.values(cols).indexOf(column.name)];
-    dispatch(getProductsRequest(paginationPage, paginationLimit, fieldName, direction));
+    dispatch(getProductsRequest(paginationPage, paginationLimit, fieldName, direction, filter));
   };
 
   const onChangeLimit = (limit: any) => {
-    dispatch(getProductsRequest(paginationPage, limit, sort, sortDirect));
+    dispatch(getProductsRequest(paginationPage, limit, sort, sortDirect, filter));
   };
   
   return (

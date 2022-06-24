@@ -39,9 +39,9 @@ import {
 } from '../actions/products.actions';
 import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 
-export function* getProductsWorker({ data: { page, limit, sort, sortDirect } }: IActions): SagaIterator {
+export function* getProductsWorker({ data: { page, limit, sort, sortDirect, filter } }: IActions): SagaIterator {
   try {
-    const products = yield call(apiGetProducts, page, limit, sort, sortDirect);
+    const products = yield call(apiGetProducts, page, limit, sort, sortDirect, filter);
     yield put(getProductsSuccess(products));
   } catch (error: any) {
     yield put(failSnackBar(error.message));

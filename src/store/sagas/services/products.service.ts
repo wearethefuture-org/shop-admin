@@ -4,11 +4,12 @@ import {
   IDeleteProductChars,
   IDisableProduct,
   IProductCharRequest,
+  IProductsFilter,
   IUpdateAvailabilityProduct,
 } from '../../../interfaces/IProducts';
 
-export async function apiGetProducts(page: number, limit: number, sort: string, sortDirect: string) {
-  const products = await api.products.get(page, limit, sort, sortDirect);
+export async function apiGetProducts(page: number, limit: number, sort: string, sortDirect: string, filter: IProductsFilter) {
+  const products = await api.products.get(page, limit, sort, sortDirect, filter);
   return products.data;
 }
 
