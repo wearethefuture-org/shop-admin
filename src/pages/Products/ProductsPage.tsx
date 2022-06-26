@@ -91,8 +91,8 @@ const Products: React.FC = () => {
     if (!!filter.id && filter.id !== null) querySearch.filterId = filter.id;
     if (!!filter.name && filter.name !== '') querySearch.filterName = filter.name;
     if (!!filter.category && filter.category !== '') querySearch.filterCategory = filter.category;
-    if (!!filter.price && filter.price[0] !== findPrice[0]) querySearch.filterPriceMin = filter.price[0];
-    if (!!filter.price && filter.price[1] !== findPrice[1]) querySearch.filterPriceMax = filter.price[1];
+    if (!!filter.price && filter.price[0] !== findPrice[0] && filter.price[0] !== filter.price[1]) querySearch.filterPriceMin = filter.price[0];
+    if (!!filter.price && filter.price[1] !== findPrice[1] && filter.price[0] !== filter.price[1]) querySearch.filterPriceMax = filter.price[1];
 
     history.push({
       pathname: '/products',
