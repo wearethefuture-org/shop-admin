@@ -19,32 +19,29 @@
       margin-bottom: 10px;
       transform: scale(1.5);
     }
+
+    .checkboxSlider {
+      margin-bottom: 40px;
+      transform: scale(1.5);
+    }
+
+    .sliderContainer {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      .inputSlider {
+        margin-top: 20px;
+        margin-bottom: -10px;
+      }
+
+      .markLabel {
+        color: rgba(0, 0, 0, 0.54);
+      }
+    }
   }
 
   button {
     margin-top: 30px;
-  }
-
-  .rail {
-    height: 4px;
-  }
-
-  .root {
-    width: 100%;
-  }
-
-  .track {
-    height: 4px;
-  }
-
-  .thumb {
-    height: 15px;
-    width: 15px;
-  }
-
-  .inputSlider {
-    margin-top: 20px;
-    margin-bottom: -15px;
-    color: rgba(0, 0, 0, 0.54)
   }
 }

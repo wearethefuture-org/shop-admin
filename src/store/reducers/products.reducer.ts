@@ -44,11 +44,12 @@ const initialState: IProductsData = {
   paginationPageSearch: 1,
   sort: 'id',
   sortDirect: 'asc',
+  findPrice: [0,10000],
   filter: {
     id: null,
     name: '',
     category: '',
-    price: [0,2000]
+    price: [0,10000]
   }
 };
 
@@ -78,6 +79,11 @@ const products = (state = initialState, { type, data }: IActions) => {
         loading: false,
         count: data.count,
         totalPages: data.totalPages,
+        findPrice: data.priceRange ? [data.priceRange.asoluteMin, data.priceRange.asoluteMax] : [...state.findPrice],
+        filter: {
+          ...state.filter,
+          price: data.priceRange ? [data.priceRange.min, data.priceRange.max] : [...state.filter.price]
+        }
       };
     }
 

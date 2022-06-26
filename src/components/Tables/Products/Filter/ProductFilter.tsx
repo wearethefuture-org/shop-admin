@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './ProductFilter.module.scss';
 import { Button, Dialog, DialogContent, DialogTitle, Slider, Typography } from '@material-ui/core';
 import useModal from '../../../../hooks/useModal';
@@ -19,12 +19,17 @@ const validateString = (value: string) => {
 };
 
 const ProductFilter: React.FC = () => {
-  const dispatch = useDispatch();
-  const [price, setPrice] = useState([0,2000]);
-  const {handleClickOpen, isOpened, handleClose} = useModal();
-  const { paginationLimit, sort, sortDirect, filter } = useSelector(
+  const { paginationLimit, sort, sortDirect, filter, findPrice } = useSelector(
     (state: RootState) => state.products
   );
+  const dispatch = useDispatch();
+  const [price, setPrice] = useState([0, 100]);
+  const [isPriceChecked, setPriceChecked] = useState(false);
+  const {handleClickOpen, isOpened, handleClose} = useModal();
+
+  useEffect(() => {
+    setPrice(filter.price)
+  }, [filter.price])
 
   const changeValue = (event, value) => {
     setPrice(value);
@@ -34,10 +39,21 @@ const ProductFilter: React.FC = () => {
     filter.id = values.id ? values.id : null
     filter.name = values.name
     filter.category = values.category
-    filter.price = price
+    filter.price = values.selectPrice ? price : findPrice
     dispatch(getProductsRequest(1, paginationLimit, sort, sortDirect, filter));
     handleClose()
   }
+
+  const marks = [
+    {
+      value: findPrice[0],
+      label: `${findPrice[0]}`,
+    },
+    {
+      value: findPrice[1],
+      label: `${findPrice[1]}`,
+    },
+  ];
 
   return (
     <>
@@ -67,6 +83,7 @@ const ProductFilter: React.FC = () => {
                 selectId: !!filter.id,
                 selectName: !!filter.name,
                 selectCategory: !!filter.category,
+                selectPrice: isPriceChecked,
                }}
               onSubmit={ onSubmit }
             >
@@ -92,7 +109,7 @@ const ProductFilter: React.FC = () => {
                 <div className={style.box} >
                   <Field 
                     className={style.checkbox}
-                    onClick={() => values.selectId && setFieldValue('name', '')}
+                    onClick={() => values.selectName && setFieldValue('name', '')}
                     type="checkbox" 
                     name="selectName" 
                   />
@@ -108,7 +125,7 @@ const ProductFilter: React.FC = () => {
                 <div className={style.box} >
                   <Field 
                     className={style.checkbox} 
-                    onClick={() => values.selectId && setFieldValue('category', '')}
+                    onClick={() => values.selectCategory && setFieldValue('category', '')}
                     type="checkbox" 
                     name="selectCategory" 
                   />
@@ -121,17 +138,31 @@ const ProductFilter: React.FC = () => {
                     name="category" 
                     disabled={!values.selectCategory} />
                 </div>
-                <Typography className={style.inputSlider} gutterBottom>Діапазон цін:</Typography>
-                <Slider
-                  min={0}
-                  max={2000}
-                  value={price}
-                  onChange={changeValue}
-                  valueLabelDisplay="auto"
-                  name='price'
-                  classes={{root: style.root, rail: style.rail, track: style.track, thumb: style.thumb}}
-                />
-
+                <div className={style.box} >
+                  <Field 
+                    className={style.checkboxSlider} 
+                    type="checkbox" 
+                    onClick={() => isPriceChecked ? setPriceChecked(false) : setPriceChecked(true) }
+                    name="selectPrice" 
+                  />
+                  <div className={style.sliderContainer} >
+                    <Typography 
+                      className={style.inputSlider} 
+                      style={values.selectPrice ? {color: 'rgba(0, 0, 0, 0.54)'} : {color: 'rgba(0, 0, 0, 0.38)'}}
+                    >Ціна:</Typography>
+                    <Slider
+                      min={findPrice[0]}
+                      max={findPrice[1]}
+                      value={values.selectPrice ? price : findPrice}
+                      onChange={changeValue}
+                      valueLabelDisplay="auto"
+                      name='price'
+                      marks={marks}
+                      classes={{root: style.root, rail: style.rail, track: style.track, thumb: style.thumb, markLabel: style.markLabel}}
+                      disabled={!values.selectPrice}
+                    />
+                  </div>
+                </div>
                 <Button
                   variant="contained"
                   color="primary" 

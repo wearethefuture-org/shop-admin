@@ -95,6 +95,7 @@ export interface IProductsData {
   paginationPageSearch: number;
   sort: string;
   sortDirect: string;
+  findPrice: number[];
   filter: IProductsFilter;
 }
 
@@ -161,7 +162,7 @@ export enum Type {
 export interface IProductsFilter {
   id?: null | number
   name?: string
-  price?: number[]
+  price: number[]
   category?: string
 }
 

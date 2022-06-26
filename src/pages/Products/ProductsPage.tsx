@@ -50,7 +50,7 @@ const Products: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { count, paginationPage, paginationLimit, sort, sortDirect, filter } = useSelector(
+  const { count, paginationPage, paginationLimit, sort, sortDirect, filter, findPrice } = useSelector(
     (state: RootState) => state.products
   );
 
@@ -91,8 +91,8 @@ const Products: React.FC = () => {
     if (!!filter.id && filter.id !== null) querySearch.filterId = filter.id;
     if (!!filter.name && filter.name !== '') querySearch.filterName = filter.name;
     if (!!filter.category && filter.category !== '') querySearch.filterCategory = filter.category;
-    if (!!filter.price && filter.price[0] !== 0) querySearch.filterPriceMin = filter.price[0];
-    if (!!filter.price && filter.price[1] !== 2000) querySearch.filterPriceMax = filter.price[1];
+    if (!!filter.price && filter.price[0] !== findPrice[0]) querySearch.filterPriceMin = filter.price[0];
+    if (!!filter.price && filter.price[1] !== findPrice[1]) querySearch.filterPriceMax = filter.price[1];
 
     history.push({
       pathname: '/products',
@@ -101,7 +101,7 @@ const Products: React.FC = () => {
         update: true,
       },
     });
-  }, [dispatch, history, paginationPage, paginationLimit, sort, sortDirect, filter]);
+  }, [dispatch, history, paginationPage, paginationLimit, sort, sortDirect, filter, findPrice]);
 
   const { list, loading, isSearch }: Partial<IProductsData> = useSelector(
     (state: RootState) => state.products
