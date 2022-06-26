@@ -134,7 +134,7 @@ const Products: React.FC = () => {
               state: { from: `${location.pathname}` },
             }}
           >
-            <AddBtn title="Додати" handleAdd={undefined} />
+            <AddBtn title='Додати' handleAdd={undefined} />
           </Link>
           <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
         </div>

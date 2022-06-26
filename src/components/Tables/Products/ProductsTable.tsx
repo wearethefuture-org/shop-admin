@@ -54,7 +54,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
           </div>
         ) : (
           <div className={styles.mainImg}>
-            <img src={placeholder} alt="placeholder" />
+            <img src={placeholder} alt='placeholder' />
           </div>
         ),
       maxWidth: '8%',

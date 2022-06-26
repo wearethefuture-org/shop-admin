@@ -59,8 +59,8 @@ const ProductFilter: React.FC = () => {
     <>
       <div>
         <Button
-          variant="contained"
-          color="primary"
+          variant='contained'
+          color='primary'
           onClick={handleClickOpen}
         >
           Фільтри
@@ -69,11 +69,11 @@ const ProductFilter: React.FC = () => {
         <Dialog
           open={isOpened}
           onClose={handleClose}
-          aria-labelledby="form-dialog-title"
+          aria-labelledby='form-dialog-title'
           fullWidth
-          maxWidth="xs"
+          maxWidth='xs'
         >
-          <DialogTitle id="form-dialog-title">Оберіть фільтри:</DialogTitle>
+          <DialogTitle id='form-dialog-title'>Оберіть фільтри:</DialogTitle>
           <DialogContent dividers>
             <Formik
               initialValues={{ 
@@ -93,16 +93,16 @@ const ProductFilter: React.FC = () => {
                   <Field 
                     className={style.checkbox}
                     onClick={() => values.selectId && setFieldValue('id', '')}
-                    type="checkbox" 
-                    name="selectId" 
+                    type='checkbox' 
+                    name='selectId' 
                   />
                   <Field 
                     fullWidth
                     validate={values.selectId ? validateNumber : false}
                     component={TextField} 
-                    type="number" 
-                    label="ID:" 
-                    name="id" 
+                    type='number' 
+                    label='ID:' 
+                    name='id' 
                     disabled={!values.selectId} 
                   />
                 </div>
@@ -110,40 +110,40 @@ const ProductFilter: React.FC = () => {
                   <Field 
                     className={style.checkbox}
                     onClick={() => values.selectName && setFieldValue('name', '')}
-                    type="checkbox" 
-                    name="selectName" 
+                    type='checkbox' 
+                    name='selectName' 
                   />
                   <Field 
                     fullWidth
                     validate={values.selectName ? validateString : false}
                     component={TextField} 
-                    type="text" 
-                    label="Назва містить:" 
-                    name="name" 
+                    type='text' 
+                    label='Назва містить:' 
+                    name='name' 
                     disabled={!values.selectName} />
                 </div>
                 <div className={style.box} >
                   <Field 
                     className={style.checkbox} 
                     onClick={() => values.selectCategory && setFieldValue('category', '')}
-                    type="checkbox" 
-                    name="selectCategory" 
+                    type='checkbox' 
+                    name='selectCategory' 
                   />
                   <Field 
                     fullWidth
                     validate={values.selectCategory ? validateString : false}
                     component={TextField} 
-                    type="text" 
-                    label="Категорія" 
-                    name="category" 
+                    type='text' 
+                    label='Категорія' 
+                    name='category' 
                     disabled={!values.selectCategory} />
                 </div>
                 <div className={style.box} >
                   <Field 
                     className={style.checkboxSlider} 
-                    type="checkbox" 
+                    type='checkbox' 
                     onClick={() => isPriceChecked ? setPriceChecked(false) : setPriceChecked(true) }
-                    name="selectPrice" 
+                    name='selectPrice' 
                   />
                   <div className={style.sliderContainer} >
                     <Typography 
@@ -155,7 +155,7 @@ const ProductFilter: React.FC = () => {
                       max={findPrice[1]}
                       value={values.selectPrice ? price : findPrice}
                       onChange={changeValue}
-                      valueLabelDisplay="auto"
+                      valueLabelDisplay='auto'
                       name='price'
                       marks={marks}
                       classes={{root: style.root, rail: style.rail, track: style.track, thumb: style.thumb, markLabel: style.markLabel}}
@@ -164,9 +164,9 @@ const ProductFilter: React.FC = () => {
                   </div>
                 </div>
                 <Button
-                  variant="contained"
-                  color="primary" 
-                  type="submit"
+                  variant='contained'
+                  color='primary' 
+                  type='submit'
                 >
                   Примінити
                 </Button>

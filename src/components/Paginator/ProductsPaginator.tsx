@@ -42,23 +42,23 @@ function TablePaginationActions({ count, page, rowsPerPage, onPageChange }) {
 
     return (
         <>
-            <IconButton onClick={handleFirstPageButtonClick} disabled={page === 0} aria-label="first page">
+            <IconButton onClick={handleFirstPageButtonClick} disabled={page === 0} aria-label='first page'>
                 <FirstPageIcon />
             </IconButton>
-            <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
+            <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label='previous page'>
                 <KeyboardArrowLeft />
             </IconButton>
             <IconButton
                 onClick={handleNextButtonClick}
                 disabled={page >= getNumberOfPages(count, rowsPerPage) - 1}
-                aria-label="next page"
+                aria-label='next page'
             >
                 <KeyboardArrowRight />
             </IconButton>
             <IconButton
                 onClick={handleLastPageButtonClick}
                 disabled={page >= getNumberOfPages(count, rowsPerPage) - 1}
-                aria-label="last page"
+                aria-label='last page'
             >
                 <LastPageIcon />
             </IconButton>
@@ -69,7 +69,7 @@ function TablePaginationActions({ count, page, rowsPerPage, onPageChange }) {
 const CustomProductsTablePaginator = ({paginationRowsPerPageOptions, rowsPerPage, rowCount, onChangePage, onChangeRowsPerPage, currentPage }) => (
     <TablePagination
         className={style.paginator}
-        component="nav"
+        component='nav'
         count={rowCount}
         rowsPerPage={rowsPerPage}
         page={currentPage - 1}
