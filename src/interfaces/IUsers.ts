@@ -66,6 +66,7 @@ export interface IUsersData {
   error: string | null;
   count: number,
   totalPages: number,
+  currentPage: number
 }
 
 export interface UserTableData {

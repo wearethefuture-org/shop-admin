@@ -55,6 +55,13 @@ function TablePaginationActions({ count, page, rowsPerPage, onPageChange }) {
 }
 
 const CustomTablePaginator = ({paginationRowsPerPageOptions, rowsPerPage, rowCount, onChangePage, onChangeRowsPerPage, currentPage }) => (
+// const pageIndex : number = 1;
+// const isActive = pageIndex === currentPage;
+// const action = () => {
+//     if (pageIndex !== currentPage) {
+//         onChangePage(pageIndex);
+//     }
+// }
     <TablePagination
         className={style.paginator}
         component="nav"

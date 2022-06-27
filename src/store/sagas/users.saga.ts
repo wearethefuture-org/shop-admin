@@ -40,12 +40,12 @@ export function* addUserWorker({ data: { userValues } }: IActions): SagaIterator
   }
 }
 
-export function* updateUserWorker({ data: { userValues } }: IActions): SagaIterator {
+export function* updateUserWorker({ data: { userValues, currentPage}  }: IActions): SagaIterator {
   try {
     const user = yield call(apiUpdateUser, userValues);
     yield put(updateUserSuccess(user));
     yield put(successSnackBar());
-    yield put(getUsersRequest(1, 10));
+    yield put(getUsersRequest(currentPage, 10));
 
   } catch (error) {
     yield put(failSnackBar(error.message));

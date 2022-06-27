@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, TextField, Select, MenuItem } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 import InputMask from 'react-input-mask';
@@ -135,6 +135,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
 
   const [isEdit, setIsEdit] = useState(true);
   const dispatch: AppDispatch = useDispatch();
+  const currentPage = useSelector((state: any) => state.users.currentPage );
   const initialValues = {
     firstName: isNew ? '' : user?.firstName,
     lastName: isNew ? '' : user?.lastName,
@@ -179,7 +180,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
         }
         sendData['roleId'] = _values['roleId'];
         if (Object.keys(sendData).length > 1) {
-          dispatch(updateUserRequest(user.id, sendData));
+          dispatch(updateUserRequest(user.id, sendData, currentPage));
         } else {
           dispatch(failSnackBar('Ви нічого не змінили'));
         }
