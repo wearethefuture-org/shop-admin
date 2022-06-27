@@ -25,12 +25,12 @@ export default function FeedbacksPage() {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
-
+  console.log(currentPage);
   const { list, count, loading } = useFeedbacks(currentPage, limit);
 
   React.useEffect(() => {
-    if (!list.length){
-      dispatch(getFeedbacksRequest(currentPage, limit));
+    if (!list.length && count){
+      dispatch(getFeedbacksRequest(currentPage - 1, limit));
     }
   }, [list]);
 
