@@ -2,43 +2,72 @@ import React from 'react';
 import { Field, Form, FormikProps } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { makeStyles, ThemeOptions } from '@material-ui/core/styles';
-import { Button, createStyles, DialogActions, Switch, Theme, Typography } from '@material-ui/core';
+import {
+  alpha,
+  Button,
+  createStyles,
+  DialogActions,
+  Switch,
+  Theme,
+  Typography,
+} from '@material-ui/core';
 
 import { IFormWidgetValues } from '../../../../interfaces/widget-form';
+import { COLORS } from '../../../../values/colors';
+import styled from 'styled-components';
 
-const useStyles = makeStyles((theme: Theme): ThemeOptions =>
-  createStyles({
-    form: {
-      width: '100%',
-    },
-    inputContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      marginBottom: '20px',
-    },
-    title: {
-      width: '210px',
-      marginRight: '10px',
-    },
-    input: {
-      width: '150px',
-    },
-    switch: {
-      marginLeft: 'auto',
-    },
-    secondaryHeading: {
-      flexGrow: 1,
-      marginLeft: '30px',
-      fontSize: theme.typography.pxToRem(15),
-      color: theme.palette.text.secondary,
-      [theme.breakpoints.down('xs')]: {
-        display: 'none',
+const SaveBtn = styled(Button)`
+  background-color: ${COLORS.primaryBlue};
+  border-radius: 30px;
+  color: ${COLORS.primaryLight};
+  &:hover {
+    background-color: ${COLORS.secondaryBlue};
+  }
+`;
+
+const useStyles = makeStyles(
+  (theme: Theme): ThemeOptions =>
+    createStyles({
+      form: {
+        width: '100%',
       },
-    },
-    errorMessage: {
-      color: 'red',
-    },
-  })
+      inputContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        marginBottom: '20px',
+      },
+      title: {
+        width: '210px',
+        marginRight: '10px',
+      },
+      input: {
+        width: '150px',
+      },
+      switch: {
+        '& .MuiSwitch-switchBase.Mui-checked': {
+          'color': COLORS.primaryGreen,
+          '&:hover': {
+            backgroundColor: alpha(COLORS.primaryGreen, theme.palette.action.hoverOpacity),
+          },
+        },
+        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+          backgroundColor: COLORS.primaryGreen,
+        },
+        'marginLeft': 'auto',
+      },
+      secondaryHeading: {
+        flexGrow: 1,
+        marginLeft: '30px',
+        fontSize: theme.typography.pxToRem(15),
+        color: theme.palette.text.secondary,
+        [theme.breakpoints.down('xs')]: {
+          display: 'none',
+        },
+      },
+      errorMessage: {
+        color: 'red',
+      },
+    })
 );
 
 const InnerForm: React.FC<FormikProps<IFormWidgetValues>> = (props) => {
@@ -93,9 +122,9 @@ const InnerForm: React.FC<FormikProps<IFormWidgetValues>> = (props) => {
         />
       </div>
       <DialogActions>
-        <Button color="primary" variant="contained" type="submit" disabled={!props.isValid}>
+        <SaveBtn color="primary" variant="contained" type="submit" disabled={!props.isValid}>
           Зберегти
-        </Button>
+        </SaveBtn>
       </DialogActions>
     </Form>
   );
