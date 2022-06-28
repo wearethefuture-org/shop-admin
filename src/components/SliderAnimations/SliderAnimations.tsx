@@ -1,4 +1,13 @@
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
+import {
+  createStyles,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  makeStyles,
+  Radio,
+  RadioGroup,
+  ThemeOptions,
+} from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -7,12 +16,29 @@ import {
 } from '../../store/actions/sliderAnimations.actions';
 import { RootState } from '../../store/store';
 import styles from './SliderAnimations.module.scss';
+import { COLORS } from '../../values/colors';
+
+const useStyles = makeStyles(
+  (): ThemeOptions =>
+    createStyles({
+      radio: {
+        '&$checked': {
+          color: COLORS.primaryGreen,
+        },
+        '&:hover': {
+          backgroundColor: COLORS.secondaryOttoman,
+        },
+      },
+      checked: {},
+    })
+);
 
 const SliderAnimations: React.FC = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const animationsData = useSelector((state: RootState) => state.sliderAnimations);
 
-  async function fetchData() { 
+  async function fetchData() {
     await dispatch(fetchSliderAnimations());
   }
 
@@ -44,7 +70,7 @@ const SliderAnimations: React.FC = () => {
               <FormControlLabel
                 key={a.id}
                 value={a.animation}
-                control={<Radio />}
+                control={<Radio classes={{ root: classes.radio, checked: classes.checked }} />}
                 label={a.animation}
               />
             ))}
