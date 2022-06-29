@@ -1,10 +1,12 @@
 import React from 'react';
 import { Button, DialogActions, LinearProgress } from '@material-ui/core';
 import { Field, Form, FormikProps } from 'formik';
-import { TextField } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
 import { ISlideFormValues, InnerSlideFormProps } from '../../../interfaces/ISlides';
 import FileUpload from './FileUpload';
+import styled from 'styled-components';
+import { COLORS } from '../../../values/colors';
+import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 
 const useStyles = makeStyles({
   customBtn: {
@@ -15,9 +17,30 @@ const useStyles = makeStyles({
     flexDirection: 'row',
   },
   progress: {
-    color: 'green',
+    color: COLORS.secondaryGray,
+  },
+  input: {
+    marginBottom: '20px',
   },
 });
+
+const SaveBtn = styled(Button)`
+  background-color: ${COLORS.primaryGreen};
+  border-radius: 30px;
+  color: ${COLORS.primaryLight};
+  &:hover {
+    background-color: ${COLORS.secondaryGreen};
+  }
+`;
+
+const CancelBtn = styled(Button)`
+  background-color: ${COLORS.primaryGray};
+  border-radius: 30px;
+  color: ${COLORS.primaryLight};
+  &:hover {
+    background-color: ${COLORS.secondaryGray};
+  }
+`;
 
 const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> = ({
   submitForm,
@@ -49,8 +72,25 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
 
   return (
     <Form onDrop={dropHandler} onDragOver={dragOverHandler}>
-      <Field fullWidth component={TextField} type="name" label="Name" name="name" />
-      <Field fullWidth multiline component={TextField} type="text" label="Text" name="text" />
+      <Field
+        fullWidth
+        component={TextFieldWrapped}
+        type="name"
+        label="Name"
+        name="name"
+        makegreen={true}
+        className={classes.input}
+      />
+      <Field
+        fullWidth
+        multiline
+        component={TextFieldWrapped}
+        type="text"
+        label="Text"
+        name="text"
+        makegreen={true}
+        className={classes.input}
+      />
       <Field
         fullWidth
         multiline
@@ -75,32 +115,36 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
         <Field
           fullWidth
           multiline
-          component={TextField}
+          component={TextFieldWrapped}
           type="href"
           label="Href"
           name="href"
           value={values.href}
+          makegreen={true}
+          className={classes.input}
         />
       </div>
       <Field
         fullWidth
         multiline
-        component={TextField}
+        component={TextFieldWrapped}
         type="priority"
         label="Priority"
         name="priority"
+        makegreen={true}
+        className={classes.input}
       />
       {isSubmitting && <LinearProgress />}
       <DialogActions>
-        <Button
+        <CancelBtn
           onClick={handleClose}
           color="primary"
           variant="contained"
           className={classes.customBtn}
         >
           Cancel
-        </Button>
-        <Button
+        </CancelBtn>
+        <SaveBtn
           className={classes.customBtn}
           variant="contained"
           color="secondary"
@@ -108,7 +152,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           onClick={submitForm}
         >
           Save
-        </Button>
+        </SaveBtn>
       </DialogActions>
     </Form>
   );

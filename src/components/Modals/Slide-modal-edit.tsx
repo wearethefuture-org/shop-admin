@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -10,6 +9,8 @@ import { Dispatch } from 'redux';
 import { ISlidesModal } from '../../interfaces/modals';
 import SlideForm from '../Forms/Slide-form/Slide-form';
 import { ISlideItem } from '../../interfaces/ISlides';
+import { createStyles, makeStyles, ThemeOptions } from '@material-ui/core';
+import { COLORS } from '../../values/colors';
 
 interface FormDialogProps {
   dispatch: Dispatch;
@@ -18,14 +19,36 @@ interface FormDialogProps {
   row: ISlideItem;
 }
 
+const useStyles = makeStyles(
+  (t): ThemeOptions =>
+    createStyles({
+      icons: {
+        display: 'flex',
+        justifyContent: 'center',
+        columnGap: '100px',
+
+        '&:first-child': {
+          cursor: 'pointer',
+          color: COLORS.primaryBlue,
+          transition: '0.3s all',
+
+          '&:hover': {
+            color: COLORS.secondaryBlue,
+          },
+        },
+      },
+    })
+);
+
 const FormDialog: React.FC<FormDialogProps> = ({ dispatch, modalData, row }) => {
+  const classes = useStyles();
   const { handleClickOpen, handleClose, isOpened } = modalData;
 
   return (
     <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        <EditIcon />
-      </Button>
+      <div className={classes.icons}>
+        <EditIcon onClick={handleClickOpen} />
+      </div>
       <Dialog
         open={isOpened}
         onClose={handleClose}

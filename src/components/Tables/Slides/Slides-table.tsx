@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { Dispatch } from 'redux';
-import { Switch, Button } from '@material-ui/core';
+import {
+  Switch,
+  Button,
+  makeStyles,
+  Theme,
+  createStyles,
+  ThemeOptions,
+  alpha,
+} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import { TableColumn } from 'react-data-table-component';
@@ -13,6 +21,8 @@ import {
   fetchDeleteSlides,
   fetchUpdateSlideVisibility,
 } from '../../../store/actions/slides.actions';
+import { COLORS } from '../../../values/colors';
+import styled from 'styled-components';
 
 interface SlideDataProps {
   data: Array<ISlideItem>;
@@ -20,7 +30,50 @@ interface SlideDataProps {
   modalData: ISlidesModal;
 }
 
+const useStyles = makeStyles(
+  (theme: Theme): ThemeOptions =>
+    createStyles({
+      switch: {
+        '& .MuiSwitch-switchBase.Mui-checked': {
+          'color': COLORS.primaryGreen,
+          '&:hover': {
+            backgroundColor: alpha(COLORS.primaryGreen, theme.palette.action.hoverOpacity),
+          },
+        },
+        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+          backgroundColor: COLORS.primaryGreen,
+        },
+        'marginLeft': 'auto',
+      },
+      icons: {
+        'display': 'flex',
+        'justifyContent': 'center',
+        'columnGap': '100px',
+
+        '&:first-child': {
+          'cursor': 'pointer',
+          'color': 'red',
+          'transition': '0.3s all',
+
+          '&:hover': {
+            color: 'rgb(216, 0, 0)',
+          },
+        },
+      },
+    })
+);
+
+const AddSlideBtn = styled(Button)`
+  background-color: ${COLORS.primaryBlue};
+  border-radius: 30px;
+  color: ${COLORS.primaryLight};
+  &:hover {
+    background-color: ${COLORS.secondaryBlue};
+  }
+`;
+
 const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) => {
+  const classes = useStyles();
   const { handleClickOpen } = modalData;
   const [selected, setSelected] = useState(null);
 
@@ -46,7 +99,7 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
   const title = (
     <div style={{ display: 'flex' }}>
       Слайди
-      <Button
+      <AddSlideBtn
         style={{ marginLeft: 'auto' }}
         variant="contained"
         color="primary"
@@ -54,7 +107,7 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
         onClick={handleClickOpen}
       >
         Додати слайд
-      </Button>
+      </AddSlideBtn>
     </div>
   );
 
@@ -90,7 +143,11 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
       name: 'IsShown',
       selector: (row) => row.isShown,
       cell: (row) => (
-        <Switch checked={row.isShown} onChange={() => changeShown(row.id, !row.isShown)} />
+        <Switch
+          className={classes.switch}
+          checked={row.isShown}
+          onChange={() => changeShown(row.id, !row.isShown)}
+        />
       ),
     },
     {
@@ -114,9 +171,9 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
       name: '',
       selector: (row) => row.id,
       cell: (row) => (
-        <Button variant="contained" color="secondary" onClick={() => handleClickDelete(row)}>
-          <DeleteIcon />
-        </Button>
+        <div className={classes.icons}>
+          <DeleteIcon onClick={() => handleClickDelete(row)} />
+        </div>
       ),
     },
   ];

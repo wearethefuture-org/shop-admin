@@ -9,4 +9,6 @@ export const COLORS = {
   secondaryGray: '#5a6268',
   primaryOttoman: '#e9f8ef',
   secondaryOttoman: '#d5f2e1',
+  salem: '#168541',
+  frenchPlum: '#85165B',
 };

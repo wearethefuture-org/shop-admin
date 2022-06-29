@@ -9,22 +9,22 @@ interface TextFieldHOCProps {
 
 const useStyles = makeStyles({
   field: {
-    color: COLORS.secondaryGreen,
+    color: COLORS.salem,
   },
   label: {
     '& label.Mui-focused': {
-      color: COLORS.secondaryGreen,
+      color: COLORS.salem,
     },
     '& .MuiInput-underline:after': {
-      borderBottomColor: COLORS.secondaryGreen,
+      borderBottomColor: COLORS.salem,
     },
   },
   labelSecondary: {
     '& label.Mui-focused': {
-      color: COLORS.secondaryBlue,
+      color: COLORS.frenchPlum,
     },
     '& .MuiInput-underline:after': {
-      borderBottomColor: COLORS.secondaryBlue,
+      borderBottomColor: COLORS.frenchPlum,
     },
   },
 });
