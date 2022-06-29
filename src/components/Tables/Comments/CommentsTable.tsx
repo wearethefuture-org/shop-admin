@@ -1,11 +1,26 @@
 import React, { useState } from 'react';
-import { IconButton } from '@material-ui/core';
+import { createStyles, IconButton, makeStyles, ThemeOptions } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import { CommentsTableProps } from '../../../interfaces/IComment';
 import AppDataTable from '../../AppDataTable/AppDataTable';
 import DateMoment from '../../Common/Date-moment';
 import styles from './CommentsTable.module.scss';
+
+const useStyles = makeStyles(
+  (): ThemeOptions =>
+    createStyles({
+      icon: {
+        'cursor': 'pointer',
+        'color': 'red',
+        'transition': '0.3s all',
+
+        '&:hover': {
+          color: 'rgb(216, 0, 0)',
+        },
+      },
+    })
+);
 
 const CommentsTable: React.FC<CommentsTableProps> = ({
   list,
@@ -18,6 +33,7 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
   paginationServer,
   setPage,
 }) => {
+  const classes = useStyles();
   const [expandedComments, setExpandedComments] = useState<number[]>([]);
 
   const handleExpandedComments = (id) => {
@@ -94,13 +110,12 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
         <IconButton
           aria-label="delete"
           type="button"
-          color="secondary"
           onClick={() => {
             setOpenDeleteCommentDialog(true);
             setCommentToDelete(row.id);
           }}
         >
-          <DeleteIcon />
+          <DeleteIcon className={classes.icon} />
         </IconButton>
       ),
     },
