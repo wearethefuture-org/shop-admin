@@ -45,19 +45,13 @@ const useStyles = makeStyles(
         },
         'marginLeft': 'auto',
       },
-      icons: {
-        'display': 'flex',
-        'justifyContent': 'center',
-        'columnGap': '100px',
+      icon: {
+        'cursor': 'pointer',
+        'color': 'red',
+        'transition': '0.3s all',
 
-        '&:first-child': {
-          'cursor': 'pointer',
-          'color': 'red',
-          'transition': '0.3s all',
-
-          '&:hover': {
-            color: 'rgb(216, 0, 0)',
-          },
+        '&:hover': {
+          color: 'rgb(216, 0, 0)',
         },
       },
     })
@@ -170,11 +164,7 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
     {
       name: '',
       selector: (row) => row.id,
-      cell: (row) => (
-        <div className={classes.icons}>
-          <DeleteIcon onClick={() => handleClickDelete(row)} />
-        </div>
-      ),
+      cell: (row) => <DeleteIcon className={classes.icon} onClick={() => handleClickDelete(row)} />,
     },
   ];
 

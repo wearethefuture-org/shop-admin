@@ -22,19 +22,13 @@ interface FormDialogProps {
 const useStyles = makeStyles(
   (t): ThemeOptions =>
     createStyles({
-      icons: {
-        display: 'flex',
-        justifyContent: 'center',
-        columnGap: '100px',
+      icon: {
+        'cursor': 'pointer',
+        'color': COLORS.primaryBlue,
+        'transition': '0.3s all',
 
-        '&:first-child': {
-          cursor: 'pointer',
-          color: COLORS.primaryBlue,
-          transition: '0.3s all',
-
-          '&:hover': {
-            color: COLORS.secondaryBlue,
-          },
+        '&:hover': {
+          color: COLORS.secondaryBlue,
         },
       },
     })
@@ -46,9 +40,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ dispatch, modalData, row }) => 
 
   return (
     <div>
-      <div className={classes.icons}>
-        <EditIcon onClick={handleClickOpen} />
-      </div>
+      <EditIcon className={classes.icon} onClick={handleClickOpen} />
       <Dialog
         open={isOpened}
         onClose={handleClose}
