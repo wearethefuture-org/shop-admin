@@ -23,6 +23,7 @@ enum cols {
   status = 'Статус',
   notcall = 'Не передзвонювати',
   deliveryMethod = 'Спосіб доставки',
+  liqpayPaymentStatus = 'Спосіб оплати',
   courierDeliveryAddress = "Адреса для кур'єрської доставки",
 }
 
@@ -45,6 +46,7 @@ const OrdersPage: React.FC = () => {
     cols.status,
     cols.notcall,
     cols.deliveryMethod,
+    cols.liqpayPaymentStatus,
     cols.courierDeliveryAddress,
   ]);
 

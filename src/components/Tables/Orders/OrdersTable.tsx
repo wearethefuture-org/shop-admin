@@ -153,6 +153,14 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns, currentP
       omit: !activeColumns.includes('Сума'),
     },
     {
+      name: 'Спосіб оплати',
+      selector: (row) =>
+        `${row.liqpayPaymentStatus ? row.liqpayPaymentStatus : 'Оплата при отриманні'}`,
+      maxWidth: '300px',
+      sortable: true,
+      omit: !activeColumns.includes('Спосіб оплати'),
+    },
+    {
       name: 'Статус',
       selector: (row) => row.status,
       sortable: true,

@@ -140,6 +140,12 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       sortable: true,
     },
     {
+      name: 'Спосіб оплати',
+      selector: (row) =>
+        `${row.liqpayPaymentStatus ? row.liqpayPaymentStatus : 'Оплата при отриманні'}`,
+      sortable: true,
+    },
+    {
       name: 'Не передзвонювати',
       selector: (row) => row.notcall,
       sortable: true,
