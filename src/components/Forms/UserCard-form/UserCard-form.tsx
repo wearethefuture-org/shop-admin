@@ -11,49 +11,54 @@ import { addUserRequest, updateUserRequest } from '../../../store/actions/users.
 import { IUserItem } from '../../../interfaces/IUsers';
 import { failSnackBar } from '../../../store/actions/snackbar.actions';
 import useRoles from '../../../hooks/useRoles';
-import styles from './UserCard-form.module.scss'
+import styles from './UserCard-form.module.scss';
 import { NavLink } from 'react-router-dom';
+import { COLORS } from '../../../values/colors';
 
 // todo
 // how to avoid code duplication in input and inputError fields?
 // see input, inputError
 const useStyles = makeStyles({
   input: {
-    width: '270px',
-    height: '44px',
-    border: '1px solid #e2e6e7',
-    boxSizing: 'border-box',
-    borderRadius: ' 60px',
-    padding: '11px',
-    outline: 'none',
-    margin: '10px',
+    'width': '270px',
+    'height': '44px',
+    'padding': '11px',
+    'marginBottom': '15px',
+    '& label.Mui-focused': {
+      color: COLORS.frenchPlum,
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: COLORS.frenchPlum,
+    },
   },
   inputError: {
-    width: '270px',
-    height: '44px',
-    border: '1px solid #ff0000',
-    boxSizing: 'border-box',
-    borderRadius: ' 60px',
-    padding: '11px',
-    outline: 'none',
-    margin: '10px',
+    'width': '270px',
+    'height': '44px',
+    'padding': '11px',
+    'marginBottom': '15px',
+    '& label.Mui-focused': {
+      color: 'red',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'red',
+    },
   },
   row: {
     margin: '10px',
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   submit: {
-    'background': '#424D52',
-    'borderRadius': ' 60px',
-    'color': ' #fff',
+    'background': COLORS.primaryGreen,
+    'borderRadius': ' 30px',
+    'color': COLORS.primaryLight,
     'border': ' none',
     'width': '270px',
     'height': '44px',
-    'margin': '10px',
+    'marginBottom': '15px',
     '&:hover': {
-      backgroundColor: '#424d52cc',
+      backgroundColor: COLORS.secondaryGreen,
     },
   },
   formDiv: {
@@ -62,16 +67,18 @@ const useStyles = makeStyles({
     textAlign: 'center',
   },
   inputSelect: {
-    width: '270px',
-    height: '50px',
-    border: '1px solid #e2e6e7',
-    boxSizing: 'border-box',
-    borderRadius: '60px',
-    outline: 'none',
-    backgroundSize: 'calc(.75em + .375rem) calc(.75em + .375rem)',
-    backgroundPosition: '10px 10px',
-    backgroundRepeat: 'no-repeat',
-    padding: '12px 20px 15px 40px',
+    'width': '270px',
+    'height': '50px',
+    'marginBottom': '15px',
+    'textAlign': 'start',
+    '&:hover': {
+      backgroundColor: COLORS.primaryOttoman,
+    },
+  },
+  menuItem: {
+    '&:hover': {
+      backgroundColor: COLORS.primaryOttoman,
+    },
   },
 });
 
@@ -92,16 +99,16 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
   const { data: roles } = useRoles();
 
   const onToggleShowCurrentPassword = () => {
-    setShowCurrentPassword(!showCurrentPassword)
-  }
+    setShowCurrentPassword(!showCurrentPassword);
+  };
 
   const onToggleShowNewPassword = () => {
-    setShowNewPassword(!showNewPassword)
-  }
+    setShowNewPassword(!showNewPassword);
+  };
 
   const onToggleShowConfirmNewPassword = () => {
-    setShowConfirmNewPassword(!showConfirmNewPassword)
-  }
+    setShowConfirmNewPassword(!showConfirmNewPassword);
+  };
 
   const baseScheme = {
     firstName: Yup.string()
@@ -152,7 +159,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     lastName: isNew ? '' : user?.lastName,
     phoneNumber: isNew ? '' : user?.phoneNumber,
     email: isNew ? '' : user?.email,
-    roleId: isNew ? 1 : user?.role.id,
+    roleId: isNew ? 0 : user?.role.id,
     telegramId: isNew ? '' : user?.telegramId,
     currentPassword: isNew ? '' : user?.password,
     newPassword: '',
@@ -205,6 +212,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       ? classes.inputError
       : classes.input;
   };
+
   return (
     <form
       onSubmit={formik.handleSubmit}
@@ -214,6 +222,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       <div className={classes.row}>
         <TextField
           className={getInputClass('firstName')}
+          style={{ width: '290px' }}
           value={formik.values.firstName}
           disabled={!isEdit}
           type="text"
@@ -224,13 +233,12 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.firstName && Boolean(formik.errors.firstName)}
           helperText={formik.touched.firstName && formik.errors.firstName}
-          InputProps={{ disableUnderline: true }}
-          margin="dense"
         />
       </div>
       <div className={classes.row}>
         <TextField
           className={getInputClass('lastName')}
+          style={{ width: '290px' }}
           value={formik.values.lastName}
           disabled={!isEdit}
           type="text"
@@ -241,13 +249,12 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.lastName && Boolean(formik.errors.lastName)}
           helperText={formik.touched.lastName && formik.errors.lastName}
-          InputProps={{ disableUnderline: true }}
-          margin="dense"
         />
       </div>
       <div className={classes.row}>
         <InputMask
           className={getInputClass('phoneNumber')}
+          style={{ width: '290px' }}
           value={formik.values.phoneNumber}
           disabled={!isEdit}
           type="tel"
@@ -259,13 +266,14 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
           helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-          InputProps={{ disableUnderline: true }}
-          margin="dense"
-        />
+        >
+          {(inputProps) => <TextField {...inputProps} />}
+        </InputMask>
       </div>
       <div className={classes.row}>
         <TextField
           className={getInputClass('email')}
+          style={{ width: '290px' }}
           value={formik.values.email}
           disabled={!isEdit}
           type="email"
@@ -276,12 +284,11 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.email && Boolean(formik.errors.email)}
           helperText={formik.touched.email && formik.errors.email}
-          InputProps={{ disableUnderline: true }}
-          margin="dense"
         />
       </div>
       <div className={classes.row}>
         <TextField
+          style={{ width: '290px' }}
           className={getInputClass('telegramId')}
           value={formik.values.telegramId}
           disabled={!isEdit}
@@ -293,8 +300,6 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.telegramId && Boolean(formik.errors.telegramId)}
           helperText={formik.touched.telegramId && formik.errors.telegramId}
-          InputProps={{ disableUnderline: true }}
-          margin="dense"
         />
       </div>
       <div className={classes.row}>
@@ -305,28 +310,26 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           type="select"
           name="roleId"
           id={'role_id-field'}
-          placeholder={'роль'}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          disableUnderline
+          renderValue={(value) => (value !== 0 ? value : 'Вибрати роль')}
         >
-          {roles.map((role) => {
-            return (
-              <MenuItem key={'option' + role.id} value={role.id}>
-                {role.name}
-              </MenuItem>
-            );
-          })}
+          {roles.map((role) => (
+            <MenuItem className={classes.menuItem} key={'option' + role.id} value={role.id}>
+              {role.name}
+            </MenuItem>
+          ))}
         </Select>
       </div>
       {!isNew ? (
         <div className={classes.row}>
           <TextField
+            style={{ float: 'right' }}
             className={getInputClass('currentPassword')}
             value={formik.values.currentPassword}
             autoComplete={'false'}
             disabled={!isEdit}
-            type={showCurrentPassword ? "text" : "password"}
+            type={showCurrentPassword ? 'text' : 'password'}
             name="currentPassword"
             id="currentPassword-field"
             placeholder="Поточний пароль"
@@ -334,11 +337,14 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             onBlur={formik.handleBlur}
             error={formik.touched.currentPassword && Boolean(formik.errors.currentPassword)}
             helperText={formik.touched.currentPassword && formik.errors.currentPassword}
-            InputProps={{ disableUnderline: true }}
-            margin="dense"
           />
-          <svg onClick={onToggleShowCurrentPassword} className={styles.eye} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-            <path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"/>
+          <svg
+            onClick={onToggleShowCurrentPassword}
+            className={styles.eye}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 576 512"
+          >
+            <path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z" />
           </svg>
         </div>
       ) : null}
@@ -347,7 +353,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           className={getInputClass('newPassword')}
           autoComplete={'false'}
           disabled={!isEdit}
-          type={showNewPassword ? "text" : "password"}
+          type={showNewPassword ? 'text' : 'password'}
           name="newPassword"
           id="newPassword-field"
           placeholder="Новий пароль"
@@ -355,11 +361,14 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.newPassword && Boolean(formik.errors.newPassword)}
           helperText={formik.touched.newPassword && formik.errors.newPassword}
-          InputProps={{ disableUnderline: true }}
-          margin="dense"
         />
-        <svg onClick={onToggleShowNewPassword} className={styles.eye} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-          <path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"/>
+        <svg
+          onClick={onToggleShowNewPassword}
+          className={styles.eye}
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 576 512"
+        >
+          <path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z" />
         </svg>
       </div>
       <div className={classes.row}>
@@ -367,7 +376,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           className={getInputClass('confirmNewPassword')}
           autoComplete={'false'}
           disabled={!isEdit}
-          type={showConfirmNewPassword ? "text" : "password"}
+          type={showConfirmNewPassword ? 'text' : 'password'}
           name="confirmNewPassword"
           id="confirmNewPassword-field"
           placeholder="Підтвердіть пароль"
@@ -375,19 +384,24 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.confirmNewPassword && Boolean(formik.errors.confirmNewPassword)}
           helperText={formik.touched.confirmNewPassword && formik.errors.confirmNewPassword}
-          InputProps={{ disableUnderline: true }}
-          margin="dense"
         />
-        <svg onClick={onToggleShowConfirmNewPassword} className={styles.eye} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-          <path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z"/>
+        <svg
+          onClick={onToggleShowConfirmNewPassword}
+          className={styles.eye}
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 576 512"
+        >
+          <path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z" />
         </svg>
       </div>
-   
-      {!isNew && <NavLink to={'/password'} key={'/password'}>
-        <div className={styles.form__resetPassword}>
+
+      {!isNew && (
+        <NavLink to={'/password'} key={'/password'}>
+          <div className={styles.form__resetPassword}>
             <span>Змінити пароль</span>
-        </div>
-      </NavLink>}
+          </div>
+        </NavLink>
+      )}
 
       <div className={classes.row}>
         <Button className={classes.submit} type="submit" disabled={formik.isSubmitting}>

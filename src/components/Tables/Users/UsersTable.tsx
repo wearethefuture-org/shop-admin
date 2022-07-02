@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, createStyles, makeStyles, Theme, ThemeOptions } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import UserDialog from '../../Modals/UserDialog/UserDialog';
@@ -9,8 +11,51 @@ import { AppDispatch, RootState } from '../../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUsersRequest } from '../../../store/actions/users.actions';
 import { IUserItem } from '../../../interfaces/IUsers';
+import { COLORS } from '../../../values/colors';
+
+const useStyles = makeStyles(
+  (theme: Theme): ThemeOptions =>
+    createStyles({
+      wrapper: {
+        padding: theme.spacing(4),
+      },
+      button: {
+        'background': 'transparent',
+        'border': 'none',
+        '&:hover': {
+          backgroundColor: 'transparent',
+        },
+      },
+      createUserBtn: {
+        'borderRadius': '30px',
+        'backgroundColor': COLORS.primaryBlue,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryBlue,
+        },
+      },
+      editIcon: {
+        'cursor': 'pointer',
+        'color': COLORS.primaryBlue,
+        'transition': '0.3s all',
+
+        '&:hover': {
+          color: COLORS.secondaryBlue,
+        },
+      },
+      deleteIcon: {
+        'cursor': 'pointer',
+        'color': 'red',
+        'transition': '0.3s all',
+
+        '&:hover': {
+          color: 'rgb(216, 0, 0)',
+        },
+      },
+    })
+);
 
 const UsersTable = ({ list }: { list: IUserItem[] }) => {
+  const classes = useStyles();
   const dispatch: AppDispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -65,6 +110,7 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
   const addUserBtn = (
     <Box>
       <Button
+        className={classes.createUserBtn}
         onClick={openDialogNewUser}
         variant="contained"
         color="primary"
@@ -126,22 +172,12 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
       cell: (row) => {
         return (
           <Box display="flex">
-            <Box>
-              <Button variant="contained" size="small" value={row.id} onClick={openDialogUserCard}>
-                Редагувати
-              </Button>
-            </Box>
-            <Box pl={1}>
-              <Button
-                variant="contained"
-                size="small"
-                color="secondary"
-                value={row.id}
-                onClick={openDialogRemoveUser}
-              >
-                Видалити
-              </Button>
-            </Box>
+            <Button className={classes.button} value={row.id} onClick={openDialogUserCard}>
+              <EditIcon className={classes.editIcon} />
+            </Button>
+            <Button className={classes.button} value={row.id} onClick={openDialogRemoveUser}>
+              <DeleteIcon className={classes.deleteIcon} />
+            </Button>
           </Box>
         );
       },
@@ -149,7 +185,7 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
   ];
 
   return (
-    <React.Fragment>
+    <div className={classes.wrapper}>
       <AppDataTable
         data={list}
         columns={userColumns}
@@ -165,7 +201,7 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
           },
         }}
       />
-    </React.Fragment>
+    </div>
   );
 };
 
