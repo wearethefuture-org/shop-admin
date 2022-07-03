@@ -11,7 +11,7 @@ const useStyles = makeStyles(
   (theme: Theme): ThemeOptions =>
     createStyles({
       tableWrapper: {
-        padding: theme.spacing(4),
+        padding: theme.spacing(2),
       },
     })
 );

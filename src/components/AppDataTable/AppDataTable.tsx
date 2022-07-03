@@ -2,10 +2,11 @@ import React, { Dispatch, SetStateAction, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import DataTable from 'react-data-table-component';
 import Card from '@material-ui/core/Card';
-import { customStylesDataTable } from './CustomStylesDataTable'
+import { customStylesDataTable } from './CustomStylesDataTable';
 import CustomTablePaginator from '../Paginator/Paginator';
 
 import { RootState } from '../../store/store';
+import { COLORS } from '../../values/colors';
 
 interface DataTableProps {
   columns: any[];
@@ -38,6 +39,18 @@ const AppDataTable: React.FC<DataTableProps> = ({
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
+  const conditionalRowStyles = [
+    {
+      when: (row) => row.id,
+      style: {
+        'minHeight': '70px',
+        '&:hover': {
+          backgroundColor: COLORS.primaryOttoman,
+        },
+      },
+    },
+  ];
+
   return (
     <Card>
       <DataTable
@@ -62,6 +75,7 @@ const AppDataTable: React.FC<DataTableProps> = ({
         onChangePage={(p) => setPage(p)}
         onChangeRowsPerPage={(l) => setLimit(l)}
         customStyles={customStyles}
+        conditionalRowStyles={conditionalRowStyles}
       />
     </Card>
   );
