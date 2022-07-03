@@ -27,16 +27,75 @@ import { ErrorsAlert } from '../../../components/ErrorsAlert';
 import { disableEnableCategoryRequest } from '../../../store/actions/treeCategories.actions';
 
 import styles from './TreeCategoryInfo.module.scss';
-import { Button, Card, IconButton, LinearProgress, Switch } from '@material-ui/core';
+import {
+  alpha,
+  Button,
+  Card,
+  createStyles,
+  IconButton,
+  LinearProgress,
+  makeStyles,
+  Switch,
+  Theme,
+  ThemeOptions,
+} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 import DisableTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/DisableTreeCategoryModal/DisableTreeCategoryModal';
+import { COLORS } from '../../../values/colors';
+
+const useStyles = makeStyles(
+  (theme: Theme): ThemeOptions =>
+    createStyles({
+      editButton: {
+        color: COLORS.primaryBlue,
+      },
+      deleteButton: {
+        color: COLORS.primaryRed,
+      },
+      switch: {
+        '& .MuiSwitch-switchBase.Mui-checked': {
+          'color': COLORS.primaryGreen,
+          '&:hover': {
+            backgroundColor: alpha(COLORS.primaryGreen, theme.palette.action.hoverOpacity),
+          },
+        },
+        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+          backgroundColor: COLORS.primaryGreen,
+        },
+      },
+      saveButton: {
+        'borderRadius': '30px',
+        'color': COLORS.primaryLight,
+        'backgroundColor': COLORS.primaryGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGreen,
+        },
+      },
+      cancelButton: {
+        'borderRadius': '30px',
+        'color': COLORS.primaryLight,
+        'backgroundColor': COLORS.primaryGray,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGray,
+        },
+      },
+      backButton: {
+        'borderRadius': '30px',
+        'backgroundColor': COLORS.primaryGray,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGray,
+        },
+      },
+    })
+);
 
 const TreeCategoryInfo: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
   const { searchProps } = Object(history.location.state);
+  const classes = useStyles();
 
   // Delete Modal
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
@@ -274,11 +333,11 @@ const TreeCategoryInfo: React.FC = () => {
                 <div className={styles['control-block']}>
                   <IconButton
                     aria-label="edit"
-                    color="default"
+                    color="primary"
                     type="button"
                     onClick={() => setEditBasicInfo(true)}
                   >
-                    <EditIcon />
+                    <EditIcon className={classes.editButton} />
                   </IconButton>
                   <IconButton
                     aria-label="delete"
@@ -286,11 +345,12 @@ const TreeCategoryInfo: React.FC = () => {
                     type="button"
                     onClick={() => setOpenDeleteDialog(true)}
                   >
-                    <DeleteIcon />
+                    <DeleteIcon className={classes.deleteButton} />
                   </IconButton>
                   <div>
                     <span>Disable</span>
                     <Switch
+                      className={classes.switch}
                       checked={treeCategory.disabledByAdmin}
                       onChange={handleDisableCategory}
                     />
@@ -352,15 +412,10 @@ const TreeCategoryInfo: React.FC = () => {
                 </>
               )}
               <div className={styles['form-btn-wrapper']}>
-                <Button
-                  variant="contained"
-                  color="default"
-                  disabled={formik.isSubmitting}
-                  type="submit"
-                >
+                <Button className={classes.saveButton} disabled={formik.isSubmitting} type="submit">
                   Зберегти
                 </Button>
-                <Button onClick={finishOperation} color="secondary" variant="contained">
+                <Button onClick={finishOperation} className={classes.cancelButton}>
                   Скасувати
                 </Button>
               </div>
