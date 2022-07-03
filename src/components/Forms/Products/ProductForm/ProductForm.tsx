@@ -1,7 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import { Field, Form, FormikProps, FormikProvider } from 'formik';
 import { useDropzone } from 'react-dropzone';
-import { Box, Button, Card, Chip, DialogActions, FormControl } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Card,
+  Chip,
+  createStyles,
+  DialogActions,
+  FormControl,
+  makeStyles,
+  ThemeOptions,
+} from '@material-ui/core';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -17,6 +27,7 @@ import { ErrorsAlert } from '../../../ErrorsAlert';
 import styles from './ProductForm.module.scss';
 import TreeItem from '@material-ui/lab/TreeItem';
 import TreeView from '@material-ui/lab/TreeView';
+import { COLORS } from '../../../../values/colors';
 
 export interface IProductFormProps {
   editMode: boolean;
@@ -29,6 +40,28 @@ export interface IProductFormProps {
   setValidation: (v: any) => void;
 }
 
+const useStyles = makeStyles(
+  (): ThemeOptions =>
+    createStyles({
+      cancelBtn: {
+        'borderRadius': '30px',
+        'color': COLORS.primaryLight,
+        'backgroundColor': COLORS.primaryGray,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGray,
+        },
+      },
+      saveBtn: {
+        'borderRadius': '30px',
+        'color': COLORS.primaryLight,
+        'backgroundColor': COLORS.primaryGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGreen,
+        },
+      },
+    })
+);
+
 const ProductForm: React.FC<IProductFormProps> = ({
   editMode = false,
   formik,
@@ -39,6 +72,8 @@ const ProductForm: React.FC<IProductFormProps> = ({
   handleDeleteImg,
   setValidation,
 }) => {
+  const classes = useStyles();
+
   // EXPAND BLOCKS
   const [expandedBlocks, setExpandedBlocks] = useState<string[]>(['main']);
 
@@ -261,7 +296,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
           </div>
           <DialogActions>
             <Button
-              className={styles.customBtn}
+              className={styles.customBtn + ' ' + classes.saveBtn}
               variant="contained"
               color="primary"
               disabled={formik.isSubmitting}
@@ -275,7 +310,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
               color="secondary"
               variant="contained"
               type="button"
-              className={styles.customBtn}
+              className={styles.customBtn + ' ' + classes.cancelBtn}
             >
               Закрити
             </Button>
