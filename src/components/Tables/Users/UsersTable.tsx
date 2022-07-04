@@ -136,7 +136,7 @@ const UsersTable: React.FC<UsersTableProps> = ({
       name: "Ім'я",
       selector: (row) => `${row.firstName} ${row.lastName}`,
       sortable: true,
-      omit: !activeColumns.includes("Ім'я"),
+      omit: !activeColumns.includes(`Ім'я`),
     },
     {
       name: 'Роль',
