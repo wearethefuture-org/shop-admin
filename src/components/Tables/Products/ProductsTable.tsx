@@ -112,7 +112,6 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       name: 'URL ключ',
       selector: (row) => row.key,
       minWidth: '250px',
-      // maxWidth: '12%',
       omit: !activeColumns.includes('URL ключ'),
     },
     {
