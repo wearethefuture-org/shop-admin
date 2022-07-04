@@ -29,7 +29,7 @@ export default function FeedbacksPage() {
   const { list, count, loading } = useFeedbacks(currentPage, limit);
 
   React.useEffect(() => {
-    if (!list.length){
+    if (!list.length && count){
       dispatch(getFeedbacksRequest(currentPage, limit));
     }
   }, [list]);
