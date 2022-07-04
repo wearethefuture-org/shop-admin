@@ -38,7 +38,6 @@ const users = (state = initialState, { type, data }: IActions) => {
     }
 
     case GET_USERS_SUCCESS: {
-      console.log('data', data);
       return {
         ...state,
         list: data.length ? data.length : data.data,
