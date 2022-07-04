@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux';
 import DataTable from 'react-data-table-component';
 import Card from '@material-ui/core/Card';
 import { customStylesDataTable } from './CustomStylesDataTable'
-import CustomTablePaginator from '../Paginator/Paginator';
+import CustomProductsTablePaginator from '../Paginator/ProductsPaginator';
 
 import { RootState } from '../../store/store';
 
-interface DataTableProps {
+interface ProductsDataTableProps {
   columns: any[];
   data: any[];
   title: ReactElement<any> | string;
@@ -16,27 +16,30 @@ interface DataTableProps {
   limit?: number;
   setLimit?: Dispatch<SetStateAction<number>>;
   paginationServer?: boolean;
-  setPage?: Dispatch<SetStateAction<number>>;
-  defaultSortFieldId?: string;
+  defaultSortFieldId?: string | number | null;
   customStyles?: any;
   paginationPage?: number;
+  setSortColumn?: ((column: any, direction: any) => void)
+  sortDirect: string
 }
 
-const AppDataTable: React.FC<DataTableProps> = ({
+const AppProductsDataTable: React.FC<ProductsDataTableProps> = ({
   data,
   columns,
   title,
   onRowClicked = () => {},
   count,
-  setPage = () => {},
   limit,
   setLimit = () => {},
-  paginationServer = false,
+  setSortColumn = () => {},
+  paginationServer = true,
   defaultSortFieldId = '',
   paginationPage,
   customStyles = customStylesDataTable,
+  sortDirect
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
+  const defaultSortAsc = sortDirect === 'asc'? true : false
 
   return (
     <Card>
@@ -45,26 +48,27 @@ const AppDataTable: React.FC<DataTableProps> = ({
         columns={columns}
         title={title}
         theme={darkMode ? 'dark' : 'default'}
+        customStyles={customStyles}
         highlightOnHover={true}
         onRowClicked={onRowClicked}
         pointerOnHover={true}
-        pagination
-        paginationDefaultPage={paginationPage}
-        paginationComponent={CustomTablePaginator}
-        defaultSortAsc={false}
-        defaultSortFieldId={defaultSortFieldId}
         fixedHeader={true}
         fixedHeaderScrollHeight={'60vh'}
+        pagination
+        paginationDefaultPage={paginationPage}
+        paginationComponent={CustomProductsTablePaginator}
         paginationTotalRows={count}
         paginationRowsPerPageOptions={[2, 10, 30, 50, 100]}
         paginationServer={paginationServer}
         paginationPerPage={limit}
-        onChangePage={(p) => setPage(p)}
         onChangeRowsPerPage={(l) => setLimit(l)}
-        customStyles={customStyles}
+        onSort={(e, direction) => setSortColumn(e, direction)}
+        defaultSortAsc={defaultSortAsc}
+        defaultSortFieldId={defaultSortFieldId}
+        sortFunction={rows => rows}
       />
     </Card>
   );
 };
 
-export default AppDataTable;
+export default AppProductsDataTable;
