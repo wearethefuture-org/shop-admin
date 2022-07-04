@@ -174,7 +174,6 @@ export function* updateProductWorker({
 
 export function* deleteProductWorker({ data: product }: IActions): SagaIterator {
   try {
-    // const charValues = product.characteristicValue.map((value) => value.id);
     yield call(apiDeleteProduct, product.id);
     yield put(deleteProductSuccess(product.id));
     yield put(successSnackBar());
