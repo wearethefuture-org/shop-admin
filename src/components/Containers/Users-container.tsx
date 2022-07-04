@@ -12,7 +12,7 @@ enum cols {
   phone = 'Телефон',
   email = 'Email',
   telegramId = 'Телеграм',
-  name = 'Ім'я',
+  name = `Ім'я`,
   role = 'Роль',
 }
 
