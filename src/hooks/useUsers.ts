@@ -15,7 +15,7 @@ const useUsers = (paginationPage: number, paginationPageSearch: number, searchVa
     if (isSearch) {
       dispatch(getUsersByQueryRequest(searchValue, paginationPageSearch, 10));
     }
-    if(!isSearch){
+    if (!isSearch) {
       dispatch(getUsersRequest(paginationPage, 10));
     }
   }, [dispatch, isSearch]);
