@@ -27,10 +27,10 @@ export const FILE_SIZE_MOBILE = 1000 * 1024;
 export const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
 
 export const slideValidationShema = Yup.object().shape({
-  name: Yup.string().min(2, 'Minimum 2 symbols').max(50, 'Too long').required('Required'),
-  text: Yup.string().min(2, 'Minimum 2 symbols').max(360, 'Too long').required('Required'),
+  name: Yup.string().min(2, 'Мінімум 2 символи').max(50, 'Забагато симвлів').required('Введіть назву слайду'),
+  text: Yup.string().min(2, 'Мінімум 2 символи').max(360, 'Забагато симвлів').required('Введіть опис'),
   image: Yup.mixed()
-    .required('Required')
+    .required('Потрібно добавити зображення')
     .test('fileSize', 'File too large', (value) => {
       return value && (typeof value === 'string' || value.size <= FILE_SIZE);
     })
@@ -41,7 +41,7 @@ export const slideValidationShema = Yup.object().shape({
         return value && (typeof value === 'string' || SUPPORTED_FORMATS.includes(value.type))
       }),
   imageMobile: Yup.mixed()
-    .required('Required')
+    .required('Потрібно добавити зображення')
     .test(
       'fileSize',
       'File too large',
@@ -52,11 +52,11 @@ export const slideValidationShema = Yup.object().shape({
       'Unsupported Format',
       (value) => value && (typeof value === 'string' || SUPPORTED_FORMATS.includes(value.type))
     ),
-  href: Yup.string().min(2, 'Minimum 2 symbols').max(360, 'Too long').required('Required'),
+  href: Yup.string().min(2, 'Мінімум 2 символи').max(360, 'Забагато симвлів').required('Добавте посилання'),
   priority: Yup.number()
-    .min(1, 'The number must been more 0')
-    .max(360, 'Too long')
-    .required('Required'),
+    .min(1, 'Число повинно бути більше 0')
+    .max(360, 'Занодто високий')
+    .required('Введіть пріорітет'),
 });
 
 const SlideForm = withFormik<SlideFormProps, ISlideFormValues>({
