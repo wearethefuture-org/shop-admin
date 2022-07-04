@@ -22,6 +22,7 @@ const initialState: IUsersData = {
   error: null,
   count: 0,
   totalPages: 0,
+  currentPage: 1
 };
 
 const users = (state = initialState, { type, data }: IActions) => {
@@ -42,6 +43,7 @@ const users = (state = initialState, { type, data }: IActions) => {
         list: data.length ? data.length : data.data,
         loading: false,
         count: data.count,
+        currentPage: data.currentPage,
         totalPages: data.totalPages,
       };
     }

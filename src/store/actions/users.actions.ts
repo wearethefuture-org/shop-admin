@@ -17,7 +17,7 @@ import {
 
 export const getUsersRequest = (page: number, limit: number): IActions => ({
   type: GET_USERS_REQUEST,
-  data: { page, limit, }
+  data: { page, limit }
 });
 
 export const getUsersSuccess = (users: IUserItem[]): IActions => ({
@@ -44,9 +44,9 @@ export const addUserError = (message: string): IActions => ({
   type: ADD_USER_ERROR,
   data: message,
 });
-export const updateUserRequest = (id: number, userValues: IUserReqUp): IActions => ({
+export const updateUserRequest = (id: number, userValues: IUserReqUp, currentPage: number): IActions => ({
   type: UPDATE_USER_REQUEST,
-  data: { id, userValues },
+  data: { id, userValues, currentPage },
 });
 
 export const updateUserSuccess = (user: IUserItem): IActions => ({
