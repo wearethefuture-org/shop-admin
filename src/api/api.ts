@@ -43,6 +43,7 @@ import instance from './axios-interceptors';
 import { Status } from '../enums/orderStatus';
 import { IRole } from '../interfaces/IRoles';
 import { ISliderAnimation, ISliderAnimations } from '../interfaces/ISliderAnimations';
+import { IInvoice } from '../interfaces/IInvoice';
 
 type FetchedDataType<T> = Promise<AxiosResponse<T>>;
 
@@ -137,6 +138,12 @@ type ApiFetchedDataType = {
       isActive: boolean
     ) => FetchedDataType<ISliderAnimation>;
   };
+
+  invoice: {
+    getInvoicesList: () => FetchedDataType<IInvoice[]>;
+    removeInvoice: (name: string) => FetchedDataType<JSON>;
+    generateInvoice: () => FetchedDataType<JSON>;
+  };
 };
 
 export const api: ApiFetchedDataType = {
@@ -225,5 +232,10 @@ export const api: ApiFetchedDataType = {
     getActiveSliderAnimation: () => instance.get(`${root}/slider-animations/active`),
     changeActiveSliderAnimation: (id: number, isActive: boolean) =>
       instance.patch(`${root}/slider-animations/change-active/${id}/${isActive}`),
+  },
+  invoice: {
+    getInvoicesList: () => instance.get(`${root}/invoice/all`),
+    removeInvoice: (name: string) => instance.delete(`${root}/invoice/${name}`),
+    generateInvoice: () => instance.post(`${root}/invoice`),
   },
 };

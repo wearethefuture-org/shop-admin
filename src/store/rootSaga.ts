@@ -43,6 +43,9 @@ import {
   GET_SLIDER_ANIMATIONS_REQUEST,
   UPDATE_PRODUCT_IN_ORDER_REQUEST,
   REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION,
+  GET_INVOICES_LIST_REQUEST,
+  REMOVE_INVOICE_REQUEST,
+  GENERATE_INVOICE_REQUEST,
   DISABLE_ENABLE_CATEGORY_REQUEST,
   GET_USERS_BY_QUERY_REQUEST,
 } from './types';
@@ -99,6 +102,11 @@ import {
   getActiveSliderAnimationWorker,
   getSliderAnimationsWorker,
 } from './sagas/sliderAnimations.saga';
+import {
+  generateInvoiceWorker,
+  getInvoicesListWorker,
+  removeInvoiceWorker,
+} from './sagas/invoice.saga';
 
 export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(GET_TREE_CATEGORIES_REQUEST, fetchTreeCategoryWorker);
@@ -187,6 +195,13 @@ export function* sagaSliderAnimationsWatcher(): SagaIterator {
   yield takeEvery(REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION, changeActiveSliderAnimationWorker);
 }
 
+// Invoice
+export function* sagaInvoiceWatcher(): SagaIterator {
+  yield takeEvery(GET_INVOICES_LIST_REQUEST, getInvoicesListWorker);
+  yield takeEvery(REMOVE_INVOICE_REQUEST, removeInvoiceWorker);
+  yield takeEvery(GENERATE_INVOICE_REQUEST, generateInvoiceWorker);
+}
+
 // RootSaga
 export default function* rootSaga(): SagaIterator {
   yield all([
@@ -202,5 +217,6 @@ export default function* rootSaga(): SagaIterator {
     fork(getRolesWatcher),
     fork(sagaSearchWatcher),
     fork(sagaSliderAnimationsWatcher),
+    fork(sagaInvoiceWatcher),
   ]);
 }
