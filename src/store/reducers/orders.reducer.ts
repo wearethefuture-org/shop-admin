@@ -12,6 +12,9 @@ import {
   UPDATE_ORDER_STATUS_REQUEST,
   UPDATE_ORDER_STATUS_SUCCESS,
   UPDATE_ORDER_STATUS_ERROR,
+  UPDATE_PRODUCT_IN_ORDER_REQUEST,
+  UPDATE_PRODUCT_IN_ORDER_SUCCESS,
+  UPDATE_PRODUCT_IN_ORDER_ERROR,
 } from '../types';
 import { IOrdersData } from '../../interfaces/IOrders';
 
@@ -133,6 +136,30 @@ const orders = (state = initialState, { type, data }: IActions) => {
     }
 
     case UPDATE_ORDER_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+
+    case UPDATE_PRODUCT_IN_ORDER_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      }
+    }
+   
+    case UPDATE_PRODUCT_IN_ORDER_SUCCESS: {
+      return {
+        ...state,
+        currentOrder: data,
+        loading: false,
+      };
+    }
+   
+    case UPDATE_PRODUCT_IN_ORDER_ERROR: {
       return {
         ...state,
         loading: false,

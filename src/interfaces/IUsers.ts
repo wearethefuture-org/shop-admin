@@ -65,12 +65,13 @@ export interface IUsersData {
   loading: boolean;
   currentUser: IUserItem | null;
   error: string | null;
-  count: number,
-  totalPages: number,
+  count: number;
+  totalPages: number
   isSearch: boolean;
   paginationPage: number;
   searchValue: null | string;
-  paginationPageSearch: number;
+  paginationPageSearch: number;  
+  currentPage: number;
 }
 
 export interface UserTableData {
