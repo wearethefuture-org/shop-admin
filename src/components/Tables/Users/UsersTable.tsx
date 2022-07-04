@@ -170,26 +170,3 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
 };
 
 export default UsersTable;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
