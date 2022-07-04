@@ -17,7 +17,7 @@ import {
 
 export const getUsersRequest = (page: number, limit: number): IActions => ({
   type: GET_USERS_REQUEST,
-  data: { page, limit}
+  data: { page, limit }
 });
 
 export const getUsersSuccess = (users: IUserItem[]): IActions => ({
