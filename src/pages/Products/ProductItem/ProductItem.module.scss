@@ -15,11 +15,34 @@
 
     .right-btn-wrapper {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-around;
 
       button:first-child {
         margin-right: 1rem;
       }
+    }
+  }
+
+  @media (max-width: 460px) {
+    .right-btn-wrapper {
+      margin-left: 1rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .btn-container {
+      margin-top: 90px;
+      flex-direction: column;
+    }
+    .right-btn-wrapper {
+      margin: 15px 0 0 0;
+      flex-direction: column;
+    }
+    button {
+      align-items: center;
+      width: 100%;
+      min-width: 150px;
+      margin: 2px 5px;
     }
   }
 
@@ -54,18 +77,53 @@
   .availability {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     font-size: 1rem;
 
+    .switch-info:not(:last-child) {
+      margin-right: 0.8rem;
+    }
+
     .switch {
-      margin-left: .5rem;
+      margin-left: 0.5rem;
+    }
+
+    @media (max-width: 730px) {
+      h1 {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 630px) {
+      h1 {
+        font-size: 1.7rem;
+      }
+    }
+
+    @media (max-width: 530px) {
+      h1 {
+        font-size: 1.2rem;
+      }
+      .switch-info {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 430px) {
+      h1 {
+        font-size: 1rem;
+      }
+      .switch-info {
+        font-size: 0.8rem;
+      }
     }
   }
-}
 
-.itemCard-dark {
-  @extend .itemCard;
+  .itemCard-dark {
+    @extend .itemCard;
 
-  .breadcrumbs {
-    color: #ddd;
+    .breadcrumbs {
+      color: #ddd;
+    }
   }
 }

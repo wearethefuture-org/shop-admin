@@ -124,7 +124,7 @@ const ProductItem: React.FC = () => {
       <div className={styles.availability}>
         <h1>{product.name}</h1>
         <div className={styles.switch}>
-          <span>Наявність</span>
+          <span className={styles['switch-info']}>Наявність</span>
           <Switch
             checked={productStatus.availability}
             onChange={handleUpdateAvailability}
@@ -132,7 +132,7 @@ const ProductItem: React.FC = () => {
           />
         </div>
         <div>
-          <span>Disabled</span>
+          <span className={styles['switch-info']}>Disabled</span>
           <Switch
             checked={productStatus.disabled}
             onChange={handleDisableProduct}

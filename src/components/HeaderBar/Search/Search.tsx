@@ -20,17 +20,23 @@ interface SearchProps {}
 
 const useStyles = makeStyles((theme) => ({
   search: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
+    'display': 'flex',
+    'justifyContent': 'center',
+    'alignItems': 'center',
+    'position': 'relative',
+    'borderRadius': theme.shape.borderRadius,
+    'marginRight': theme.spacing(2),
+    'marginLeft': 0,
+    'min-width': '220px',
+    'width': '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(3),
       width: 'auto',
+    },
+    '@media (max-width: 420px)': {
+      alignItems: 'left',
+      flexDirection: 'column',
+      padding: '2px 0',
     },
   },
   searchIcon: {
