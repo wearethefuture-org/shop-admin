@@ -13,4 +13,6 @@ export const COLORS = {
   frenchPlum: '#85165B',
   primaryRed: '#ff0000',
   secondaryRed: '#d90000',
+
+  darkGreen: '#4A7C56',
 };
