@@ -10,6 +10,8 @@ import CachedIcon from '@material-ui/icons/Cached';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Pie, Line } from 'react-chartjs-2';
 import { COLORS } from '../../../values/colors';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 
 interface DashboardProps {
   data?: Array<any>;
@@ -36,6 +38,14 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(6),
     paddingLeft: theme.spacing(4),
     color: COLORS.fontColor,
+    marginBottom: theme.spacing(4),
+  },
+  headerDark: {
+    minHeight: '200px',
+    backgroundColor: COLORS.darkGray,
+    paddingTop: theme.spacing(6),
+    paddingLeft: theme.spacing(4),
+    color: COLORS.primaryLight,
     marginBottom: theme.spacing(4),
   },
   content: {
@@ -93,6 +103,8 @@ const DashboardContent: React.FC<DashboardProps> = () => {
   const classes = useStyles();
   const [chartPie, setChartPie] = React.useState({});
   const [chartMovement, setChartMovement] = React.useState({});
+
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const movementData = () =>
     setChartMovement({
@@ -164,7 +176,7 @@ const DashboardContent: React.FC<DashboardProps> = () => {
 
   return (
     <div className={classes.dashboard}>
-      <div className={classes.header}>
+      <div className={darkMode ? classes.headerDark : classes.header}>
         <h3>Welcome back, Satoshi Nakamoto!</h3>
         <p>У вас 24 новых сообщения и 5 уведомлений.</p>
       </div>
