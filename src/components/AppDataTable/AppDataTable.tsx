@@ -45,7 +45,7 @@ const AppDataTable: React.FC<DataTableProps> = ({
       style: {
         'minHeight': '70px',
         '&:hover': {
-          backgroundColor: COLORS.primaryOttoman,
+          backgroundColor: darkMode ? COLORS.secondaryDarkGray : COLORS.primaryOttoman,
         },
       },
     },
