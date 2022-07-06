@@ -71,10 +71,22 @@ const useStyles = makeStyles(
         backgroundColor: COLORS.primaryOttoman,
       },
     },
+    listButtonDark: {
+      'color': COLORS.primaryLight,
+      'height': '45px',
+      '&:hover': {
+        backgroundColor: COLORS.darkGray,
+      },
+    },
     activeButton: {
       borderRadius: '3px',
       color: 'inherit',
       backgroundColor: COLORS.secondaryOttoman,
+    },
+    activeButtonDark: {
+      borderRadius: '3px',
+      color: 'inherit',
+      backgroundColor: COLORS.darkSecondaryGray,
     },
     itemIcon: {
       minWidth: '0',
@@ -95,47 +107,96 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
 
   const { isSearch }: Partial<IProductsData> = useSelector((state: RootState) => state.products);
   const classes = useStyles(isOpen);
+  const { darkMode } = useSelector((state: RootState) => state.theme);
   const dispatch: AppDispatch = useDispatch();
   const sidebarItems = [
     {
       pageURL: '/dashboard',
       title: 'Дошка',
-      itemIcon: <HouseIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <HouseIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/tree-categories',
       title: 'Категорії',
-      itemIcon: <CategoryIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <CategoryIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/products',
       title: 'Продукти',
-      itemIcon: <ShoppingCartIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <ShoppingCartIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/statistic',
       title: 'Статистика',
-      itemIcon: <EqualizerIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <EqualizerIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/users',
       title: 'Користувачі',
-      itemIcon: <GroupIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <GroupIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/slides',
       title: 'Слайди',
-      itemIcon: <AmpStoriesIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <AmpStoriesIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/comments',
       title: 'Коментарі',
-      itemIcon: <MessageIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <MessageIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/feedbacks',
       title: 'Відгуки',
-      itemIcon: <FeedbackIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <FeedbackIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
   ];
 
@@ -161,7 +222,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
       }}
     >
       <div className="sidebar-header">
-        <div className={classes.sidebarTitle}>BuyAll Адмін панель</div>
+        <div
+          style={darkMode ? { backgroundColor: COLORS.darkGreen } : {}}
+          className={classes.sidebarTitle}
+        >
+          BuyAll Адмін панель
+        </div>
         <Divider />
       </div>
       <div className="sidebar-nav">
@@ -171,9 +237,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
               <ListItem
                 button
                 onClick={() => handleClick(pageURL)}
-                className={classes.listButton}
+                className={darkMode ? classes.listButtonDark : classes.listButton}
                 classes={{
-                  root: pageURL === activePath ? classes.activeButton : void 0,
+                  root:
+                    pageURL === activePath
+                      ? darkMode
+                        ? classes.activeButtonDark
+                        : classes.activeButton
+                      : void 0,
                 }}
               >
                 <ListItemIcon className={classes.itemIcon}>{itemIcon}</ListItemIcon>
@@ -189,16 +260,24 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
               <ListItem
                 button
                 key={item.pageURL}
-                className={classes.listButton}
+                className={darkMode ? classes.listButtonDark : classes.listButton}
                 classes={{
                   root: item.pageURL === activePath ? classes.activeButton : void 0,
                 }}
               >
                 <ListItemIcon className={classes.itemIcon}>
                   {index % 2 === 0 ? (
-                    <ReceiptIcon fontSize="small" className={styles.icon} />
+                    <ReceiptIcon
+                      fontSize="small"
+                      className={styles.icon}
+                      style={darkMode ? { color: COLORS.darkGreen } : {}}
+                    />
                   ) : (
-                    <SettingsIcon fontSize="small" className={styles.icon} />
+                    <SettingsIcon
+                      fontSize="small"
+                      className={styles.icon}
+                      style={darkMode ? { color: COLORS.darkGreen } : {}}
+                    />
                   )}
                 </ListItemIcon>
                 <ListItemText className={classes.itemText} primary={item.title} />

@@ -33,12 +33,6 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 3,
     transition: `all 0.3s ease-in-out`,
   },
-  darkMode: {
-    backgroundColor: COLORS.darkGreen,
-    paddingLeft: 0,
-    zIndex: 3,
-    transition: `all 0.3s ease-in-out`,
-  },
   appBarShrinked: {
     backgroundColor: COLORS.primaryGreen,
     paddingLeft: '240px',
@@ -69,7 +63,6 @@ const HeaderBar: React.FC<HeaderBarProps> = (props) => {
   const { onSidebarToggle, isShrink } = props;
   const classes = useStyles(props);
   const { darkMode } = useSelector((state: RootState) => state.theme);
-  console.log(darkMode);
 
   const [mailAnchorEl, setMailAnchorEl] = React.useState(null);
   const [noticeAnchorEl, setNoticeAnchorEl] = React.useState(null);
@@ -106,8 +99,9 @@ const HeaderBar: React.FC<HeaderBarProps> = (props) => {
       })}
     >
       <AppBar
+        style={darkMode ? { backgroundColor: COLORS.darkGreen } : {}}
         position="fixed"
-        className={isShrink ? classes.appBarShrinked : darkMode ? classes.darkMode : classes.appBar}
+        className={isShrink ? classes.appBarShrinked : classes.appBar}
       >
         <Toolbar>
           <IconButton
