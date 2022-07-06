@@ -2,6 +2,8 @@ import React from 'react';
 import { Button, createStyles, makeStyles, ThemeOptions } from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { COLORS } from '../../values/colors';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 interface IBtnProps {
   handleGoBack: () => void;
@@ -19,13 +21,27 @@ const useStyles = makeStyles(
           backgroundColor: COLORS.secondaryGray,
         },
       },
+      btnDark: {
+        'borderRadius': '30px',
+        'padding': '5px 15px 5px 15px',
+        'color': COLORS.primaryLight,
+        'backgroundColor': COLORS.darkSecondaryGray,
+        '&:hover': {
+          backgroundColor: COLORS.darkGray,
+        },
+      },
     })
 );
 
 const GoBackBtn: React.FC<IBtnProps> = ({ handleGoBack }) => {
   const classes = useStyles();
+  const { darkMode } = useSelector((state: RootState) => state.theme);
   return (
-    <Button className={classes.btn} startIcon={<ArrowBackIosIcon />} onClick={handleGoBack}>
+    <Button
+      className={darkMode ? classes.btnDark : classes.btn}
+      startIcon={<ArrowBackIosIcon />}
+      onClick={handleGoBack}
+    >
       Назад
     </Button>
   );
