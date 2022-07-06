@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 import { Dispatch } from 'redux';
-import {
-  Switch,
-  Button,
-  makeStyles,
-  Theme,
-  createStyles,
-  ThemeOptions,
-  alpha,
-} from '@material-ui/core';
+import { Switch, makeStyles, Theme, createStyles, ThemeOptions, alpha } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
 import { TableColumn } from 'react-data-table-component';
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import { ISlideItem } from '../../../interfaces/ISlides';
@@ -22,7 +13,7 @@ import {
   fetchUpdateSlideVisibility,
 } from '../../../store/actions/slides.actions';
 import { COLORS } from '../../../values/colors';
-import styled from 'styled-components';
+import AddBtn from '../../AddBtn/AddBtn';
 
 interface SlideDataProps {
   data: Array<ISlideItem>;
@@ -57,15 +48,6 @@ const useStyles = makeStyles(
     })
 );
 
-const AddSlideBtn = styled(Button)`
-  background-color: ${COLORS.primaryBlue};
-  border-radius: 30px;
-  color: ${COLORS.primaryLight};
-  &:hover {
-    background-color: ${COLORS.secondaryBlue};
-  }
-`;
-
 const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) => {
   const classes = useStyles();
   const { handleClickOpen } = modalData;
@@ -93,15 +75,11 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
   const title = (
     <div style={{ display: 'flex' }}>
       Слайди
-      <AddSlideBtn
+      <AddBtn
         style={{ marginLeft: 'auto' }}
-        variant="contained"
-        color="primary"
-        startIcon={<AddIcon />}
-        onClick={handleClickOpen}
-      >
-        Додати слайд
-      </AddSlideBtn>
+        title="Додати слайд"
+        handleAdd={handleClickOpen}
+      ></AddBtn>
     </div>
   );
 

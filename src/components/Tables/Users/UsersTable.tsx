@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Button, createStyles, makeStyles, Theme, ThemeOptions } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -12,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUsersRequest } from '../../../store/actions/users.actions';
 import { IUserItem } from '../../../interfaces/IUsers';
 import { COLORS } from '../../../values/colors';
+import AddBtn from '../../AddBtn/AddBtn';
 
 const useStyles = makeStyles(
   (theme: Theme): ThemeOptions =>
@@ -26,13 +26,6 @@ const useStyles = makeStyles(
           backgroundColor: 'transparent',
         },
       },
-      createUserBtn: {
-        'borderRadius': '30px',
-        'backgroundColor': COLORS.primaryBlue,
-        '&:hover': {
-          backgroundColor: COLORS.secondaryBlue,
-        },
-      },
       editIcon: {
         'cursor': 'pointer',
         'color': COLORS.primaryBlue,
@@ -44,7 +37,7 @@ const useStyles = makeStyles(
       },
       deleteIcon: {
         'cursor': 'pointer',
-        'color': 'red',
+        'color': COLORS.primaryRed,
         'transition': '0.3s all',
 
         '&:hover': {
@@ -109,15 +102,7 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
 
   const addUserBtn = (
     <Box>
-      <Button
-        className={classes.createUserBtn}
-        onClick={openDialogNewUser}
-        variant="contained"
-        color="primary"
-        startIcon={<AddIcon />}
-      >
-        Створити
-      </Button>
+      <AddBtn title="Створити" handleAdd={openDialogNewUser} />
       {userDialogIsOpen && <UserDialog {...modalParams} />}
       {confirmRemoveUserIsOpen && <UserRemoveDialog {...modalRemoveParams} />}
     </Box>

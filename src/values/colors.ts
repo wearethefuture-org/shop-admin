@@ -15,5 +15,7 @@ export const COLORS = {
   secondaryRed: '#d90000',
   darkGreen: '#4A7C56',
   darkGray: '#323232',
-  darkSecondaryGray: '#595959',
+  secondaryDarkGray: '#595959',
+  darkBlue: '#103b69',
+  secondaryDarkBlue: '#0b2c4f',
 };
