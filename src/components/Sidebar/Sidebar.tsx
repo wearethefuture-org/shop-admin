@@ -262,7 +262,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
                 key={item.pageURL}
                 className={darkMode ? classes.listButtonDark : classes.listButton}
                 classes={{
-                  root: item.pageURL === activePath ? classes.activeButton : void 0,
+                  root:
+                    item.pageURL === activePath
+                      ? darkMode
+                        ? classes.activeButtonDark
+                        : classes.activeButton
+                      : void 0,
                 }}
               >
                 <ListItemIcon className={classes.itemIcon}>
