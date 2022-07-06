@@ -14,6 +14,8 @@ import { TextField } from 'formik-material-ui';
 import { IFormParserValues } from './Parser-form';
 import { COLORS } from '../../../../values/colors';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store/store';
 
 const SaveBtn = styled(Button)`
   background-color: ${COLORS.primaryBlue};
@@ -21,6 +23,15 @@ const SaveBtn = styled(Button)`
   color: ${COLORS.primaryLight};
   &:hover {
     background-color: ${COLORS.secondaryBlue};
+  }
+`;
+
+const SaveBtnDark = styled(Button)`
+  background-color: ${COLORS.darkBlue};
+  border-radius: 30px;
+  color: ${COLORS.primaryLight};
+  &:hover {
+    background-color: ${COLORS.secondaryDarkBlue};
   }
 `;
 
@@ -65,6 +76,18 @@ const useStyles = makeStyles(
         },
         'margin': 'left',
       },
+      switchDark: {
+        '& .MuiSwitch-switchBase.Mui-checked': {
+          'color': COLORS.darkGreen,
+          '&:hover': {
+            backgroundColor: alpha(COLORS.darkGreen, theme.palette.action.hoverOpacity),
+          },
+        },
+        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+          backgroundColor: COLORS.darkGreen,
+        },
+        'margin': 'left',
+      },
       input: {
         width: '130px',
       },
@@ -92,6 +115,8 @@ enum ParserSettingsDescription {
 
 const InnerForm: React.FC<FormikProps<IFormParserValues>> = (props) => {
   const classes = useStyles();
+
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const [state, setState] = React.useState({ ...props.values });
 
@@ -146,7 +171,7 @@ const InnerForm: React.FC<FormikProps<IFormParserValues>> = (props) => {
                 </Typography>
                 {typeof element === 'boolean' && (
                   <Switch
-                    className={classes.switch}
+                    className={darkMode ? classes.switchDark : classes.switch}
                     checked={state[fullName]}
                     onChange={handleChange}
                     name={fullName}
@@ -182,9 +207,15 @@ const InnerForm: React.FC<FormikProps<IFormParserValues>> = (props) => {
     <Form className={classes.form}>
       {mappedElements}
       <DialogActions>
-        <SaveBtn color="primary" variant="contained" type="submit" disabled={!props.isValid}>
-          Зберегти
-        </SaveBtn>
+        {darkMode ? (
+          <SaveBtnDark type="submit" disabled={!props.isValid}>
+            Зберегти
+          </SaveBtnDark>
+        ) : (
+          <SaveBtn type="submit" disabled={!props.isValid}>
+            Зберегти
+          </SaveBtn>
+        )}
       </DialogActions>
     </Form>
   );

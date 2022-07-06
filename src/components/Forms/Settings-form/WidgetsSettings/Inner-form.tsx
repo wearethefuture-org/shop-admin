@@ -15,6 +15,8 @@ import {
 import { IFormWidgetValues } from '../../../../interfaces/widget-form';
 import { COLORS } from '../../../../values/colors';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store/store';
 
 const SaveBtn = styled(Button)`
   background-color: ${COLORS.primaryBlue};
@@ -22,6 +24,15 @@ const SaveBtn = styled(Button)`
   color: ${COLORS.primaryLight};
   &:hover {
     background-color: ${COLORS.secondaryBlue};
+  }
+`;
+
+const SaveBtnDark = styled(Button)`
+  background-color: ${COLORS.darkBlue};
+  border-radius: 30px;
+  color: ${COLORS.primaryLight};
+  &:hover {
+    background-color: ${COLORS.secondaryDarkBlue};
   }
 `;
 
@@ -55,6 +66,18 @@ const useStyles = makeStyles(
         },
         'marginLeft': 'auto',
       },
+      switchDark: {
+        '& .MuiSwitch-switchBase.Mui-checked': {
+          'color': COLORS.darkGreen,
+          '&:hover': {
+            backgroundColor: alpha(COLORS.darkGreen, theme.palette.action.hoverOpacity),
+          },
+        },
+        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+          backgroundColor: COLORS.darkGreen,
+        },
+        'margin': 'left',
+      },
       secondaryHeading: {
         flexGrow: 1,
         marginLeft: '30px',
@@ -72,6 +95,8 @@ const useStyles = makeStyles(
 
 const InnerForm: React.FC<FormikProps<IFormWidgetValues>> = (props) => {
   const classes = useStyles();
+
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const [state, setState] = React.useState({
     isWidgetActiveNewArrivals: props.values.isWidgetActiveNewArrivals,
@@ -97,7 +122,7 @@ const InnerForm: React.FC<FormikProps<IFormWidgetValues>> = (props) => {
         />
         <Typography className={classes.secondaryHeading}>Кількість слайдів: 4-20</Typography>
         <Switch
-          className={classes.switch}
+          className={darkMode ? classes.switchDark : classes.switch}
           checked={state.isWidgetActiveNewArrivals}
           onChange={handleChange}
           name="isWidgetActiveNewArrivals"
@@ -122,9 +147,15 @@ const InnerForm: React.FC<FormikProps<IFormWidgetValues>> = (props) => {
         />
       </div>
       <DialogActions>
-        <SaveBtn color="primary" variant="contained" type="submit" disabled={!props.isValid}>
-          Зберегти
-        </SaveBtn>
+        {darkMode ? (
+          <SaveBtnDark type="submit" disabled={!props.isValid}>
+            Зберегти
+          </SaveBtnDark>
+        ) : (
+          <SaveBtn type="submit" disabled={!props.isValid}>
+            Зберегти
+          </SaveBtn>
+        )}
       </DialogActions>
     </Form>
   );
