@@ -43,7 +43,12 @@ import {
   GET_SLIDER_ANIMATIONS_REQUEST,
   UPDATE_PRODUCT_IN_ORDER_REQUEST,
   REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION,
+  GET_INVOICES_LIST_REQUEST,
+  REMOVE_INVOICE_REQUEST,
+  GENERATE_INVOICE_REQUEST,
   DISABLE_ENABLE_CATEGORY_REQUEST,
+  GET_USERS_BY_QUERY_REQUEST,
+  UPDATE_PROFILE_USER_REQUEST,
   GER_ORDERS_BY_PARAMS_REQUEST,
 } from './types';
 
@@ -88,10 +93,11 @@ import { deleteFeedbackWorker, getFeedbacksWorker } from './sagas/feedbacks.saga
 import {
   addUserWorker,
   deleteUserWorker,
+  getUsersByQueryWorker,
   getUsersWorker,
   updateUserWorker,
 } from './sagas/users.saga';
-import { fetchUser, sigInUser, signOutUser } from './sagas/user.saga';
+import { fetchUser, sigInUser, signOutUser, updateProfileUserWorker } from './sagas/user.saga';
 import { getRolesWorker } from './sagas/roles.saga';
 import { getSearchItemsWorker } from './sagas/search.saga';
 import {
@@ -99,6 +105,11 @@ import {
   getActiveSliderAnimationWorker,
   getSliderAnimationsWorker,
 } from './sagas/sliderAnimations.saga';
+import {
+  generateInvoiceWorker,
+  getInvoicesListWorker,
+  removeInvoiceWorker,
+} from './sagas/invoice.saga';
 
 export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(GET_TREE_CATEGORIES_REQUEST, fetchTreeCategoryWorker);
@@ -160,6 +171,7 @@ function* sagaOrdersWatcher(): SagaIterator {
 
 export function* sagaUsersWatcher(): SagaIterator {
   yield takeEvery(GET_USERS_REQUEST, getUsersWorker);
+  yield takeEvery(GET_USERS_BY_QUERY_REQUEST, getUsersByQueryWorker);
   yield takeEvery(ADD_USER_REQUEST, addUserWorker);
   yield takeEvery(UPDATE_USER_REQUEST, updateUserWorker);
   yield takeEvery(DELETE_USER_REQUEST, deleteUserWorker);
@@ -169,6 +181,7 @@ export function* sagaUserWatcher(): SagaIterator {
   yield takeEvery(USER_SIGN_IN_FETCHING, sigInUser);
   yield takeEvery(USER_SIGN_OUT, signOutUser);
   yield takeEvery(USER_FETCH_REQUEST, fetchUser);
+  yield takeEvery(UPDATE_PROFILE_USER_REQUEST, updateProfileUserWorker);
 }
 
 // Roles
@@ -187,6 +200,13 @@ export function* sagaSliderAnimationsWatcher(): SagaIterator {
   yield takeEvery(REQUEST_CHANGE_ACTIVE_SLIDER_ANIMATION, changeActiveSliderAnimationWorker);
 }
 
+// Invoice
+export function* sagaInvoiceWatcher(): SagaIterator {
+  yield takeEvery(GET_INVOICES_LIST_REQUEST, getInvoicesListWorker);
+  yield takeEvery(REMOVE_INVOICE_REQUEST, removeInvoiceWorker);
+  yield takeEvery(GENERATE_INVOICE_REQUEST, generateInvoiceWorker);
+}
+
 // RootSaga
 export default function* rootSaga(): SagaIterator {
   yield all([
@@ -202,5 +222,6 @@ export default function* rootSaga(): SagaIterator {
     fork(getRolesWatcher),
     fork(sagaSearchWatcher),
     fork(sagaSliderAnimationsWatcher),
+    fork(sagaInvoiceWatcher),
   ]);
 }

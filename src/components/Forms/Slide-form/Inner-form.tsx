@@ -52,8 +52,8 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
 
   return (
     <Form onDrop={dropHandler} onDragOver={dragOverHandler}>
-      <Field fullWidth component={TextField} type="name" label="Name" name="name" />
-      <Field fullWidth multiline component={TextField} type="text" label="Text" name="text" />
+      <Field fullWidth component={TextField} type="name" label="Назва" name="name" />
+      <Field fullWidth multiline component={TextField} type="text" label="Опис" name="text" />
       <Field
         fullWidth
         multiline
@@ -61,10 +61,10 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
         type="file"
         label="Image"
         name="image"
-        caption="An image for desktop. Allowed formats: jpg, png, gif. Max size: 9 MB. Optimal aspect ratio: 3.5 (e.g., 1920x548 etc.)"
+        caption="Картинка для компютера. Дозволені формати: jpg, png, gif. Максимальний розмір: 9 МБ. Оптимальне співвідношення сторін: 3,5 (наприклад, 1920x548 тощо)"
         fieldId="file"
       />
-      {<ErrorMessage name='image' component="div" className={classes.errorMy} />}
+      <ErrorMessage name='image' component="div" className={classes.errorMy} />
       <Field
         fullWidth
         multiline
@@ -72,7 +72,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
         type="file"
         label="ImageMobile"
         name="imageMobile"
-        caption="An image for mobile. Allowed formats: jpg, png, gif. Max size: 1 MB. Optimal aspect ratio: 3.5 (e.g., 382x109 or 330x94  etc.)"
+        caption="Картинка для мобільного. Дозволені формати: jpg, png, gif. Максимальний розмір: 1 Мб. Оптимальне співвідношення сторін: 3,5 (наприклад, 382x109 або 330x94 тощо)."
         fieldId="fileMobile"
       />
       <ErrorMessage name='imageMobile' component="div" className={classes.errorMy} />
@@ -82,7 +82,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           multiline
           component={TextField}
           type="href"
-          label="Href"
+          label="Посилання"
           name="href"
           value={values.href}
         />
@@ -92,7 +92,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
         multiline
         component={TextField}
         type="priority"
-        label="Priority"
+        label="Пріоритет"
         name="priority"
       />
       {isSubmitting && <LinearProgress />}
@@ -103,7 +103,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           variant="contained"
           className={classes.customBtn}
         >
-          Cancel
+          Скасувати
         </Button>
         <Button
           className={classes.customBtn}
@@ -112,7 +112,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           disabled={isSubmitting}
           onClick={submitForm}
         >
-          Save
+          Зберегти
         </Button>
       </DialogActions>
     </Form>

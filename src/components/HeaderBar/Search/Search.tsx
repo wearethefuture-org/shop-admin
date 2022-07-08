@@ -15,6 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
+import { getUsersByQueryRequest, getUsersRequest } from '../../../store/actions/users.actions';
 
 interface SearchProps {}
 
@@ -77,6 +78,7 @@ const useStyles = makeStyles((theme) => ({
 const searchOptions = [
   { name: 'продукти', key: 'products' },
   { name: 'категорії', key: 'categories' },
+  { name: 'користувачі', key: 'users' },
   { name: 'замовлення', key: 'orders' },
 ];
 
@@ -85,7 +87,7 @@ const Search: React.FC<SearchProps> = (props) => {
   const history = useHistory();
   const dispatch: AppDispatch = useDispatch();
   const [searchOption, setSearchOption] = useState<string>('');
-  
+
   const initialValues = {
     searchValue: '',
     searchOption: searchOptions[0].key,
@@ -110,6 +112,15 @@ const Search: React.FC<SearchProps> = (props) => {
           },
         });
       }
+      if (values.searchOption === 'users') {
+        dispatch(getUsersByQueryRequest(values.searchValue, 1, 10));
+        history.push({
+          pathname: '/users',
+          state: {
+            searchValue: values.searchValue,
+          },
+        });
+      }
       if (values.searchOption === 'orders') {
         dispatch(getOrdersByParamsRequest(1, 10, values.searchValue));
         history.push({
@@ -122,6 +133,14 @@ const Search: React.FC<SearchProps> = (props) => {
 
   const handleMouseDown = (event) => {
     event.preventDefault();
+  };
+
+  const handleChange = (field?: string) => {
+    if (!field?.trim().length && isSearch) {
+      dispatch(getProductsRequest(1, 10));
+      dispatch(getUsersRequest(1, 10));
+      setIsSearch(false);
+    }
   };
 
   const finishSearch = () => {

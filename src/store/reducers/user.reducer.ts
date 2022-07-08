@@ -6,6 +6,7 @@ import {
   USER_SIGN_IN_FETCHING,
   USER_SIGN_IN_SUCCESS,
   USER_SIGN_OUT,
+  UPDATE_PROFILE_USER_SUCCESS,
 } from '../types';
 import { IActions } from '../../interfaces/actions';
 import { IUserState } from '../../interfaces/IUsers';
@@ -66,6 +67,11 @@ const user = (state = initialState, { type, data }: IActions): IUserState => {
         ...state,
         isFetching: false,
         error: data,
+      };
+    case UPDATE_PROFILE_USER_SUCCESS:
+      return {
+        ...state,
+        user: data,
       };
     default:
       return state;

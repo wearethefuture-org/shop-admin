@@ -90,8 +90,13 @@ export interface IProductsData {
   totalPages: number;
   isSearch: boolean;
   paginationPage: number;
+  paginationLimit: number;
   searchValue: null | string;
   paginationPageSearch: number;
+  sort: string;
+  sortDirect: string;
+  findPrice: number[];
+  filter: IProductsFilter;
 }
 
 export interface CharValues {
@@ -154,13 +159,23 @@ export enum Type {
   date = 'date',
 }
 
+export interface IProductsFilter {
+  id?: null | number
+  name?: string
+  price: number[]
+  category?: string
+}
+
 export interface ProductsTableProps {
   list: IGetProducts[];
   activeColumns: string[];
   isSearch: boolean;
-  searchValue: string;
   count: number;
   paginationPage: number;
+  paginationLimit: number;
+  sort: string;
+  sortDirect: string;
+  filter: IProductsFilter;
 }
 
 export interface IUpdateAvailabilityProduct {
