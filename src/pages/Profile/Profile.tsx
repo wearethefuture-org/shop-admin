@@ -149,7 +149,7 @@ export default function Profile() {
 }
 
 function getRoleId(roleName: string): number {
-    if(roleName === 'user') return 3;
-    if(roleName === 'moderator') return 2;
+    if (roleName === 'user') return 3;
+    if (roleName === 'moderator') return 2;
     return 1;
 }
