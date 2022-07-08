@@ -49,6 +49,7 @@ import {
   DISABLE_ENABLE_CATEGORY_REQUEST,
   GET_USERS_BY_QUERY_REQUEST,
   UPDATE_PROFILE_USER_REQUEST,
+  GER_ORDERS_BY_PARAMS_REQUEST,
 } from './types';
 
 import {
@@ -84,6 +85,7 @@ import {
   getOrdersByIdWorker,
   updateOrderWorker,
   updateOrderStatusWorker,
+  getOrdersByParamsWorker,
   updateProductInOrderWorker,
 } from './sagas/orders.saga';
 import { deleteCommentWorker, getCommentsWorker } from './sagas/comments.saga';
@@ -163,6 +165,7 @@ function* sagaOrdersWatcher(): SagaIterator {
   yield takeEvery(GET_ORDER_BY_ID_REQUEST, getOrdersByIdWorker);
   yield takeEvery(UPDATE_ORDER_REQUEST, updateOrderWorker);
   yield takeEvery(UPDATE_ORDER_STATUS_REQUEST, updateOrderStatusWorker);
+  yield takeEvery(GER_ORDERS_BY_PARAMS_REQUEST, getOrdersByParamsWorker);
   yield takeEvery(UPDATE_PRODUCT_IN_ORDER_REQUEST, updateProductInOrderWorker);
 }
 
