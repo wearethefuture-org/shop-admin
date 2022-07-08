@@ -8,8 +8,9 @@ import {
   fetchUserSuccess,
   signInUserError,
   signInUserSuccess,
+  updateUserProfileSuccess,
 } from '../actions/user.action';
-import { apiSignIn, userFetch } from './services/user.service';
+import { apiSignIn, userFetch, updateProfileUser } from './services/user.service';
 import { clearStorage, setToken, setUser } from '../../services/local-storage-controller';
 
 export function* sigInUser(userValues: IActions): SagaIterator {
@@ -49,5 +50,15 @@ export function* fetchUser(): SagaIterator {
       yield put(failSnackBar(error.message));
     }
     yield put(fetchUserError(error.message));
+  }
+}
+
+export function* updateProfileUserWorker(userData: IActions): SagaIterator {
+  try {
+    const user = yield call(updateProfileUser, userData.data);
+    yield put(updateUserProfileSuccess(user));
+    yield put(successSnackBar());
+  } catch (error) {
+    yield put(failSnackBar(error.message));
   }
 }

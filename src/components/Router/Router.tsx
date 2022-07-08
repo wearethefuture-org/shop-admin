@@ -28,6 +28,7 @@ import Search from '../../pages/Search/Search';
 import WithAxios from '../../api/withAxios';
 import ResetPassword from '../../pages/ResetPassword/ResetPassward';
 import Invoices from '../../pages/Invoices/Invoices';
+import Profile from '../../pages/Profile/Profile';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -68,6 +69,7 @@ const Router: React.FC = () => {
                 <PrivateRoute component={TreeCategoryRouter} path="/tree-category/:id" />
                 <PrivateRoute component={Search} path="/search" />
                 <PrivateRoute component={OrderRouter} path="/order/:id" />
+                <PrivateRoute component={Profile} path="/profile" />
                 <Route path="/password" component={ResetPassword} />
                 <Route path="/home" component={Home} />
               </Switch>
