@@ -144,10 +144,10 @@ const Search: React.FC<SearchProps> = (props) => {
   };
 
   const finishSearch = () => {
-    if (searchOption === "products") {
+    if (searchOption === 'products') {
       dispatch(getProductsRequest(1, 10));
     }
-    if(searchOption === "orders") {
+    if (searchOption === 'orders') {
       dispatch(getOrdersRequest(1, 10));
     }
   };
