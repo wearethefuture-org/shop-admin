@@ -7,11 +7,11 @@ const useOrders = (searchValue: string) => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    if(searchValue){
+    if (searchValue){
       dispatch(getOrdersByParamsRequest(1,10, searchValue));
     }
     
-    if(!searchValue){
+    if (!searchValue){
       dispatch(getOrdersRequest(1,10));
     }
   }, [dispatch]);
