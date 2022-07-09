@@ -33,7 +33,6 @@ export const getEditCharValuesObject = (
           const value = characteristicId && formik.values.subForm && formik.values.subForm[name];
 
           const basicValues = { name, characteristicId };
-
           if (!productChar && value) {
             switch (type) {
               case Type.enum:
@@ -76,7 +75,11 @@ export const getEditCharValuesObject = (
                 break;
 
               default:
-                value.trim() && acc.push({ ...basicValues, numberValue: Number(value.trim()) });
+                value.trim() &&
+                  acc.push({
+                    ...basicValues,
+                    numberValue: Number(value.trim()),
+                  });
                 break;
             }
           }
@@ -101,10 +104,13 @@ export const getEditCharValuesObject = (
 
           const value =
             characteristicId && formik.values.subForm && formik.values.subForm[characteristicName];
-
           if (productChar && value) {
             const { id } = productChar;
-            const basicValues = { id, name: characteristicName, characteristicId };
+            const basicValues = {
+              id,
+              name: characteristicName,
+              characteristicId,
+            };
 
             switch (type) {
               case Type.enum:
@@ -114,17 +120,30 @@ export const getEditCharValuesObject = (
                 break;
 
               case Type.json:
-                const entries: [string, string][] = Object.entries(value);
+                let { newEntry, ...rest } = value;
 
-                const filteredValue = entries.filter(([key, value]) => key && value.trim());
+                if (newEntry?.key) {
+                  const newValue = newEntry.value.split(',').map((val) => val.trim());
+                  rest = { ...rest, [newEntry.key.trim()]: newValue };
+                }
 
-                const resultObject: object = Object.fromEntries(filteredValue);
+                const entries: [string, string | string[]][] = Object.entries(rest);
+
+                const formattedValues = entries.map((item) => {
+                  if (!Array.isArray(item[1])) {
+                    item[1] = item[1].split(',').map((val) => val.trim());
+                    return item;
+                  }
+                  return item;
+                });
+
+                const resultObject: object = Object.fromEntries(formattedValues);
 
                 const valuesEqual =
                   arrayEquals(Object.keys(initialValue), Object.keys(resultObject)) &&
                   arrayEquals(Object.values(initialValue), Object.values(resultObject));
 
-                if (!valuesEqual && resultObject && Object.values(resultObject).length) {
+                if (!valuesEqual && resultObject) {
                   acc.push({
                     ...basicValues,
                     jsonValue: resultObject,
@@ -133,7 +152,7 @@ export const getEditCharValuesObject = (
                 break;
 
               case Type.string:
-                if (initialValue !== value && value.trim()) {
+                if (initialValue !== value) {
                   acc.push({ ...basicValues, stringValue: value });
                 }
                 break;
@@ -179,7 +198,7 @@ export const getEditCharValuesObject = (
               acc.push(productChar.id);
             } else if (productChar.jsonValue) {
               const values: string[] = Object.values(value);
-              const filteredValues: string[] = values.filter((value) => value.trim());
+              const filteredValues: string[] = values.filter((value) => value);
 
               !filteredValues.length && acc.push(productChar.id);
             } else if (!value) {
