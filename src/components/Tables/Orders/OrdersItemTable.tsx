@@ -1,56 +1,28 @@
 import { useSelector, useDispatch } from 'react-redux';
-import React, { FC, ChangeEvent } from 'react';
+import React, { FC, } from 'react';
 
-import { updateOrderRequest } from '../../../store/actions/orders.actions';
+import { updateProductInOrderRequest } from '../../../store/actions/orders.actions';
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import OrdersEditQuantity from '../../../components/Tables/Orders/OrdersEditQuantity';
 import OrdersItemTableHeader from './OrdersItemTableHeader';
 import { ICurrentOrder } from '../../../interfaces/IOrders';
 import OrdersSelector from './OrdersSelector';
 import { RootState } from '../../../store/store';
-import { IProductCharResponse } from '../../../interfaces/IProducts';
 
 interface OrdersItemTableProps {
   order: ICurrentOrder;
 }
 
-type handleChangeType = (arg: {
-  productId: number;
-  field: 'color' | 'size';
-}) => (e: ChangeEvent<{ value: unknown }>) => void;
-
 const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
-  const loading = useSelector((state: RootState) => state.orders.loading);
   const dispatch = useDispatch();
-
+  const ref = React.createRef();
+  const loading = useSelector((state: RootState) => state.orders.loading);
   const currentOrderData = order.productToOrder.map((item) => {
     return { ...item, delivery: order.delivery };
   });
 
-  const handleChange: handleChangeType =
-    ({ productId, field }) =>
-    (e) => {
-      const target = e.target;
-      e.stopPropagation();
-      dispatch(updateOrderRequest(order.id, productId, { [field]: target.value }));
-    };
-
-  const getCharEnumByName = ({
-    characteristicValue,
-    charName,
-  }: {
-    characteristicValue: Array<IProductCharResponse>;
-    charName: 'sizes' | 'colors';
-  }) => {
-    if (characteristicValue.length) {
-      const charEnum = characteristicValue.find(
-        (val) => val.name === charName && val.type === 'enum'
-      );
-      return !charEnum || !charEnum.enumValue || !charEnum.enumValue.length
-        ? null
-        : charEnum.enumValue;
-    }
-    return null;
+  const handleChange = (e, field: string, productId: number) => {
+    dispatch(updateProductInOrderRequest(e.target.value, field, productId, order.id));
   };
 
   const columns = [
@@ -140,25 +112,20 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       sortable: true,
     },
     {
-      name: 'Не передзвонювати',
-      selector: (row) => row.notcall,
-      sortable: true,
-    },
-    {
       name: 'Розмір',
       selector: (row) => row.size,
       sortable: false,
       cell: (row) => {
-        const { characteristicValue } = row.product;
-        const sizes = getCharEnumByName({ characteristicValue, charName: 'sizes' });
-        return sizes ? (
+        const colorAndSize = getColorsAndSize(row.product.characteristicValue);
+        const allSizesWithoutRepeat = getSizesWithoutRepeat(colorAndSize[1]);
+        return (
           <OrdersSelector
             value={row.size}
-            handleChange={handleChange({ productId: row.product.id, field: 'size' })}
-            menuItems={sizes}
+            handleChange={(e) => handleChange(e, "size", row.product.id)}
+            menuItems={allSizesWithoutRepeat}
             disabled={loading}
           />
-        ) : null;
+        );
       },
     },
     {
@@ -166,16 +133,15 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       selector: (row) => row.color,
       sortable: false,
       cell: function (row) {
-        const { characteristicValue } = row.product;
-        const colors = getCharEnumByName({ characteristicValue, charName: 'colors' });
-        return colors ? (
+        const colorAndSize = getColorsAndSize(row.product.characteristicValue);
+        return (
           <OrdersSelector
             value={row.color}
-            handleChange={handleChange({ productId: row.product.id, field: 'color' })}
-            menuItems={colors}
+            handleChange={(e) => handleChange(e, "color", row.product.id)}
+            menuItems={colorAndSize[0]}
             disabled={loading}
           />
-        ) : null;
+        );
       },
     },
   ];
@@ -185,9 +151,37 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       data={currentOrderData}
       columns={columns}
       title={<OrdersItemTableHeader order={order} />}
-      onRowClicked={() => {}}
+      onRowClicked={() => { }}
     />
   );
 };
+
+function getColorsAndSize(arr): [string[], string[]] {
+  let allColors: string[] = [];
+  let allSizes: string[] = [];
+  for (let index of arr) {
+    if (index.name === 'Кольори та розміри') {
+      allColors = Object.keys(index.jsonValue)
+      allSizes = Object.values(index.jsonValue);
+    }
+  }
+  return [allColors, allSizes];
+}
+
+function getSizesWithoutRepeat(arr): string[] {
+  const allSizesWithoutRepeat: string[] = [];
+
+  const allSizes = arr.reduce((acc, item) => {
+    return [...acc, ...item]
+  }, [])
+
+  for (let index of allSizes) {
+    if (!allSizesWithoutRepeat.includes(index)) {
+      allSizesWithoutRepeat.push(index);
+    }
+  }
+
+  return allSizesWithoutRepeat;
+}
 
 export default OrdersItemTable;

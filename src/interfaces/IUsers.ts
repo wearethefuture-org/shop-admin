@@ -17,6 +17,7 @@ export interface IUserItem {
   phoneNumber: string;
   status: string;
   email: string;
+  password: string;
   telegramId?: string;
   role: {
     name: string;
@@ -64,8 +65,13 @@ export interface IUsersData {
   loading: boolean;
   currentUser: IUserItem | null;
   error: string | null;
-  count: number,
-  totalPages: number,
+  count: number;
+  totalPages: number
+  isSearch: boolean;
+  paginationPage: number;
+  searchValue: null | string;
+  paginationPageSearch: number;  
+  currentPage: number;
 }
 
 export interface UserTableData {
@@ -87,4 +93,24 @@ export interface IOrderUser {
   firstName: string;
   lastName: string;
   phoneNumber: string;
+}
+
+export interface IResponseMessage {
+  success?: boolean;
+  message: string;
+}
+
+export interface IUsersSearchResponse {
+  data: IUserItem[];
+  count: number;
+  totalPages: number;
+}
+
+export interface UsersTableProps {
+  list: IUserItem[];
+  activeColumns: string[];
+  isSearch: boolean;
+  searchValue: string;
+  count: number;
+  paginationPage: number;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, TextField, Select, MenuItem } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 import InputMask from 'react-input-mask';
@@ -11,6 +11,8 @@ import { addUserRequest, updateUserRequest } from '../../../store/actions/users.
 import { IUserItem } from '../../../interfaces/IUsers';
 import { failSnackBar } from '../../../store/actions/snackbar.actions';
 import useRoles from '../../../hooks/useRoles';
+import styles from './UserCard-form.module.scss'
+import { NavLink } from 'react-router-dom';
 
 // todo
 // how to avoid code duplication in input and inputError fields?
@@ -38,6 +40,9 @@ const useStyles = makeStyles({
   },
   row: {
     margin: '10px',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
   submit: {
     'background': '#424D52',
@@ -80,8 +85,23 @@ const phoneRegExp =
   /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
 const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) => {
+  const [showCurrentPassword, setShowCurrentPassword] = React.useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = React.useState<boolean>(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = React.useState<boolean>(false);
   const classes = useStyles();
   const { data: roles } = useRoles();
+
+  const onToggleShowCurrentPassword = () => {
+    setShowCurrentPassword(!showCurrentPassword)
+  }
+
+  const onToggleShowNewPassword = () => {
+    setShowNewPassword(!showNewPassword)
+  }
+
+  const onToggleShowConfirmNewPassword = () => {
+    setShowConfirmNewPassword(!showConfirmNewPassword)
+  }
 
   const baseScheme = {
     firstName: Yup.string()
@@ -106,14 +126,6 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     email: Yup.string().email('Неправильна адреса!').required('Це поле не повинно бути пустим!'),
     telegramId: Yup.string().notRequired().nullable(),
     roleId: Yup.string().required('Це поле не повинно бути пустим!'),
-    newPassword: Yup.string()
-      .min(6, 'Пароль занадто короткий!')
-      .required('Це поле не повинно бути пустим!')
-      .matches(
-        /^(?=.*[A-ZА-Я])(?=.*\d).*$/,
-        'Пароль має бути не менше 6 символів, містити цифри та великі літери'
-      ),
-    confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
   };
 
   const newScheme = {
@@ -135,6 +147,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
 
   const [isEdit, setIsEdit] = useState(true);
   const dispatch: AppDispatch = useDispatch();
+  const currentPage = useSelector((state: any) => state.users.currentPage );
   const initialValues = {
     firstName: isNew ? '' : user?.firstName,
     lastName: isNew ? '' : user?.lastName,
@@ -142,7 +155,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     email: isNew ? '' : user?.email,
     roleId: isNew ? 1 : user?.role.id,
     telegramId: isNew ? '' : user?.telegramId,
-    currentPassword: '',
+    currentPassword: isNew ? '' : user?.password,
     newPassword: '',
     confirmNewPassword: '',
   };
@@ -179,7 +192,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
         }
         sendData['roleId'] = _values['roleId'];
         if (Object.keys(sendData).length > 1) {
-          dispatch(updateUserRequest(user.id, sendData));
+          dispatch(updateUserRequest(user.id, sendData, currentPage));
         } else {
           dispatch(failSnackBar('Ви нічого не змінили'));
         }
@@ -193,7 +206,6 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       ? classes.inputError
       : classes.input;
   };
-
   return (
     <form
       onSubmit={formik.handleSubmit}
@@ -308,59 +320,13 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           })}
         </Select>
       </div>
-      {!isNew ? (
-        <div className={classes.row}>
-          <TextField
-            className={getInputClass('currentPassword')}
-            autoComplete={'false'}
-            disabled={!isEdit}
-            type="password"
-            name="currentPassword"
-            id="currentPassword-field"
-            placeholder="Поточний пароль"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.currentPassword && Boolean(formik.errors.currentPassword)}
-            helperText={formik.touched.currentPassword && formik.errors.currentPassword}
-            InputProps={{ disableUnderline: true }}
-            margin="dense"
-          />
+   
+      {!isNew && <NavLink to={'/password'} key={'/password'}>
+        <div className={styles.form__resetPassword}>
+            <span>Змінити пароль</span>
         </div>
-      ) : null}
-      <div className={classes.row}>
-        <TextField
-          className={getInputClass('newPassword')}
-          autoComplete={'false'}
-          disabled={!isEdit}
-          type="password"
-          name="newPassword"
-          id="newPassword-field"
-          placeholder="Новий пароль"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.newPassword && Boolean(formik.errors.newPassword)}
-          helperText={formik.touched.newPassword && formik.errors.newPassword}
-          InputProps={{ disableUnderline: true }}
-          margin="dense"
-        />
-      </div>
-      <div className={classes.row}>
-        <TextField
-          className={getInputClass('confirmNewPassword')}
-          autoComplete={'false'}
-          disabled={!isEdit}
-          type="password"
-          name="confirmNewPassword"
-          id="confirmNewPassword-field"
-          placeholder="Підтвердіть пароль"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.confirmNewPassword && Boolean(formik.errors.confirmNewPassword)}
-          helperText={formik.touched.confirmNewPassword && formik.errors.confirmNewPassword}
-          InputProps={{ disableUnderline: true }}
-          margin="dense"
-        />
-      </div>
+      </NavLink>}
+
       <div className={classes.row}>
         <Button className={classes.submit} type="submit" disabled={formik.isSubmitting}>
           {isNew ? 'Створити' : isEdit ? 'Змінити' : 'Редагувати'}

@@ -10,3 +10,8 @@ export async function userFetch() {
   const user = await api.user.get();
   return user.data;
 }
+
+export async function updateProfileUser(data) {
+  const user = await api.user.updateUserData(data);
+  return user.data;
+}

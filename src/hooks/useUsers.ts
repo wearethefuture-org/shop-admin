@@ -1,19 +1,26 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { getUsersRequest } from '../store/actions/users.actions';
+import { IUserItem, IUsersData } from '../interfaces/IUsers';
+import { getUsersByQueryRequest, getUsersRequest } from '../store/actions/users.actions';
 import { AppDispatch, RootState } from '../store/store';
-import { IUserItem } from '../interfaces/IUsers';
 
-const useUsers = () => {
+const useUsers = (paginationPage: number, paginationPageSearch: number, searchValue: string) => {
   const dispatch: AppDispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getUsersRequest(1, 10));
-  }, [dispatch]);
+  const { list, loading, isSearch }: Partial<IUsersData> = useSelector(
+    (state: RootState) => state.users
+  );
 
-  const data: IUserItem[] = useSelector((state: RootState) => state.users.list);
-  return { data, dispatch };
+  useEffect((): void | any => {
+    if (isSearch) {
+      dispatch(getUsersByQueryRequest(searchValue, paginationPageSearch, 10));
+    }
+    if (!isSearch) {
+      dispatch(getUsersRequest(paginationPage, 10));
+    }
+  }, [dispatch, isSearch]);
+
+  return { list, loading, isSearch };
 };
 
 export default useUsers;

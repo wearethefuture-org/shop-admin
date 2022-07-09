@@ -1,9 +1,9 @@
 import React from 'react';
-import { Form, FormikProps } from 'formik';
+import { Field, Form, FormikProps } from 'formik';
 import { makeStyles, ThemeOptions } from '@material-ui/core/styles';
 import { alpha, Button, createStyles, DialogActions, Switch, Theme, Typography } from '@material-ui/core';
-
-import { IFormParserValues } from '../../../../interfaces/widget-form';
+import { TextField } from 'formik-material-ui';
+import { IFormParserValues } from './Parser-form';
 
 const useStyles = makeStyles((theme: Theme): ThemeOptions =>
   createStyles({
@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme: Theme): ThemeOptions =>
     parserName: {
       width: '250px',
       marginRight: '10px',
+      marginBottom: '10px',
       fontWeight: 'bold',
       fontSize: '130%',
     },
@@ -44,7 +45,9 @@ const useStyles = makeStyles((theme: Theme): ThemeOptions =>
       },
       margin: 'left',
     },
-    
+    input: {
+      width: '130px',
+    },
     secondaryHeading: {
       flexGrow: 1,
       marginLeft: '30px',
@@ -60,70 +63,83 @@ const useStyles = makeStyles((theme: Theme): ThemeOptions =>
   })
 );
 
+enum ParserSettingsDescription {
+  updatePhoto = "Оновлювати фото",
+  createNewProducts = "Створювати новий продукт",
+  updateOldProducts = "Оновлювати старий продукт",
+  parserLimit = "Відсоток для парсигу"
+}
+
 const InnerForm: React.FC<FormikProps<IFormParserValues>> = (props) => {
   const classes = useStyles();
 
-  const [state, setState] = React.useState({
-    bazzilaIdUpdatePhoto: props.values.bazzilaIdUpdatePhoto,
-    fashionGirlUpdatePhoto: props.values.fashionGirlUpdatePhoto,
-    bazzilaIdCreateNewProducts: props.values.bazzilaIdCreateNewProducts,
-    fashionGirlCreateNewProducts: props.values.fashionGirlCreateNewProducts,
-  });
+  const [state, setState] = React.useState({...props.values});
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [event.target.name]: event.target.checked });
     props.setFieldValue(event.target.name, event.target.checked);
   };
 
+  const validateNumber = (value: number) => {
+    if (typeof value !== 'number') {return 'Must be number';}
+    if (value < 1) {return 'Must be greater than 1';}
+    if (value > 100) {return  'Must be less than 100';}
+  };
+
+  const validateString = (value: string) => {
+    if (value.length < 3) {return 'To short...';}
+    if (value.length > 200) {return  'To long...';}
+  };
+
+  const mappedElements = Object.values(props.values.parameters).map((item: any, index) => {
+    return (<div key={index}>
+      <div>
+        <Typography className={classes.parserName}>Парсер {Object.keys(props.values.parameters)[index].toUpperCase()}</Typography>
+      </div>
+      <div className={classes.inputContainer}>
+        {Object.values(item).map( (element: any, childrenIndex) => {
+            let secondNamePart = Object.keys(item)[childrenIndex]
+            secondNamePart = secondNamePart.replace(secondNamePart.charAt(0), secondNamePart.charAt(0).toUpperCase())
+            const firstNamePart = Object.keys(props.values.parameters)[index]
+            const fullName = firstNamePart + secondNamePart
+            const fieldName = ParserSettingsDescription[Object.keys(item)[childrenIndex]] 
+            return (
+              <div className={classes.lineItem} key={childrenIndex}>
+                <Typography className={classes.title}>{fieldName ? fieldName : Object.keys(item)[childrenIndex]}:</Typography>
+                {(typeof element === 'boolean') &&
+                  <Switch
+                    className={classes.switch}
+                    checked={state[fullName]}
+                    onChange={handleChange}
+                    name={fullName}
+                  />}
+                {(typeof element === 'number') &&
+                <Field
+                  component={TextField}
+                  className={classes.input}
+                  validate={validateNumber}
+                  type="number"
+                  name={fullName}
+                />}
+                {(typeof element === 'string') &&
+                <Field
+                  component={TextField}
+                  className={classes.input}
+                  validate={validateString}
+                  type="string"
+                  name={fullName}
+                />}
+              </div>
+            )
+          })
+        }
+      </div>
+    </div>)
+  })
+
   return (
     <Form className={classes.form}>
-      <div>
-        <Typography className={classes.parserName}>Парсер Basilla:</Typography>
-      </div>
-      <div className={classes.inputContainer}>
-        <div className={classes.lineItem}>
-          <Typography className={classes.title}>Оновлювати фото:</Typography>
-          <Switch
-            className={classes.switch}
-            checked={state.bazzilaIdUpdatePhoto}
-            onChange={handleChange}
-            name="bazzilaIdUpdatePhoto"
-          />
-        </div>
-        <div className={classes.lineItem}>
-          <Typography className={classes.title}>Створювати новий продукт:</Typography>
-          <Switch
-            className={classes.switch}
-            checked={state.bazzilaIdCreateNewProducts}
-            onChange={handleChange}
-            name="bazzilaIdCreateNewProducts"
-          />
-        </div>
-      </div>
-      <div>
-        <Typography className={classes.parserName}>Парсер FashionGirl:</Typography>
-      </div>
-      <div className={classes.inputContainer}>
-        <div className={classes.lineItem}>
-          <Typography className={classes.title}>Оновлювати фото:</Typography>
-          <Switch
-            className={classes.switch}
-            checked={state.fashionGirlUpdatePhoto}
-            onChange={handleChange}
-            name="fashionGirlUpdatePhoto"
-          />
-        </div>
-        <div className={classes.lineItem}>
-          <Typography className={classes.title}>Створювати новий продукт:</Typography>
-          <Switch
-            className={classes.switch}
-            checked={state.fashionGirlCreateNewProducts}
-            onChange={handleChange}
-            name="fashionGirlCreateNewProducts"
-          />
-        </div>
-      </div>
-      
+      {mappedElements}
       <DialogActions>
         <Button color="primary" variant="contained" type="submit" disabled={!props.isValid}>
           Зберегти

@@ -1,14 +1,18 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import Paper from '@material-ui/core/Paper';
-import TableHeader from './Header/Table-header';
-import SlideTableBody from './Body/Table-body';
-import SlideTableFooter from './Footer/Table-footer';
-import TableContainer from '@material-ui/core/TableContainer';
-import { ISlideItem } from '../../../interfaces/ISlides';
+import React, { useState } from 'react';
 import { Dispatch } from 'redux';
+import { Switch, Button } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+import { TableColumn } from 'react-data-table-component';
+import AppDataTable from '../../../components/AppDataTable/AppDataTable';
+import { ISlideItem } from '../../../interfaces/ISlides';
 import { ISlidesModal } from '../../../interfaces/modals';
+import { root } from '../../../api/config';
+import FormDialog from '../../Modals/Slide-modal-edit';
+import {
+  fetchDeleteSlides,
+  fetchUpdateSlideVisibility,
+} from '../../../store/actions/slides.actions';
 
 interface SlideDataProps {
   data: Array<ISlideItem>;
@@ -16,73 +20,120 @@ interface SlideDataProps {
   modalData: ISlidesModal;
 }
 
-function createData(
-  id: number,
-  createdAt: string,
-  updatedAt: string,
-  name: string,
-  text: string,
-  image: string,
-  imageMobile: string,
-  href: string,
-  isShown: boolean,
-  priority: number
-) {
-  return { id, name, createdAt, updatedAt, text, image, imageMobile, href, isShown, priority };
-}
-
-const useTableStyles = makeStyles({
-  table: {
-    minWidth: 500,
-  },
-});
-
 const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) => {
-  const classes = useTableStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const { handleClickOpen } = modalData;
+  const [selected, setSelected] = useState(null);
 
-  const rows: Array<ISlideItem> = data.map((slide: ISlideItem) => {
-    return createData(
-      slide.id,
-      slide.createdAt,
-      slide.updatedAt,
-      slide.name,
-      slide.text,
-      slide.image as string,
-      slide.imageMobile as string,
-      slide.href,
-      slide.isShown,
-      slide.priority
-    );
-  });
+  const changeShown = (id: number, isShown: boolean) => {
+    const row = data.find((x) => x.id === id);
+    if (row) {
+      dispatch(fetchUpdateSlideVisibility({ id: row.id, isShown: isShown }));
+    }
+  };
 
-  rows.sort((a, b) => a.priority - b.priority);
+  const createSlideModalData = (id: any) => {
+    const handleClickOpen = () => setSelected(id);
+    const handleClose = () => setSelected(null);
+    return {
+      handleClickOpen,
+      handleClose,
+      isOpened: selected === id,
+    };
+  };
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const handleClickDelete = (item: ISlideItem) => dispatch(fetchDeleteSlides(item));
+
+  const title = (
+    <div style={{ display: 'flex' }}>
+      Слайди
+      <Button
+        style={{ marginLeft: 'auto' }}
+        variant="contained"
+        color="primary"
+        startIcon={<AddIcon />}
+        onClick={handleClickOpen}
+      >
+        Додати слайд
+      </Button>
+    </div>
+  );
+
+  const slideColumns: TableColumn<ISlideItem>[] = [
+    {
+      name: 'IД',
+      selector: (row) => row.id,
+      width: '8%',
+    },
+    {
+      name: 'Назва',
+      selector: (row) => row.name,
+    },
+    {
+      name: 'Опис',
+      selector: (row) => row.text,
+    },
+    {
+      name: 'Зображення',
+      selector: (row) => row.image,
+      cell: (row) => <img width="50px" src={`${root}/static/uploads/${row.image}`} alt="" />,
+    },
+    {
+      name: 'Зображення на телефоні',
+      selector: (row) => row.imageMobile,
+      cell: (row) => <img width="50px" src={`${root}/static/uploads/${row.imageMobile}`} alt="" />,
+    },
+    {
+      name: 'Посилання',
+      selector: (row) => row.href,
+    },
+    {
+      name: 'Відображати',
+      selector: (row) => row.isShown,
+      cell: (row) => (
+        <Switch checked={row.isShown} onChange={() => changeShown(row.id, !row.isShown)} />
+      ),
+    },
+    {
+      name: 'Пріоритет',
+      selector: (row) => row.priority,
+      sortable: true,
+    },
+    {
+      name: '',
+      selector: (row) => row.id,
+      cell: (row) => (
+        <FormDialog
+          dispatch={dispatch}
+          slidesLength={data.length}
+          modalData={createSlideModalData(row.id)}
+          row={row}
+        />
+      ),
+    },
+    {
+      name: '',
+      selector: (row) => row.id,
+      cell: (row) => (
+        <Button variant="contained" color="secondary" onClick={() => handleClickDelete(row)}>
+          <DeleteIcon />
+        </Button>
+      ),
+    },
+  ];
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="custom pagination table">
-        <TableHeader />
-        <SlideTableBody
-          data={data}
-          dispatch={dispatch}
-          modalData={modalData}
-          rows={rows}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          emptyRows={emptyRows}
-        />
-        <SlideTableFooter
-          rows={rows}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          setPage={setPage}
-          setRowsPerPage={setRowsPerPage}
-        />
-      </Table>
-    </TableContainer>
+    <React.Fragment>
+      <AppDataTable
+        data={data}
+        title={title}
+        columns={slideColumns}
+        customStyles={{
+          cells: {
+            style: { cursor: 'default' },
+          },
+        }}
+      />
+    </React.Fragment>
   );
 };
 
