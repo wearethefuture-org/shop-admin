@@ -33,12 +33,12 @@ const useStyles = makeStyles(
           backgroundColor: COLORS.secondaryGray,
         },
       },
-      confirmButton: {
+      declineButtonDark: {
         'borderRadius': '30px',
         'color': COLORS.primaryLight,
-        'backgroundColor': COLORS.primaryRed,
+        'backgroundColor': COLORS.darkGray,
         '&:hover': {
-          backgroundColor: COLORS.secondaryRed,
+          backgroundColor: COLORS.secondaryDarkGray,
         },
       },
       confirmButton: {
