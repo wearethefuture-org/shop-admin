@@ -15,6 +15,7 @@ const useStyles = makeStyles(
   (): ThemeOptions =>
     createStyles({
       btn: {
+        'padding': '6px 15px 6px 15px',
         'borderRadius': '30px',
         'color': COLORS.primaryLight,
         'backgroundColor': COLORS.primaryBlue,
@@ -23,6 +24,7 @@ const useStyles = makeStyles(
         },
       },
       btnDark: {
+        'padding': '6px 15px 6px 15px',
         'borderRadius': '30px',
         'color': COLORS.primaryLight,
         'backgroundColor': COLORS.darkBlue,
