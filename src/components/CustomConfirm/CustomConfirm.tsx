@@ -11,6 +11,8 @@ import {
   ThemeOptions,
 } from '@material-ui/core';
 import { COLORS } from '../../values/colors';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 interface ConfirmProps {
   openDeleteDialog: boolean;
@@ -39,6 +41,22 @@ const useStyles = makeStyles(
           backgroundColor: COLORS.secondaryRed,
         },
       },
+      confirmButton: {
+        'borderRadius': '30px',
+        'color': COLORS.primaryLight,
+        'backgroundColor': COLORS.primaryRed,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryRed,
+        },
+      },
+      confirmButtonDark: {
+        'borderRadius': '30px',
+        'color': COLORS.primaryLight,
+        'backgroundColor': COLORS.darkRed,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryDarkRed,
+        },
+      },
     })
 );
 
@@ -50,6 +68,7 @@ const CustomConfirm: FC<ConfirmProps> = ({
   handleDelete,
 }) => {
   const classes = useStyles();
+  const { darkMode } = useSelector((state: RootState) => state.theme);
   return (
     <Dialog
       open={openDeleteDialog}
@@ -64,10 +83,16 @@ const CustomConfirm: FC<ConfirmProps> = ({
         <DialogContentText id="alert-dialog-description">{warning}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeDeleteDialog} className={classes.declineButton}>
+        <Button
+          onClick={closeDeleteDialog}
+          className={darkMode ? classes.declineButtonDark : classes.declineButton}
+        >
           Ні
         </Button>
-        <Button onClick={handleDelete} className={classes.confirmButton}>
+        <Button
+          onClick={handleDelete}
+          className={darkMode ? classes.confirmButtonDark : classes.confirmButton}
+        >
           Так
         </Button>
       </DialogActions>
