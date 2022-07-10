@@ -14,7 +14,7 @@ const useStyles = makeStyles(
     createStyles({
       btn: {
         'borderRadius': '30px',
-        'padding': '5px 15px 5px 15px',
+        'padding': '6px 15px 6px 15px',
         'color': COLORS.primaryLight,
         'backgroundColor': COLORS.primaryGray,
         '&:hover': {
@@ -23,7 +23,7 @@ const useStyles = makeStyles(
       },
       btnDark: {
         'borderRadius': '30px',
-        'padding': '5px 15px 5px 15px',
+        'padding': '6px 15px 6px 15px',
         'color': COLORS.primaryLight,
         'backgroundColor': COLORS.secondaryDarkGray,
         '&:hover': {
