@@ -76,6 +76,37 @@
   }
 }
 
+.iconsDark {
+  display: flex;
+  justify-content: center;
+  column-gap: 100px;
+
+  > :first-child {
+    cursor: pointer;
+    color: #0a54a3;
+    transition: 0.3s all;
+
+    :hover {
+      color: #08488c;
+    }
+  }
+
+  :nth-child(2):hover {
+    cursor: pointer;
+    color: grey;
+  }
+
+  :nth-child(3) {
+    cursor: pointer;
+    transition: 0.3s all;
+    color: #c71010;
+
+    :hover {
+      color: #ab0c0c;
+    }
+  }
+}
+
 .cardsContainer-dark {
   @extend .cardsContainer;
 
