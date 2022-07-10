@@ -45,6 +45,18 @@ const useStyles = makeStyles(
         },
         'margin': 'left',
       },
+      switchDark: {
+        '& .MuiSwitch-switchBase.Mui-checked': {
+          'color': COLORS.darkGreen,
+          '&:hover': {
+            backgroundColor: alpha(COLORS.darkGreen, theme.palette.action.hoverOpacity),
+          },
+        },
+        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+          backgroundColor: COLORS.darkGreen,
+        },
+        'margin': 'left',
+      },
     })
 );
 
@@ -170,7 +182,7 @@ const ProductItem: React.FC = () => {
         <div className={styles.switch}>
           <span>Наявність</span>
           <Switch
-            className={classes.switch}
+            className={darkMode ? classes.switchDark : classes.switch}
             checked={productStatus.availability}
             onChange={handleUpdateAvailability}
             name="isWidgetActiveNewArrivals"
