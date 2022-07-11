@@ -61,6 +61,18 @@ const useStyles = makeStyles({
       backgroundColor: COLORS.secondaryGreen,
     },
   },
+  submitDark: {
+    'background': COLORS.darkGreen,
+    'borderRadius': ' 30px',
+    'color': COLORS.primaryLight,
+    'border': ' none',
+    'width': '270px',
+    'height': '44px',
+    'marginBottom': '15px',
+    '&:hover': {
+      backgroundColor: COLORS.secondaryDarkGreen,
+    },
+  },
   formDiv: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -75,9 +87,23 @@ const useStyles = makeStyles({
       backgroundColor: COLORS.primaryOttoman,
     },
   },
+  inputSelectDark: {
+    'width': '270px',
+    'height': '50px',
+    'marginBottom': '15px',
+    'textAlign': 'start',
+    '&:hover': {
+      backgroundColor: COLORS.darkGray,
+    },
+  },
   menuItem: {
     '&:hover': {
       backgroundColor: COLORS.primaryOttoman,
+    },
+  },
+  menuItemDark: {
+    '&:hover': {
+      backgroundColor: COLORS.darkGray,
     },
   },
 });
@@ -86,12 +112,13 @@ interface FormDialogProps {
   isNew: boolean;
   user: IUserItem | null;
   closeModal: () => void;
+  darkMode: boolean;
 }
 
 const phoneRegExp =
   /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
-const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) => {
+const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal, darkMode }) => {
   const [showCurrentPassword, setShowCurrentPassword] = React.useState<boolean>(false);
   const [showNewPassword, setShowNewPassword] = React.useState<boolean>(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = React.useState<boolean>(false);
@@ -305,7 +332,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       <div className={classes.row}>
         <Select
           value={formik.values.roleId}
-          className={classes.inputSelect}
+          className={darkMode ? classes.inputSelectDark : classes.inputSelect}
           disabled={!isEdit}
           type="select"
           name="roleId"
@@ -315,7 +342,11 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           renderValue={(value) => (value !== 0 ? value : 'Вибрати роль')}
         >
           {roles.map((role) => (
-            <MenuItem className={classes.menuItem} key={'option' + role.id} value={role.id}>
+            <MenuItem
+              className={darkMode ? classes.menuItemDark : classes.menuItem}
+              key={'option' + role.id}
+              value={role.id}
+            >
               {role.name}
             </MenuItem>
           ))}
@@ -404,7 +435,11 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       )}
 
       <div className={classes.row}>
-        <Button className={classes.submit} type="submit" disabled={formik.isSubmitting}>
+        <Button
+          className={darkMode ? classes.submitDark : classes.submit}
+          type="submit"
+          disabled={formik.isSubmitting}
+        >
           {isNew ? 'Створити' : isEdit ? 'Змінити' : 'Редагувати'}
         </Button>
       </div>

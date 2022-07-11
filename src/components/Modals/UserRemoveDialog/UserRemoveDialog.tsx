@@ -15,6 +15,7 @@ import { COLORS } from '../../../values/colors';
 interface RemoveProps {
   user: IUserItem;
   closeModal: () => void;
+  darkMode: boolean;
 }
 
 const useStyles = makeStyles({
@@ -31,6 +32,7 @@ const useStyles = makeStyles({
     'margin': '10px',
   },
   removeButton: {
+    'padding': '6px 15px 6px 15px',
     'background': COLORS.primaryGreen,
     'color': COLORS.primaryLight,
     'borderRadius': '30px',
@@ -39,7 +41,18 @@ const useStyles = makeStyles({
       background: COLORS.secondaryGreen,
     },
   },
+  removeButtonDark: {
+    'padding': '6px 15px 6px 15px',
+    'background': COLORS.darkGreen,
+    'color': COLORS.primaryLight,
+    'borderRadius': '30px',
+    'margin': '10px',
+    '&:hover': {
+      background: COLORS.secondaryDarkGreen,
+    },
+  },
   cancelButton: {
+    'padding': '6px 15px 6px 15px',
     'background': COLORS.primaryGray,
     'color': COLORS.primaryLight,
     'borderRadius': '30px',
@@ -48,9 +61,19 @@ const useStyles = makeStyles({
       background: COLORS.secondaryGray,
     },
   },
+  cancelButtonDark: {
+    'padding': '6px 15px 6px 15px',
+    'background': COLORS.darkGray,
+    'color': COLORS.primaryLight,
+    'borderRadius': '30px',
+    'margin': '10px',
+    '&:hover': {
+      background: COLORS.secondaryDarkGray,
+    },
+  },
 });
 
-const UserRemoveDialog: React.FC<RemoveProps> = ({ closeModal, user }) => {
+const UserRemoveDialog: React.FC<RemoveProps> = ({ closeModal, user, darkMode }) => {
   const dispatch: AppDispatch = useDispatch();
   const classes = useStyles();
 
@@ -79,10 +102,16 @@ const UserRemoveDialog: React.FC<RemoveProps> = ({ closeModal, user }) => {
         </DialogContentText>
       </DialogContent>
       <div>
-        <Button className={classes.cancelButton} onClick={handleClose}>
+        <Button
+          className={darkMode ? classes.cancelButtonDark : classes.cancelButton}
+          onClick={handleClose}
+        >
           Відміна
         </Button>
-        <Button className={classes.removeButton} onClick={removeUser}>
+        <Button
+          className={darkMode ? classes.removeButtonDark : classes.removeButton}
+          onClick={removeUser}
+        >
           Видалити
         </Button>
       </div>

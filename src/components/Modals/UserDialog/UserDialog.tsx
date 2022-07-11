@@ -17,9 +17,10 @@ interface FormDialogProps {
   isNew: boolean;
   user: IUserItem | null;
   closeModal: () => void;
+  darkMode: boolean;
 }
 
-const UserDialog: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) => {
+const UserDialog: React.FC<FormDialogProps> = ({ isNew, user, closeModal, darkMode }) => {
   const classes = useStyles();
   const handleClose = () => {
     closeModal();
@@ -38,7 +39,7 @@ const UserDialog: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) => {
           {isNew ? 'Створення користувача' : 'Картка користувача'}
         </DialogTitle>
         <DialogContent dividers>
-          <UserCardForm closeModal={closeModal} isNew={isNew} user={user} />
+          <UserCardForm closeModal={closeModal} isNew={isNew} user={user} darkMode />
         </DialogContent>
       </div>
     </Dialog>

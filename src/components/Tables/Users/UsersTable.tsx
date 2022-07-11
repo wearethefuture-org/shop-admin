@@ -35,6 +35,15 @@ const useStyles = makeStyles(
           color: COLORS.secondaryBlue,
         },
       },
+      editIconDark: {
+        'cursor': 'pointer',
+        'color': COLORS.darkBlue,
+        'transition': '0.3s all',
+
+        '&:hover': {
+          color: COLORS.secondaryDarkBlue,
+        },
+      },
       deleteIcon: {
         'cursor': 'pointer',
         'color': COLORS.primaryRed,
@@ -42,6 +51,15 @@ const useStyles = makeStyles(
 
         '&:hover': {
           color: 'rgb(216, 0, 0)',
+        },
+      },
+      deleteIconDark: {
+        'cursor': 'pointer',
+        'color': COLORS.darkRed,
+        'transition': '0.3s all',
+
+        '&:hover': {
+          color: COLORS.secondaryDarkRed,
         },
       },
     })
@@ -53,6 +71,7 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const count = useSelector((state: RootState) => state.users.count);
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const onChangePage = (page) => {
     setPage(page);
@@ -103,8 +122,8 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
   const addUserBtn = (
     <Box>
       <AddBtn title="Створити" handleAdd={openDialogNewUser} />
-      {userDialogIsOpen && <UserDialog {...modalParams} />}
-      {confirmRemoveUserIsOpen && <UserRemoveDialog {...modalRemoveParams} />}
+      {userDialogIsOpen && <UserDialog {...modalParams} darkMode/>}
+      {confirmRemoveUserIsOpen && <UserRemoveDialog {...modalRemoveParams} darkMode />}
     </Box>
   );
 
@@ -158,10 +177,10 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
         return (
           <Box display="flex">
             <Button className={classes.button} value={row.id} onClick={openDialogUserCard}>
-              <EditIcon className={classes.editIcon} />
+              <EditIcon className={darkMode ? classes.editIconDark : classes.editIcon} />
             </Button>
             <Button className={classes.button} value={row.id} onClick={openDialogRemoveUser}>
-              <DeleteIcon className={classes.deleteIcon} />
+              <DeleteIcon className={darkMode ? classes.deleteIconDark : classes.deleteIcon} />
             </Button>
           </Box>
         );
