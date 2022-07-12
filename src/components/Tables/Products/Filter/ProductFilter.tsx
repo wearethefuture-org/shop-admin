@@ -8,11 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
 import { getProductsRequest } from '../../../../store/actions/products.actions';
 
-const validateNumber = (value: number) => {
-  if (typeof value !== 'number') {return 'Enter number';}
-  if (value < 1) {return 'Must be greater than 1';}
-};
-
 const validateString = (value: string) => {
   if (value.length < 3) {return 'To short...';}
   if (value.length > 200) {return  'To long...';}
@@ -36,7 +31,6 @@ const ProductFilter: React.FC = () => {
   };
 
   const onSubmit = (values: any) => {
-    filter.id = values.id ? values.id : null
     filter.name = values.name
     filter.category = values.category
     filter.price = values.selectPrice ? price : findPrice
@@ -77,10 +71,8 @@ const ProductFilter: React.FC = () => {
           <DialogContent dividers>
             <Formik
               initialValues={{ 
-                id: filter.id, 
                 name: filter.name, 
                 category: filter.category,
-                selectId: !!filter.id,
                 selectName: !!filter.name,
                 selectCategory: !!filter.category,
                 selectPrice: isPriceChecked,
@@ -89,23 +81,6 @@ const ProductFilter: React.FC = () => {
             >
             {({ values, setFieldValue }) => (
               <Form className={style.mainForm}>
-                <div className={style.box} >
-                  <Field 
-                    className={style.checkbox}
-                    onClick={() => values.selectId && setFieldValue('id', '')}
-                    type='checkbox' 
-                    name='selectId' 
-                  />
-                  <Field 
-                    fullWidth
-                    validate={values.selectId ? validateNumber : false}
-                    component={TextField} 
-                    type='number' 
-                    label='ID:' 
-                    name='id' 
-                    disabled={!values.selectId} 
-                  />
-                </div>
                 <div className={style.box} >
                   <Field 
                     className={style.checkbox}
