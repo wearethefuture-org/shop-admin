@@ -65,36 +65,36 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
       width: '8%',
     },
     {
-      name: 'Name',
+      name: 'Назва',
       selector: (row) => row.name,
     },
     {
-      name: 'Text',
+      name: 'Опис',
       selector: (row) => row.text,
     },
     {
-      name: 'Image',
+      name: 'Зображення',
       selector: (row) => row.image,
       cell: (row) => <img width="50px" src={`${root}/static/uploads/${row.image}`} alt="" />,
     },
     {
-      name: 'Image Mobile',
+      name: 'Зображення на телефоні',
       selector: (row) => row.imageMobile,
       cell: (row) => <img width="50px" src={`${root}/static/uploads/${row.imageMobile}`} alt="" />,
     },
     {
-      name: 'Href',
+      name: 'Посилання',
       selector: (row) => row.href,
     },
     {
-      name: 'IsShown',
+      name: 'Відображати',
       selector: (row) => row.isShown,
       cell: (row) => (
         <Switch checked={row.isShown} onChange={() => changeShown(row.id, !row.isShown)} />
       ),
     },
     {
-      name: 'Priority',
+      name: 'Пріоритет',
       selector: (row) => row.priority,
       sortable: true,
     },
