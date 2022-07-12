@@ -43,6 +43,7 @@ const AddBtn: React.FC<IBtnProps> = ({ title, handleAdd, style }) => {
   return (
     <Button
       style={style}
+      variant="contained"
       className={darkMode ? classes.btnDark : classes.btn}
       startIcon={<AddIcon />}
       type="button"
