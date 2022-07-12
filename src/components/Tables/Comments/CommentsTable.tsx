@@ -6,6 +6,9 @@ import { CommentsTableProps } from '../../../interfaces/IComment';
 import AppDataTable from '../../AppDataTable/AppDataTable';
 import DateMoment from '../../Common/Date-moment';
 import styles from './CommentsTable.module.scss';
+import { COLORS } from '../../../values/colors';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 
 const useStyles = makeStyles(
   (): ThemeOptions =>
@@ -17,6 +20,15 @@ const useStyles = makeStyles(
 
         '&:hover': {
           color: 'rgb(216, 0, 0)',
+        },
+      },
+      iconDark: {
+        'cursor': 'pointer',
+        'color': COLORS.darkRed,
+        'transition': '0.3s all',
+
+        '&:hover': {
+          color: COLORS.secondaryDarkRed,
         },
       },
     })
@@ -35,6 +47,7 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
 }) => {
   const classes = useStyles();
   const [expandedComments, setExpandedComments] = useState<number[]>([]);
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const handleExpandedComments = (id) => {
     expandedComments.includes(id)
@@ -115,7 +128,7 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
             setCommentToDelete(row.id);
           }}
         >
-          <DeleteIcon className={classes.icon} />
+          <DeleteIcon className={darkMode ? classes.iconDark : classes.icon} />
         </IconButton>
       ),
     },
