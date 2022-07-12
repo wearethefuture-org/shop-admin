@@ -10,7 +10,7 @@ export const COLORS = {
   primaryOttoman: '#e9f8ef',
   secondaryOttoman: '#d5f2e1',
   salem: '#168541',
-  frenchPlum: '#85165B',
+  frenchPlum: '#822a60',
   primaryRed: '#ff0000',
   secondaryRed: '#d90000',
   darkGreen: '#4A7C56',
