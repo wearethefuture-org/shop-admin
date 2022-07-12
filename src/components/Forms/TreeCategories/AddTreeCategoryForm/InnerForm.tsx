@@ -7,6 +7,8 @@ import { IAddTreeCategory } from '../../../../interfaces/ITreeCategory';
 import TextFieldWrapped from '../../../../hocs/TextFieldHOC';
 import styled from 'styled-components';
 import { COLORS } from '../../../../values/colors';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store/store';
 
 const useStyles = makeStyles({
   customBtn: {
@@ -19,34 +21,50 @@ const useStyles = makeStyles({
     fontSize: '12px',
     marginBottom: '15px',
   },
+  closeBtn: {
+    'borderRadius': '30px',
+    'color': COLORS.primaryLight,
+    'backgroundColor': COLORS.primaryGray,
+    '&:hover': {
+      backgroundColor: COLORS.secondaryGray,
+    },
+  },
+  closeBtnDark: {
+    'borderRadius': '30px',
+    'color': COLORS.primaryLight,
+    'backgroundColor': COLORS.darkGray,
+    '&:hover': {
+      backgroundColor: COLORS.secondaryDarkGray,
+    },
+  },
+  submitBtn: {
+    'borderRadius': '30px',
+    'color': COLORS.primaryLight,
+    'backgroundColor': COLORS.primaryGreen,
+    '&:hover': {
+      backgroundColor: COLORS.secondaryGreen,
+    },
+  },
+  submitBtnDark: {
+    'borderRadius': '30px',
+    'color': COLORS.primaryLight,
+    'backgroundColor': COLORS.darkGreen,
+    '&:hover': {
+      backgroundColor: COLORS.secondaryDarkGreen,
+    },
+  },
 });
 
 interface InnerTreeCategoryFormProps {
   closeModal: () => void;
 }
 
-const CloseButton = styled(Button)`
-  background-color: ${COLORS.primaryGray};
-  border-radius: 30px;
-  color: ${COLORS.primaryLight};
-  &:hover {
-    background-color: ${COLORS.secondaryGray};
-  }
-`;
-
-const SubmitButton = styled(Button)`
-  background-color: ${COLORS.primaryGreen};
-  border-radius: 30px;
-  color: ${COLORS.primaryLight};
-  &:hover {
-    background-color: ${COLORS.secondaryGreen};
-  }
-`;
-
 const InnerForm: React.FC<InnerTreeCategoryFormProps & FormikProps<IAddTreeCategory>> = (props) => {
   const { submitForm, closeModal, isSubmitting, dirty, isValid } = props;
 
   const classes = useStyles();
+
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   return (
     <Form>
@@ -80,17 +98,21 @@ const InnerForm: React.FC<InnerTreeCategoryFormProps & FormikProps<IAddTreeCateg
       />
 
       <DialogActions>
-        <CloseButton onClick={closeModal} variant="contained" className={classes.customBtn}>
+        <Button
+          onClick={closeModal}
+          variant="contained"
+          className={darkMode ? classes.closeBtnDark : classes.closeBtn}
+        >
           Закрити
-        </CloseButton>
-        <SubmitButton
-          className={classes.customBtn}
+        </Button>
+        <Button
+          className={darkMode ? classes.submitBtnDark : classes.submitBtn}
           variant="contained"
           disabled={isSubmitting || !(dirty && isValid)}
           onClick={submitForm}
         >
           Створити
-        </SubmitButton>
+        </Button>
       </DialogActions>
     </Form>
   );

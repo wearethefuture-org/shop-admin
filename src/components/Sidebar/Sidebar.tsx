@@ -87,7 +87,7 @@ const useStyles = makeStyles(
     activeButtonDark: {
       borderRadius: '3px',
       color: 'inherit',
-      backgroundColor: COLORS.darkSecondaryGray,
+      backgroundColor: COLORS.secondaryDarkGray,
     },
     itemIcon: {
       minWidth: '0',
