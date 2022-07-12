@@ -17,6 +17,7 @@ interface FormDialogProps {
   slidesLength: number;
   modalData: ISlidesModal;
   row: ISlideItem;
+  darkMode: boolean;
 }
 
 const useStyles = makeStyles(
@@ -31,16 +32,25 @@ const useStyles = makeStyles(
           color: COLORS.secondaryBlue,
         },
       },
+      iconDark: {
+        'cursor': 'pointer',
+        'color': COLORS.darkBlue,
+        'transition': '0.3s all',
+
+        '&:hover': {
+          color: COLORS.secondaryDarkBlue,
+        },
+      },
     })
 );
 
-const FormDialog: React.FC<FormDialogProps> = ({ dispatch, modalData, row }) => {
+const FormDialog: React.FC<FormDialogProps> = ({ dispatch, modalData, row, darkMode }) => {
   const classes = useStyles();
   const { handleClickOpen, handleClose, isOpened } = modalData;
 
   return (
     <div>
-      <EditIcon className={classes.icon} onClick={handleClickOpen} />
+      <EditIcon className={darkMode ? classes.iconDark : classes.icon} onClick={handleClickOpen} />
       <Dialog
         open={isOpened}
         onClose={handleClose}
@@ -62,6 +72,7 @@ const FormDialog: React.FC<FormDialogProps> = ({ dispatch, modalData, row }) => 
             initialPriority={row.priority}
             dispatch={dispatch}
             handleClose={handleClose}
+            darkMode={darkMode}
           />
         </DialogContent>
       </Dialog>

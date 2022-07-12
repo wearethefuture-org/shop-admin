@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, DialogActions, LinearProgress } from '@material-ui/core';
 import { ErrorMessage, Field, Form, FormikProps } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
 import { ISlideFormValues, InnerSlideFormProps } from '../../../interfaces/ISlides';
 import FileUpload from './FileUpload';
-import styled from 'styled-components';
 import { COLORS } from '../../../values/colors';
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 
 const useStyles = makeStyles({
-  customBtn: {
-    marginTop: '15px',
-  },
   linkField: {
     display: 'flex',
     flexDirection: 'row',
@@ -26,25 +24,43 @@ const useStyles = makeStyles({
   errorMy: {
     color: 'red',
   },
+  saveBtn: {
+    'marginTop': '15px',
+    'backgroundColor': COLORS.primaryGreen,
+    'borderRadius': '30px',
+    'color': COLORS.primaryLight,
+    '&:hover': {
+      backgroundColor: COLORS.secondaryGreen,
+    },
+  },
+  saveBtnDark: {
+    'marginTop': '15px',
+    'backgroundColor': COLORS.darkGreen,
+    'borderRadius': '30px',
+    'color': COLORS.primaryLight,
+    '&:hover': {
+      backgroundColor: COLORS.secondaryDarkGreen,
+    },
+  },
+  cancelBtn: {
+    'marginTop': '15px',
+    'backgroundColor': COLORS.primaryGray,
+    'borderRadius': '30px',
+    'color': COLORS.primaryLight,
+    '&:hover': {
+      backgroundColor: COLORS.secondaryGray,
+    },
+  },
+  cancelBtnDark: {
+    'marginTop': '15px',
+    'backgroundColor': COLORS.darkGray,
+    'borderRadius': '30px',
+    'color': COLORS.primaryLight,
+    '&:hover': {
+      backgroundColor: COLORS.secondaryDarkGray,
+    },
+  },
 });
-
-const SaveBtn = styled(Button)`
-  background-color: ${COLORS.primaryGreen};
-  border-radius: 30px;
-  color: ${COLORS.primaryLight};
-  &:hover {
-    background-color: ${COLORS.secondaryGreen};
-  }
-`;
-
-const CancelBtn = styled(Button)`
-  background-color: ${COLORS.primaryGray};
-  border-radius: 30px;
-  color: ${COLORS.primaryLight};
-  &:hover {
-    background-color: ${COLORS.secondaryGray};
-  }
-`;
 
 const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> = ({
   submitForm,
@@ -55,6 +71,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
   ...props
 }) => {
   const classes = useStyles();
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const dragOverHandler = (event: React.DragEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -140,23 +157,23 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
       />
       {isSubmitting && <LinearProgress />}
       <DialogActions>
-        <CancelBtn
+        <Button
           onClick={handleClose}
           color="primary"
           variant="contained"
-          className={classes.customBtn}
+          className={darkMode ? classes.cancelBtnDark : classes.cancelBtn}
         >
           Cancel
-        </CancelBtn>
-        <SaveBtn
-          className={classes.customBtn}
+        </Button>
+        <Button
+          className={darkMode ? classes.saveBtnDark : classes.saveBtn}
           variant="contained"
           color="secondary"
           disabled={isSubmitting}
           onClick={submitForm}
         >
           Save
-        </SaveBtn>
+        </Button>
       </DialogActions>
     </Form>
   );

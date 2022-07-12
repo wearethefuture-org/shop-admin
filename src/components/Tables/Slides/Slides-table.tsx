@@ -14,6 +14,8 @@ import {
 } from '../../../store/actions/slides.actions';
 import { COLORS } from '../../../values/colors';
 import AddBtn from '../../AddBtn/AddBtn';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 
 interface SlideDataProps {
   data: Array<ISlideItem>;
@@ -36,6 +38,18 @@ const useStyles = makeStyles(
         },
         'marginLeft': 'auto',
       },
+      switchDark: {
+        '& .MuiSwitch-switchBase.Mui-checked': {
+          'color': COLORS.darkGreen,
+          '&:hover': {
+            backgroundColor: alpha(COLORS.darkGreen, theme.palette.action.hoverOpacity),
+          },
+        },
+        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+          backgroundColor: COLORS.darkGreen,
+        },
+        'marginLeft': 'auto',
+      },
       icon: {
         'cursor': 'pointer',
         'color': 'red',
@@ -45,6 +59,15 @@ const useStyles = makeStyles(
           color: 'rgb(216, 0, 0)',
         },
       },
+      iconDark: {
+        'cursor': 'pointer',
+        'color': COLORS.darkRed,
+        'transition': '0.3s all',
+
+        '&:hover': {
+          color: COLORS.secondaryDarkRed,
+        },
+      },
     })
 );
 
@@ -52,6 +75,7 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
   const classes = useStyles();
   const { handleClickOpen } = modalData;
   const [selected, setSelected] = useState(null);
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const changeShown = (id: number, isShown: boolean) => {
     const row = data.find((x) => x.id === id);
@@ -87,45 +111,54 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
     {
       name: 'IД',
       selector: (row) => row.id,
-      width: '8%',
+      width: '10%',
     },
     {
       name: 'Назва',
       selector: (row) => row.name,
+      width: '10%',
     },
     {
       name: 'Опис',
       selector: (row) => row.text,
+      width: '10%',
     },
     {
       name: 'Зображення',
       selector: (row) => row.image,
       cell: (row) => <img width="50px" src={`${root}/static/uploads/${row.image}`} alt="" />,
+      width: '10%',
     },
     {
       name: 'Зображення на телефоні',
       selector: (row) => row.imageMobile,
       cell: (row) => <img width="50px" src={`${root}/static/uploads/${row.imageMobile}`} alt="" />,
+      width: '10%',
     },
     {
       name: 'Посилання',
       selector: (row) => row.href,
+      width: '10%',
     },
     {
       name: 'Відображати',
       selector: (row) => row.isShown,
       cell: (row) => (
         <Switch
-          className={classes.switch}
+          className={darkMode ? classes.switchDark : classes.switch}
           checked={row.isShown}
           onChange={() => changeShown(row.id, !row.isShown)}
         />
       ),
+      center: true,
+      width: '6%',
     },
     {
       name: 'Пріоритет',
       selector: (row) => row.priority,
       sortable: true,
+      center: true,
+      width: '6%',
     },
     {
       name: '',
@@ -136,13 +169,23 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
           slidesLength={data.length}
           modalData={createSlideModalData(row.id)}
           row={row}
+          darkMode={darkMode}
         />
       ),
+      center: true,
+      width: '10%',
     },
     {
       name: '',
       selector: (row) => row.id,
-      cell: (row) => <DeleteIcon className={classes.icon} onClick={() => handleClickDelete(row)} />,
+      cell: (row) => (
+        <DeleteIcon
+          className={darkMode ? classes.iconDark : classes.icon}
+          onClick={() => handleClickDelete(row)}
+        />
+      ),
+      center: true,
+      width: '10%',
     },
   ];
 

@@ -1,4 +1,5 @@
 import {
+  alpha,
   createStyles,
   FormControl,
   FormControlLabel,
@@ -6,6 +7,7 @@ import {
   makeStyles,
   Radio,
   RadioGroup,
+  Theme,
   ThemeOptions,
 } from '@material-ui/core';
 import React, { useEffect } from 'react';
@@ -19,7 +21,7 @@ import styles from './SliderAnimations.module.scss';
 import { COLORS } from '../../values/colors';
 
 const useStyles = makeStyles(
-  (): ThemeOptions =>
+  (theme: Theme): ThemeOptions =>
     createStyles({
       radio: {
         '&$checked': {
@@ -27,6 +29,14 @@ const useStyles = makeStyles(
         },
         '&:hover': {
           backgroundColor: COLORS.secondaryOttoman,
+        },
+      },
+      radioDark: {
+        '&$checked': {
+          color: COLORS.darkGreen,
+        },
+        '&:hover': {
+          backgroundColor: alpha(COLORS.darkGreen, theme.palette.action.hoverOpacity),
         },
       },
       checked: {},
@@ -37,6 +47,7 @@ const SliderAnimations: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const animationsData = useSelector((state: RootState) => state.sliderAnimations);
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   async function fetchData() {
     await dispatch(fetchSliderAnimations());
@@ -70,7 +81,14 @@ const SliderAnimations: React.FC = () => {
               <FormControlLabel
                 key={a.id}
                 value={a.animation}
-                control={<Radio classes={{ root: classes.radio, checked: classes.checked }} />}
+                control={
+                  <Radio
+                    classes={{
+                      root: darkMode ? classes.radioDark : classes.radio,
+                      checked: classes.checked,
+                    }}
+                  />
+                }
                 label={a.animation}
               />
             ))}
