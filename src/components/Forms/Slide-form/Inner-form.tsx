@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, DialogActions, LinearProgress } from '@material-ui/core';
-import { Field, Form, FormikProps } from 'formik';
+import { ErrorMessage, Field, Form, FormikProps } from 'formik';
+import { TextField } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
 import { ISlideFormValues, InnerSlideFormProps } from '../../../interfaces/ISlides';
 import FileUpload from './FileUpload';
@@ -21,6 +22,9 @@ const useStyles = makeStyles({
   },
   input: {
     marginBottom: '20px',
+  },
+  errorMy: {
+    color: 'red',
   },
 });
 
@@ -73,23 +77,21 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
   return (
     <Form onDrop={dropHandler} onDragOver={dragOverHandler}>
       <Field
-        fullWidth
-        component={TextFieldWrapped}
-        type="name"
-        label="Name"
-        name="name"
-        makegreen={true}
         className={classes.input}
+        fullWidth
+        component={TextField}
+        type="name"
+        label="Назва"
+        name="name"
       />
       <Field
+        className={classes.input}
         fullWidth
         multiline
-        component={TextFieldWrapped}
+        component={TextField}
         type="text"
-        label="Text"
+        label="Опис"
         name="text"
-        makegreen={true}
-        className={classes.input}
       />
       <Field
         fullWidth
@@ -98,9 +100,10 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
         type="file"
         label="Image"
         name="image"
-        caption="An image for desktop. Allowed formats: jpg, png, gif. Max size: 9 MB. Optimal aspect ratio: 3.5 (e.g., 1920x548 etc.)"
+        caption="Картинка для компютера. Дозволені формати: jpg, png, gif. Максимальний розмір: 9 МБ. Оптимальне співвідношення сторін: 3,5 (наприклад, 1920x548 тощо)"
         fieldId="file"
       />
+      <ErrorMessage name="image" component="div" className={classes.errorMy} />
       <Field
         fullWidth
         multiline
@@ -108,16 +111,17 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
         type="file"
         label="ImageMobile"
         name="imageMobile"
-        caption="An image for mobile. Allowed formats: jpg, png, gif. Max size: 1 MB. Optimal aspect ratio: 3.5 (e.g., 382x109 or 330x94  etc.)"
+        caption="Картинка для мобільного. Дозволені формати: jpg, png, gif. Максимальний розмір: 1 Мб. Оптимальне співвідношення сторін: 3,5 (наприклад, 382x109 або 330x94 тощо)."
         fieldId="fileMobile"
       />
+      <ErrorMessage name="imageMobile" component="div" className={classes.errorMy} />
       <div className={classes.linkField}>
         <Field
           fullWidth
           multiline
           component={TextFieldWrapped}
           type="href"
-          label="Href"
+          label="Посилання"
           name="href"
           value={values.href}
           makegreen={true}
@@ -129,7 +133,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
         multiline
         component={TextFieldWrapped}
         type="priority"
-        label="Priority"
+        label="Пріоритет"
         name="priority"
         makegreen={true}
         className={classes.input}

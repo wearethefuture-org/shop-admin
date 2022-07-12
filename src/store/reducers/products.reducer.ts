@@ -39,8 +39,18 @@ const initialState: IProductsData = {
   count: 0,
   totalPages: 0,
   paginationPage: 1,
+  paginationLimit: 10,
   searchValue: null,
   paginationPageSearch: 1,
+  sort: 'id',
+  sortDirect: 'asc',
+  findPrice: [0,10000],
+  filter: {
+    id: null,
+    name: '',
+    category: '',
+    price: [0,10000]
+  }
 };
 
 const products = (state = initialState, { type, data }: IActions) => {
@@ -54,7 +64,11 @@ const products = (state = initialState, { type, data }: IActions) => {
         isSearch: false,
         error: null,
         searchValue: null,
-        paginationPage: data.page
+        paginationPage: data.page,
+        paginationLimit: data.limit,
+        sort: data.sort,
+        sortDirect: data.sortDirect,
+        filter: {...data.filter}
       };
     }
 
@@ -65,6 +79,11 @@ const products = (state = initialState, { type, data }: IActions) => {
         loading: false,
         count: data.count,
         totalPages: data.totalPages,
+        findPrice: data.priceRange ? [data.priceRange.asoluteMin, data.priceRange.asoluteMax] : [...state.findPrice],
+        filter: {
+          ...state.filter,
+          price: data.priceRange ? [data.priceRange.min, data.priceRange.max] : [...state.filter.price]
+        }
       };
     }
 

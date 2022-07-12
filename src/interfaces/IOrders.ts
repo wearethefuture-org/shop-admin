@@ -46,6 +46,7 @@ export interface IOrdersData {
   error: string | null;
   count: number;
   totalPages: number;
+  searchValue: null | string,
 }
 
 export interface ICurrentOrder extends Common {

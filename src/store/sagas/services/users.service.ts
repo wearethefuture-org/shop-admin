@@ -1,7 +1,7 @@
 import { api } from '../../../api/api';
 import { IUserReqAdd } from '../../../interfaces/IUsers';
 
-export async function apiGetUsers(page: number, limit: number,) {
+export async function apiGetUsers(page: number, limit: number) {
   const users = await api.users.get(page, limit);
   return users.data;
 }
@@ -25,4 +25,15 @@ export async function apiUpdateUser(userValues: any) {
 export async function apiDeleteUser(id: number) {
   await api.user.delete(id);
   return id;
+}
+
+export async function apiGetUsersByQuery(searchValue: string, page: number, limit: number) {
+  const user = await api.search.getSearchItems({
+    query: searchValue,
+    option: 'users',
+    page,
+    limit,
+  });
+  
+  return user.data;
 }

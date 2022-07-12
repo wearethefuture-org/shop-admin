@@ -29,7 +29,7 @@ const FormDialog: React.FC<FormDialogProps> = ({
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle id="form-dialog-title">Add new slide</DialogTitle>
+        <DialogTitle id="form-dialog-title">Додати новий слайд</DialogTitle>
         <DialogContent dividers>
           <SlideForm
             dispatch={dispatch}

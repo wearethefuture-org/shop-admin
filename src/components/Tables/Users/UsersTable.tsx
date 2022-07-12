@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { Box, Button, createStyles, makeStyles, Theme, ThemeOptions } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import UserDialog from '../../Modals/UserDialog/UserDialog';
 import UserRemoveDialog from '../../Modals/UserRemoveDialog/UserRemoveDialog';
 import { AppDispatch, RootState } from '../../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsersRequest } from '../../../store/actions/users.actions';
-import { IUserItem } from '../../../interfaces/IUsers';
+import { getUsersByQueryRequest, getUsersRequest } from '../../../store/actions/users.actions';
+import { UsersTableProps } from '../../../interfaces/IUsers';
 import { COLORS } from '../../../values/colors';
 import AddBtn from '../../AddBtn/AddBtn';
 
@@ -65,21 +64,37 @@ const useStyles = makeStyles(
     })
 );
 
-const UsersTable = ({ list }: { list: IUserItem[] }) => {
+const UsersTable: React.FC<UsersTableProps> = ({
+  list,
+  activeColumns,
+  isSearch,
+  searchValue,
+  count,
+  paginationPage,
+}) => {
   const classes = useStyles();
   const dispatch: AppDispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const count = useSelector((state: RootState) => state.users.count);
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const onChangePage = (page) => {
     setPage(page);
+
+    if (isSearch) {
+      dispatch(getUsersByQueryRequest(searchValue, page, limit));
+      return;
+    }
     dispatch(getUsersRequest(page, limit));
   };
 
   const onChangeLimit = (limit) => {
     setLimit(limit);
+
+    if (isSearch) {
+      dispatch(getUsersByQueryRequest(searchValue, page, limit));
+      return;
+    }
     dispatch(getUsersRequest(page, limit));
   };
 
@@ -122,8 +137,8 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
   const addUserBtn = (
     <Box>
       <AddBtn title="Створити" handleAdd={openDialogNewUser} />
-      {userDialogIsOpen && <UserDialog {...modalParams} darkMode/>}
-      {confirmRemoveUserIsOpen && <UserRemoveDialog {...modalRemoveParams} darkMode />}
+      {userDialogIsOpen && <UserDialog {...modalParams} darkMode />}
+      {confirmRemoveUserIsOpen && <UserRemoveDialog {...modalRemoveParams} />}
     </Box>
   );
 
@@ -134,6 +149,7 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
       sortable: true,
       maxWidth: '100px',
       minWidth: '60px',
+      omit: !activeColumns.includes('ID'),
     },
     {
       name: 'Створено',
@@ -147,28 +163,34 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
           year: 'numeric',
         });
       },
+      omit: !activeColumns.includes('Створено'),
     },
     {
       name: 'Телефон',
       selector: (row) => row.phoneNumber,
       sortable: true,
+      omit: !activeColumns.includes('Телефон'),
     },
     {
       name: 'Email',
       selector: (row) => row.email,
+      omit: !activeColumns.includes('Email'),
     },
     {
       name: 'TelegramId',
       selector: (row) => row.telegramId,
+      omit: !activeColumns.includes('TelegramId'),
     },
     {
       name: "Ім'я",
       selector: (row) => `${row.firstName} ${row.lastName}`,
       sortable: true,
+      omit: !activeColumns.includes(`Ім'я`),
     },
     {
       name: 'Роль',
       selector: (row) => row.role?.name,
+      omit: !activeColumns.includes('Роль'),
     },
     {
       name: '',
@@ -198,6 +220,7 @@ const UsersTable = ({ list }: { list: IUserItem[] }) => {
         setLimit={(e) => onChangeLimit(e)}
         setPage={(e) => onChangePage(e)}
         paginationServer={true}
+        paginationPage={paginationPage}
         defaultSortFieldId={'created'}
         customStyles={{
           cells: {

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Button, TextField, Select, MenuItem } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 import InputMask from 'react-input-mask';
 
-import { AppDispatch } from '../../../store/store';
+import { AppDispatch, RootState } from '../../../store/store';
 import { addUserRequest, updateUserRequest } from '../../../store/actions/users.actions';
 import { IUserItem } from '../../../interfaces/IUsers';
 import { failSnackBar } from '../../../store/actions/snackbar.actions';
@@ -112,18 +112,18 @@ interface FormDialogProps {
   isNew: boolean;
   user: IUserItem | null;
   closeModal: () => void;
-  darkMode: boolean;
 }
 
 const phoneRegExp =
   /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
-const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal, darkMode }) => {
+const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) => {
   const [showCurrentPassword, setShowCurrentPassword] = React.useState<boolean>(false);
   const [showNewPassword, setShowNewPassword] = React.useState<boolean>(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = React.useState<boolean>(false);
   const classes = useStyles();
   const { data: roles } = useRoles();
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const onToggleShowCurrentPassword = () => {
     setShowCurrentPassword(!showCurrentPassword);
@@ -181,6 +181,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal, dark
 
   const [isEdit, setIsEdit] = useState(true);
   const dispatch: AppDispatch = useDispatch();
+  const currentPage = useSelector((state: any) => state.users.currentPage);
   const initialValues = {
     firstName: isNew ? '' : user?.firstName,
     lastName: isNew ? '' : user?.lastName,
@@ -225,7 +226,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal, dark
         }
         sendData['roleId'] = _values['roleId'];
         if (Object.keys(sendData).length > 1) {
-          dispatch(updateUserRequest(user.id, sendData));
+          dispatch(updateUserRequest(user.id, sendData, currentPage));
         } else {
           dispatch(failSnackBar('Ви нічого не змінили'));
         }
@@ -351,79 +352,6 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal, dark
             </MenuItem>
           ))}
         </Select>
-      </div>
-      {!isNew ? (
-        <div className={classes.row}>
-          <TextField
-            style={{ float: 'right' }}
-            className={getInputClass('currentPassword')}
-            value={formik.values.currentPassword}
-            autoComplete={'false'}
-            disabled={!isEdit}
-            type={showCurrentPassword ? 'text' : 'password'}
-            name="currentPassword"
-            id="currentPassword-field"
-            placeholder="Поточний пароль"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.currentPassword && Boolean(formik.errors.currentPassword)}
-            helperText={formik.touched.currentPassword && formik.errors.currentPassword}
-          />
-          <svg
-            onClick={onToggleShowCurrentPassword}
-            className={styles.eye}
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 576 512"
-          >
-            <path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z" />
-          </svg>
-        </div>
-      ) : null}
-      <div className={classes.row}>
-        <TextField
-          className={getInputClass('newPassword')}
-          autoComplete={'false'}
-          disabled={!isEdit}
-          type={showNewPassword ? 'text' : 'password'}
-          name="newPassword"
-          id="newPassword-field"
-          placeholder="Новий пароль"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.newPassword && Boolean(formik.errors.newPassword)}
-          helperText={formik.touched.newPassword && formik.errors.newPassword}
-        />
-        <svg
-          onClick={onToggleShowNewPassword}
-          className={styles.eye}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 576 512"
-        >
-          <path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z" />
-        </svg>
-      </div>
-      <div className={classes.row}>
-        <TextField
-          className={getInputClass('confirmNewPassword')}
-          autoComplete={'false'}
-          disabled={!isEdit}
-          type={showConfirmNewPassword ? 'text' : 'password'}
-          name="confirmNewPassword"
-          id="confirmNewPassword-field"
-          placeholder="Підтвердіть пароль"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.confirmNewPassword && Boolean(formik.errors.confirmNewPassword)}
-          helperText={formik.touched.confirmNewPassword && formik.errors.confirmNewPassword}
-        />
-        <svg
-          onClick={onToggleShowConfirmNewPassword}
-          className={styles.eye}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 576 512"
-        >
-          <path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z" />
-        </svg>
       </div>
 
       {!isNew && (
