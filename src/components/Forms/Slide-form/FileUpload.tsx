@@ -26,18 +26,6 @@ const FileUpload = ({
     setImageSrc(`${root}/static/uploads/${image}`);
   }
 
-  // function imgRequired() {
-  //   return (
-  //     !imageSrc
-  //         && <div className={classes.errorMy}>
-  //             <ErrorMessage name='image' />
-  //           </div>
-  //         // && <div className={classes.errorMy}>
-  //         //     <ErrorMessage name='imageMobile' />
-  //         //   </div>
-  //   )
-  // }
-
   const onUpload = async (event: React.ChangeEvent<any>) => {
     if (!event.target.files) return;
     const file = event.currentTarget.files[0];

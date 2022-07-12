@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme): ThemeOptions =>
       fontSize: '130%',
     },
     title: {
-      width: '250px',
+      width: '400px',
       marginRight: '10px',
     },
     switch: {
@@ -67,7 +67,8 @@ enum ParserSettingsDescription {
   updatePhoto = "Оновлювати фото",
   createNewProducts = "Створювати новий продукт",
   updateOldProducts = "Оновлювати старий продукт",
-  parserLimit = "Відсоток для парсигу"
+  parserLimit = "Відсоток для парсигу",
+  updateOldCharacteristics = "Оновлювати характеристики існуючих товарів",
 }
 
 const InnerForm: React.FC<FormikProps<IFormParserValues>> = (props) => {

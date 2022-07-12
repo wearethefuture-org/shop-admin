@@ -30,19 +30,25 @@ export const ResendMessageButton: FC<ResendMessageButton> = ({
       : action();
   }, [timer, isTimer]);
 
+  const handleClickBtn = () => {
+    setTimer(60)
+    submit()
+  }
+
   return (
     <Button
       disabled={isTimer && timer ? true : false}
       className={styles.resendMessage__btn}
       type={type}
-      onClick={submit}
+      onClick={handleClickBtn}
       color="primary"
     >
       {isTimer && timer ? (
         <div className={styles.resendMessage__timerBlock}>
-          <Spinner className={styles.spinner} size="lg" color={spinnerColor} >
-          <span className={styles.resendMessage__timer}>{timer}</span>
+          <Spinner className={styles.spinner} size="lg" color={spinnerColor}>
+            <span></span>
           </Spinner>
+          <span className={styles.resendMessage__timer}>{timer}</span>
         </div>
       ) : (
         title

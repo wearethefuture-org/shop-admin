@@ -60,7 +60,7 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
 
   const slideColumns: TableColumn<ISlideItem>[] = [
     {
-      name: 'ID',
+      name: 'IД',
       selector: (row) => row.id,
       width: '8%',
     },

@@ -5,3 +5,8 @@ export interface IFormWidgetValues {
   isWidgetActivePopularItems: boolean;
 }
 
+
+export interface IFormCashbackValues {
+  currentPercentCashback: number;
+  switchActiveCashback: boolean;
+}
