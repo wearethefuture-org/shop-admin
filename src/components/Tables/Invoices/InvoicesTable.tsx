@@ -13,6 +13,7 @@ import InvoiceTableHeader from './Header/TableHeader';
 interface InvoiceDataProps {
   data: Array<IInvoiceFile>;
   dispatch: Dispatch;
+  darkMode: boolean;
 }
 
 function createData(
@@ -32,7 +33,7 @@ const useTableStyles = makeStyles({
   },
 });
 
-const InvoicesTable: React.FC<InvoiceDataProps> = ({ data, dispatch }) => {
+const InvoicesTable: React.FC<InvoiceDataProps> = ({ data, dispatch, darkMode }) => {
   const classes = useTableStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -62,6 +63,7 @@ const InvoicesTable: React.FC<InvoiceDataProps> = ({ data, dispatch }) => {
           page={page}
           emptyRows={emptyRows}
           dispatch={dispatch}
+          darkMode={darkMode}
         />
         <InvoiceTableFooter
           rows={rows}
