@@ -9,6 +9,7 @@ import { COLORS } from '../../../values/colors';
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
+import classNames from 'classnames';
 
 const useStyles = makeStyles({
   linkField: {
@@ -24,38 +25,31 @@ const useStyles = makeStyles({
   errorMy: {
     color: 'red',
   },
+  btn: {
+    marginTop: '15px',
+    borderRadius: '30px',
+    color: COLORS.primaryLight,
+  },
   saveBtn: {
-    'marginTop': '15px',
     'backgroundColor': COLORS.primaryGreen,
-    'borderRadius': '30px',
-    'color': COLORS.primaryLight,
     '&:hover': {
       backgroundColor: COLORS.secondaryGreen,
     },
   },
   saveBtnDark: {
-    'marginTop': '15px',
     'backgroundColor': COLORS.darkGreen,
-    'borderRadius': '30px',
-    'color': COLORS.primaryLight,
     '&:hover': {
       backgroundColor: COLORS.secondaryDarkGreen,
     },
   },
   cancelBtn: {
-    'marginTop': '15px',
     'backgroundColor': COLORS.primaryGray,
-    'borderRadius': '30px',
-    'color': COLORS.primaryLight,
     '&:hover': {
       backgroundColor: COLORS.secondaryGray,
     },
   },
   cancelBtnDark: {
-    'marginTop': '15px',
     'backgroundColor': COLORS.darkGray,
-    'borderRadius': '30px',
-    'color': COLORS.primaryLight,
     '&:hover': {
       backgroundColor: COLORS.secondaryDarkGray,
     },
@@ -161,12 +155,12 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           onClick={handleClose}
           color="primary"
           variant="contained"
-          className={darkMode ? classes.cancelBtnDark : classes.cancelBtn}
+          className={classNames(classes.btn, darkMode ? classes.cancelBtnDark : classes.cancelBtn)}
         >
           Cancel
         </Button>
         <Button
-          className={darkMode ? classes.saveBtnDark : classes.saveBtn}
+          className={classNames(classes.btn, darkMode ? classes.saveBtnDark : classes.saveBtn)}
           variant="contained"
           color="secondary"
           disabled={isSubmitting}

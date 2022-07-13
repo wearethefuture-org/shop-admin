@@ -16,6 +16,7 @@ import { COLORS } from '../../../values/colors';
 import AddBtn from '../../AddBtn/AddBtn';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
+import classNames from 'classnames';
 
 interface SlideDataProps {
   data: Array<ISlideItem>;
@@ -51,19 +52,17 @@ const useStyles = makeStyles(
         'marginLeft': 'auto',
       },
       icon: {
-        'cursor': 'pointer',
-        'color': 'red',
-        'transition': '0.3s all',
-
+        cursor: 'pointer',
+        transition: '0.3s all',
+      },
+      iconLight: {
+        'color': COLORS.primaryRed,
         '&:hover': {
-          color: 'rgb(216, 0, 0)',
+          color: COLORS.secondaryRed,
         },
       },
       iconDark: {
-        'cursor': 'pointer',
         'color': COLORS.darkRed,
-        'transition': '0.3s all',
-
         '&:hover': {
           color: COLORS.secondaryDarkRed,
         },
@@ -180,7 +179,7 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
       selector: (row) => row.id,
       cell: (row) => (
         <DeleteIcon
-          className={darkMode ? classes.iconDark : classes.icon}
+          className={classNames(classes.icon, darkMode ? classes.iconDark : classes.iconLight)}
           onClick={() => handleClickDelete(row)}
         />
       ),
