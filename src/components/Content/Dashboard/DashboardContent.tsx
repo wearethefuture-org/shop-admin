@@ -34,19 +34,17 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     minHeight: '200px',
-    backgroundColor: COLORS.secondaryOttoman,
     paddingTop: theme.spacing(6),
     paddingLeft: theme.spacing(4),
-    color: COLORS.fontColor,
     marginBottom: theme.spacing(4),
   },
+  headerLight: {
+    backgroundColor: COLORS.secondaryOttoman,
+    color: COLORS.fontColor,
+  },
   headerDark: {
-    minHeight: '200px',
     backgroundColor: COLORS.darkGray,
-    paddingTop: theme.spacing(6),
-    paddingLeft: theme.spacing(4),
     color: COLORS.primaryLight,
-    marginBottom: theme.spacing(4),
   },
   content: {
     marginRight: theme.spacing(4),
@@ -73,27 +71,33 @@ const useStyles = makeStyles((theme) => ({
   cardTitle: {
     fontSize: '13px',
     fontWeight: 'bold',
-    color: '#3E4676',
+    color: COLORS.primaryBlue,
   },
   cardValue: {
     fontSize: '29px',
-    color: '#203A45',
+    color: COLORS.darkGreen,
   },
   cardComment: {
     fontSize: '13px',
-    color: '#3E4676',
+    color: COLORS.darkBlue,
   },
   cardIcon: {
-    backgroundColor: '#475DE3',
+    backgroundColor: COLORS.darkBlue,
     position: 'absolute',
     top: '10px',
     right: '20px',
+  },
+  cardIconLight: {
+    color: COLORS.primaryLight,
+  },
+  cardIconDark: {
+    color: COLORS.darkGray,
   },
   movement: {
     display: 'flex',
     height: '45px',
     alignItems: 'center',
-    color: '#3E4676',
+    color: COLORS.primaryBlue,
     paddingLeft: '20px',
     marginBottom: '10px',
   },
@@ -113,7 +117,7 @@ const DashboardContent: React.FC<DashboardProps> = () => {
         {
           label: '',
           data: ['3', '2', '3', '5', '6', '5', '4', '6', '9', '10', '8', '9'],
-          backgroundColor: ['rgba(104, 122, 232, 0.9)'],
+          backgroundColor: [COLORS.darkBlue],
           borderWidth: 4,
         },
       ],
@@ -125,7 +129,7 @@ const DashboardContent: React.FC<DashboardProps> = () => {
       datasets: [
         {
           label: 'Points',
-          backgroundColor: ['#ffc107', '#f2545b', '#687ae8'],
+          backgroundColor: [COLORS.darkYellow, COLORS.darkRed, COLORS.darkBlue],
           data: ['4401', '4003', '1589'],
         },
       ],
@@ -176,7 +180,7 @@ const DashboardContent: React.FC<DashboardProps> = () => {
 
   return (
     <div className={classes.dashboard}>
-      <div className={darkMode ? classes.headerDark : classes.header}>
+      <div className={clsx(classes.header, darkMode ? classes.headerDark : classes.headerLight)}>
         <h3>Welcome back, Satoshi Nakamoto!</h3>
         <p>У вас 24 новых сообщения и 5 уведомлений.</p>
       </div>
@@ -206,7 +210,14 @@ const DashboardContent: React.FC<DashboardProps> = () => {
                     <Typography className={classes.cardComment}>
                       {persent} {comment}
                     </Typography>
-                    <Avatar className={classes.cardIcon}>{icon}</Avatar>
+                    <Avatar
+                      className={clsx(
+                        classes.cardIcon,
+                        darkMode ? classes.cardIconDark : classes.cardIconLight
+                      )}
+                    >
+                      {icon}
+                    </Avatar>
                   </Paper>
                 </Grid>
               ))}

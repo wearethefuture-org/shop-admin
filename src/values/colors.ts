@@ -21,4 +21,6 @@ export const COLORS = {
   secondaryDarkBlue: '#08488c',
   darkRed: '#c71010',
   secondaryDarkRed: '#ab0c0c',
+  primaryYellow: '#ffc107',
+  darkYellow: '#ba9525',
 };
