@@ -11,6 +11,7 @@ import { getUsersByQueryRequest, getUsersRequest } from '../../../store/actions/
 import { UsersTableProps } from '../../../interfaces/IUsers';
 import { COLORS } from '../../../values/colors';
 import AddBtn from '../../AddBtn/AddBtn';
+import classNames from 'classnames';
 
 const useStyles = makeStyles(
   (theme: Theme): ThemeOptions =>
@@ -25,38 +26,30 @@ const useStyles = makeStyles(
           backgroundColor: 'transparent',
         },
       },
+      icon: {
+        cursor: 'pointer',
+        transition: '0.3s all',
+      },
       editIcon: {
-        'cursor': 'pointer',
         'color': COLORS.primaryBlue,
-        'transition': '0.3s all',
-
         '&:hover': {
           color: COLORS.secondaryBlue,
         },
       },
       editIconDark: {
-        'cursor': 'pointer',
         'color': COLORS.darkBlue,
-        'transition': '0.3s all',
-
         '&:hover': {
           color: COLORS.secondaryDarkBlue,
         },
       },
       deleteIcon: {
-        'cursor': 'pointer',
         'color': COLORS.primaryRed,
-        'transition': '0.3s all',
-
         '&:hover': {
           color: 'rgb(216, 0, 0)',
         },
       },
       deleteIconDark: {
-        'cursor': 'pointer',
         'color': COLORS.darkRed,
-        'transition': '0.3s all',
-
         '&:hover': {
           color: COLORS.secondaryDarkRed,
         },
@@ -199,10 +192,20 @@ const UsersTable: React.FC<UsersTableProps> = ({
         return (
           <Box display="flex">
             <Button className={classes.button} value={row.id} onClick={openDialogUserCard}>
-              <EditIcon className={darkMode ? classes.editIconDark : classes.editIcon} />
+              <EditIcon
+                className={classNames(
+                  classes.icon,
+                  darkMode ? classes.editIconDark : classes.editIcon
+                )}
+              />
             </Button>
             <Button className={classes.button} value={row.id} onClick={openDialogRemoveUser}>
-              <DeleteIcon className={darkMode ? classes.deleteIconDark : classes.deleteIcon} />
+              <DeleteIcon
+                className={classNames(
+                  classes.icon,
+                  darkMode ? classes.deleteIconDark : classes.deleteIcon
+                )}
+              />
             </Button>
           </Box>
         );

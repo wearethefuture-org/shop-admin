@@ -14,16 +14,19 @@ import useRoles from '../../../hooks/useRoles';
 import styles from './UserCard-form.module.scss';
 import { NavLink } from 'react-router-dom';
 import { COLORS } from '../../../values/colors';
+import classNames from 'classnames';
 
 // todo
 // how to avoid code duplication in input and inputError fields?
 // see input, inputError
 const useStyles = makeStyles({
   input: {
-    'width': '270px',
-    'height': '44px',
-    'padding': '11px',
-    'marginBottom': '15px',
+    width: '270px',
+    height: '44px',
+    padding: '11px',
+    marginBottom: '15px',
+  },
+  inputNoError: {
     '& label.Mui-focused': {
       color: COLORS.frenchPlum,
     },
@@ -32,10 +35,6 @@ const useStyles = makeStyles({
     },
   },
   inputError: {
-    'width': '270px',
-    'height': '44px',
-    'padding': '11px',
-    'marginBottom': '15px',
     '& label.Mui-focused': {
       color: 'red',
     },
@@ -50,25 +49,21 @@ const useStyles = makeStyles({
     alignItems: 'center',
   },
   submit: {
+    borderRadius: ' 30px',
+    color: COLORS.primaryLight,
+    border: ' none',
+    width: '270px',
+    height: '44px',
+    marginBottom: '15px',
+  },
+  submitLight: {
     'background': COLORS.primaryGreen,
-    'borderRadius': ' 30px',
-    'color': COLORS.primaryLight,
-    'border': ' none',
-    'width': '270px',
-    'height': '44px',
-    'marginBottom': '15px',
     '&:hover': {
       backgroundColor: COLORS.secondaryGreen,
     },
   },
   submitDark: {
     'background': COLORS.darkGreen,
-    'borderRadius': ' 30px',
-    'color': COLORS.primaryLight,
-    'border': ' none',
-    'width': '270px',
-    'height': '44px',
-    'marginBottom': '15px',
     '&:hover': {
       backgroundColor: COLORS.secondaryDarkGreen,
     },
@@ -79,19 +74,17 @@ const useStyles = makeStyles({
     textAlign: 'center',
   },
   inputSelect: {
-    'width': '270px',
-    'height': '50px',
-    'marginBottom': '15px',
-    'textAlign': 'start',
+    width: '270px',
+    height: '50px',
+    marginBottom: '15px',
+    textAlign: 'start',
+  },
+  inputSelectLight: {
     '&:hover': {
       backgroundColor: COLORS.primaryOttoman,
     },
   },
   inputSelectDark: {
-    'width': '270px',
-    'height': '50px',
-    'marginBottom': '15px',
-    'textAlign': 'start',
     '&:hover': {
       backgroundColor: COLORS.darkGray,
     },
@@ -237,8 +230,8 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
 
   const getInputClass = (fieldName): string => {
     return formik.touched[fieldName] && Boolean(formik.errors[fieldName])
-      ? classes.inputError
-      : classes.input;
+      ? classNames(classes.input, classes.inputError)
+      : classNames(classes.input, classes.inputNoError);
   };
 
   return (
@@ -333,7 +326,10 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       <div className={classes.row}>
         <Select
           value={formik.values.roleId}
-          className={darkMode ? classes.inputSelectDark : classes.inputSelect}
+          className={classNames(
+            classes.inputSelect,
+            darkMode ? classes.inputSelectDark : classes.inputSelectLight
+          )}
           disabled={!isEdit}
           type="select"
           name="roleId"
@@ -364,7 +360,10 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
 
       <div className={classes.row}>
         <Button
-          className={darkMode ? classes.submitDark : classes.submit}
+          className={classNames(
+            classes.submit,
+            darkMode ? classes.submitDark : classes.submitLight
+          )}
           type="submit"
           disabled={formik.isSubmitting}
         >

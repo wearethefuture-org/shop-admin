@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { deleteUserRequest } from '../../../store/actions/users.actions';
 import { IUserItem } from '../../../interfaces/IUsers';
 import { COLORS } from '../../../values/colors';
+import classNames from 'classnames';
 
 interface RemoveProps {
   user: IUserItem;
@@ -31,42 +32,32 @@ const useStyles = makeStyles({
     'height': '44px',
     'margin': '10px',
   },
+  btn: {
+    padding: '6px 15px 6px 15px',
+    color: COLORS.primaryLight,
+    borderRadius: '30px',
+    margin: '10px',
+  },
   removeButton: {
-    'padding': '6px 15px 6px 15px',
     'background': COLORS.primaryGreen,
-    'color': COLORS.primaryLight,
-    'borderRadius': '30px',
-    'margin': '10px',
     '&:hover': {
       background: COLORS.secondaryGreen,
     },
   },
   removeButtonDark: {
-    'padding': '6px 15px 6px 15px',
     'background': COLORS.darkGreen,
-    'color': COLORS.primaryLight,
-    'borderRadius': '30px',
-    'margin': '10px',
     '&:hover': {
       background: COLORS.secondaryDarkGreen,
     },
   },
   cancelButton: {
-    'padding': '6px 15px 6px 15px',
     'background': COLORS.primaryGray,
-    'color': COLORS.primaryLight,
-    'borderRadius': '30px',
-    'margin': '10px',
     '&:hover': {
       background: COLORS.secondaryGray,
     },
   },
   cancelButtonDark: {
-    'padding': '6px 15px 6px 15px',
     'background': COLORS.darkGray,
-    'color': COLORS.primaryLight,
-    'borderRadius': '30px',
-    'margin': '10px',
     '&:hover': {
       background: COLORS.secondaryDarkGray,
     },
@@ -103,13 +94,19 @@ const UserRemoveDialog: React.FC<RemoveProps> = ({ closeModal, user, darkMode })
       </DialogContent>
       <div>
         <Button
-          className={darkMode ? classes.cancelButtonDark : classes.cancelButton}
+          className={classNames(
+            classes.btn,
+            darkMode ? classes.cancelButtonDark : classes.cancelButton
+          )}
           onClick={handleClose}
         >
           Відміна
         </Button>
         <Button
-          className={darkMode ? classes.removeButtonDark : classes.removeButton}
+          className={classNames(
+            classes.btn,
+            darkMode ? classes.removeButtonDark : classes.removeButton
+          )}
           onClick={removeUser}
         >
           Видалити
