@@ -4,6 +4,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { COLORS } from '../../values/colors';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import classNames from 'classnames';
 
 interface IBtnProps {
   title: string;
@@ -15,18 +16,17 @@ const useStyles = makeStyles(
   (): ThemeOptions =>
     createStyles({
       btn: {
-        'padding': '6px 15px 6px 15px',
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
+        padding: '6px 15px 6px 15px',
+        borderRadius: '30px',
+        color: COLORS.primaryLight,
+      },
+      btnLight: {
         'backgroundColor': COLORS.primaryBlue,
         '&:hover': {
           backgroundColor: COLORS.secondaryBlue,
         },
       },
       btnDark: {
-        'padding': '6px 15px 6px 15px',
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.darkBlue,
         '&:hover': {
           backgroundColor: COLORS.secondaryDarkBlue,
@@ -44,7 +44,7 @@ const AddBtn: React.FC<IBtnProps> = ({ title, handleAdd, style }) => {
     <Button
       style={style}
       variant="contained"
-      className={darkMode ? classes.btnDark : classes.btn}
+      className={classNames(classes.btn, darkMode ? classes.btnDark : classes.btnLight)}
       startIcon={<AddIcon />}
       type="button"
       onClick={handleAdd}
