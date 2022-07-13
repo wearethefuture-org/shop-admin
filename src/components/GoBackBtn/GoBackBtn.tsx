@@ -38,11 +38,8 @@ const GoBackBtn: React.FC<IBtnProps> = ({ handleGoBack }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
   return (
-    <Button
-      className={darkMode ? classes.btnDark : classes.btn}
-      startIcon={<ArrowBackIosIcon />}
-      onClick={handleGoBack}
-    >
+    <Button className={darkMode ? classes.btnDark : classes.btn} onClick={handleGoBack}>
+      <ArrowBackIosIcon fontSize="small" />
       Назад
     </Button>
   );
