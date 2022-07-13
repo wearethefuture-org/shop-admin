@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import React, { FC, } from 'react';
+import React, { FC } from 'react';
 
 import { updateProductInOrderRequest } from '../../../store/actions/orders.actions';
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
@@ -17,6 +17,7 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
   const dispatch = useDispatch();
   const ref = React.createRef();
   const loading = useSelector((state: RootState) => state.orders.loading);
+  const darkMode = useSelector((state: RootState) => state.theme.darkMode);
   const currentOrderData = order.productToOrder.map((item) => {
     return { ...item, delivery: order.delivery };
   });
@@ -103,7 +104,7 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       selector: (row) => row.quantity,
       sortable: true,
       cell: (row) => {
-        return <OrdersEditQuantity row={row} orderId={order.id} />;
+        return <OrdersEditQuantity row={row} orderId={order.id} darkMode={darkMode} />;
       },
     },
     {
@@ -121,7 +122,7 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
         return (
           <OrdersSelector
             value={row.size}
-            handleChange={(e) => handleChange(e, "size", row.product.id)}
+            handleChange={(e) => handleChange(e, 'size', row.product.id)}
             menuItems={allSizesWithoutRepeat}
             disabled={loading}
           />
@@ -137,7 +138,7 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
         return (
           <OrdersSelector
             value={row.color}
-            handleChange={(e) => handleChange(e, "color", row.product.id)}
+            handleChange={(e) => handleChange(e, 'color', row.product.id)}
             menuItems={colorAndSize[0]}
             disabled={loading}
           />
@@ -150,8 +151,8 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
     <AppDataTable
       data={currentOrderData}
       columns={columns}
-      title={<OrdersItemTableHeader order={order} />}
-      onRowClicked={() => { }}
+      title={<OrdersItemTableHeader order={order} darkMode={darkMode} />}
+      onRowClicked={() => {}}
     />
   );
 };
@@ -161,7 +162,7 @@ function getColorsAndSize(arr): [string[], string[]] {
   let allSizes: string[] = [];
   for (let index of arr) {
     if (index.name === 'Кольори та розміри') {
-      allColors = Object.keys(index.jsonValue)
+      allColors = Object.keys(index.jsonValue);
       allSizes = Object.values(index.jsonValue);
     }
   }
@@ -172,8 +173,8 @@ function getSizesWithoutRepeat(arr): string[] {
   const allSizesWithoutRepeat: string[] = [];
 
   const allSizes = arr.reduce((acc, item) => {
-    return [...acc, ...item]
-  }, [])
+    return [...acc, ...item];
+  }, []);
 
   for (let index of allSizes) {
     if (!allSizesWithoutRepeat.includes(index)) {

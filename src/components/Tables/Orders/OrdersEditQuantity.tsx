@@ -7,8 +7,9 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { AppDispatch, RootState } from '../../../store/store';
 import { updateOrderRequest } from '../../../store/actions/orders.actions';
 import styles from './OrdersTable.module.scss';
+import { COLORS } from '../../../values/colors';
 
-const OrdersEditQuantity = ({ row, orderId }) => {
+const OrdersEditQuantity = ({ row, orderId, darkMode }) => {
   const [editable, setEditable] = useState(false);
   const [value, setValue] = useState(row.quantity);
   const dispatch: AppDispatch = useDispatch();
@@ -40,13 +41,23 @@ const OrdersEditQuantity = ({ row, orderId }) => {
   let cell = !editable ? (
     <div className={styles.quantity}>
       {row.quantity}
-      <EditIcon onClick={isEditable} color={loading ? 'disabled' : 'primary'} fontSize="small" />
+      <EditIcon
+        onClick={isEditable}
+        style={darkMode ? { color: COLORS.darkBlue } : { color: COLORS.primaryBlue }}
+        fontSize="small"
+      />
     </div>
   ) : (
     <div className={styles.edit_quantity}>
       <input type="text" value={value} onChange={handleChange} />
-      <DoneIcon color="primary" onClick={(e) => onQuantityChanged(e, orderId, row.product.id)} />
-      <CancelIcon color="secondary" onClick={onQuantityChangedCancel} />
+      <DoneIcon
+        style={darkMode ? { color: COLORS.darkGreen } : { color: COLORS.primaryGreen }}
+        onClick={(e) => onQuantityChanged(e, orderId, row.product.id)}
+      />
+      <CancelIcon
+        style={darkMode ? { color: COLORS.darkGray } : { color: COLORS.primaryGray }}
+        onClick={onQuantityChangedCancel}
+      />
     </div>
   );
 
