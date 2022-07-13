@@ -9,24 +9,23 @@ import styles from './CommentsTable.module.scss';
 import { COLORS } from '../../../values/colors';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
+import classNames from 'classnames';
 
 const useStyles = makeStyles(
   (): ThemeOptions =>
     createStyles({
       icon: {
-        'cursor': 'pointer',
-        'color': 'red',
-        'transition': '0.3s all',
-
+        cursor: 'pointer',
+        transition: '0.3s all',
+      },
+      iconLight: {
+        'color': COLORS.primaryRed,
         '&:hover': {
-          color: 'rgb(216, 0, 0)',
+          color: COLORS.secondaryRed,
         },
       },
       iconDark: {
-        'cursor': 'pointer',
         'color': COLORS.darkRed,
-        'transition': '0.3s all',
-
         '&:hover': {
           color: COLORS.secondaryDarkRed,
         },
@@ -128,7 +127,9 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
             setCommentToDelete(row.id);
           }}
         >
-          <DeleteIcon className={darkMode ? classes.iconDark : classes.icon} />
+          <DeleteIcon
+            className={classNames(classes.icon, darkMode ? classes.iconDark : classes.iconLight)}
+          />
         </IconButton>
       ),
     },
