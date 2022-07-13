@@ -4,6 +4,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { COLORS } from '../../values/colors';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import classNames from 'classnames';
 
 interface IBtnProps {
   handleClick: () => void;
@@ -13,19 +14,18 @@ const useStyles = makeStyles(
   (): ThemeOptions =>
     createStyles({
       btn: {
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
+        borderRadius: '30px',
+        color: COLORS.primaryLight,
+        padding: '5px 15px 5px 15px',
+      },
+      btnLight: {
         'backgroundColor': COLORS.primaryBlue,
-        'padding': '5px 15px 5px 15px',
         '&:hover': {
           backgroundColor: COLORS.secondaryBlue,
         },
       },
       btnDark: {
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.darkBlue,
-        'padding': '5px 15px 5px 15px',
         '&:hover': {
           backgroundColor: COLORS.secondaryDarkBlue,
         },
@@ -39,7 +39,7 @@ const EditBtn: React.FC<IBtnProps> = ({ handleClick }) => {
 
   return (
     <Button
-      className={darkMode ? classes.btnDark : classes.btn}
+      className={classNames(classes.btn, darkMode ? classes.btnDark : classes.btnLight)}
       type="button"
       startIcon={<EditIcon />}
       onClick={handleClick}
