@@ -13,6 +13,7 @@ import {
 import { COLORS } from '../../values/colors';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import classNames from 'classnames';
 
 interface ConfirmProps {
   openDeleteDialog: boolean;
@@ -25,33 +26,29 @@ interface ConfirmProps {
 const useStyles = makeStyles(
   (): ThemeOptions =>
     createStyles({
+      btn: {
+        borderRadius: '30px',
+        color: COLORS.primaryLight,
+      },
       declineButton: {
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.primaryGray,
         '&:hover': {
           backgroundColor: COLORS.secondaryGray,
         },
       },
       declineButtonDark: {
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.darkGray,
         '&:hover': {
           backgroundColor: COLORS.secondaryDarkGray,
         },
       },
       confirmButton: {
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.primaryRed,
         '&:hover': {
           backgroundColor: COLORS.secondaryRed,
         },
       },
       confirmButtonDark: {
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.darkRed,
         '&:hover': {
           backgroundColor: COLORS.secondaryDarkRed,
@@ -85,13 +82,19 @@ const CustomConfirm: FC<ConfirmProps> = ({
       <DialogActions>
         <Button
           onClick={closeDeleteDialog}
-          className={darkMode ? classes.declineButtonDark : classes.declineButton}
+          className={classNames(
+            classes.btn,
+            darkMode ? classes.declineButtonDark : classes.declineButton
+          )}
         >
           Ні
         </Button>
         <Button
           onClick={handleDelete}
-          className={darkMode ? classes.confirmButtonDark : classes.confirmButton}
+          className={classNames(
+            classes.btn,
+            darkMode ? classes.confirmButtonDark : classes.confirmButton
+          )}
         >
           Так
         </Button>

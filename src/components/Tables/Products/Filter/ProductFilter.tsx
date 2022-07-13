@@ -16,19 +16,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
 import { getProductsRequest } from '../../../../store/actions/products.actions';
 import { COLORS } from '../../../../values/colors';
+import classNames from 'classnames';
 
 const useStyles = makeStyles({
   btn: {
-    'borderRadius': '30px',
-    'color': COLORS.primaryLight,
+    borderRadius: '30px',
+    color: COLORS.primaryLight,
+  },
+  btnLight: {
     'backgroundColor': COLORS.primaryBlue,
     '&:hover': {
       backgroundColor: COLORS.secondaryBlue,
     },
   },
   btnDark: {
-    'borderRadius': '30px',
-    'color': COLORS.primaryLight,
     'backgroundColor': COLORS.darkBlue,
     '&:hover': {
       backgroundColor: COLORS.secondaryDarkBlue,
@@ -99,7 +100,7 @@ const ProductFilter: React.FC = () => {
         <Button
           variant="contained"
           onClick={handleClickOpen}
-          className={darkMode ? classes.btnDark : classes.btn}
+          className={classNames(classes.btn, darkMode ? classes.btnDark : classes.btnLight)}
         >
           Фільтри
         </Button>
@@ -223,7 +224,10 @@ const ProductFilter: React.FC = () => {
                   <Button
                     variant="contained"
                     type="submit"
-                    className={darkMode ? classes.btnDark : classes.btn}
+                    className={classNames(
+                      classes.btn,
+                      darkMode ? classes.btnDark : classes.btnLight
+                    )}
                   >
                     Примінити
                   </Button>

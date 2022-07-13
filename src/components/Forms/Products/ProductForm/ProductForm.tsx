@@ -30,6 +30,7 @@ import TreeView from '@material-ui/lab/TreeView';
 import { COLORS } from '../../../../values/colors';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
+import classNames from 'classnames';
 
 export interface IProductFormProps {
   editMode: boolean;
@@ -45,37 +46,30 @@ export interface IProductFormProps {
 const useStyles = makeStyles(
   (): ThemeOptions =>
     createStyles({
+      btn: {
+        marginTop: '1rem',
+        borderRadius: '30px',
+        color: COLORS.primaryLight,
+      },
       cancelBtn: {
-        'marginTop': '1rem',
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.primaryGray,
         '&:hover': {
           backgroundColor: COLORS.secondaryGray,
         },
       },
       cancelBtnDark: {
-        'marginTop': '1rem',
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.darkGray,
         '&:hover': {
           backgroundColor: COLORS.secondaryDarkGray,
         },
       },
       saveBtn: {
-        'marginTop': '1rem',
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.primaryGreen,
         '&:hover': {
           backgroundColor: COLORS.secondaryGreen,
         },
       },
       saveBtnDark: {
-        'marginTop': '1rem',
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.darkGreen,
         '&:hover': {
           backgroundColor: COLORS.secondaryDarkGreen,
@@ -320,7 +314,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
           </div>
           <DialogActions>
             <Button
-              className={darkMode ? classes.saveBtnDark : classes.saveBtn}
+              className={classNames(classes.btn, darkMode ? classes.saveBtnDark : classes.saveBtn)}
               variant="contained"
               color="primary"
               disabled={formik.isSubmitting}
@@ -334,7 +328,10 @@ const ProductForm: React.FC<IProductFormProps> = ({
               color="secondary"
               variant="contained"
               type="button"
-              className={darkMode ? classes.cancelBtnDark : classes.cancelBtn}
+              className={classNames(
+                classes.btn,
+                darkMode ? classes.cancelBtnDark : classes.cancelBtn
+              )}
             >
               Закрити
             </Button>
