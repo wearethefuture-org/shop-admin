@@ -1,10 +1,37 @@
 import React, { useState } from 'react';
-import { IconButton } from '@material-ui/core';
+import { createStyles, IconButton, makeStyles, ThemeOptions } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { FeedbacksTableProps } from '../../../interfaces/IFeedback';
 import AppDataTable from '../../AppDataTable/AppDataTable';
 import DateMoment from '../../Common/Date-moment';
 import styles from './FeedbacksTable.module.scss';
+import { useSelector } from 'react-redux';
+import { COLORS } from '../../../values/colors';
+import { RootState } from '../../../store/store';
+
+const useStyles = makeStyles(
+  (): ThemeOptions =>
+    createStyles({
+      icon: {
+        'cursor': 'pointer',
+        'color': 'red',
+        'transition': '0.3s all',
+
+        '&:hover': {
+          color: 'rgb(216, 0, 0)',
+        },
+      },
+      iconDark: {
+        'cursor': 'pointer',
+        'color': COLORS.darkRed,
+        'transition': '0.3s all',
+
+        '&:hover': {
+          color: COLORS.secondaryDarkRed,
+        },
+      },
+    })
+);
 
 const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
   list,
@@ -17,6 +44,10 @@ const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
   paginationServer,
   setPage,
 }) => {
+  const classes = useStyles();
+
+  const { darkMode } = useSelector((state: RootState) => state.theme);
+
   const [expandedFeedbacks, setExpandedFeedbacks] = useState<number[]>([]);
 
   const handleExpandedFeedbacks = (id) => {
@@ -97,7 +128,7 @@ const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
         <IconButton
           aria-label="delete"
           type="button"
-          color="secondary"
+          className={darkMode ? classes.iconDark : classes.icon}
           onClick={() => {
             setOpenDeleteFeedbackDialog(true);
             setFeedbackToDelete(row.id);
