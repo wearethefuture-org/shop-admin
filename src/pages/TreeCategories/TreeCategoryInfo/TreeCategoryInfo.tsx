@@ -44,6 +44,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 import DisableTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/DisableTreeCategoryModal/DisableTreeCategoryModal';
 import { COLORS } from '../../../values/colors';
+import classNames from 'classnames';
 
 const useStyles = makeStyles(
   (theme: Theme): ThemeOptions =>
@@ -82,37 +83,30 @@ const useStyles = makeStyles(
           backgroundColor: COLORS.darkGreen,
         },
       },
+      btn: {
+        borderRadius: '30px',
+        padding: '6px 15px 6px 15px',
+        color: COLORS.primaryLight,
+      },
       saveButton: {
-        'borderRadius': '30px',
-        'padding': '6px 15px 6px 15px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.primaryGreen,
         '&:hover': {
           backgroundColor: COLORS.secondaryGreen,
         },
       },
       saveButtonDark: {
-        'borderRadius': '30px',
-        'padding': '6px 15px 6px 15px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.darkGreen,
         '&:hover': {
           backgroundColor: COLORS.secondaryDarkGreen,
         },
       },
       cancelButton: {
-        'borderRadius': '30px',
-        'padding': '6px 15px 6px 15px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.primaryGray,
         '&:hover': {
           backgroundColor: COLORS.secondaryGray,
         },
       },
       cancelButtonDark: {
-        'borderRadius': '30px',
-        'padding': '6px 15px 6px 15px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.darkGray,
         '&:hover': {
           backgroundColor: COLORS.secondaryDarkGray,
@@ -446,7 +440,10 @@ const TreeCategoryInfo: React.FC = () => {
               )}
               <div className={styles['form-btn-wrapper']}>
                 <Button
-                  className={darkMode ? classes.saveButtonDark : classes.saveButton}
+                  className={classNames(
+                    classes.btn,
+                    darkMode ? classes.saveButtonDark : classes.saveButton
+                  )}
                   disabled={formik.isSubmitting}
                   type="submit"
                 >
@@ -454,7 +451,10 @@ const TreeCategoryInfo: React.FC = () => {
                 </Button>
                 <Button
                   onClick={finishOperation}
-                  className={darkMode ? classes.cancelButtonDark : classes.cancelButton}
+                  className={classNames(
+                    classes.btn,
+                    darkMode ? classes.cancelButtonDark : classes.cancelButton
+                  )}
                 >
                   Скасувати
                 </Button>

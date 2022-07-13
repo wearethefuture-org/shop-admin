@@ -2,13 +2,12 @@ import React from 'react';
 import { Button, DialogActions } from '@material-ui/core';
 import { Field, Form, FormikProps } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-
 import { IAddTreeCategory } from '../../../../interfaces/ITreeCategory';
 import TextFieldWrapped from '../../../../hocs/TextFieldHOC';
-import styled from 'styled-components';
 import { COLORS } from '../../../../values/colors';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
+import classNames from 'classnames';
 
 const useStyles = makeStyles({
   customBtn: {
@@ -21,33 +20,29 @@ const useStyles = makeStyles({
     fontSize: '12px',
     marginBottom: '15px',
   },
+  btn: {
+    borderRadius: '30px',
+    color: COLORS.primaryLight,
+  },
   closeBtn: {
-    'borderRadius': '30px',
-    'color': COLORS.primaryLight,
     'backgroundColor': COLORS.primaryGray,
     '&:hover': {
       backgroundColor: COLORS.secondaryGray,
     },
   },
   closeBtnDark: {
-    'borderRadius': '30px',
-    'color': COLORS.primaryLight,
     'backgroundColor': COLORS.darkGray,
     '&:hover': {
       backgroundColor: COLORS.secondaryDarkGray,
     },
   },
   submitBtn: {
-    'borderRadius': '30px',
-    'color': COLORS.primaryLight,
     'backgroundColor': COLORS.primaryGreen,
     '&:hover': {
       backgroundColor: COLORS.secondaryGreen,
     },
   },
   submitBtnDark: {
-    'borderRadius': '30px',
-    'color': COLORS.primaryLight,
     'backgroundColor': COLORS.darkGreen,
     '&:hover': {
       backgroundColor: COLORS.secondaryDarkGreen,
@@ -101,12 +96,12 @@ const InnerForm: React.FC<InnerTreeCategoryFormProps & FormikProps<IAddTreeCateg
         <Button
           onClick={closeModal}
           variant="contained"
-          className={darkMode ? classes.closeBtnDark : classes.closeBtn}
+          className={classNames(classes.btn, darkMode ? classes.closeBtnDark : classes.closeBtn)}
         >
           Закрити
         </Button>
         <Button
-          className={darkMode ? classes.submitBtnDark : classes.submitBtn}
+          className={classNames(classes.btn, darkMode ? classes.submitBtnDark : classes.submitBtn)}
           variant="contained"
           disabled={isSubmitting || !(dirty && isValid)}
           onClick={submitForm}
