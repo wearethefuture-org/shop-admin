@@ -8,24 +8,23 @@ import styles from './FeedbacksTable.module.scss';
 import { useSelector } from 'react-redux';
 import { COLORS } from '../../../values/colors';
 import { RootState } from '../../../store/store';
+import classNames from 'classnames';
 
 const useStyles = makeStyles(
   (): ThemeOptions =>
     createStyles({
       icon: {
-        'cursor': 'pointer',
-        'color': 'red',
-        'transition': '0.3s all',
-
+        cursor: 'pointer',
+        transition: '0.3s all',
+      },
+      iconLight: {
+        'color': COLORS.primaryRed,
         '&:hover': {
-          color: 'rgb(216, 0, 0)',
+          color: COLORS.secondaryRed,
         },
       },
       iconDark: {
-        'cursor': 'pointer',
         'color': COLORS.darkRed,
-        'transition': '0.3s all',
-
         '&:hover': {
           color: COLORS.secondaryDarkRed,
         },
@@ -128,7 +127,7 @@ const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
         <IconButton
           aria-label="delete"
           type="button"
-          className={darkMode ? classes.iconDark : classes.icon}
+          className={classNames(classes.icon, darkMode ? classes.iconDark : classes.iconLight)}
           onClick={() => {
             setOpenDeleteFeedbackDialog(true);
             setFeedbackToDelete(row.id);
