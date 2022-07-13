@@ -37,15 +37,6 @@ const useStyles = makeStyles({
   },
 });
 
-const validateNumber = (value: number) => {
-  if (typeof value !== 'number') {
-    return 'Enter number';
-  }
-  if (value < 1) {
-    return 'Must be greater than 1';
-  }
-};
-
 const validateString = (value: string) => {
   if (value.length < 3) {
     return 'To short...';
@@ -75,7 +66,6 @@ const ProductFilter: React.FC = () => {
   };
 
   const onSubmit = (values: any) => {
-    filter.id = values.id ? values.id : null;
     filter.name = values.name;
     filter.category = values.category;
     filter.price = values.selectPrice ? price : findPrice;
@@ -116,10 +106,8 @@ const ProductFilter: React.FC = () => {
           <DialogContent dividers>
             <Formik
               initialValues={{
-                id: filter.id,
                 name: filter.name,
                 category: filter.category,
-                selectId: !!filter.id,
                 selectName: !!filter.name,
                 selectCategory: !!filter.category,
                 selectPrice: isPriceChecked,
@@ -128,23 +116,6 @@ const ProductFilter: React.FC = () => {
             >
               {({ values, setFieldValue }) => (
                 <Form className={style.mainForm}>
-                  <div className={style.box}>
-                    <Field
-                      className={style.checkbox}
-                      onClick={() => values.selectId && setFieldValue('id', '')}
-                      type="checkbox"
-                      name="selectId"
-                    />
-                    <Field
-                      fullWidth
-                      validate={values.selectId ? validateNumber : false}
-                      component={TextField}
-                      type="number"
-                      label="ID:"
-                      name="id"
-                      disabled={!values.selectId}
-                    />
-                  </div>
                   <div className={style.box}>
                     <Field
                       className={style.checkbox}
@@ -192,9 +163,7 @@ const ProductFilter: React.FC = () => {
                       <Typography
                         className={style.inputSlider}
                         style={
-                          darkMode
-                            ? { color: '#7d7d7d' }
-                            : values.selectPrice
+                          values.selectPrice
                             ? { color: 'rgba(0, 0, 0, 0.54)' }
                             : { color: 'rgba(0, 0, 0, 0.38)' }
                         }
@@ -209,7 +178,6 @@ const ProductFilter: React.FC = () => {
                         valueLabelDisplay="auto"
                         name="price"
                         marks={marks}
-                        style={darkMode ? { color: '#7d7d7d' } : {}}
                         classes={{
                           root: style.root,
                           rail: style.rail,
@@ -220,17 +188,93 @@ const ProductFilter: React.FC = () => {
                         disabled={!values.selectPrice}
                       />
                     </div>
+                    <div className={style.box}>
+                      <Field
+                        className={style.checkbox}
+                        onClick={() => values.selectName && setFieldValue('name', '')}
+                        type="checkbox"
+                        name="selectName"
+                      />
+                      <Field
+                        fullWidth
+                        validate={values.selectName ? validateString : false}
+                        component={TextField}
+                        type="text"
+                        label="Назва містить:"
+                        name="name"
+                        disabled={!values.selectName}
+                      />
+                    </div>
+                    <div className={style.box}>
+                      <Field
+                        className={style.checkbox}
+                        onClick={() => values.selectCategory && setFieldValue('category', '')}
+                        type="checkbox"
+                        name="selectCategory"
+                      />
+                      <Field
+                        fullWidth
+                        validate={values.selectCategory ? validateString : false}
+                        component={TextField}
+                        type="text"
+                        label="Категорія"
+                        name="category"
+                        disabled={!values.selectCategory}
+                      />
+                    </div>
+                    <div className={style.box}>
+                      <Field
+                        className={style.checkboxSlider}
+                        type="checkbox"
+                        onClick={() =>
+                          isPriceChecked ? setPriceChecked(false) : setPriceChecked(true)
+                        }
+                        name="selectPrice"
+                      />
+                      <div className={style.sliderContainer}>
+                        <Typography
+                          className={style.inputSlider}
+                          style={
+                            darkMode
+                              ? { color: '#7d7d7d' }
+                              : values.selectPrice
+                              ? { color: 'rgba(0, 0, 0, 0.54)' }
+                              : { color: 'rgba(0, 0, 0, 0.38)' }
+                          }
+                        >
+                          Ціна:
+                        </Typography>
+                        <Slider
+                          min={findPrice[0]}
+                          max={findPrice[1]}
+                          value={values.selectPrice ? price : findPrice}
+                          onChange={changeValue}
+                          valueLabelDisplay="auto"
+                          name="price"
+                          marks={marks}
+                          style={darkMode ? { color: '#7d7d7d' } : {}}
+                          classes={{
+                            root: style.root,
+                            rail: style.rail,
+                            track: style.track,
+                            thumb: style.thumb,
+                            markLabel: style.markLabel,
+                          }}
+                          disabled={!values.selectPrice}
+                        />
+                      </div>
+                    </div>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      className={classNames(
+                        classes.btn,
+                        darkMode ? classes.btnDark : classes.btnLight
+                      )}
+                    >
+                      Примінити
+                    </Button>
                   </div>
-                  <Button
-                    variant="contained"
-                    type="submit"
-                    className={classNames(
-                      classes.btn,
-                      darkMode ? classes.btnDark : classes.btnLight
-                    )}
-                  >
-                    Примінити
-                  </Button>
                 </Form>
               )}
             </Formik>

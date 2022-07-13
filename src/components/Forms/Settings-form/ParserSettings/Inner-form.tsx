@@ -107,10 +107,11 @@ const useStyles = makeStyles(
 );
 
 enum ParserSettingsDescription {
-  updatePhoto = 'Оновлювати фото',
-  createNewProducts = 'Створювати новий продукт',
-  updateOldProducts = 'Оновлювати старий продукт',
-  parserLimit = 'Відсоток для парсигу',
+  updatePhoto = "Оновлювати фото",
+  createNewProducts = "Створювати новий продукт",
+  updateOldProducts = "Оновлювати старий продукт",
+  parserLimit = "Відсоток для парсигу",
+  updateOldCharacteristics = "Оновлювати характеристики існуючих товарів",
 }
 
 const InnerForm: React.FC<FormikProps<IFormParserValues>> = (props) => {

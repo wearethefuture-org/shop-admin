@@ -111,7 +111,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
         type="file"
         label="Image"
         name="image"
-        caption="Картинка для компютера. Дозволені формати: jpg, png, gif. Максимальний розмір: 9 МБ. Оптимальне співвідношення сторін: 3,5 (наприклад, 1920x548 тощо)"
+        caption="Картинка для комп'ютера. Дозволені формати: jpg, png, gif. Максимальний розмір: 9 МБ. Оптимальне співвідношення сторін: 3,5 (наприклад, 1920x548 тощо)"
         fieldId="file"
       />
       <ErrorMessage name="image" component="div" className={classes.errorMy} />
@@ -173,3 +173,4 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
   );
 };
 export default InnerForm;
+
