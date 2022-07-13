@@ -4,6 +4,7 @@ import { Button, createStyles, makeStyles, ThemeOptions } from '@material-ui/cor
 import { COLORS } from '../../values/colors';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import classNames from 'classnames';
 
 interface IBtnProps {
   handleDelete: () => void;
@@ -13,19 +14,18 @@ const useStyles = makeStyles(
   (): ThemeOptions =>
     createStyles({
       btn: {
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
+        padding: '5px 15px 5px 15px',
+        borderRadius: '30px',
+        color: COLORS.primaryLight,
+      },
+      btnLight: {
         'backgroundColor': COLORS.primaryRed,
-        'padding': '5px 15px 5px 15px',
         '&:hover': {
           backgroundColor: COLORS.secondaryRed,
         },
       },
       btnDark: {
-        'borderRadius': '30px',
-        'color': COLORS.primaryLight,
         'backgroundColor': COLORS.darkRed,
-        'padding': '5px 15px 5px 15px',
         '&:hover': {
           backgroundColor: COLORS.secondaryDarkRed,
         },
@@ -39,7 +39,7 @@ const DeleteBtn: React.FC<IBtnProps> = ({ handleDelete }) => {
 
   return (
     <Button
-      className={darkMode ? classes.btnDark : classes.btn}
+      className={classNames(classes.btn, darkMode ? classes.btnDark : classes.btnLight)}
       startIcon={<DeleteIcon />}
       onClick={handleDelete}
       type="button"
