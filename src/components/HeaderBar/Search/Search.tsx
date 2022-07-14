@@ -96,7 +96,11 @@ const Search: React.FC<SearchProps> = (props) => {
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
       if (values.searchOption === 'products') {
-        filter.id = Number(values.searchValue)
+        if (!isNaN(Number(values.searchValue))) {
+          filter.id = Number(values.searchValue)
+        } else {
+          filter.name = values.searchValue
+        }
         dispatch(getProductsRequest(1, paginationLimit, sort, sortDirect, filter));
         history.push({
           pathname: '/products',
@@ -135,6 +139,10 @@ const Search: React.FC<SearchProps> = (props) => {
     formik.values.searchValue = String(filter.id)
   }
 
+  if (searchOption === 'products' && !!filter.name) {
+    formik.values.searchValue = filter.name
+  }
+
   const handleMouseDown = (event) => {
     event.preventDefault();
   };
@@ -142,6 +150,7 @@ const Search: React.FC<SearchProps> = (props) => {
   const finishSearch = () => {
     if (searchOption === 'products') {
       filter.id = ''
+      filter.name = ''
       filter.price = findPrice
       dispatch(getProductsRequest(1, paginationLimit, sort, sortDirect, filter));
     }

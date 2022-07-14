@@ -31,7 +31,7 @@ const ProductFilter: React.FC = () => {
   };
 
   const onSubmit = (values: any) => {
-    filter.name = values.name
+    filter.shop = values.shop
     filter.category = values.category
     filter.price = values.selectPrice ? price : findPrice
     dispatch(getProductsRequest(1, paginationLimit, sort, sortDirect, filter));
@@ -71,32 +71,16 @@ const ProductFilter: React.FC = () => {
           <DialogContent dividers>
             <Formik
               initialValues={{ 
-                name: filter.name, 
                 category: filter.category,
-                selectName: !!filter.name,
+                shop: filter.shop,
                 selectCategory: !!filter.category,
+                selectShop: !!filter.shop,
                 selectPrice: isPriceChecked,
                }}
               onSubmit={ onSubmit }
             >
             {({ values, setFieldValue }) => (
               <Form className={style.mainForm}>
-                <div className={style.box} >
-                  <Field 
-                    className={style.checkbox}
-                    onClick={() => values.selectName && setFieldValue('name', '')}
-                    type='checkbox' 
-                    name='selectName' 
-                  />
-                  <Field 
-                    fullWidth
-                    validate={values.selectName ? validateString : false}
-                    component={TextField} 
-                    type='text' 
-                    label='Назва містить:' 
-                    name='name' 
-                    disabled={!values.selectName} />
-                </div>
                 <div className={style.box} >
                   <Field 
                     className={style.checkbox} 
@@ -112,6 +96,22 @@ const ProductFilter: React.FC = () => {
                     label='Категорія' 
                     name='category' 
                     disabled={!values.selectCategory} />
+                </div>
+                <div className={style.box} >
+                  <Field 
+                    className={style.checkbox} 
+                    onClick={() => values.selectShop && setFieldValue('shop', '')}
+                    type='checkbox' 
+                    name='selectShop' 
+                  />
+                  <Field 
+                    fullWidth
+                    validate={values.selectShop ? validateString : false}
+                    component={TextField} 
+                    type='text' 
+                    label='Магазин' 
+                    name='shop' 
+                    disabled={!values.selectShop} />
                 </div>
                 <div className={style.box} >
                   <Field 
