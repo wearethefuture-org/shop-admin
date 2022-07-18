@@ -44,9 +44,9 @@ export const charDynamicFields = (char, formik, product) => {
       formik.initialValues.subForm[name] = '';
       break;
 
-    case Type.json:
-      formik.initialValues.subForm[name] = { 'value-1': '' };
-      break;
+    // case Type.json:
+    //   formik.initialValues.subForm[name] = { Колір: '', розмір: '' };
+    //   break;
 
     case Type.string:
     case Type.number:
