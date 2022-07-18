@@ -56,7 +56,6 @@ export const getEditCharValuesObject = (
                     jsonValue: colorSizeObject,
                   });
                 }
-
                 break;
 
               case Type.string:
