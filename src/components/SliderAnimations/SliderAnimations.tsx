@@ -12,7 +12,7 @@ const SliderAnimations: React.FC = () => {
   const dispatch = useDispatch();
   const animationsData = useSelector((state: RootState) => state.sliderAnimations);
 
-  async function fetchData() { 
+  async function fetchData() {
     await dispatch(fetchSliderAnimations());
   }
 

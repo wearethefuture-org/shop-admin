@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dispatch } from 'redux';
-import { Switch, Button } from '@material-ui/core';
+import { Switch, Box, Button } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import { TableColumn } from 'react-data-table-component';
@@ -9,6 +9,7 @@ import { ISlideItem } from '../../../interfaces/ISlides';
 import { ISlidesModal } from '../../../interfaces/modals';
 import { root } from '../../../api/config';
 import FormDialog from '../../Modals/Slide-modal-edit';
+import AnimationsChoose from '../../Modals/Slide-animation-choose';
 import {
   fetchDeleteSlides,
   fetchUpdateSlideVisibility,
@@ -46,15 +47,24 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
   const title = (
     <div style={{ display: 'flex' }}>
       Слайди
-      <Button
-        style={{ marginLeft: 'auto' }}
-        variant="contained"
-        color="primary"
-        startIcon={<AddIcon />}
-        onClick={handleClickOpen}
+      <Box
+        component="div"
+        sx={{
+          display: 'flex',
+          marginLeft: 'auto',
+        }}
       >
-        Додати слайд
-      </Button>
+        <AnimationsChoose />
+        <Button
+          style={{ marginLeft: '25px' }}
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={handleClickOpen}
+        >
+          Додати слайд
+        </Button>
+      </Box>
     </div>
   );
 
