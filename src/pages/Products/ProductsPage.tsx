@@ -97,9 +97,7 @@ const Products: React.FC = () => {
     history.push({
       pathname: '/products',
       search: queryString.stringify(querySearch),
-      state: {
-        update: true,
-      },
+      state: { update: true },
     });
   }, [dispatch, history, paginationPage, paginationLimit, sort, sortDirect, filter, findPrice]);
 

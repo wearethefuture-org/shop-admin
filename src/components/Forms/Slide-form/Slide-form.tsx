@@ -30,26 +30,26 @@ export const slideValidationShema = Yup.object().shape({
   name: Yup.string().min(2, 'Мінімум 2 символи').max(50, 'Забагато симвлів').required('Введіть назву слайду'),
   text: Yup.string().min(2, 'Мінімум 2 символи').max(360, 'Забагато симвлів').required('Введіть опис'),
   image: Yup.mixed()
-    .required('Потрібно добавити зображення')
-    .test('fileSize', 'File too large', (value) => {
+    .required('Потрібно додати зображення')
+    .test('fileSize', 'Занадто великий файл', (value) => {
       return value && (typeof value === 'string' || value.size <= FILE_SIZE);
     })
     .test(
       'fileFormat',
-      'Unsupported Format',
+      'Формат не підтримується',
       (value) => {
         return value && (typeof value === 'string' || SUPPORTED_FORMATS.includes(value.type))
       }),
   imageMobile: Yup.mixed()
-    .required('Потрібно добавити зображення')
+    .required('Потрібно додати зображення')
     .test(
       'fileSize',
-      'File too large',
+      'Занадто великий файл',
       (value) => value && (typeof value === 'string' || value.size <= FILE_SIZE_MOBILE)
     )
     .test(
       'fileFormat',
-      'Unsupported Format',
+      'Формат не підтримується',
       (value) => value && (typeof value === 'string' || SUPPORTED_FORMATS.includes(value.type))
     ),
   href: Yup.string().min(2, 'Мінімум 2 символи').max(360, 'Забагато симвлів').required('Добавте посилання'),
