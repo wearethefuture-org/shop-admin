@@ -47,6 +47,7 @@
     "redux-saga": "^1.1.3",
     "sass": "^1.49.7",
     "styled-components": "^5.2.1",
+    "swiper": "6.8.4",
     "typescript": "~3.7.2",
     "yup": "^0.30.0"
   },
@@ -76,8 +77,5 @@
   "devDependencies": {
     "prettier": "^2.2.1",
     "ts-loader": "^8.0.11"
-  },
-  "resolutions": {
-    "@types/react": "17"
   }
 }
