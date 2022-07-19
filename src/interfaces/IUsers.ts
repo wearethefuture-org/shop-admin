@@ -35,7 +35,7 @@ export interface IError {
 }
 
 export interface IUserState {
-  user: IUserItem | null ;
+  user: IUserItem | null;
   isFetching: boolean;
   isLoggedIn: boolean;
   error: IError | null;
