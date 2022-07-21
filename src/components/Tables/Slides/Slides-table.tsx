@@ -9,11 +9,11 @@ import { ISlideItem } from '../../../interfaces/ISlides';
 import { ISlidesModal } from '../../../interfaces/modals';
 import { root } from '../../../api/config';
 import FormDialog from '../../Modals/Slide-modal-edit';
-import AnimationsChoose from '../../Modals/Slide-animation-choose';
 import {
   fetchDeleteSlides,
   fetchUpdateSlideVisibility,
 } from '../../../store/actions/slides.actions';
+import SliderAnimations from '../../SliderAnimations/SliderAnimations';
 
 interface SlideDataProps {
   data: Array<ISlideItem>;
@@ -54,7 +54,7 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
           marginLeft: 'auto',
         }}
       >
-        <AnimationsChoose />
+        <SliderAnimations />
         <Button
           style={{ marginLeft: '25px' }}
           variant="contained"

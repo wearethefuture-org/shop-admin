@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import SwiperCore, {
   Autoplay,
   Pagination,
@@ -14,7 +13,6 @@ import 'swiper/swiper-bundle.min.css';
 import 'swiper/swiper.min.css';
 import { root } from '../../api/config';
 import useSlides from '../../hooks/useSlides';
-import { RootState } from '../../store/store';
 import styles from './SlidesGallery.module.scss';
 
 SwiperCore.use([
@@ -27,20 +25,19 @@ SwiperCore.use([
   EffectCube,
 ]);
 
-const SlidesGallery = () => {
+const SlidesGallery = ({ customAnimation }) => {
   const slides = useSlides();
-  const animationsData = useSelector((state: RootState) => state.sliderAnimations);
   const [effect, setEffect] = useState('');
 
   useEffect(() => {
-    setEffect(animationsData.animation);
-  }, [animationsData.animation]);
+    setEffect(customAnimation);
+  }, [customAnimation]);
 
   return (
     <div className={styles.mainswiper}>
-      {animationsData.animation === effect && (
+      {customAnimation === effect && (
         <Swiper
-          effect={animationsData.animation}
+          effect={customAnimation}
           autoplay={{
             delay: 1000,
             disableOnInteraction: false,
@@ -55,7 +52,7 @@ const SlidesGallery = () => {
         >
           {slides.data?.map((slide) => {
             return (
-              <SwiperSlide className={styles.swiperslide}>
+              <SwiperSlide className={styles.swiperslide} key={slide.id}>
                 <img src={`${root}/static/uploads/${slide.image}`} alt={slide.name} />
               </SwiperSlide>
             );
