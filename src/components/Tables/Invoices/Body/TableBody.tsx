@@ -73,7 +73,7 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
             <TableCell align="left">{row.fileSize} КБ</TableCell>
             <TableCell align="right">
               <Button variant="contained">
-                <a href={`${process.env.REACT_APP_PROD_DOMAIN}/invoice/${row.name}`} download>
+                <a href={row.url} download>
                   <DownloadIcon />
                 </a>
               </Button>
