@@ -24,6 +24,9 @@ export interface IUserItem {
     id: number;
     description: string;
   };
+  avatar?: {
+    name: string;
+  };
 }
 
 export interface IError {
@@ -36,6 +39,7 @@ export interface IUserState {
   isFetching: boolean;
   isLoggedIn: boolean;
   error: IError | null;
+  avatarLink: string;
 }
 
 export interface IUserReqUp {
@@ -46,7 +50,7 @@ export interface IUserReqUp {
   roleId?: number;
   password?: string;
   email?: string;
-  telegramId?: string
+  telegramId?: string;
 }
 
 export interface IUserReqAdd {
@@ -66,11 +70,11 @@ export interface IUsersData {
   currentUser: IUserItem | null;
   error: string | null;
   count: number;
-  totalPages: number
+  totalPages: number;
   isSearch: boolean;
   paginationPage: number;
   searchValue: null | string;
-  paginationPageSearch: number;  
+  paginationPageSearch: number;
   currentPage: number;
 }
 
