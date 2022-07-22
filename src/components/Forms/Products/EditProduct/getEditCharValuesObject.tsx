@@ -42,19 +42,19 @@ export const getEditCharValuesObject = (
                 break;
 
               case Type.json:
-                const entries: [string, string][] = Object.entries(value);
+                const { newEntry } = value;
+                let colorSizeObject = {};
 
-                if (value && entries.length) {
-                  const filteredValue = entries.filter(([key, value]) => key && value.trim());
+                if (newEntry?.key) {
+                  const newValue = newEntry.value.split(',').map((val) => val.trim());
+                  colorSizeObject = { ...colorSizeObject, [newEntry.key.trim()]: newValue };
+                }
 
-                  const resultObject: object = Object.fromEntries(filteredValue);
-
-                  if (resultObject && Object.values(resultObject).length) {
-                    acc.push({
-                      ...basicValues,
-                      jsonValue: resultObject,
-                    });
-                  }
+                if (colorSizeObject && Object.values(colorSizeObject).length) {
+                  acc.push({
+                    ...basicValues,
+                    jsonValue: colorSizeObject,
+                  });
                 }
                 break;
 
