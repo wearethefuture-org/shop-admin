@@ -61,8 +61,6 @@ const SliderAnimations: React.FC = () => {
     handleClose();
   }
 
-  console.log(effect);
-
   return (
     <div>
       <Button variant="contained" color="primary" onClick={handleClickOpen}>
