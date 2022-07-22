@@ -169,7 +169,7 @@ export const api: ApiFetchedDataType = {
   products: {
     get: (page, limit, sort, sortDirect, filter) =>
       instance.get(
-        `${root}/product/admin?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}&filterId=${filter.id}&filterName=${filter.name}&filterCategory=${filter.category}&filterPrice=${filter.price}`
+        `${root}/product/admin?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}&filterId=${filter.id}&filterName=${filter.name}&filterCategory=${filter.category}&filterPrice=${filter.price}&filterShop=${filter.shop}`
       ),
     add: (product) => instance.post(`${root}/product`, product),
     getById: (id) => instance.get(`${root}/product/${id}`),

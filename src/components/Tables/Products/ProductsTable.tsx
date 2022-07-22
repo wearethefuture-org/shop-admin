@@ -115,14 +115,12 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       omit: !activeColumns.includes('URL ключ'),
     },
     {
-      name: 'img',
-      selector: (row) => row.files,
-      minWidth: '4%',
-      maxWidth: '5%',
-      format: (row) => (
-        <span className={styles.quantity}>{row?.files?.length ? row?.files?.length / 2 : 0}</span>
-      ),
-      omit: !activeColumns.includes('Зображення'),
+      name: 'Магазин',
+      selector: (row) => row.shopKey,
+      minWidth: '7%',
+      maxWidth: '8%',
+      sortable: true,
+      omit: !activeColumns.includes('Магазин'),
     },
     {
       name: 'Створено',
