@@ -22,7 +22,7 @@ export enum cols {
   description = 'Опис',
   category = 'Категорія',
   key = 'URL ключ',
-  files = 'Зображення',
+  shopKey = 'Магазин',
   createdAt = 'Створено',
   updatedAt = 'Оновлено',
   notcall = 'Не передзвонювати',
@@ -36,7 +36,7 @@ let initialActiveColums: string[] = [
   cols.description,
   cols.category,
   cols.key,
-  cols.files,
+  cols.shopKey,
   cols.createdAt,
   cols.updatedAt,
 ];
@@ -72,6 +72,7 @@ const Products: React.FC = () => {
       id: parsed.filterId ? parsed.filterId : filter.id,
       name: parsed.filterName ? parsed.filterName : filter.name,
       category: parsed.filterCategory ? parsed.filterCategory : filter.category,
+      shop: parsed.filterShop ? parsed.filterShop : filter.shop,
       price: [
         parsed.filterPriceMin ? parsed.filterPriceMin : filter.price[0],
         parsed.filterPriceMax ? parsed.filterPriceMax : filter.price[1],
@@ -90,6 +91,7 @@ const Products: React.FC = () => {
     if (!!sortDirect && sortDirect !== 'asc') querySearch.sortDirect = sortDirect;
     if (!!filter.id && filter.id !== null) querySearch.filterId = filter.id;
     if (!!filter.name && filter.name !== '') querySearch.filterName = filter.name;
+    if (!!filter.shop && filter.shop !== '') querySearch.filterShop = filter.shop;
     if (!!filter.category && filter.category !== '') querySearch.filterCategory = filter.category;
     if (!!filter.price && filter.price[0] !== findPrice[0] && filter.price[0] !== filter.price[1]) querySearch.filterPriceMin = filter.price[0];
     if (!!filter.price && filter.price[1] !== findPrice[1] && filter.price[0] !== filter.price[1]) querySearch.filterPriceMax = filter.price[1];
@@ -170,6 +172,7 @@ type QueryTypes = {
   filterId?: string;
   filterName?: string;
   filterCategory?: string;
+  filterShop?: string;
   filterPriceMin?: number[];
   filterPriceMax?: number[];
 };

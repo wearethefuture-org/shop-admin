@@ -7,9 +7,11 @@ import {
   USER_SIGN_IN_SUCCESS,
   USER_SIGN_OUT,
   UPDATE_PROFILE_USER_SUCCESS,
+  DELETE_AVATAR_SUCCESS,
+  ADD_AVATAR_SUCCESS,
 } from '../types';
 import { IActions } from '../../interfaces/actions';
-import { IUserState } from '../../interfaces/IUsers';
+import { IUserState, IUserItem } from '../../interfaces/IUsers';
 import { getUser } from '../../services/local-storage-controller';
 
 const initialState: IUserState = {
@@ -17,6 +19,7 @@ const initialState: IUserState = {
   isFetching: true,
   isLoggedIn: !!getUser(),
   error: null,
+  avatarLink: '',
 };
 
 const user = (state = initialState, { type, data }: IActions): IUserState => {
@@ -33,6 +36,7 @@ const user = (state = initialState, { type, data }: IActions): IUserState => {
         isFetching: false,
         user: data.user,
         isLoggedIn: true,
+        avatarLink: data.user.avatar?.name,
       };
     case USER_SIGN_IN_ERROR:
       return {
@@ -61,12 +65,24 @@ const user = (state = initialState, { type, data }: IActions): IUserState => {
         user: data,
         isLoggedIn: true,
         error: null,
+        avatarLink: data.avatar?.name,
       };
     case USER_FETCH_ERROR:
       return {
         ...state,
         isFetching: false,
         error: data,
+      };
+    case ADD_AVATAR_SUCCESS:
+      return {
+        ...state,
+        avatarLink: data,
+        user: { ...(state.user as IUserItem), avatar: { name: data } },
+      };
+    case DELETE_AVATAR_SUCCESS:
+      return {
+        ...state,
+        avatarLink: '',
       };
     case UPDATE_PROFILE_USER_SUCCESS:
       return {

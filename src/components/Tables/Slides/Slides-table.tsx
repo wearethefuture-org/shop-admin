@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import { Dispatch } from 'redux';
-import { Switch, makeStyles, Theme, createStyles, ThemeOptions, alpha } from '@material-ui/core';
+import {
+  Switch,
+  Box,
+  Button,
+  makeStyles,
+  Theme,
+  createStyles,
+  ThemeOptions,
+  alpha,
+} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { TableColumn } from 'react-data-table-component';
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
@@ -17,6 +26,7 @@ import AddBtn from '../../AddBtn/AddBtn';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import classNames from 'classnames';
+import SliderAnimations from '../../SliderAnimations/SliderAnimations';
 
 interface SlideDataProps {
   data: Array<ISlideItem>;
@@ -98,11 +108,20 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
   const title = (
     <div style={{ display: 'flex' }}>
       Слайди
-      <AddBtn
-        style={{ marginLeft: 'auto' }}
-        title="Додати слайд"
-        handleAdd={handleClickOpen}
-      ></AddBtn>
+      <Box
+        component="div"
+        sx={{
+          display: 'flex',
+          marginLeft: 'auto',
+        }}
+      >
+        <SliderAnimations />
+        <AddBtn
+          style={{ marginLeft: 'auto' }}
+          title="Додати слайд"
+          handleAdd={handleClickOpen}
+        ></AddBtn>
+      </Box>
     </div>
   );
 

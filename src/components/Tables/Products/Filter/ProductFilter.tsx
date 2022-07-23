@@ -66,7 +66,7 @@ const ProductFilter: React.FC = () => {
   };
 
   const onSubmit = (values: any) => {
-    filter.name = values.name;
+    filter.shop = values.shop;
     filter.category = values.category;
     filter.price = values.selectPrice ? price : findPrice;
     dispatch(getProductsRequest(1, paginationLimit, sort, sortDirect, filter));
@@ -106,10 +106,10 @@ const ProductFilter: React.FC = () => {
           <DialogContent dividers>
             <Formik
               initialValues={{
-                name: filter.name,
                 category: filter.category,
-                selectName: !!filter.name,
+                shop: filter.shop,
                 selectCategory: !!filter.category,
+                selectShop: !!filter.shop,
                 selectPrice: isPriceChecked,
               }}
               onSubmit={onSubmit}
@@ -119,18 +119,74 @@ const ProductFilter: React.FC = () => {
                   <div className={style.box}>
                     <Field
                       className={style.checkbox}
-                      onClick={() => values.selectName && setFieldValue('name', '')}
+                      onClick={() => values.selectCategory && setFieldValue('category', '')}
                       type="checkbox"
-                      name="selectName"
+                      name="selectCategory"
                     />
                     <Field
                       fullWidth
-                      validate={values.selectName ? validateString : false}
+                      validate={values.selectCategory ? validateString : false}
                       component={TextField}
                       type="text"
-                      label="Назва містить:"
-                      name="name"
-                      disabled={!values.selectName}
+                      label="Категорія"
+                      name="category"
+                      disabled={!values.selectCategory}
+                    />
+                  </div>
+                  <div className={style.box}>
+                    <Field
+                      className={style.checkbox}
+                      onClick={() => values.selectShop && setFieldValue('shop', '')}
+                      type="checkbox"
+                      name="selectShop"
+                    />
+                    <Field
+                      fullWidth
+                      validate={values.selectShop ? validateString : false}
+                      component={TextField}
+                      type="text"
+                      label="Магазин"
+                      name="shop"
+                      disabled={!values.selectShop}
+                    />
+                  </div>
+                  <div className={style.box}>
+                    <Field
+                      className={style.checkboxSlider}
+                      type="checkbox"
+                      onClick={() =>
+                        isPriceChecked ? setPriceChecked(false) : setPriceChecked(true)
+                      }
+                      name="selectPrice"
+                    />
+                  </div>
+                  <div className={style.sliderContainer}>
+                    <Typography
+                      className={style.inputSlider}
+                      style={
+                        values.selectPrice
+                          ? { color: 'rgba(0, 0, 0, 0.54)' }
+                          : { color: 'rgba(0, 0, 0, 0.38)' }
+                      }
+                    >
+                      Ціна:
+                    </Typography>
+                    <Slider
+                      min={findPrice[0]}
+                      max={findPrice[1]}
+                      value={values.selectPrice ? price : findPrice}
+                      onChange={changeValue}
+                      valueLabelDisplay="auto"
+                      name="price"
+                      marks={marks}
+                      classes={{
+                        root: style.root,
+                        rail: style.rail,
+                        track: style.track,
+                        thumb: style.thumb,
+                        markLabel: style.markLabel,
+                      }}
+                      disabled={!values.selectPrice}
                     />
                   </div>
                   <div className={style.box}>

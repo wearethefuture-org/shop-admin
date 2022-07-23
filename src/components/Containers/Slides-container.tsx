@@ -1,10 +1,8 @@
 import React from 'react';
 import SlideTable from '../Tables/Slides/Slides-table';
-
 import useSlides from '../../hooks/useSlides';
 import FormDialog from '../Modals/Slide-modal';
 import useSlidesModal from '../../hooks/useSlidesModal';
-import SliderAnimations from '../SliderAnimations/SliderAnimations';
 import { createStyles, makeStyles, Theme, ThemeOptions } from '@material-ui/core';
 
 const useStyles = makeStyles(
@@ -31,8 +29,6 @@ const SlidesContainer: React.FC = () => {
         slidesLength={data.length}
         modalData={slidesCreateModalData}
       />
-
-      <SliderAnimations />
     </>
   );
 };

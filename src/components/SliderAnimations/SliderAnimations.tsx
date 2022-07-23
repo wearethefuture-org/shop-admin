@@ -9,14 +9,21 @@ import {
   RadioGroup,
   Theme,
   ThemeOptions,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 import {
   fetchChangeActiveSliderAnimation,
   fetchSliderAnimations,
 } from '../../store/actions/sliderAnimations.actions';
-import { RootState } from '../../store/store';
+import useModal from '../../hooks/useModal';
+import SlidesGallery from '../SlidesGallery/SlidesGallery';
 import styles from './SliderAnimations.module.scss';
 import { COLORS } from '../../values/colors';
 
@@ -49,6 +56,11 @@ const SliderAnimations: React.FC = () => {
   const animationsData = useSelector((state: RootState) => state.sliderAnimations);
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
+  const { handleClickOpen, isOpened, handleClose } = useModal();
+  const [effect, setEffect] = useState<object | null>(null);
+
+  const isAnimationChange = animationsData.id !== effect?.id;
+
   async function fetchData() {
     await dispatch(fetchSliderAnimations());
   }
@@ -59,41 +71,88 @@ const SliderAnimations: React.FC = () => {
     }
   }, [animationsData.animations]);
 
-  async function handleChangeActiveAnim(e) {
+  useEffect(() => {
+    setEffect(animationsData);
+  }, [animationsData]);
+
+  function handleChangeActiveAnim(e) {
     const newActiveAnim = animationsData.animations.find((a) => a.animation === e.target.value);
-    await dispatch(fetchChangeActiveSliderAnimation(newActiveAnim.id, true));
-    await dispatch(fetchChangeActiveSliderAnimation(animationsData.id, false));
+    setEffect(newActiveAnim);
+  }
+
+  async function onSubmit(e) {
+    e.preventDefault();
+    if (isAnimationChange) {
+      await dispatch(fetchChangeActiveSliderAnimation(effect?.id, true));
+      await dispatch(fetchChangeActiveSliderAnimation(animationsData.id, false));
+    }
+  }
+
+  function handleEmptyChangeClose() {
+    setEffect(animationsData);
+    handleClose();
   }
 
   return (
     <div className={styles.wrapper}>
-      <FormControl>
-        <FormLabel id="demo-controlled-radio-buttons-group">Анімації слайдів</FormLabel>
-        <RadioGroup
-          aria-labelledby="demo-controlled-radio-buttons-group"
-          name="controlled-radio-buttons-group"
-          value={animationsData.animation}
-          onChange={handleChangeActiveAnim}
-        >
-          {animationsData.animations
-            .sort((a, b) => a.animation.localeCompare(b.animation))
-            .map((a) => (
-              <FormControlLabel
-                key={a.id}
-                value={a.animation}
-                control={
-                  <Radio
-                    classes={{
-                      root: darkMode ? classes.radioDark : classes.radio,
-                      checked: classes.checked,
-                    }}
-                  />
-                }
-                label={a.animation}
-              />
-            ))}
-        </RadioGroup>
-      </FormControl>
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+        Анімації слайдів
+      </Button>
+      <Dialog
+        open={isOpened}
+        onClose={handleEmptyChangeClose}
+        aria-labelledby="form-dialog-title"
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle id="form-dialog-title">Вибір анімації слайдів</DialogTitle>
+        <DialogContent dividers>
+          <SlidesGallery customAnimation={effect?.animation} />
+          <div className={styles.wrapper}>
+            <form onSubmit={onSubmit}>
+              <FormControl>
+                <FormLabel id="demo-controlled-radio-buttons-group">Анімації слайдів</FormLabel>
+                <RadioGroup
+                  aria-labelledby="demo-controlled-radio-buttons-group"
+                  name="controlled-radio-buttons-group"
+                  value={effect?.animation}
+                  onChange={handleChangeActiveAnim}
+                >
+                  {animationsData.animations
+                    .sort((a, b) => a.animation.localeCompare(b.animation))
+                    .map((a) => (
+                      <FormControlLabel
+                        key={a.id}
+                        value={a.animation}
+                        control={
+                          <Radio
+                            classes={{
+                              root: darkMode ? classes.radioDark : classes.radio,
+                              checked: classes.checked,
+                            }}
+                          />
+                        }
+                        label={a.animation}
+                      />
+                    ))}
+                </RadioGroup>
+              </FormControl>
+              <DialogActions>
+                <Button
+                  style={{ display: 'block', marginLeft: 'auto' }}
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleClose}
+                  type="submit"
+                  disabled={isAnimationChange ? false : true}
+                >
+                  Зберегти
+                </Button>
+              </DialogActions>
+            </form>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
