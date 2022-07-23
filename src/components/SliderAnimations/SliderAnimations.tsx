@@ -26,6 +26,7 @@ import useModal from '../../hooks/useModal';
 import SlidesGallery from '../SlidesGallery/SlidesGallery';
 import styles from './SliderAnimations.module.scss';
 import { COLORS } from '../../values/colors';
+import classNames from 'classnames';
 
 const useStyles = makeStyles(
   (theme: Theme): ThemeOptions =>
@@ -47,6 +48,35 @@ const useStyles = makeStyles(
         },
       },
       checked: {},
+      btn: {
+        borderRadius: '30px',
+        padding: '6px 15px 6px 15px',
+        color: COLORS.primaryLight,
+      },
+      btnSaveLight: {
+        'backgroundColor': COLORS.primaryGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGreen,
+        },
+      },
+      btnSaveDark: {
+        'backgroundColor': COLORS.secondaryDarkGreen,
+        '&:hover': {
+          backgroundColor: COLORS.darkGreen,
+        },
+      },
+      btnAnimsLight: {
+        'backgroundColor': COLORS.primaryBlue,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryBlue,
+        },
+      },
+      btnAnimsDark: {
+        'backgroundColor': COLORS.secondaryDarkBlue,
+        '&:hover': {
+          backgroundColor: COLORS.darkBlue,
+        },
+      },
     })
 );
 
@@ -95,7 +125,12 @@ const SliderAnimations: React.FC = () => {
 
   return (
     <div className={styles.wrapper}>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+      <Button
+        className={classNames(classes.btn, darkMode ? classes.btnAnimsDark : classes.btnAnimsLight)}
+        variant="contained"
+        color="primary"
+        onClick={handleClickOpen}
+      >
         Анімації слайдів
       </Button>
       <Dialog
@@ -140,6 +175,10 @@ const SliderAnimations: React.FC = () => {
               <DialogActions>
                 <Button
                   style={{ display: 'block', marginLeft: 'auto' }}
+                  className={classNames(
+                    classes.btn,
+                    darkMode ? classes.btnSaveDark : classes.btnSaveLight
+                  )}
                   variant="contained"
                   color="secondary"
                   onClick={handleClose}

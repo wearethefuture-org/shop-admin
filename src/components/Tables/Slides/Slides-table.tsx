@@ -3,7 +3,6 @@ import { Dispatch } from 'redux';
 import {
   Switch,
   Box,
-  Button,
   makeStyles,
   Theme,
   createStyles,
@@ -117,7 +116,7 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
       >
         <SliderAnimations />
         <AddBtn
-          style={{ marginLeft: 'auto' }}
+          style={{ margin: '10px' }}
           title="Додати слайд"
           handleAdd={handleClickOpen}
         ></AddBtn>
