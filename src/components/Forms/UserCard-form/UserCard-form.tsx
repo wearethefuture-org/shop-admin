@@ -11,7 +11,7 @@ import { addUserRequest, updateUserRequest } from '../../../store/actions/users.
 import { IUserItem } from '../../../interfaces/IUsers';
 import { failSnackBar } from '../../../store/actions/snackbar.actions';
 import useRoles from '../../../hooks/useRoles';
-import styles from './UserCard-form.module.scss'
+import styles from './UserCard-form.module.scss';
 import { NavLink } from 'react-router-dom';
 
 // todo
@@ -40,9 +40,9 @@ const useStyles = makeStyles({
   },
   row: {
     margin: '10px',
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   submit: {
     'background': '#424D52',
@@ -92,16 +92,16 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
   const { data: roles } = useRoles();
 
   const onToggleShowCurrentPassword = () => {
-    setShowCurrentPassword(!showCurrentPassword)
-  }
+    setShowCurrentPassword(!showCurrentPassword);
+  };
 
   const onToggleShowNewPassword = () => {
-    setShowNewPassword(!showNewPassword)
-  }
+    setShowNewPassword(!showNewPassword);
+  };
 
   const onToggleShowConfirmNewPassword = () => {
-    setShowConfirmNewPassword(!showConfirmNewPassword)
-  }
+    setShowConfirmNewPassword(!showConfirmNewPassword);
+  };
 
   const baseScheme = {
     firstName: Yup.string()
@@ -147,7 +147,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
 
   const [isEdit, setIsEdit] = useState(true);
   const dispatch: AppDispatch = useDispatch();
-  const currentPage = useSelector((state: any) => state.users.currentPage );
+  const currentPage = useSelector((state: any) => state.users.currentPage);
   const initialValues = {
     firstName: isNew ? '' : user?.firstName,
     lastName: isNew ? '' : user?.lastName,
@@ -155,7 +155,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     email: isNew ? '' : user?.email,
     roleId: isNew ? 1 : user?.role.id,
     telegramId: isNew ? '' : user?.telegramId,
-    currentPassword: isNew ? '' : user?.password,
+    currentPassword: isNew ? '' : user?.password ? user?.password : '',
     newPassword: '',
     confirmNewPassword: '',
   };
@@ -320,12 +320,14 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           })}
         </Select>
       </div>
-   
-      {!isNew && <NavLink to={'/password'} key={'/password'}>
-        <div className={styles.form__resetPassword}>
+
+      {!isNew && (
+        <NavLink to={'/password'} key={'/password'}>
+          <div className={styles.form__resetPassword}>
             <span>Змінити пароль</span>
-        </div>
-      </NavLink>}
+          </div>
+        </NavLink>
+      )}
 
       <div className={classes.row}>
         <Button className={classes.submit} type="submit" disabled={formik.isSubmitting}>
