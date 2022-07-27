@@ -50,6 +50,8 @@ import {
   GET_USERS_BY_QUERY_REQUEST,
   UPDATE_PROFILE_USER_REQUEST,
   GER_ORDERS_BY_PARAMS_REQUEST,
+  DELETE_AVATAR_REQUEST,
+  ADD_AVATAR_REQUEST,
 } from './types';
 
 import {
@@ -97,7 +99,14 @@ import {
   getUsersWorker,
   updateUserWorker,
 } from './sagas/users.saga';
-import { fetchUser, sigInUser, signOutUser, updateProfileUserWorker } from './sagas/user.saga';
+import {
+  fetchUser,
+  sigInUser,
+  signOutUser,
+  updateProfileUserWorker,
+  deleteAvatarWorker,
+  addAvatarWorker,
+} from './sagas/user.saga';
 import { getRolesWorker } from './sagas/roles.saga';
 import { getSearchItemsWorker } from './sagas/search.saga';
 import {
@@ -182,6 +191,8 @@ export function* sagaUserWatcher(): SagaIterator {
   yield takeEvery(USER_SIGN_OUT, signOutUser);
   yield takeEvery(USER_FETCH_REQUEST, fetchUser);
   yield takeEvery(UPDATE_PROFILE_USER_REQUEST, updateProfileUserWorker);
+  yield takeEvery(ADD_AVATAR_REQUEST, addAvatarWorker);
+  yield takeEvery(DELETE_AVATAR_REQUEST, deleteAvatarWorker);
 }
 
 // Roles

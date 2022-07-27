@@ -9,6 +9,10 @@ import {
   USER_SIGN_OUT,
   UPDATE_PROFILE_USER_REQUEST,
   UPDATE_PROFILE_USER_SUCCESS,
+  ADD_AVATAR_REQUEST,
+  ADD_AVATAR_SUCCESS,
+  DELETE_AVATAR_REQUEST,
+  DELETE_AVATAR_SUCCESS,
 } from '../types';
 import { IUserCreeds, IUserItem, IUserReqUp } from '../../interfaces/IUsers';
 
@@ -58,3 +62,23 @@ export const updateUserProfileSuccess = (user: IUserItem): IActions => ({
   type: UPDATE_PROFILE_USER_SUCCESS,
   data: user,
 });
+
+export const addAvatarRequest = (data) => {
+  return {
+    type: ADD_AVATAR_REQUEST,
+    data: data,
+  };
+};
+export const addAvatarSuccess = (link: string) => {
+  return {
+    type: ADD_AVATAR_SUCCESS,
+    data: link,
+  };
+};
+export const deleteAvatarRequest = { type: DELETE_AVATAR_REQUEST };
+
+export const deleteAvatarSuccess = () => {
+  return {
+    type: DELETE_AVATAR_SUCCESS,
+  };
+};
