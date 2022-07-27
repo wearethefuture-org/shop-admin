@@ -5,14 +5,14 @@ import { getOrdersRequest, getOrdersByParamsRequest } from '../store/actions/ord
 
 const useOrders = (searchValue: string) => {
   const dispatch: AppDispatch = useDispatch();
-
+  console.log(searchValue);
   useEffect(() => {
-    if (searchValue){
-      dispatch(getOrdersByParamsRequest(1,10, searchValue));
+    if (searchValue) {
+      dispatch(getOrdersByParamsRequest(1, 10, searchValue));
     }
-    
-    if (!searchValue){
-      dispatch(getOrdersRequest(1,10));
+
+    if (!searchValue) {
+      dispatch(getOrdersRequest(1, 10));
     }
   }, [dispatch]);
 

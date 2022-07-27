@@ -153,6 +153,7 @@ const orders = (state = initialState, { type, data }: IActions) => {
         ...state,
         loading: true,
         error: null,
+        searchValue: data.searchValue,
       };
     }
 
