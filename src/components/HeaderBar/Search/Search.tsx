@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { AppDispatch } from '../../../store/store';
-
-import {
-  getProductsRequest,
-  getProductsByQueryRequest,
-} from '../../../store/actions/products.actions';
+import { AppDispatch, RootState } from '../../../store/store';
+import { getProductsRequest } from '../../../store/actions/products.actions';
 import { getOrdersByParamsRequest, getOrdersRequest } from './../../../store/actions/orders.actions';
-
 import { Button, IconButton, MenuItem, Select } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
-import { getUsersByQueryRequest, getUsersRequest } from '../../../store/actions/users.actions';
+import { getUsersByQueryRequest } from '../../../store/actions/users.actions';
 
 interface SearchProps {}
 
@@ -83,10 +78,13 @@ const searchOptions = [
 ];
 
 const Search: React.FC<SearchProps> = (props) => {
+  const { paginationLimit, sort, sortDirect, filter, findPrice } = useSelector(
+    (state: RootState) => state.products
+  );
   const classes = useStyles(props);
   const history = useHistory();
   const dispatch: AppDispatch = useDispatch();
-  const [searchOption, setSearchOption] = useState<string>('');
+  const [searchOption, setSearchOption] = useState<string>('products');
 
   const initialValues = {
     searchValue: '',
@@ -98,7 +96,12 @@ const Search: React.FC<SearchProps> = (props) => {
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true);
       if (values.searchOption === 'products') {
-        dispatch(getProductsByQueryRequest(values.searchValue, 1, 10));
+        if (!isNaN(Number(values.searchValue))) {
+          filter.id = Number(values.searchValue)
+        } else {
+          filter.name = values.searchValue
+        }
+        dispatch(getProductsRequest(1, paginationLimit, sort, sortDirect, filter));
         history.push({
           pathname: '/products',
         });
@@ -131,21 +134,25 @@ const Search: React.FC<SearchProps> = (props) => {
     },
   });
 
+  
+  if (searchOption === 'products' && !!filter.id) {
+    formik.values.searchValue = String(filter.id)
+  }
+
+  if (searchOption === 'products' && !!filter.name) {
+    formik.values.searchValue = filter.name
+  }
+
   const handleMouseDown = (event) => {
     event.preventDefault();
   };
 
-  const handleChange = (field?: string) => {
-    if (!field?.trim().length && isSearch) {
-      dispatch(getProductsRequest(1, 10));
-      dispatch(getUsersRequest(1, 10));
-      setIsSearch(false);
-    }
-  };
-
   const finishSearch = () => {
     if (searchOption === 'products') {
-      dispatch(getProductsRequest(1, 10));
+      filter.id = ''
+      filter.name = ''
+      filter.price = findPrice
+      dispatch(getProductsRequest(1, paginationLimit, sort, sortDirect, filter));
     }
     if (searchOption === 'orders') {
       dispatch(getOrdersRequest(1, 10));
