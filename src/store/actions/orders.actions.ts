@@ -19,6 +19,9 @@ import {
   UPDATE_PRODUCT_IN_ORDER_REQUEST,
   UPDATE_PRODUCT_IN_ORDER_SUCCESS,
   UPDATE_PRODUCT_IN_ORDER_ERROR,
+  GET_ORDERS_BY_RANGE_REQUEST,
+  GET_ORDERS_BY_RANGE_SUCCESS,
+  GET_ORDERS_BY_RANGE_ERROR,
 } from '../types';
 
 export const getOrdersRequest = (page: number, limit: number): IActions => ({
@@ -51,6 +54,21 @@ export const getOrderByIdSuccess = (order): IActions => ({
 
 export const getOrderByIdError = (message: string): IActions => ({
   type: GET_ORDER_BY_ID_ERROR,
+  data: message,
+});
+
+export const getOrderByRangeRequest = (datesArray: string[]): IActions => ({
+  type: GET_ORDERS_BY_RANGE_REQUEST,
+  data: datesArray,
+});
+
+export const getOrderByRangeSuccess = (orders: any): IActions => ({
+  type: GET_ORDERS_BY_RANGE_SUCCESS,
+  data: orders,
+});
+
+export const getOrderByRangeError = (message: string): IActions => ({
+  type: GET_ORDERS_BY_RANGE_ERROR,
   data: message,
 });
 

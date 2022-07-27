@@ -46,7 +46,7 @@ export interface IUserReqUp {
   roleId?: number;
   password?: string;
   email?: string;
-  telegramId?: string
+  telegramId?: string;
 }
 
 export interface IUserReqAdd {
@@ -64,14 +64,25 @@ export interface IUsersData {
   list: Array<IUserItem>;
   loading: boolean;
   currentUser: IUserItem | null;
+  rangeUsers: IUsersStatistic | null;
   error: string | null;
   count: number;
-  totalPages: number
+  totalPages: number;
   isSearch: boolean;
   paginationPage: number;
   searchValue: null | string;
-  paginationPageSearch: number;  
+  paginationPageSearch: number;
   currentPage: number;
+}
+
+export interface IUsersStatistic {
+  registredUsers: IUserDateRange[];
+  onlineUsers: string;
+}
+
+export interface IUserDateRange {
+  date: string;
+  creatad: string;
 }
 
 export interface UserTableData {

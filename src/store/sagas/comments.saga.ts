@@ -5,11 +5,17 @@ import { IActions } from '../../interfaces/actions';
 import {
   deleteCommentError,
   deleteCommentSuccess,
+  getCommentsByRangeError,
+  getCommentsByRangeSuccess,
   getCommentsError,
   getCommentsSuccess,
 } from '../actions/comments.actions';
 import { failSnackBar } from '../actions/snackbar.actions';
-import { apiDeleteComment, apiGetComments } from './services/comments.service';
+import {
+  apiDeleteComment,
+  apiGetByRangeComments,
+  apiGetComments,
+} from './services/comments.service';
 
 export function* getCommentsWorker({ data: { page, limit } }: IActions): SagaIterator {
   try {
@@ -18,6 +24,16 @@ export function* getCommentsWorker({ data: { page, limit } }: IActions): SagaIte
   } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(getCommentsError(error.message));
+  }
+}
+
+export function* getCommentsByDateRangeWorker({ data: datesArray }: IActions): SagaIterator {
+  try {
+    const comments = yield call(apiGetByRangeComments, datesArray);
+    yield put(getCommentsByRangeSuccess(comments));
+  } catch (error) {
+    yield put(failSnackBar(error.message));
+    yield put(getCommentsByRangeError(error.message));
   }
 }
 
