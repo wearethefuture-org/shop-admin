@@ -24,6 +24,9 @@ export interface IUserItem {
     id: number;
     description: string;
   };
+  avatar?: {
+    name: string;
+  };
 }
 
 export interface IError {
@@ -36,6 +39,7 @@ export interface IUserState {
   isFetching: boolean;
   isLoggedIn: boolean;
   error: IError | null;
+  avatarLink: string;
 }
 
 export interface IUserReqUp {

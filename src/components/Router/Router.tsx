@@ -70,7 +70,7 @@ const Router: React.FC = () => {
                 <PrivateRoute component={Search} path="/search" />
                 <PrivateRoute component={OrderRouter} path="/order/:id" />
                 <PrivateRoute component={Profile} path="/profile" />
-                <Route path="/password" component={ResetPassword} />
+                <PrivateRoute path="/password" component={ResetPassword} />
                 <Route path="/home" component={Home} />
               </Switch>
             </Content>

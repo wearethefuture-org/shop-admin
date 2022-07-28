@@ -134,6 +134,8 @@ type ApiFetchedDataType = {
     delete: (id: number) => FetchedDataType<JSON>;
     requestPasswordInstall: (data: { email: string }) => FetchedDataType<IResponseMessage>;
     updateUserData: (userData: IUserReqUp) => FetchedDataType<IUserReqUp>;
+    deleteAvatar: () => FetchedDataType<IResponseMessage>;
+    addAvatar: (data) => FetchedDataType<IResponseMessage>;
   };
   roles: {
     get: () => FetchedDataType<IRole[]>;
@@ -170,7 +172,7 @@ export const api: ApiFetchedDataType = {
   products: {
     get: (page, limit, sort, sortDirect, filter) =>
       instance.get(
-        `${root}/product/admin?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}&filterId=${filter.id}&filterName=${filter.name}&filterCategory=${filter.category}&filterPrice=${filter.price}`
+        `${root}/product/admin?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}&filterId=${filter.id}&filterName=${filter.name}&filterCategory=${filter.category}&filterPrice=${filter.price}&filterShop=${filter.shop}`
       ),
     add: (product) => instance.post(`${root}/product`, product),
     getById: (id) => instance.get(`${root}/product/${id}`),
@@ -234,6 +236,8 @@ export const api: ApiFetchedDataType = {
     add: (user) => instance.post(`${root}/auth/register-through-admin`, user),
     requestPasswordInstall: (email) => instance.post(`${root}/users/password/reset`, email),
     updateUserData: (userData) => instance.patch(`${root}/users/update`, userData),
+    deleteAvatar: () => instance.delete('users/avatar'),
+    addAvatar: (data) => instance.post('users/avatar', data),
   },
   comments: {
     get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),
