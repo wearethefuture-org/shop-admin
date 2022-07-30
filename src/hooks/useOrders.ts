@@ -5,7 +5,6 @@ import { getOrdersRequest, getOrdersByParamsRequest } from '../store/actions/ord
 
 const useOrders = (searchValue: string) => {
   const dispatch: AppDispatch = useDispatch();
-  console.log(searchValue);
   useEffect(() => {
     if (searchValue) {
       dispatch(getOrdersByParamsRequest(1, 10, searchValue));
