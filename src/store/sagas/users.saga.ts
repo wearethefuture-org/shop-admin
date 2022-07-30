@@ -45,7 +45,6 @@ export function* addUserWorker({ data: { userValues } }: IActions): SagaIterator
 export function* updateUserWorker({ data: { userValues, currentPage}  }: IActions): SagaIterator {
   try {
     const user = yield call(apiUpdateUser, userValues);
-    console.log(userValues);
     yield put(updateUserSuccess(user));
     yield put(successSnackBar());
     yield put(getUsersRequest(currentPage, 10));

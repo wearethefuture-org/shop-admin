@@ -182,7 +182,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     email: isNew ? '' : user?.email,
     roleId: isNew ? 0 : user?.role.id,
     telegramId: isNew ? '' : user?.telegramId,
-    currentPassword: isNew ? '' : user?.password,
+    currentPassword: isNew ? '' : user?.password ? user?.password : '',
     newPassword: '',
     confirmNewPassword: '',
   };
