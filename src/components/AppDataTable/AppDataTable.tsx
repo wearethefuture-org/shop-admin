@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import DataTable from 'react-data-table-component';
 import Card from '@material-ui/core/Card';
-import { customStylesDataTable } from './CustomStylesDataTable'
+import { customStylesDataTable } from './CustomStylesDataTable';
 import CustomTablePaginator from '../Paginator/Paginator';
 
 import { RootState } from '../../store/store';
@@ -52,7 +52,7 @@ const AppDataTable: React.FC<DataTableProps> = ({
         paginationDefaultPage={paginationPage}
         paginationComponent={CustomTablePaginator}
         defaultSortAsc={false}
-        defaultSortFieldId={defaultSortFieldId}
+        defaultSortFieldId={defaultSortFieldId ? null : defaultSortFieldId}
         fixedHeader={true}
         fixedHeaderScrollHeight={'60vh'}
         paginationTotalRows={count}
