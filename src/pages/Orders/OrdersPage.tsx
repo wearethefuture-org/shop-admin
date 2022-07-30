@@ -27,7 +27,7 @@ enum cols {
 }
 
 const OrdersPage: React.FC = () => {
-  const { loading, searchValue} = useSelector((state: RootState) => state.orders);
+  const { loading, searchValue } = useSelector((state: RootState) => state.orders);
   const { list } = useOrders(searchValue);
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [openAddModal, setOpenAddModal] = useState(false);

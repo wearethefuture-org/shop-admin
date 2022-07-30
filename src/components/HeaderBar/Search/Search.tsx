@@ -3,14 +3,19 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../../store/store';
-import { getProductsRequest } from '../../../store/actions/products.actions';
-import { getOrdersByParamsRequest, getOrdersRequest } from './../../../store/actions/orders.actions';
 import { Button, IconButton, MenuItem, Select } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
+
+import { getProductsRequest } from '../../../store/actions/products.actions';
+import {
+  getOrdersByParamsRequest,
+  getOrdersRequest,
+} from './../../../store/actions/orders.actions';
 import { getUsersByQueryRequest } from '../../../store/actions/users.actions';
+import { failSnackBar } from './../../../store/actions/snackbar.actions';
 
 interface SearchProps {}
 
@@ -125,6 +130,12 @@ const Search: React.FC<SearchProps> = (props) => {
         });
       }
       if (values.searchOption === 'orders') {
+        if (values.searchValue.replace(/\d/g, '')) {
+          dispatch(failSnackBar('При пошуку замовлення можна використовувати тільки цифри.'));
+          setSubmitting(false);
+          return;
+        }
+
         dispatch(getOrdersByParamsRequest(1, 10, values.searchValue));
         history.push({
           pathname: '/orders',
@@ -134,9 +145,8 @@ const Search: React.FC<SearchProps> = (props) => {
     },
   });
 
-  
   if (searchOption === 'products' && !!filter.id) {
-    formik.values.searchValue = String(filter.id)
+    formik.values.searchValue = String(filter.id);
   }
 
   if (searchOption === 'products' && !!filter.name) {
@@ -192,8 +202,8 @@ const Search: React.FC<SearchProps> = (props) => {
           value={formik.values.searchOption}
           className={classes.searchSelect}
           onChange={(e) => {
-            setSearchOption(e.target.value as string)
-            formik.handleChange(e)
+            setSearchOption(e.target.value as string);
+            formik.handleChange(e);
           }}
           onBlur={formik.handleBlur}
         >
