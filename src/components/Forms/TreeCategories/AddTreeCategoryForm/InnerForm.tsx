@@ -2,9 +2,12 @@ import React from 'react';
 import { Button, DialogActions } from '@material-ui/core';
 import { Field, Form, FormikProps } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
-
 import { IAddTreeCategory } from '../../../../interfaces/ITreeCategory';
 import TextFieldWrapped from '../../../../hocs/TextFieldHOC';
+import { COLORS } from '../../../../values/colors';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store/store';
+import classNames from 'classnames';
 
 const useStyles = makeStyles({
   customBtn: {
@@ -17,6 +20,34 @@ const useStyles = makeStyles({
     fontSize: '12px',
     marginBottom: '15px',
   },
+  btn: {
+    borderRadius: '30px',
+    color: COLORS.primaryLight,
+  },
+  closeBtn: {
+    'backgroundColor': COLORS.primaryGray,
+    '&:hover': {
+      backgroundColor: COLORS.secondaryGray,
+    },
+  },
+  closeBtnDark: {
+    'backgroundColor': COLORS.darkGray,
+    '&:hover': {
+      backgroundColor: COLORS.secondaryDarkGray,
+    },
+  },
+  submitBtn: {
+    'backgroundColor': COLORS.primaryGreen,
+    '&:hover': {
+      backgroundColor: COLORS.secondaryGreen,
+    },
+  },
+  submitBtnDark: {
+    'backgroundColor': COLORS.darkGreen,
+    '&:hover': {
+      backgroundColor: COLORS.secondaryDarkGreen,
+    },
+  },
 });
 
 interface InnerTreeCategoryFormProps {
@@ -27,6 +58,8 @@ const InnerForm: React.FC<InnerTreeCategoryFormProps & FormikProps<IAddTreeCateg
   const { submitForm, closeModal, isSubmitting, dirty, isValid } = props;
 
   const classes = useStyles();
+
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   return (
     <Form>
@@ -62,16 +95,14 @@ const InnerForm: React.FC<InnerTreeCategoryFormProps & FormikProps<IAddTreeCateg
       <DialogActions>
         <Button
           onClick={closeModal}
-          color="secondary"
           variant="contained"
-          className={classes.customBtn}
+          className={classNames(classes.btn, darkMode ? classes.closeBtnDark : classes.closeBtn)}
         >
           Закрити
         </Button>
         <Button
-          className={classes.customBtn}
+          className={classNames(classes.btn, darkMode ? classes.submitBtnDark : classes.submitBtn)}
           variant="contained"
-          color="primary"
           disabled={isSubmitting || !(dirty && isValid)}
           onClick={submitForm}
         >

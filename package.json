@@ -24,6 +24,7 @@
     "axios": "^0.21.0",
     "bootstrap": "^4.5.2",
     "chart.js": "^2.9.4",
+    "classnames": "^2.3.1",
     "formik": "^2.2.0",
     "formik-material-ui": "^3.0.0",
     "moment-timezone": "^0.5.31",

@@ -1,3 +1,20 @@
+import {
+  alpha,
+  createStyles,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  makeStyles,
+  Radio,
+  RadioGroup,
+  Theme,
+  ThemeOptions,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
@@ -5,25 +22,70 @@ import {
   fetchChangeActiveSliderAnimation,
   fetchSliderAnimations,
 } from '../../store/actions/sliderAnimations.actions';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from '@material-ui/core';
 import useModal from '../../hooks/useModal';
 import SlidesGallery from '../SlidesGallery/SlidesGallery';
 import styles from './SliderAnimations.module.scss';
+import { COLORS } from '../../values/colors';
+import classNames from 'classnames';
+
+const useStyles = makeStyles(
+  (theme: Theme): ThemeOptions =>
+    createStyles({
+      radio: {
+        '&$checked': {
+          color: COLORS.primaryGreen,
+        },
+        '&:hover': {
+          backgroundColor: COLORS.secondaryOttoman,
+        },
+      },
+      radioDark: {
+        '&$checked': {
+          color: COLORS.darkGreen,
+        },
+        '&:hover': {
+          backgroundColor: alpha(COLORS.darkGreen, theme.palette.action.hoverOpacity),
+        },
+      },
+      checked: {},
+      btn: {
+        borderRadius: '30px',
+        padding: '6px 15px 6px 15px',
+        color: COLORS.primaryLight,
+      },
+      btnSaveLight: {
+        'backgroundColor': COLORS.primaryGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGreen,
+        },
+      },
+      btnSaveDark: {
+        'backgroundColor': COLORS.secondaryDarkGreen,
+        '&:hover': {
+          backgroundColor: COLORS.darkGreen,
+        },
+      },
+      btnAnimsLight: {
+        'backgroundColor': COLORS.primaryBlue,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryBlue,
+        },
+      },
+      btnAnimsDark: {
+        'backgroundColor': COLORS.secondaryDarkBlue,
+        '&:hover': {
+          backgroundColor: COLORS.darkBlue,
+        },
+      },
+    })
+);
 
 const SliderAnimations: React.FC = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const animationsData = useSelector((state: RootState) => state.sliderAnimations);
+  const { darkMode } = useSelector((state: RootState) => state.theme);
+
   const { handleClickOpen, isOpened, handleClose } = useModal();
   const [effect, setEffect] = useState<object | null>(null);
 
@@ -62,8 +124,13 @@ const SliderAnimations: React.FC = () => {
   }
 
   return (
-    <div>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+    <div className={styles.wrapper}>
+      <Button
+        className={classNames(classes.btn, darkMode ? classes.btnAnimsDark : classes.btnAnimsLight)}
+        variant="contained"
+        color="primary"
+        onClick={handleClickOpen}
+      >
         Анімації слайдів
       </Button>
       <Dialog
@@ -92,7 +159,14 @@ const SliderAnimations: React.FC = () => {
                       <FormControlLabel
                         key={a.id}
                         value={a.animation}
-                        control={<Radio />}
+                        control={
+                          <Radio
+                            classes={{
+                              root: darkMode ? classes.radioDark : classes.radio,
+                              checked: classes.checked,
+                            }}
+                          />
+                        }
                         label={a.animation}
                       />
                     ))}
@@ -101,6 +175,10 @@ const SliderAnimations: React.FC = () => {
               <DialogActions>
                 <Button
                   style={{ display: 'block', marginLeft: 'auto' }}
+                  className={classNames(
+                    classes.btn,
+                    darkMode ? classes.btnSaveDark : classes.btnSaveLight
+                  )}
                   variant="contained"
                   color="secondary"
                   onClick={handleClose}

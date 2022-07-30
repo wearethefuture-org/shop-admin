@@ -1,11 +1,37 @@
 import React, { useState } from 'react';
-import { IconButton } from '@material-ui/core';
+import { createStyles, IconButton, makeStyles, ThemeOptions } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import { CommentsTableProps } from '../../../interfaces/IComment';
 import AppDataTable from '../../AppDataTable/AppDataTable';
 import DateMoment from '../../Common/Date-moment';
 import styles from './CommentsTable.module.scss';
+import { COLORS } from '../../../values/colors';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import classNames from 'classnames';
+
+const useStyles = makeStyles(
+  (): ThemeOptions =>
+    createStyles({
+      icon: {
+        cursor: 'pointer',
+        transition: '0.3s all',
+      },
+      iconLight: {
+        'color': COLORS.primaryRed,
+        '&:hover': {
+          color: COLORS.secondaryRed,
+        },
+      },
+      iconDark: {
+        'color': COLORS.darkRed,
+        '&:hover': {
+          color: COLORS.secondaryDarkRed,
+        },
+      },
+    })
+);
 
 const CommentsTable: React.FC<CommentsTableProps> = ({
   list,
@@ -18,7 +44,9 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
   paginationServer,
   setPage,
 }) => {
+  const classes = useStyles();
   const [expandedComments, setExpandedComments] = useState<number[]>([]);
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const handleExpandedComments = (id) => {
     expandedComments.includes(id)
@@ -94,13 +122,14 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
         <IconButton
           aria-label="delete"
           type="button"
-          color="secondary"
           onClick={() => {
             setOpenDeleteCommentDialog(true);
             setCommentToDelete(row.id);
           }}
         >
-          <DeleteIcon />
+          <DeleteIcon
+            className={classNames(classes.icon, darkMode ? classes.iconDark : classes.iconLight)}
+          />
         </IconButton>
       ),
     },

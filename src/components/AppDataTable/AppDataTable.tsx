@@ -6,6 +6,7 @@ import { customStylesDataTable } from './CustomStylesDataTable';
 import CustomTablePaginator from '../Paginator/Paginator';
 
 import { RootState } from '../../store/store';
+import { COLORS } from '../../values/colors';
 
 interface DataTableProps {
   columns: any[];
@@ -38,6 +39,18 @@ const AppDataTable: React.FC<DataTableProps> = ({
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
+  const conditionalRowStyles = [
+    {
+      when: (row) => row.id,
+      style: {
+        'minHeight': '70px',
+        '&:hover': {
+          backgroundColor: darkMode ? COLORS.secondaryDarkGray : COLORS.primaryOttoman,
+        },
+      },
+    },
+  ];
+
   return (
     <Card>
       <DataTable
@@ -62,6 +75,7 @@ const AppDataTable: React.FC<DataTableProps> = ({
         onChangePage={(p) => setPage(p)}
         onChangeRowsPerPage={(l) => setLimit(l)}
         customStyles={customStyles}
+        conditionalRowStyles={conditionalRowStyles}
       />
     </Card>
   );

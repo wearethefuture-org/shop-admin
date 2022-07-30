@@ -2,10 +2,11 @@ import React, { Dispatch, SetStateAction, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import DataTable from 'react-data-table-component';
 import Card from '@material-ui/core/Card';
-import { customStylesDataTable } from './CustomStylesDataTable'
+import { customStylesDataTable } from './CustomStylesDataTable';
 import CustomProductsTablePaginator from '../Paginator/ProductsPaginator';
 
 import { RootState } from '../../store/store';
+import { COLORS } from '../../values/colors';
 
 interface ProductsDataTableProps {
   columns: any[];
@@ -19,8 +20,8 @@ interface ProductsDataTableProps {
   defaultSortFieldId?: string | number | null;
   customStyles?: any;
   paginationPage?: number;
-  setSortColumn?: ((column: any, direction: any) => void)
-  sortDirect: string
+  setSortColumn?: (column: any, direction: any) => void;
+  sortDirect: string;
 }
 
 const AppProductsDataTable: React.FC<ProductsDataTableProps> = ({
@@ -36,10 +37,21 @@ const AppProductsDataTable: React.FC<ProductsDataTableProps> = ({
   defaultSortFieldId = '',
   paginationPage,
   customStyles = customStylesDataTable,
-  sortDirect
+  sortDirect,
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
-  const defaultSortAsc = sortDirect === 'asc'? true : false
+  const defaultSortAsc = sortDirect === 'asc' ? true : false;
+  const conditionalRowStyles = [
+    {
+      when: (row) => row.id,
+      style: {
+        'minHeight': '70px',
+        '&:hover': {
+          backgroundColor: darkMode ? COLORS.secondaryDarkGray : COLORS.primaryOttoman,
+        },
+      },
+    },
+  ];
 
   return (
     <Card>
@@ -65,7 +77,8 @@ const AppProductsDataTable: React.FC<ProductsDataTableProps> = ({
         onSort={(e, direction) => setSortColumn(e, direction)}
         defaultSortAsc={defaultSortAsc}
         defaultSortFieldId={defaultSortFieldId}
-        sortFunction={rows => rows}
+        sortFunction={(rows) => rows}
+        conditionalRowStyles={conditionalRowStyles}
       />
     </Card>
   );
