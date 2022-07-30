@@ -15,6 +15,9 @@ import {
   GET_USERS_BY_QUERY_REQUEST,
   GET_USERS_BY_QUERY_SUCCESS,
   GET_USERS_BY_QUERY_ERROR,
+  GET_USERS_DATE_RANGE_REQUEST,
+  GET_USERS_DATE_RANGE_SUCCESS,
+  GET_USERS_DATE_RANGE_ERROR,
 } from '../types';
 import { IUsersData } from '../../interfaces/IUsers';
 
@@ -23,13 +26,14 @@ const initialState: IUsersData = {
   list: [],
   isSearch: false,
   currentUser: null,
+  rangeUsers: null,
   error: null,
   count: 0,
   totalPages: 0,
   paginationPage: 1,
   searchValue: null,
-  paginationPageSearch: 1,  
-  currentPage: 1
+  paginationPageSearch: 1,
+  currentPage: 1,
 };
 
 const users = (state = initialState, { type, data }: IActions) => {
@@ -43,10 +47,10 @@ const users = (state = initialState, { type, data }: IActions) => {
         error: null,
         isSearch: false,
         searchValue: null,
-        paginationPage: data.page
+        paginationPage: data.page,
       };
     }
-    
+
     case GET_USERS_SUCCESS: {
       return {
         ...state,
@@ -57,7 +61,7 @@ const users = (state = initialState, { type, data }: IActions) => {
         totalPages: data.totalPages,
       };
     }
-    
+
     case GET_USERS_ERROR: {
       return {
         ...state,
@@ -65,7 +69,7 @@ const users = (state = initialState, { type, data }: IActions) => {
         error: data,
       };
     }
-      
+
     case GET_USERS_BY_QUERY_REQUEST: {
       return {
         ...state,
@@ -73,7 +77,7 @@ const users = (state = initialState, { type, data }: IActions) => {
         isSearch: true,
         error: null,
         searchValue: data.searchValue,
-        paginationPageSearch: data.page
+        paginationPageSearch: data.page,
       };
     }
 
@@ -94,7 +98,32 @@ const users = (state = initialState, { type, data }: IActions) => {
         error: data,
       };
     }
-      
+
+    case GET_USERS_DATE_RANGE_REQUEST: {
+      return {
+        ...state,
+        rangeUsers: null,
+        loading: true,
+        error: null,
+      };
+    }
+
+    case GET_USERS_DATE_RANGE_SUCCESS: {
+      return {
+        ...state,
+        rangeUsers: data,
+        loading: false,
+      };
+    }
+
+    case GET_USERS_DATE_RANGE_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
+      };
+    }
+
     case ADD_USER_REQUEST: {
       return {
         ...state,

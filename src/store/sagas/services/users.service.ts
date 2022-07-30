@@ -34,6 +34,11 @@ export async function apiGetUsersByQuery(searchValue: string, page: number, limi
     page,
     limit,
   });
-  
+
   return user.data;
+}
+
+export async function apiGetByRangeUsers(datesArray: string[]) {
+  const users = await api.users.getByDatesRange(datesArray);
+  return users.data;
 }
