@@ -1,0 +1,47 @@
+.mainForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .price {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .box {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: row;
+    gap: 20px;
+
+    .checkbox {
+      margin-bottom: 10px;
+      transform: scale(1.5);
+    }
+
+    .checkboxSlider {
+      margin-bottom: 40px;
+      transform: scale(1.5);
+    }
+
+    .sliderContainer {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+
+      .inputSlider {
+        margin-top: 20px;
+        margin-bottom: -10px;
+      }
+
+      .markLabel {
+        color: #7d7d7d;
+      }
+    }
+  }
+
+  button {
+    margin-top: 30px;
+  }
+}

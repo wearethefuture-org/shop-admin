@@ -5,6 +5,7 @@ import Accordion from '@material-ui/core/Accordion';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
+import { COLORS } from '../../../../values/colors';
 
 interface ExpandableBlockProps {
   darkMode: boolean;
@@ -33,7 +34,10 @@ const ExpandableBlock: FC<ExpandableBlockProps> = ({
       <div onClick={() => toggleOpen(id)}>
         <span className={styles.expandBlockArrow}>
           {openSections.includes(id) ? (
-            <ExpandMoreIcon fontSize="large" style={{ color: 'green' }} />
+            <ExpandMoreIcon
+              fontSize="large"
+              style={{ color: darkMode ? COLORS.darkGreen : COLORS.primaryGreen }}
+            />
           ) : (
             <ChevronRightIcon fontSize="large" />
           )}
@@ -44,7 +48,7 @@ const ExpandableBlock: FC<ExpandableBlockProps> = ({
         {hasTree ? (
           <div>
             <span className={styles.title}>
-              <span className={styles.forkIcon}>
+              <span className={darkMode ? styles.forkIconDark : styles.forkIcon}>
                 <AccountTreeOutlinedIcon />
               </span>
               <span>Дерево категорій</span>

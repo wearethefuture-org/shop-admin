@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../store/store';
-import {
-  getProductsRequest,
-  getProductsByQueryRequest,
-} from '../../../store/actions/products.actions';
-import AppDataTable from '../../AppDataTable/AppDataTable';
-import { IGetProducts, ProductsTableProps } from '../../../interfaces/IProducts';
+import { useDispatch } from 'react-redux';
+import { getProductsRequest } from '../../../store/actions/products.actions';
+import { ProductsTableProps } from '../../../interfaces/IProducts';
 import DateMoment from '../../Common/Date-moment';
 import { root } from '../../../api/config';
 import { priceFormat } from '../../../utils/priceFormat';
 import styles from './ProductsTable.module.scss';
+import { cols } from '../../../pages/Products/ProductsPage';
+import AppProductsDataTable from '../../AppDataTable/AppProductsDataTable';
 
 const placeholder = `${root}/static/uploads/empty-preview.png`;
 
@@ -75,11 +72,11 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
           </div>
         ) : (
           <div className={styles.mainImg}>
-            <img src={placeholder} alt="placeholder" />
+            <img src={placeholder} alt='placeholder' />
           </div>
         ),
-      maxWidth: '12%',
-      minWidth: '12%',
+      maxWidth: '8%',
+      minWidth: '7%',
       omit: !activeColumns.includes('Головне зображення'),
     },
     {
@@ -106,6 +103,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       selector: (row) => row.price,
       sortable: true,
       format: (row) => <span>&#8372; {priceFormat(row.price)}</span>,
+      omit: !activeColumns.includes('Ціна'),
     },
     {
       name: 'Опис',
@@ -125,23 +123,22 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       name: 'Категорія',
       selector: (row) => (row.category?.name ? row.category.name : 'Без категорії'),
       sortable: true,
-      minWidth: '12%',
+      minWidth: '5%',
       omit: !activeColumns.includes('Категорія'),
     },
     {
       name: 'URL ключ',
       selector: (row) => row.key,
+      minWidth: '250px',
       omit: !activeColumns.includes('URL ключ'),
     },
     {
-      name: 'Зображення',
-      selector: (row) => row.files,
-      minWidth: '10%',
-      maxWidth: '12%',
-      format: (row) => (
-        <span className={styles.quantity}>{row?.files?.length ? row?.files?.length / 2 : 0}</span>
-      ),
-      omit: !activeColumns.includes('Зображення'),
+      name: 'Магазин',
+      selector: (row) => row.shopKey,
+      minWidth: '7%',
+      maxWidth: '8%',
+      sortable: true,
+      omit: !activeColumns.includes('Магазин'),
     },
     {
       name: 'Створено',
@@ -159,27 +156,28 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
     },
   ];
 
-  const history = useHistory();
-  const [sortedList, setSortedList] = useState<IGetProducts[]>([]);
-
-  useEffect(() => {
-    const sortedList: IGetProducts[] = list.length ? list.sort((a, b) => b.id - a.id) : [];
-    setSortedList(sortedList);
-  }, [list]);
-
-  const onRowClicked = (id) => {
+  const onRowClicked = (id: number) => {
     history.push(`/product/${id}`);
   };
 
+  const setSortColumn = (column: any, direction: any) => {
+    const fieldName = Object.keys(cols)[Object.values(cols).indexOf(column.name)];
+    dispatch(getProductsRequest(paginationPage, paginationLimit, fieldName, direction, filter));
+  };
+
+  const onChangeLimit = (limit: any) => {
+    dispatch(getProductsRequest(paginationPage, limit, sort, sortDirect, filter));
+  };
+  
   return (
-    <AppDataTable
-      data={sortedList}
+    <AppProductsDataTable
+      data={list}
       columns={productsColumns}
       title={isSearch ? 'Результати пошуку' : 'Продукти'}
       onRowClicked={(row) => onRowClicked(row.id)}
       count={count}
-      setLimit={(e) => onChangeLimit(e)}
-      setPage={(e) => onChangePage(e)}
+      setLimit={(limit) => onChangeLimit(limit)}
+      setSortColumn={(column, direction) => setSortColumn(column, direction)}
       paginationServer={true}
       currentPage={page}
     />

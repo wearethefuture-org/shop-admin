@@ -6,9 +6,9 @@ import useCategoriesModal from '../../hooks/useCategoriesModal';
 
 import FormDialog from '../../components/Modals/MainTreeCategoryAddModal';
 import TreeCategoriesCards from './Cards/TreeCategoriesCards';
-import { Button, LinearProgress } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { LinearProgress } from '@material-ui/core';
 import styles from './TreeCategories.module.scss';
+import AddBtn from '../../components/AddBtn/AddBtn';
 
 const TreeCategories: React.FC = () => {
   const { data, dispatch } = useTreeCategories();
@@ -22,13 +22,7 @@ const TreeCategories: React.FC = () => {
       {loading && <LinearProgress />}
 
       <div className={styles['btns-wrapper']}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={categoriesCreateModalData.handleClickOpen}
-        >
-          <AddIcon /> Додати
-        </Button>
+        <AddBtn title="Додати" handleAdd={categoriesCreateModalData.handleClickOpen} />
       </div>
 
       <div className={styles['content-wrapper']}>

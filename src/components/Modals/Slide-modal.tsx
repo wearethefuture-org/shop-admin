@@ -1,7 +1,6 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { Dispatch } from 'redux';
 
@@ -30,9 +29,8 @@ const FormDialog: React.FC<FormDialogProps> = ({
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle id="form-dialog-title">Add new slide</DialogTitle>
+        <DialogTitle id="form-dialog-title">Додати новий слайд</DialogTitle>
         <DialogContent dividers>
-          <DialogContentText>Choose name of slide</DialogContentText>
           <SlideForm
             dispatch={dispatch}
             handleClose={handleClose}

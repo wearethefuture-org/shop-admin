@@ -8,8 +8,9 @@ import { IChildren, ITreeCategory } from '../../../interfaces/ITreeCategory';
 import TreeItem from '@material-ui/lab/TreeItem';
 import styles from './ChildrenCard.module.scss';
 import AddIcon from '@material-ui/icons/Add';
-import TreeCategoryModal from '../../../components/Modals/TreeCategoryModal/TreeCategoryModal';
+
 import AddTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/AddTreeCategoryModal/AddTreeCategoryModal';
+import { COLORS } from '../../../values/colors';
 
 interface ISearchProps {
   targetId: number;
@@ -125,12 +126,16 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
                 <div className={styles.row}>
                   <span
                     onClick={() => {
-                      nodes.children?.length ? openCategoryInfo(nodes) : routeOnClick(nodes.id);
+                      routeOnClick(nodes.id);
                     }}
                   >
                     {nodes.name}
                   </span>{' '}
-                  <span onClick={() => showAddCategoryModal(nodes)} className={styles.addIcon}>
+                  <span
+                    onClick={() => showAddCategoryModal(nodes)}
+                    style={darkMode ? { color: COLORS.darkGreen } : {}}
+                    className={styles.addIcon}
+                  >
                     <AddIcon />
                   </span>
                 </div>
@@ -143,7 +148,7 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
           </div>
         </div>
       ) : null}
-      {modalsState.categoryModalIsOpen && <TreeCategoryModal {...modalParams} />}
+      {/* {modalsState.categoryModalIsOpen && <TreeCategoryModal {...modalParams} />} */}
       {modalsState.addCategoryModalIsOpen && (
         <AddTreeCategoryModal {...addModalParams} dispatch={dispatch} />
       )}

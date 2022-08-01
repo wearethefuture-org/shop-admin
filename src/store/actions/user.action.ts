@@ -7,8 +7,14 @@ import {
   USER_SIGN_IN_FETCHING,
   USER_SIGN_IN_SUCCESS,
   USER_SIGN_OUT,
+  UPDATE_PROFILE_USER_REQUEST,
+  UPDATE_PROFILE_USER_SUCCESS,
+  ADD_AVATAR_REQUEST,
+  ADD_AVATAR_SUCCESS,
+  DELETE_AVATAR_REQUEST,
+  DELETE_AVATAR_SUCCESS,
 } from '../types';
-import { IUserCreeds, IUserItem } from '../../interfaces/IUsers';
+import { IUserCreeds, IUserItem, IUserReqUp } from '../../interfaces/IUsers';
 
 export const signInUserRequest = (creeds: IUserCreeds): IActions => {
   return {
@@ -46,3 +52,33 @@ export const fetchUserError = (message: string): IActions => ({
   type: USER_FETCH_ERROR,
   data: message,
 });
+
+export const updateProfileUserReq = (userData: IUserReqUp): IActions => ({
+  type: UPDATE_PROFILE_USER_REQUEST,
+  data: userData,
+});
+
+export const updateUserProfileSuccess = (user: IUserItem): IActions => ({
+  type: UPDATE_PROFILE_USER_SUCCESS,
+  data: user,
+});
+
+export const addAvatarRequest = (data) => {
+  return {
+    type: ADD_AVATAR_REQUEST,
+    data: data,
+  };
+};
+export const addAvatarSuccess = (link: string) => {
+  return {
+    type: ADD_AVATAR_SUCCESS,
+    data: link,
+  };
+};
+export const deleteAvatarRequest = { type: DELETE_AVATAR_REQUEST };
+
+export const deleteAvatarSuccess = () => {
+  return {
+    type: DELETE_AVATAR_SUCCESS,
+  };
+};

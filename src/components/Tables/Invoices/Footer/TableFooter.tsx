@@ -9,10 +9,10 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { makeStyles, Theme, createStyles, ThemeOptions } from '@material-ui/core/styles';
 
-import { ISlideItem } from '../../../../interfaces/ISlides';
+import { IInvoiceFile } from '../../../../interfaces/IInvoice';
 
-interface SlideTableFooterProps {
-  rows: ISlideItem[];
+interface TableFooterProps {
+  rows: IInvoiceFile[];
   rowsPerPage: number;
   page: number;
   setPage(page: number): void;
@@ -36,7 +36,7 @@ const useFooterStyles = makeStyles(
     })
 );
 
-const SlideTableFooter: React.FC<SlideTableFooterProps> = ({
+const InvoiceTableFooter: React.FC<TableFooterProps> = ({
   rows,
   rowsPerPage,
   page,
@@ -134,4 +134,4 @@ const SlideTableFooter: React.FC<SlideTableFooterProps> = ({
   );
 };
 
-export default SlideTableFooter;
+export default InvoiceTableFooter;
