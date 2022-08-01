@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { Box, Button } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-
+import { Box, Button, createStyles, makeStyles, Theme, ThemeOptions } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import UserDialog from '../../Modals/UserDialog/UserDialog';
 import UserRemoveDialog from '../../Modals/UserRemoveDialog/UserRemoveDialog';
 import { AppDispatch, RootState } from '../../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsersRequest } from '../../../store/actions/users.actions';
-import { IUserItem } from '../../../interfaces/IUsers';
+import { getUsersByQueryRequest, getUsersRequest } from '../../../store/actions/users.actions';
+import { UsersTableProps } from '../../../interfaces/IUsers';
+import { COLORS } from '../../../values/colors';
+import AddBtn from '../../AddBtn/AddBtn';
+import classNames from 'classnames';
 
 interface UsersTableProps {
   list: IUserItem[];
@@ -19,16 +22,26 @@ const UsersTable: React.FC<UsersTableProps> = ({ list, currentPage }) => {
   const dispatch: AppDispatch = useDispatch();
   const [page, setPage] = useState(currentPage);
   const [limit, setLimit] = useState(10);
-  const count = useSelector((state: RootState) => state.users.count);
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const onChangePage = (page) => {
     sessionStorage.setItem('usersCurrentPage', String(page));
     setPage(page);
+
+    if (isSearch) {
+      dispatch(getUsersByQueryRequest(searchValue, page, limit));
+      return;
+    }
     dispatch(getUsersRequest(page, limit));
   };
 
   const onChangeLimit = (limit) => {
     setLimit(limit);
+
+    if (isSearch) {
+      dispatch(getUsersByQueryRequest(searchValue, page, limit));
+      return;
+    }
     dispatch(getUsersRequest(page, limit));
   };
 
@@ -70,15 +83,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ list, currentPage }) => {
 
   const addUserBtn = (
     <Box>
-      <Button
-        onClick={openDialogNewUser}
-        variant="contained"
-        color="primary"
-        startIcon={<AddIcon />}
-      >
-        Створити
-      </Button>
-      {userDialogIsOpen && <UserDialog {...modalParams} />}
+      <AddBtn title="Створити" handleAdd={openDialogNewUser} />
+      {userDialogIsOpen && <UserDialog {...modalParams} darkMode />}
       {confirmRemoveUserIsOpen && <UserRemoveDialog {...modalRemoveParams} />}
     </Box>
   );
@@ -90,6 +96,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ list, currentPage }) => {
       sortable: true,
       maxWidth: '100px',
       minWidth: '60px',
+      omit: !activeColumns.includes('ID'),
     },
     {
       name: 'Створено',
@@ -103,28 +110,34 @@ const UsersTable: React.FC<UsersTableProps> = ({ list, currentPage }) => {
           year: 'numeric',
         });
       },
+      omit: !activeColumns.includes('Створено'),
     },
     {
       name: 'Телефон',
       selector: (row) => row.phoneNumber,
       sortable: true,
+      omit: !activeColumns.includes('Телефон'),
     },
     {
       name: 'Email',
       selector: (row) => row.email,
+      omit: !activeColumns.includes('Email'),
     },
     {
       name: 'TelegramId',
       selector: (row) => row.telegramId,
+      omit: !activeColumns.includes('TelegramId'),
     },
     {
       name: "Ім'я",
       selector: (row) => `${row.firstName} ${row.lastName}`,
       sortable: true,
+      omit: !activeColumns.includes(`Ім'я`),
     },
     {
       name: 'Роль',
       selector: (row) => row.role?.name,
+      omit: !activeColumns.includes('Роль'),
     },
     {
       name: '',
@@ -132,22 +145,22 @@ const UsersTable: React.FC<UsersTableProps> = ({ list, currentPage }) => {
       cell: (row) => {
         return (
           <Box display="flex">
-            <Box>
-              <Button variant="contained" size="small" value={row.id} onClick={openDialogUserCard}>
-                Редагувати
-              </Button>
-            </Box>
-            <Box pl={1}>
-              <Button
-                variant="contained"
-                size="small"
-                color="secondary"
-                value={row.id}
-                onClick={openDialogRemoveUser}
-              >
-                Видалити
-              </Button>
-            </Box>
+            <Button className={classes.button} value={row.id} onClick={openDialogUserCard}>
+              <EditIcon
+                className={classNames(
+                  classes.icon,
+                  darkMode ? classes.editIconDark : classes.editIcon
+                )}
+              />
+            </Button>
+            <Button className={classes.button} value={row.id} onClick={openDialogRemoveUser}>
+              <DeleteIcon
+                className={classNames(
+                  classes.icon,
+                  darkMode ? classes.deleteIconDark : classes.deleteIcon
+                )}
+              />
+            </Button>
           </Box>
         );
       },
@@ -155,7 +168,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ list, currentPage }) => {
   ];
 
   return (
-    <React.Fragment>
+    <div className={classes.wrapper}>
       <AppDataTable
         data={list}
         columns={userColumns}
@@ -164,6 +177,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ list, currentPage }) => {
         setLimit={(e) => onChangeLimit(e)}
         setPage={(e) => onChangePage(e)}
         paginationServer={true}
+        paginationPage={paginationPage}
         defaultSortFieldId={'created'}
         customStyles={{
           cells: {
@@ -172,7 +186,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ list, currentPage }) => {
         }}
         currentPage={page}
       />
-    </React.Fragment>
+    </div>
   );
 };
 

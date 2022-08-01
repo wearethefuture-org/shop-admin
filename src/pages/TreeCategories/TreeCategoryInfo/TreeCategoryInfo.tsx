@@ -24,22 +24,114 @@ import {
   GroupToDisplay,
 } from './treeCategoryToDisplayReducer';
 import { ErrorsAlert } from '../../../components/ErrorsAlert';
+import { disableEnableCategoryRequest } from '../../../store/actions/treeCategories.actions';
 
 import styles from './TreeCategoryInfo.module.scss';
-import { Button, Card, IconButton, LinearProgress } from '@material-ui/core';
+import {
+  alpha,
+  Button,
+  Card,
+  createStyles,
+  IconButton,
+  LinearProgress,
+  makeStyles,
+  Switch,
+  Theme,
+  ThemeOptions,
+} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
+import DisableTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/DisableTreeCategoryModal/DisableTreeCategoryModal';
+import { COLORS } from '../../../values/colors';
+import classNames from 'classnames';
+
+const useStyles = makeStyles(
+  (theme: Theme): ThemeOptions =>
+    createStyles({
+      editButton: {
+        color: COLORS.primaryBlue,
+      },
+      editButtonDark: {
+        color: COLORS.darkBlue,
+      },
+      deleteButton: {
+        color: COLORS.primaryRed,
+      },
+      deleteButtonDark: {
+        color: COLORS.darkRed,
+      },
+      switch: {
+        '& .MuiSwitch-switchBase.Mui-checked': {
+          'color': COLORS.primaryGreen,
+          '&:hover': {
+            backgroundColor: alpha(COLORS.primaryGreen, theme.palette.action.hoverOpacity),
+          },
+        },
+        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+          backgroundColor: COLORS.primaryGreen,
+        },
+      },
+      switchDark: {
+        '& .MuiSwitch-switchBase.Mui-checked': {
+          'color': COLORS.darkGreen,
+          '&:hover': {
+            backgroundColor: alpha(COLORS.darkGreen, theme.palette.action.hoverOpacity),
+          },
+        },
+        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+          backgroundColor: COLORS.darkGreen,
+        },
+      },
+      btn: {
+        borderRadius: '30px',
+        padding: '6px 15px 6px 15px',
+        color: COLORS.primaryLight,
+      },
+      saveButton: {
+        'backgroundColor': COLORS.primaryGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGreen,
+        },
+      },
+      saveButtonDark: {
+        'backgroundColor': COLORS.darkGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryDarkGreen,
+        },
+      },
+      cancelButton: {
+        'backgroundColor': COLORS.primaryGray,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGray,
+        },
+      },
+      cancelButtonDark: {
+        'backgroundColor': COLORS.darkGray,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryDarkGray,
+        },
+      },
+    })
+);
 
 const TreeCategoryInfo: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
   const { searchProps } = Object(history.location.state);
+  const classes = useStyles();
 
   // Delete Modal
   const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
+
   const closeDeleteModal = () => {
     setOpenDeleteDialog(false);
+  };
+
+  const [openDisableDialog, setOpenDisableDialog] = useState<boolean>(false);
+
+  const closeDisableModal = () => {
+    setOpenDisableDialog(false);
   };
 
   const ref = useRef<HTMLDivElement>(null);
@@ -49,6 +141,7 @@ const TreeCategoryInfo: React.FC = () => {
   const treeCategoriesList: IGetTreeCategoriesResponse[] = useSelector(
     (state: RootState) => state.treeCategories.list
   );
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const treeCategory: TreeCategoryToDisplay = useSelector(
     (state: RootState) => state.treeCategories.currentTreeCategory
@@ -63,6 +156,8 @@ const TreeCategoryInfo: React.FC = () => {
     treeCategoryDisplayReducer,
     treeCategory as TreeCategoryToDisplay
   );
+
+  const [categoryStatus, setCategoryStatus] = useState(treeCategory.disabledByAdmin);
 
   useEffect(() => {
     if (treeCategory) {
@@ -181,6 +276,22 @@ const TreeCategoryInfo: React.FC = () => {
   // EDIT GROUP
   const [groupToEdit, setGroupToEdit] = useState<GroupToDisplay | null>(null);
 
+  const [disableSwitcherValue, setDisableSwitcherValue] = useState(treeCategory.disabledByAdmin);
+  const handleDisableCategory: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const data = {
+      disable: e.target.checked,
+      id: treeCategory.id,
+    };
+
+    if (treeCategory.parent || treeCategory.children.length) {
+      setDisableSwitcherValue(e.target.checked);
+      setOpenDisableDialog(true);
+    } else {
+      setCategoryStatus(data.disable);
+      dispatch(disableEnableCategoryRequest(data));
+    }
+  };
+
   return (
     <div ref={ref}>
       {loading && <LinearProgress />}
@@ -200,7 +311,17 @@ const TreeCategoryInfo: React.FC = () => {
         <DeleteTreeCategoryModal
           lastCategory={true}
           handleClose={closeDeleteModal}
-          categoryInfo={{ id: treeCategory.id, name: treeCategory?.name ? treeCategory.name : '' }}
+          categoryInfo={{
+            id: treeCategory.id,
+            name: treeCategory?.name ? treeCategory.name : '',
+          }}
+        />
+      )}
+      {openDisableDialog && (
+        <DisableTreeCategoryModal
+          switcherValue={disableSwitcherValue}
+          categoryInfo={treeCategory}
+          handleClose={closeDisableModal}
         />
       )}
       <div className={styles['block-wrapper']}>
@@ -234,14 +355,14 @@ const TreeCategoryInfo: React.FC = () => {
                 >
                   <h4>Основна інформація</h4>
                 </ExpandBtn>
-                <div>
+                <div className={styles['control-block']}>
                   <IconButton
                     aria-label="edit"
-                    color="default"
+                    color="primary"
                     type="button"
                     onClick={() => setEditBasicInfo(true)}
                   >
-                    <EditIcon />
+                    <EditIcon className={darkMode ? classes.editButtonDark : classes.editButton} />
                   </IconButton>
                   <IconButton
                     aria-label="delete"
@@ -249,67 +370,92 @@ const TreeCategoryInfo: React.FC = () => {
                     type="button"
                     onClick={() => setOpenDeleteDialog(true)}
                   >
-                    <DeleteIcon />
+                    <DeleteIcon
+                      className={darkMode ? classes.deleteButtonDark : classes.deleteButton}
+                    />
                   </IconButton>
+                  <div>
+                    <span>Disable</span>
+                    <Switch
+                      className={darkMode ? classes.switchDark : classes.switch}
+                      checked={treeCategory.disabledByAdmin}
+                      onChange={handleDisableCategory}
+                    />
+                  </div>
                 </div>
               </div>
               <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
                 {editBasicInfo ? <TreeCategoryEditForm /> : <TreeCategoryBasicInfo />}
               </div>
+              {!treeCategory.children.length && (
+                <>
+                  <ExpandBtn
+                    expandBlock={expandedBlocks.includes('characteristics')}
+                    handleExpand={() => handleExpandedBlocks('characteristics')}
+                    disabled={false}
+                  >
+                    <h4>Характеристики</h4>
+                  </ExpandBtn>
 
-              <ExpandBtn
-                expandBlock={expandedBlocks.includes('characteristics')}
-                handleExpand={() => handleExpandedBlocks('characteristics')}
-                disabled={false}
-              >
-                <h4>Характеристики</h4>
-              </ExpandBtn>
+                  <div
+                    className={expandedBlocks.includes('characteristics') ? 'expanded' : 'shrinked'}
+                  >
+                    <div className={styles['add-btn-wrapper']}>
+                      <AddBtn
+                        title="Додати групу"
+                        handleAdd={() => {
+                          setOpenGroupModal(true);
+                        }}
+                      />
+                    </div>
+                    {charGroup &&
+                    charGroup.some(
+                      (group) => group.characteristic && group.characteristic.length
+                    ) ? (
+                      <>
+                        <PriorityHighIcon style={{ color: 'red' }} />
+                        <span>Є обов`язковою характеристикою</span>
+                      </>
+                    ) : null}
 
-              <div className={expandedBlocks.includes('characteristics') ? 'expanded' : 'shrinked'}>
-                <div className={styles['add-btn-wrapper']}>
-                  <AddBtn
-                    title="Додати групу"
-                    handleAdd={() => {
-                      setOpenGroupModal(true);
-                    }}
-                  />
-                </div>
-                {charGroup &&
-                charGroup.some((group) => group.characteristic && group.characteristic.length) ? (
-                  <>
-                    <PriorityHighIcon style={{ color: 'red' }} />
-                    <span>Є обов`язковою характеристикою</span>
-                  </>
-                ) : null}
-
-                {charGroup && charGroup.length
-                  ? charGroup.map(
-                      (group) =>
-                        group && (
-                          <CharGroup
-                            key={group.name}
-                            group={group}
-                            expandedGroups={expandedGroups}
-                            setExpandedGroups={setExpandedGroups}
-                            setOpenGroupModal={setOpenGroupModal}
-                            setGroupToEdit={setGroupToEdit}
-                            treeCategoryDispatch={treeCategoryDispatch}
-                            treeCategoryDisplayDispatch={treeCategoryDisplayDispatch}
-                          />
+                    {charGroup && charGroup.length
+                      ? charGroup.map(
+                          (group) =>
+                            group && (
+                              <CharGroup
+                                key={group.name}
+                                group={group}
+                                expandedGroups={expandedGroups}
+                                setExpandedGroups={setExpandedGroups}
+                                setOpenGroupModal={setOpenGroupModal}
+                                setGroupToEdit={setGroupToEdit}
+                                treeCategoryDispatch={treeCategoryDispatch}
+                                treeCategoryDisplayDispatch={treeCategoryDisplayDispatch}
+                              />
+                            )
                         )
-                    )
-                  : null}
-              </div>
+                      : null}
+                  </div>
+                </>
+              )}
               <div className={styles['form-btn-wrapper']}>
                 <Button
-                  variant="contained"
-                  color="default"
+                  className={classNames(
+                    classes.btn,
+                    darkMode ? classes.saveButtonDark : classes.saveButton
+                  )}
                   disabled={formik.isSubmitting}
                   type="submit"
                 >
                   Зберегти
                 </Button>
-                <Button onClick={finishOperation} color="secondary" variant="contained">
+                <Button
+                  onClick={finishOperation}
+                  className={classNames(
+                    classes.btn,
+                    darkMode ? classes.cancelButtonDark : classes.cancelButton
+                  )}
+                >
                   Скасувати
                 </Button>
               </div>

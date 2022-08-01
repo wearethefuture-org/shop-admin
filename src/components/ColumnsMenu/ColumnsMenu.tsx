@@ -29,7 +29,6 @@ const ColumnsMenu = ({
       <DialogTitle id="simple-dialog-title">Активні колонки</DialogTitle>
       <List className={styles.list}>
         {columnsKeys
-          .filter((colunm) => { return colunm !== 'notcall' })
           .map((column) => (
           <ListItem key={column}>
             <Checkbox

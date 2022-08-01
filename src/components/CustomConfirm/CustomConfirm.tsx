@@ -1,14 +1,19 @@
 import React, { FC } from 'react';
 import {
   Button,
+  createStyles,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  makeStyles,
+  ThemeOptions,
 } from '@material-ui/core';
-
-import styles from './CustomConfirm.module.scss';
+import { COLORS } from '../../values/colors';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import classNames from 'classnames';
 
 interface ConfirmProps {
   openDeleteDialog: boolean;
@@ -18,6 +23,40 @@ interface ConfirmProps {
   handleDelete: () => void;
 }
 
+const useStyles = makeStyles(
+  (): ThemeOptions =>
+    createStyles({
+      btn: {
+        borderRadius: '30px',
+        color: COLORS.primaryLight,
+      },
+      declineButton: {
+        'backgroundColor': COLORS.primaryGray,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGray,
+        },
+      },
+      declineButtonDark: {
+        'backgroundColor': COLORS.darkGray,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryDarkGray,
+        },
+      },
+      confirmButton: {
+        'backgroundColor': COLORS.primaryRed,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryRed,
+        },
+      },
+      confirmButtonDark: {
+        'backgroundColor': COLORS.darkRed,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryDarkRed,
+        },
+      },
+    })
+);
+
 const CustomConfirm: FC<ConfirmProps> = ({
   openDeleteDialog,
   closeDeleteDialog,
@@ -25,6 +64,8 @@ const CustomConfirm: FC<ConfirmProps> = ({
   warning,
   handleDelete,
 }) => {
+  const classes = useStyles();
+  const { darkMode } = useSelector((state: RootState) => state.theme);
   return (
     <Dialog
       open={openDeleteDialog}
@@ -39,14 +80,21 @@ const CustomConfirm: FC<ConfirmProps> = ({
         <DialogContentText id="alert-dialog-description">{warning}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeDeleteDialog} color="primary" className={styles['decline-btn']}>
+        <Button
+          onClick={closeDeleteDialog}
+          className={classNames(
+            classes.btn,
+            darkMode ? classes.declineButtonDark : classes.declineButton
+          )}
+        >
           Ні
         </Button>
         <Button
           onClick={handleDelete}
-          color="secondary"
-          className={styles['confirm-btn']}
-          autoFocus
+          className={classNames(
+            classes.btn,
+            darkMode ? classes.confirmButtonDark : classes.confirmButton
+          )}
         >
           Так
         </Button>

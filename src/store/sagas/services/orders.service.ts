@@ -10,6 +10,11 @@ export async function apiGetOrderById(id: number) {
   return order.data;
 }
 
+export async function apiGetOrderByRange(datesArray: string[]) {
+  const order = await api.orders.getByDatesRange(datesArray);
+  return order.data;
+}
+
 export async function apiUpdateOrder(orderId: number, productId: number, data) {
   const order = await api.orders.update(orderId, productId, data);
   return order.data;
@@ -17,5 +22,15 @@ export async function apiUpdateOrder(orderId: number, productId: number, data) {
 
 export async function apiUpdateOrderStatus(id: number, status) {
   const order = await api.orders.updateStatus(id, status);
+  return order.data;
+}
+
+export async function apiGetOrdersByParams(page: number, limit: number, searchValue: string) {
+  const order = await api.orders.getByParams(page, limit, searchValue);
+  return order.data;
+}
+
+export async function apiUpdateProductInOrder(data) {
+  const order = await api.orders.updateProductInOrder(data);
   return order.data;
 }

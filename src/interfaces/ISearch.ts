@@ -1,8 +1,9 @@
+import { IUserItem } from './IUsers';
 import { IGetProducts } from './IProducts';
 import { IGetTreeCategoriesResponse, ITreeCategory } from './ITreeCategory';
 
 export interface ISearchItemsResponse {
-  data: IGetProducts[] | IGetTreeCategoriesResponse[];
+  data: IGetProducts[] | IGetTreeCategoriesResponse[] | IUserItem[];
   count: number;
   totalPages: number;
 }

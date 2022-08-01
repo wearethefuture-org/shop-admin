@@ -6,18 +6,22 @@ import ProductsTable from '../../components/Tables/Products/ProductsTable';
 import AddBtn from '../../components/AddBtn/AddBtn';
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
 import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
-import useProducts from '../../hooks/useProducts';
 import styles from './ProductsPage.module.scss';
+import queryString from 'query-string';
+import { getProductsRequest } from '../../store/actions/products.actions';
+import { IProductsData } from '../../interfaces/IProducts';
+import Preloader from '../../components/Preloader/Preloader';
+import ProductFilter from '../../components/Tables/Products/Filter/ProductFilter';
 
-enum cols {
+export enum cols {
   id = 'ID',
   mainImg = 'Головне зображення',
   name = 'Назва',
   price = 'Ціна',
   description = 'Опис',
-  categoryName = 'Категорія',
+  category = 'Категорія',
   key = 'URL ключ',
-  files = 'Зображення',
+  shopKey = 'Магазин',
   createdAt = 'Створено',
   updatedAt = 'Оновлено',
   notcall = 'Не передзвонювати',
@@ -29,9 +33,9 @@ let initialActiveColums: string[] = [
   cols.name,
   cols.price,
   cols.description,
-  cols.categoryName,
+  cols.category,
   cols.key,
-  cols.files,
+  cols.shopKey,
   cols.createdAt,
   cols.updatedAt,
 ];
@@ -43,7 +47,9 @@ if (localStorage.getItem('PRODUCTS_SETTINGS')) {
 const Products: React.FC = () => {
   const location = useLocation();
 
-  const { list, loading, isSearch } = useProducts();
+  const { count, paginationPage, paginationLimit, sort, sortDirect, filter, findPrice } = useSelector(
+    (state: RootState) => state.products
+  );
 
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [activeColumns, setActiveColumns] = useState<string[]>(initialActiveColums);
@@ -66,35 +72,35 @@ const Products: React.FC = () => {
       : setActiveColumns([...activeColumns, column]);
 
   return (
-    <>
-      {loading && <LinearProgress />}
-
-      <div className={styles.container}>
-        {showColumnsMenu && (
-          <ColumnsMenu
-            allColumns={cols}
-            activeColumns={activeColumns}
-            showColumnsMenu={showColumnsMenu}
-            setShowColumnsMenu={setShowColumnsMenu}
-            handleColumns={handleColumns}
-          />
-        )}
-
-        <div className={styles['header-btn-wrapper']}>
-          <div className={styles.headerButtons}>
-            <Link
-              to={{
-                pathname: '/product/add',
-                state: { from: `${location.pathname}` },
-              }}
-            >
-              <AddBtn title="Додати" handleAdd={undefined} />
-            </Link>
-            <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
-          </div>
+    <div className={styles.container}>
+      {showColumnsMenu && (
+        <ColumnsMenu
+          allColumns={cols}
+          activeColumns={activeColumns}
+          showColumnsMenu={showColumnsMenu}
+          setShowColumnsMenu={setShowColumnsMenu}
+          handleColumns={handleColumns}
+        />
+      )}
+      <div className={styles['header-btn-wrapper']}>
+        <div className={styles.headerButtons}>
+          <ProductFilter />
+          <Link
+            to={{
+              pathname: '/product/add',
+              state: { from: `${location.pathname}` },
+            }}
+          >
+            <AddBtn title='Додати' handleAdd={undefined} />
+          </Link>
+          <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
         </div>
-        <div className={styles['table-wrapper']}>
-          {list && (
+      </div>
+      <div className={styles['table-wrapper']}>
+        {loading ? (
+          <Preloader />
+        ) : (
+          list && (
             <ProductsTable
               list={list}
               activeColumns={activeColumns}
@@ -102,11 +108,24 @@ const Products: React.FC = () => {
               searchValue={searchValue}
               currentPage={currentPage}
             />
-          )}
-        </div>
+          )
+        )}
       </div>
-    </>
+    </div>
   );
 };
 
 export default Products;
+
+type QueryTypes = {
+  page?: string;
+  limit?: string;
+  sort?: string;
+  sortDirect?: string;
+  filterId?: string;
+  filterName?: string;
+  filterCategory?: string;
+  filterShop?: string;
+  filterPriceMin?: number[];
+  filterPriceMax?: number[];
+};

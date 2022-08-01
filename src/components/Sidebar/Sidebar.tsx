@@ -18,6 +18,7 @@ import MessageIcon from '@material-ui/icons/Message';
 import FeedbackIcon from '@material-ui/icons/Feedback';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
+import DescriptionIcon from '@material-ui/icons/Description';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +27,7 @@ import useDidUpdate from '../../hooks/useDidUpdate';
 import styles from './Sidebar.module.scss';
 import { getProductsRequest } from '../../store/actions/products.actions';
 import { IProductsData } from '../../interfaces/IProducts';
+import { COLORS } from '../../values/colors';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -52,8 +54,8 @@ const useStyles = makeStyles(
       display: 'flex',
       flexShrink: 0,
       alignItems: 'center',
-      backgroundColor: 'darkgreen',
-      color: '#fff',
+      backgroundColor: COLORS.primaryGreen,
+      color: COLORS.primaryLight,
       padding: theme.spacing(0, 1),
       paddingLeft: '20px',
       fontSize: '18px',
@@ -64,13 +66,28 @@ const useStyles = makeStyles(
       padding: '4px 10px',
     },
     listButton: {
-      color: theme.palette.grey[700],
-      height: '45px',
+      'color': COLORS.fontColor,
+      'height': '45px',
+      '&:hover': {
+        backgroundColor: COLORS.primaryOttoman,
+      },
+    },
+    listButtonDark: {
+      'color': COLORS.primaryLight,
+      'height': '45px',
+      '&:hover': {
+        backgroundColor: COLORS.darkGray,
+      },
     },
     activeButton: {
       borderRadius: '3px',
       color: 'inherit',
-      backgroundColor: theme.palette.action.selected,
+      backgroundColor: COLORS.secondaryOttoman,
+    },
+    activeButtonDark: {
+      borderRadius: '3px',
+      color: 'inherit',
+      backgroundColor: COLORS.secondaryDarkGray,
     },
     itemIcon: {
       minWidth: '0',
@@ -91,52 +108,102 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
 
   const { isSearch }: Partial<IProductsData> = useSelector((state: RootState) => state.products);
   const classes = useStyles(isOpen);
+  const { darkMode } = useSelector((state: RootState) => state.theme);
   const dispatch: AppDispatch = useDispatch();
   const sidebarItems = [
     {
       pageURL: '/dashboard',
       title: 'Дошка',
-      itemIcon: <HouseIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <HouseIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/tree-categories',
       title: 'Категорії',
-      itemIcon: <CategoryIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <CategoryIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/products',
       title: 'Продукти',
-      itemIcon: <ShoppingCartIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <ShoppingCartIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/statistic',
       title: 'Статистика',
-      itemIcon: <EqualizerIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <EqualizerIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/users',
       title: 'Користувачі',
-      itemIcon: <GroupIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <GroupIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/slides',
       title: 'Слайди',
-      itemIcon: <AmpStoriesIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <AmpStoriesIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/comments',
       title: 'Коментарі',
-      itemIcon: <MessageIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <MessageIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
     {
       pageURL: '/feedbacks',
       title: 'Відгуки',
-      itemIcon: <FeedbackIcon fontSize="small" className={styles.icon} />,
+      itemIcon: (
+        <FeedbackIcon
+          fontSize="small"
+          className={styles.icon}
+          style={darkMode ? { color: COLORS.darkGreen } : {}}
+        />
+      ),
     },
   ];
 
   const extraSidebarItems = [
     { pageURL: '/orders', title: 'Замовлення' },
+    { pageURL: '/invoices', title: 'Інвойси' },
     { pageURL: '/settings', title: 'Налаштування' },
   ];
 
@@ -157,7 +224,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
       }}
     >
       <div className="sidebar-header">
-        <div className={classes.sidebarTitle}>BuyAll Адмін панель</div>
+        <div
+          style={darkMode ? { backgroundColor: COLORS.darkGreen } : {}}
+          className={classes.sidebarTitle}
+        >
+          BuyAll Адмін панель
+        </div>
         <Divider />
       </div>
       <div className="sidebar-nav">
@@ -167,9 +239,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
               <ListItem
                 button
                 onClick={() => handleClick(pageURL)}
-                className={classes.listButton}
+                className={darkMode ? classes.listButtonDark : classes.listButton}
                 classes={{
-                  root: pageURL === activePath ? classes.activeButton : void 0,
+                  root:
+                    pageURL === activePath
+                      ? darkMode
+                        ? classes.activeButtonDark
+                        : classes.activeButton
+                      : void 0,
                 }}
               >
                 <ListItemIcon className={classes.itemIcon}>{itemIcon}</ListItemIcon>
@@ -185,16 +262,29 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onSidebarToggle }) => {
               <ListItem
                 button
                 key={item.pageURL}
-                className={classes.listButton}
+                className={darkMode ? classes.listButtonDark : classes.listButton}
                 classes={{
-                  root: item.pageURL === activePath ? classes.activeButton : void 0,
+                  root:
+                    item.pageURL === activePath
+                      ? darkMode
+                        ? classes.activeButtonDark
+                        : classes.activeButton
+                      : void 0,
                 }}
               >
                 <ListItemIcon className={classes.itemIcon}>
                   {index % 2 === 0 ? (
-                    <ReceiptIcon fontSize="small" className={styles.icon} />
+                    <ReceiptIcon
+                      fontSize="small"
+                      className={styles.icon}
+                      style={darkMode ? { color: COLORS.darkGreen } : {}}
+                    />
                   ) : (
-                    <SettingsIcon fontSize="small" className={styles.icon} />
+                    <SettingsIcon
+                      fontSize="small"
+                      className={styles.icon}
+                      style={darkMode ? { color: COLORS.darkGreen } : {}}
+                    />
                   )}
                 </ListItemIcon>
                 <ListItemText className={classes.itemText} primary={item.title} />

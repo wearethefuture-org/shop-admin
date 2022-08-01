@@ -9,14 +9,47 @@ import { AppDispatch } from '../../../../store/store';
 import { ITreeCategory } from '../../../../interfaces/ITreeCategory';
 import { updateTreeCategoryRequest } from '../../../../store/actions/treeCategories.actions';
 
-import { Button, TextField } from '@material-ui/core';
+import { Button, createStyles, makeStyles, TextField, ThemeOptions } from '@material-ui/core';
 import { failSnackBar } from '../../../../store/actions/snackbar.actions';
 import styles from './TreeCategoryEditModalForm.module.scss';
+import { COLORS } from '../../../../values/colors';
 
 interface FormDialogProps {
   category: ITreeCategory;
   closeModal: () => void;
 }
+
+const useStyles = makeStyles(
+  (): ThemeOptions =>
+    createStyles({
+      saveButton: {
+        'borderRadius': '30px',
+        'color': COLORS.primaryLight,
+        'backgroundColor': COLORS.primaryGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGreen,
+        },
+      },
+      closeButton: {
+        'borderRadius': '30px',
+        'color': COLORS.primaryLight,
+        'backgroundColor': COLORS.primaryGray,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGray,
+        },
+      },
+      input: {
+        'width': '396px',
+        'marginBottom': '10px',
+        '& label.Mui-focused': {
+          color: COLORS.frenchPlum,
+        },
+        '& .MuiInput-underline:after': {
+          borderBottomColor: COLORS.frenchPlum,
+        },
+      },
+    })
+);
 
 export const categoryValidation = async (dispatch: Dispatch, parentId?: number) => {
   if (parentId) {
@@ -36,6 +69,8 @@ export const categoryValidation = async (dispatch: Dispatch, parentId?: number) 
 };
 
 const TreeCategoryEditModalForm: React.FC<FormDialogProps> = ({ category, closeModal }) => {
+  const classes = useStyles();
+
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Це поле не повинно бути пустим!'),
     key: Yup.string().required('Це поле не повинно бути пустим!'),
@@ -85,11 +120,10 @@ const TreeCategoryEditModalForm: React.FC<FormDialogProps> = ({ category, closeM
     >
       <div className={styles.row}>
         <TextField
-          className={styles.input}
+          className={styles.input + ' ' + classes.input}
           value={formik.values.name}
           type="text"
           name="name"
-          variant="outlined"
           label="Ім&#39;я категорії"
           id="name-field"
           onChange={formik.handleChange}
@@ -100,11 +134,10 @@ const TreeCategoryEditModalForm: React.FC<FormDialogProps> = ({ category, closeM
       </div>
       <div className={styles.row}>
         <TextField
-          className={styles.input}
+          className={styles.input + ' ' + classes.input}
           value={formik.values.key}
           type="text"
           name="key"
-          variant="outlined"
           id="key-field"
           label="Ключ"
           onChange={formik.handleChange}
@@ -115,11 +148,10 @@ const TreeCategoryEditModalForm: React.FC<FormDialogProps> = ({ category, closeM
       </div>
       <div className={styles.row}>
         <TextField
-          className={styles.input}
+          className={styles.input + ' ' + classes.input}
           value={formik.values.description}
           type="text"
           name="description"
-          variant="outlined"
           id="description-field"
           label="Опис"
           onChange={formik.handleChange}
@@ -131,11 +163,10 @@ const TreeCategoryEditModalForm: React.FC<FormDialogProps> = ({ category, closeM
       {category?.parent?.id ? (
         <div className={styles.row}>
           <TextField
-            className={styles.input}
+            className={styles.input + ' ' + classes.input}
             value={formik.values.parent}
             type="number"
             name="parent"
-            variant="outlined"
             id="parent-field"
             label="ID надкатегорії"
             onChange={formik.handleChange}
@@ -147,15 +178,13 @@ const TreeCategoryEditModalForm: React.FC<FormDialogProps> = ({ category, closeM
       ) : null}
       <div className={styles.buttonsRow}>
         <Button
-          className={styles.submit}
+          className={styles.submit + ' ' + classes.saveButton}
           type="submit"
           disabled={formik.isSubmitting}
-          variant="contained"
-          color="secondary"
         >
           Зберегти
         </Button>
-        <Button color="primary" onClick={closeModal} variant="contained">
+        <Button className={classes.closeButton} onClick={closeModal}>
           Закрити
         </Button>
       </div>
