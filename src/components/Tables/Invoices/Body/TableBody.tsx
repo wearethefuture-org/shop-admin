@@ -5,7 +5,6 @@ import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import DescriptionIcon from '@material-ui/icons/Description';
-import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 
 import { IInvoiceFile } from '../../../../interfaces/IInvoice';
@@ -13,6 +12,10 @@ import { Dispatch } from 'redux';
 import { generateInvoiceRequest } from '../../../../store/actions/invoice.actions';
 import InvoiceRemoveDialog from '../../../Modals/InvoiceRemoveDialog.tsx/InvoiceRemoveDialog';
 import DateMoment from '../../../Common/Date-moment';
+import AddBtn from '../../../AddBtn/AddBtn';
+import { makeStyles } from '@material-ui/core';
+import { COLORS } from '../../../../values/colors';
+import classNames from 'classnames';
 
 interface TableBodyProps {
   rows: IInvoiceFile[];
@@ -20,7 +23,58 @@ interface TableBodyProps {
   page: number;
   emptyRows: number;
   dispatch: Dispatch;
+  darkMode: boolean;
 }
+
+const useStyles = makeStyles({
+  button: {
+    'background': 'transparent',
+    'border': 'none',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+  },
+  icon: {
+    cursor: 'pointer',
+    transition: '0.3s all',
+  },
+  downloadIcon: {
+    'color': COLORS.primaryGreen,
+    '&:hover': {
+      color: COLORS.secondaryGreen,
+    },
+  },
+  downloadIconDark: {
+    'color': COLORS.darkGreen,
+    '&:hover': {
+      color: COLORS.secondaryDarkGreen,
+    },
+  },
+  deleteIcon: {
+    'color': COLORS.primaryRed,
+    '&:hover': {
+      color: COLORS.secondaryRed,
+    },
+  },
+  deleteIconDark: {
+    'color': COLORS.darkRed,
+    '&:hover': {
+      color: COLORS.secondaryDarkRed,
+    },
+  },
+  fileIcon: {
+    'color': COLORS.primaryGreen,
+    '&:hover': {
+      color: COLORS.secondaryGreen,
+    },
+  },
+  fileIconDark: {
+    'color': COLORS.darkGreen,
+    '&:hover': {
+      color: COLORS.secondaryDarkGreen,
+    },
+  },
+});
 
 const InvoiceTableBody: React.FC<TableBodyProps> = ({
   rows,
@@ -28,7 +82,9 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
   page,
   emptyRows,
   dispatch,
+  darkMode,
 }) => {
+  const classes = useStyles();
   const [removeInvoiceDialogIsOpen, setRemoveInvoiceDialogIsOpen] = useState<boolean>(false);
   const [modalRemoveParams, setModalRemoveParams] = useState<any>();
 
@@ -61,7 +117,13 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
               {row.id}
             </TableCell>
             <TableCell align="left">
-              <DescriptionIcon fontSize="small" style={{ color: 'darkgreen' }} />
+              <DescriptionIcon
+                fontSize="small"
+                className={classNames(
+                  classes.icon,
+                  darkMode ? classes.fileIconDark : classes.fileIcon
+                )}
+              />
               {row.name.slice(0, -5)}
             </TableCell>
             <TableCell align="left">
@@ -72,20 +134,25 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
             </TableCell>
             <TableCell align="left">{row.fileSize} КБ</TableCell>
             <TableCell align="right">
-              <Button variant="contained">
+              <Button className={classes.button}>
                 <a href={row.url} download>
-                  <DownloadIcon />
+                  <DownloadIcon
+                    className={classNames(
+                      classes.icon,
+                      darkMode ? classes.downloadIconDark : classes.downloadIcon
+                    )}
+                  />
                 </a>
               </Button>
             </TableCell>
             <TableCell align="left">
-              <Button
-                value={row.name}
-                variant="contained"
-                color="secondary"
-                onClick={openDialogRemoveInvoice}
-              >
-                <DeleteIcon />
+              <Button value={row.name} className={classes.button} onClick={openDialogRemoveInvoice}>
+                <DeleteIcon
+                  className={classNames(
+                    classes.icon,
+                    darkMode ? classes.deleteIconDark : classes.deleteIcon
+                  )}
+                />
               </Button>
             </TableCell>
             {removeInvoiceDialogIsOpen && <InvoiceRemoveDialog {...modalRemoveParams} />}
@@ -99,14 +166,7 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
       )}
       <TableRow>
         <TableCell colSpan={2}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            onClick={generateInvoice}
-          >
-            Згенерувати інвойс
-          </Button>
+          <AddBtn title="Згенерувати інвойс" handleAdd={generateInvoice}></AddBtn>
         </TableCell>
       </TableRow>
     </TableBody>
