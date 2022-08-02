@@ -14,13 +14,15 @@ import {
 } from './../../store/actions/user.action';
 import { failSnackBar } from './../../store/actions/snackbar.actions';
 import { RootState } from './../../store/store';
+import useRoles from './../../hooks/useRoles';
 import style from './Profile.module.scss';
 import { root } from './../../api/config';
+import { IRole } from './../../interfaces/IRoles';
 
 export default function Profile() {
   const dispatch = useDispatch();
+  const { data: roles } = useRoles();
   const { user, avatarLink } = useSelector((state: RootState) => state.user);
-  const possibleSelectValues = ['admin', 'moderator', 'user'];
   const [userLastName, setUserLastName] = React.useState<string>('');
   const [firstName, setFirstName] = React.useState<string>('');
   const [userPhone, setUserPhone] = React.useState<string>('');
@@ -74,7 +76,7 @@ export default function Profile() {
       firstName,
       lastName: userLastName,
       phoneNumber: userPhone,
-      roleId: getRoleId(userRole),
+      roleId: getRoleId(roles, userRole),
       email: userEmail,
     };
     dispatch(updateProfileUserReq(userData));
@@ -139,10 +141,10 @@ export default function Profile() {
               <div className={style.greayWords}>Роль</div>
               <FormControl>
                 <Select value={userRole} onChange={handleRoleChange}>
-                  {possibleSelectValues.map((item, index) => {
+                  {roles.map((item, index) => {
                     return (
-                      <MenuItem key={`${item}_${index}`} value={item}>
-                        {item}
+                      <MenuItem key={`${item.name}_${index}`} value={item.name}>
+                        {item.name}
                       </MenuItem>
                     );
                   })}
@@ -200,8 +202,7 @@ export default function Profile() {
   );
 }
 
-function getRoleId(roleName: string): number {
-  if (roleName === 'user') return 3;
-  if (roleName === 'moderator') return 2;
-  return 1;
+function getRoleId(roles: Array<IRole>, roleName: string): number {
+  const role = roles.find((role) => role.name === roleName);
+  return role!.id;
 }
