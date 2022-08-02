@@ -5,6 +5,7 @@ import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import DescriptionIcon from '@material-ui/icons/Description';
+import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 
 import { IInvoiceFile } from '../../../../interfaces/IInvoice';
@@ -117,13 +118,7 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
               {row.id}
             </TableCell>
             <TableCell align="left">
-              <DescriptionIcon
-                fontSize="small"
-                className={classNames(
-                  classes.icon,
-                  darkMode ? classes.fileIconDark : classes.fileIcon
-                )}
-              />
+              <DescriptionIcon fontSize="small" style={{ color: 'darkgreen' }} />
               {row.name.slice(0, -5)}
             </TableCell>
             <TableCell align="left">
@@ -137,25 +132,17 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
               <Button variant="contained">
                 <a href={row.url} download>
                   <DownloadIcon />
-              <Button className={classes.button}>
-                <a href={`${process.env.REACT_APP_PROD_DOMAIN}/invoice/${row.name}`} download>
-                  <DownloadIcon
-                    className={classNames(
-                      classes.icon,
-                      darkMode ? classes.downloadIconDark : classes.downloadIcon
-                    )}
-                  />
                 </a>
               </Button>
             </TableCell>
             <TableCell align="left">
-              <Button value={row.name} className={classes.button} onClick={openDialogRemoveInvoice}>
-                <DeleteIcon
-                  className={classNames(
-                    classes.icon,
-                    darkMode ? classes.deleteIconDark : classes.deleteIcon
-                  )}
-                />
+              <Button
+                value={row.name}
+                variant="contained"
+                color="secondary"
+                onClick={openDialogRemoveInvoice}
+              >
+                <DeleteIcon />
               </Button>
             </TableCell>
             {removeInvoiceDialogIsOpen && <InvoiceRemoveDialog {...modalRemoveParams} />}
@@ -169,7 +156,14 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
       )}
       <TableRow>
         <TableCell colSpan={2}>
-          <AddBtn title="Згенерувати інвойс" handleAdd={generateInvoice}></AddBtn>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={generateInvoice}
+          >
+            Згенерувати інвойс
+          </Button>
         </TableCell>
       </TableRow>
     </TableBody>
