@@ -182,11 +182,11 @@ export interface ProductsTableProps {
 export interface IUpdateAvailabilityProduct {
   productId: number;
   availability: boolean;
-  categoryID: number;
+  categoryId: number;
 }
 
 export interface IDisableProduct {
   productId: number;
   disabled: boolean;
-  categoryID: number;
+  categoryId: number;
 }
