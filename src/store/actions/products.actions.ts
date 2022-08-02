@@ -9,7 +9,6 @@ import {
   IGetProductById,
   IUpdateAvailabilityProduct,
   IDisableProduct,
-  IProductsFilter,
 } from '../../interfaces/IProducts';
 import {
   GET_PRODUCTS_REQUEST,
@@ -42,9 +41,9 @@ import {
 } from '../types';
 
 // get all
-export const getProductsRequest = (page: number, limit: number, sort: string, sortDirect: string, filter: IProductsFilter): IActions => ({
+export const getProductsRequest = (page: number, limit: number): IActions => ({
   type: GET_PRODUCTS_REQUEST,
-  data: { page, limit, sort, sortDirect, filter },
+  data: { page, limit },
 });
 
 export const getProductsSuccess = (products: IGetProducts[]): IActions => ({

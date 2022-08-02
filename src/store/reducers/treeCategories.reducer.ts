@@ -11,9 +11,6 @@ import {
   GET_TREE_CATEGORIES_BY_ID_REQUEST,
   GET_TREE_CATEGORIES_BY_ID_SUCCESS,
   GET_TREE_CATEGORIES_BY_ID_ERROR,
-  DISABLE_ENABLE_CATEGORY_ERROR,
-  DISABLE_ENABLE_CATEGORY_SUCCESS,
-  DISABLE_ENABLE_CATEGORY_REQUEST,
 } from '../types';
 
 interface ITreeCategoriesState {
@@ -86,32 +83,6 @@ const treeCategories = (state = initialState, { type, data }: IActions) => {
     }
 
     case GET_TREE_CATEGORIES_BY_ID_ERROR: {
-      return {
-        ...state,
-        loading: false,
-        error: data,
-      };
-    }
-
-    //disable_enable
-
-    case DISABLE_ENABLE_CATEGORY_REQUEST: {
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
-    }
-
-    case DISABLE_ENABLE_CATEGORY_SUCCESS: {
-      return {
-        ...state,
-        currentTreeCategory: data,
-        loading: false,
-      };
-    }
-
-    case DISABLE_ENABLE_CATEGORY_ERROR: {
       return {
         ...state,
         loading: false,

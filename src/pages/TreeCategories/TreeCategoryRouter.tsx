@@ -21,6 +21,7 @@ const TreeCategoryRouter: React.FC = () => {
   useEffect(() => {
     match.params.id && dispatch(getTreeCategoryByIdRequest(Number(match.params.id)));
   }, [dispatch, match.params.id]);
+
   const treeCategory: IGetTreeCategoriesResponse = useSelector(
     (state: RootState) => state.treeCategories.currentTreeCategory
   );

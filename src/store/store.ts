@@ -17,7 +17,6 @@ import feedbacks from './reducers/feedbacks.reducer';
 import roles from './reducers/roles.reducer';
 import search from './reducers/search.reducer';
 import sliderAnimations from './reducers/sliderAnimations.reducer';
-import invoice from './reducers/invoice.reducer';
 
 const saga = createSagaMiddleware();
 
@@ -36,7 +35,6 @@ const rootReducer = combineReducers({
   roles,
   search,
   sliderAnimations,
-  invoice,
 });
 
 const store = createStore(

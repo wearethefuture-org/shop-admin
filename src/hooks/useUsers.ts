@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { IUserItem, IUsersData } from '../interfaces/IUsers';
-import { getUsersByQueryRequest, getUsersRequest } from '../store/actions/users.actions';
-import { AppDispatch, RootState } from '../store/store';
 
-const useUsers = (paginationPage: number, paginationPageSearch: number, searchValue: string) => {
+import { getUsersRequest } from '../store/actions/users.actions';
+import { AppDispatch, RootState } from '../store/store';
+import { IUserItem } from '../interfaces/IUsers';
+
+const useUsers = () => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
@@ -15,7 +16,8 @@ const useUsers = (paginationPage: number, paginationPageSearch: number, searchVa
     dispatch(getUsersRequest(page, 10));
   }, [dispatch]);
 
-  return { list, loading, isSearch };
+  const data: IUserItem[] = useSelector((state: RootState) => state.users.list);
+  return { data, dispatch };
 };
 
 export default useUsers;

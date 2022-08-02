@@ -72,9 +72,7 @@ const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, se
 
   // CATEGORY
   useEffect(() => {
-    if (categoryId) {
-      dispatch(getTreeCategoryByIdRequest(categoryId));
-    }
+    dispatch(getTreeCategoryByIdRequest(categoryId));
   }, [categoryId, dispatch, list]);
 
   // EXPANDED GROUPS
@@ -154,19 +152,49 @@ const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, se
                                         : false
                                     }
                                     onClick={() => {
+                                      const objectKeys = Object.keys(
+                                        formik.values?.subForm[char.name]
+                                      );
+                                      const idx =
+                                        formik.values?.subForm[char.name] && !objectKeys.length
+                                          ? 1
+                                          : objectKeys.length &&
+                                            +objectKeys[objectKeys.length - 1].split('-')[1] + 1;
+
                                       formik.setValues({
                                         ...formik.values,
                                         subForm: {
                                           ...formik.values?.subForm,
                                           [char.name]: {
                                             ...formik.values?.subForm[char.name],
-                                            newEntry: { key: '', value: '' },
+                                            [`value-${idx}`]: '',
                                           },
                                         },
                                       });
                                     }}
                                   >
                                     <AddIcon />
+                                  </IconButton>
+                                  <IconButton
+                                    type="button"
+                                    aria-label="delete"
+                                    color="secondary"
+                                    title="Видалити значення"
+                                    disabled={
+                                      formik.values?.subForm[char.name] &&
+                                      !Object.keys(formik.values?.subForm[char.name]).length
+                                    }
+                                    onClick={() =>
+                                      formik.setValues({
+                                        ...formik.values,
+                                        subForm: {
+                                          ...formik.values?.subForm,
+                                          [char.name]: {},
+                                        },
+                                      })
+                                    }
+                                  >
+                                    <ClearIcon />
                                   </IconButton>
                                 </div>
                               ) : null}

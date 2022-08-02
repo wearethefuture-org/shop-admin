@@ -16,6 +16,7 @@ import {
   apiAddProductCharValues,
   apiUpdateAvailabilityProduct,
   disableProduct,
+  deleteProductCharValues
 } from './services/products.service';
 import {
   addProductError,
@@ -39,11 +40,11 @@ import {
 } from '../actions/products.actions';
 import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 
-export function* getProductsWorker({ data: { page, limit, sort, sortDirect, filter } }: IActions): SagaIterator {
+export function* getProductsWorker({ data: { page, limit } }: IActions): SagaIterator {
   try {
-    const products = yield call(apiGetProducts, page, limit, sort, sortDirect, filter);
+    const products = yield call(apiGetProducts, page, limit);
     yield put(getProductsSuccess(products));
-  } catch (error: any) {
+  } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(getProductsError(error.message));
   }
@@ -53,7 +54,7 @@ export function* getProductByIdWorker({ data: id }: IActions): SagaIterator {
   try {
     const product = yield call(apiGetProductById, id);
     yield put(getProductByIdSuccess(product));
-  } catch (error: any) {
+  } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(getProductByIdError(error.message));
   }
@@ -65,7 +66,7 @@ export function* getProductsByQueryWorker({
   try {
     const products = yield call(apiGetProductsByQuery, searchValue, page, limit);
     yield put(getProductsByQuerySuccess(products));
-  } catch (error: any) {
+  } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(getProductsByQueryError(error.message));
   }
@@ -75,15 +76,8 @@ export function* addProductWorker({
   data: { productValues, characteristicValues },
 }: IActions): SagaIterator {
   try {
-    const { name, price, description, categoryName, categoryId, key, files } = productValues;
-    const product = yield call(apiAddProduct, {
-      name,
-      price,
-      description,
-      categoryName,
-      categoryId,
-      key,
-    });
+    const { name, price, description, categoryName, key, files } = productValues;
+    const product = yield call(apiAddProduct, { name, price, description, categoryName, key });
 
     if (product && files instanceof FormData) {
       files.append('productId', product.id);
@@ -100,7 +94,7 @@ export function* addProductWorker({
 
     yield put(addProductSuccess(updatedProduct));
     yield put(successSnackBar());
-  } catch (error: any) {
+  } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(addProductError(error.message));
   }
@@ -114,7 +108,7 @@ export function* uploadMainImgWorker({ data }: IActions): SagaIterator {
 
     yield put(uploadMainImgSuccess(updatedProduct));
     yield put(successSnackBar());
-  } catch (error: any) {
+  } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(uploadMainImgError(error.message));
   }
@@ -129,10 +123,10 @@ export function* updateProductWorker({
   },
 }: IActions): SagaIterator<void> {
   try {
-    const { categoryId, name, price, description, key, files } = productValues;
+    const { categoryID, name, price, description, key, files } = productValues;
     const editedProduct = yield call(apiUpdateProduct, {
       id,
-      categoryId,
+      categoryID,
       name,
       price,
       description,
@@ -166,7 +160,7 @@ export function* updateProductWorker({
 
     yield put(updateProductSuccess(updatedProduct));
     yield put(successSnackBar());
-  } catch (error: any) {
+  } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(updateProductError(error.message));
   }
@@ -174,11 +168,12 @@ export function* updateProductWorker({
 
 export function* deleteProductWorker({ data: product }: IActions): SagaIterator {
   try {
+    const charValues = product.characteristicValue.map((value) => value.id);
     yield call(apiDeleteProduct, product.id);
     yield put(deleteProductSuccess(product.id));
     yield put(successSnackBar());
-  } catch (error: any) {
-    console.log(error);
+  } catch (error) {
+    console.log(error)
     yield put(failSnackBar(error.message));
     yield put(deleteProductError(error.message));
   }
@@ -189,7 +184,7 @@ export function* updateAvailabilityProductWorker({ data }: IActions): SagaIterat
     yield call(apiUpdateAvailabilityProduct, data);
     yield put(updateAvailabilityProductSuccess(data));
     yield put(successSnackBar());
-  } catch (error: any) {
+  } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(updateAvailabilityProductError(error.message));
   }
@@ -200,7 +195,7 @@ export function* disableProductWorker({ data }: IActions): SagaIterator {
     const newProduct = yield call(disableProduct, data);
     yield put(disableProductSuccess(newProduct));
     yield put(successSnackBar());
-  } catch (error: any) {
+  } catch (error) {
     yield put(failSnackBar(error.message));
     yield put(disableProductError(error.message));
   }

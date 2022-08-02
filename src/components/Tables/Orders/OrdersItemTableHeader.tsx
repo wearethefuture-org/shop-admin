@@ -7,31 +7,25 @@ import styles from './OrdersTable.module.scss';
 import { useHistory } from 'react-router';
 import GoBackBtn from '../../GoBackBtn/GoBackBtn';
 import { ICurrentOrder } from '../../../interfaces/IOrders';
-import { COLORS } from '../../../values/colors';
 
 interface OrdersItemTableHeaderProps {
   order: ICurrentOrder;
-  darkMode: boolean;
 }
 
-const OrdersItemTableHeader: FC<OrdersItemTableHeaderProps> = ({ order, darkMode }) => {
+const OrdersItemTableHeader: FC<OrdersItemTableHeaderProps> = ({ order }) => {
   const history = useHistory();
   return (
     <div className={styles.orderHeader}>
       <GoBackBtn handleGoBack={() => history.push('/orders')} />
       <div className={styles.headerTitle}>Замовлення № {order.id}</div>
       <div className={styles.headerUserData}>
-        <PersonPinIcon
-          style={darkMode ? { color: COLORS.darkBlue } : { color: COLORS.primaryBlue }}
-        />
+        <PersonPinIcon color="primary" />
         {order.additionalFirstName ? order.additionalFirstName : order.user.firstName}{' '}
         {order.additionalLastName ? order.additionalLastName : order.user.lastName}
       </div>
       <div className={styles.headerUserData}>
         <a href={`mailto:${order.additionalEmail ? order.additionalEmail : order.user.email}`}>
-          <EmailIcon
-            style={darkMode ? { color: COLORS.darkBlue } : { color: COLORS.primaryBlue }}
-          />{' '}
+          <EmailIcon color="primary" />{' '}
           {order.additionalEmail ? order.additionalEmail : order.user.email}
         </a>
       </div>
@@ -43,17 +37,13 @@ const OrdersItemTableHeader: FC<OrdersItemTableHeaderProps> = ({ order, darkMode
               : order.user.phoneNumber.replace(/ /g, '')
           }`}
         >
-          <PhoneInTalkIcon
-            style={darkMode ? { color: COLORS.darkBlue } : { color: COLORS.primaryBlue }}
-          />{' '}
+          <PhoneInTalkIcon color="primary" />{' '}
           {order.additionalNumber ? order.additionalNumber : order.user.phoneNumber}
         </a>
       </div>
-      {order.notcall ? <div className={styles.notcall}> Не Передзвонювати</div> : null}
       {order.comment && (
         <div className={styles.commentBlock}>
-          <SmsIcon style={darkMode ? { color: COLORS.darkBlue } : { color: COLORS.primaryBlue }} />{' '}
-          <b>Коментар до замовлення: </b>
+          <SmsIcon color="primary" /> <b>Коментар до замовлення: </b>
           <span>{order.comment}</span>
         </div>
       )}

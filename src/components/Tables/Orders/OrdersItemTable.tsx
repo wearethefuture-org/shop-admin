@@ -1,29 +1,56 @@
 import { useSelector, useDispatch } from 'react-redux';
-import React, { FC } from 'react';
+import React, { FC, ChangeEvent } from 'react';
 
-import { updateProductInOrderRequest } from '../../../store/actions/orders.actions';
+import { updateOrderRequest } from '../../../store/actions/orders.actions';
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import OrdersEditQuantity from '../../../components/Tables/Orders/OrdersEditQuantity';
 import OrdersItemTableHeader from './OrdersItemTableHeader';
 import { ICurrentOrder } from '../../../interfaces/IOrders';
 import OrdersSelector from './OrdersSelector';
 import { RootState } from '../../../store/store';
+import { IProductCharResponse } from '../../../interfaces/IProducts';
 
 interface OrdersItemTableProps {
   order: ICurrentOrder;
 }
 
+type handleChangeType = (arg: {
+  productId: number;
+  field: 'color' | 'size';
+}) => (e: ChangeEvent<{ value: unknown }>) => void;
+
 const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
-  const dispatch = useDispatch();
-  const ref = React.createRef();
   const loading = useSelector((state: RootState) => state.orders.loading);
-  const darkMode = useSelector((state: RootState) => state.theme.darkMode);
+  const dispatch = useDispatch();
+
   const currentOrderData = order.productToOrder.map((item) => {
     return { ...item, delivery: order.delivery };
   });
 
-  const handleChange = (e, field: string, productId: number) => {
-    dispatch(updateProductInOrderRequest(e.target.value, field, productId, order.id));
+  const handleChange: handleChangeType =
+    ({ productId, field }) =>
+    (e) => {
+      const target = e.target;
+      e.stopPropagation();
+      dispatch(updateOrderRequest(order.id, productId, { [field]: target.value }));
+    };
+
+  const getCharEnumByName = ({
+    characteristicValue,
+    charName,
+  }: {
+    characteristicValue: Array<IProductCharResponse>;
+    charName: 'sizes' | 'colors';
+  }) => {
+    if (characteristicValue.length) {
+      const charEnum = characteristicValue.find(
+        (val) => val.name === charName && val.type === 'enum'
+      );
+      return !charEnum || !charEnum.enumValue || !charEnum.enumValue.length
+        ? null
+        : charEnum.enumValue;
+    }
+    return null;
   };
 
   const columns = [
@@ -104,7 +131,7 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       selector: (row) => row.quantity,
       sortable: true,
       cell: (row) => {
-        return <OrdersEditQuantity row={row} orderId={order.id} darkMode={darkMode} />;
+        return <OrdersEditQuantity row={row} orderId={order.id} />;
       },
     },
     {
@@ -128,16 +155,16 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       selector: (row) => row.size,
       sortable: false,
       cell: (row) => {
-        const colorAndSize = getColorsAndSize(row.product.characteristicValue);
-        const allSizesWithoutRepeat = getSizesWithoutRepeat(colorAndSize[1]);
-        return (
+        const { characteristicValue } = row.product;
+        const sizes = getCharEnumByName({ characteristicValue, charName: 'sizes' });
+        return sizes ? (
           <OrdersSelector
             value={row.size}
-            handleChange={(e) => handleChange(e, 'size', row.product.id)}
-            menuItems={allSizesWithoutRepeat}
+            handleChange={handleChange({ productId: row.product.id, field: 'size' })}
+            menuItems={sizes}
             disabled={loading}
           />
-        );
+        ) : null;
       },
     },
     {
@@ -145,15 +172,16 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
       selector: (row) => row.color,
       sortable: false,
       cell: function (row) {
-        const colorAndSize = getColorsAndSize(row.product.characteristicValue);
-        return (
+        const { characteristicValue } = row.product;
+        const colors = getCharEnumByName({ characteristicValue, charName: 'colors' });
+        return colors ? (
           <OrdersSelector
             value={row.color}
-            handleChange={(e) => handleChange(e, 'color', row.product.id)}
-            menuItems={colorAndSize[0]}
+            handleChange={handleChange({ productId: row.product.id, field: 'color' })}
+            menuItems={colors}
             disabled={loading}
           />
-        );
+        ) : null;
       },
     },
   ];
@@ -162,38 +190,10 @@ const OrdersItemTable: FC<OrdersItemTableProps> = ({ order }) => {
     <AppDataTable
       data={currentOrderData}
       columns={columns}
-      title={<OrdersItemTableHeader order={order} darkMode={darkMode} />}
+      title={<OrdersItemTableHeader order={order} />}
       onRowClicked={() => {}}
     />
   );
 };
-
-function getColorsAndSize(arr): [string[], string[]] {
-  let allColors: string[] = [];
-  let allSizes: string[] = [];
-  for (let index of arr) {
-    if (index.name === 'Кольори та розміри') {
-      allColors = Object.keys(index.jsonValue);
-      allSizes = Object.values(index.jsonValue);
-    }
-  }
-  return [allColors, allSizes];
-}
-
-function getSizesWithoutRepeat(arr): string[] {
-  const allSizesWithoutRepeat: string[] = [];
-
-  const allSizes = arr.reduce((acc, item) => {
-    return [...acc, ...item];
-  }, []);
-
-  for (let index of allSizes) {
-    if (!allSizesWithoutRepeat.includes(index)) {
-      allSizesWithoutRepeat.push(index);
-    }
-  }
-
-  return allSizesWithoutRepeat;
-}
 
 export default OrdersItemTable;

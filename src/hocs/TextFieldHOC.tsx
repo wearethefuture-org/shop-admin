@@ -1,7 +1,6 @@
 import React from 'react';
 import { TextField, TextFieldProps } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
-import { COLORS } from '../values/colors';
 
 interface TextFieldHOCProps {
   makegreen?: 'true';
@@ -9,22 +8,14 @@ interface TextFieldHOCProps {
 
 const useStyles = makeStyles({
   field: {
-    color: COLORS.salem,
+    color: 'green',
   },
   label: {
     '& label.Mui-focused': {
-      color: COLORS.salem,
+      color: 'green',
     },
     '& .MuiInput-underline:after': {
-      borderBottomColor: COLORS.salem,
-    },
-  },
-  labelSecondary: {
-    '& label.Mui-focused': {
-      color: COLORS.frenchPlum,
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: COLORS.frenchPlum,
+      borderBottomColor: 'green',
     },
   },
 });
@@ -60,7 +51,7 @@ const TextFieldWrapped: React.FC<TextFieldProps & TextFieldHOCProps> = (props) =
   return (
     <TextField
       InputProps={makegreen && condition ? { className: classes.field } : {}}
-      classes={{ root: makegreen && condition ? classes.label : classes.labelSecondary }}
+      classes={{ root: makegreen && condition ? classes.label : '' }}
       onFocus={ownHandleFocus}
       onBlur={ownHandleBlur}
       spellCheck="false"
