@@ -17,15 +17,11 @@ export interface IUserItem {
   phoneNumber: string;
   status: string;
   email: string;
-  password: string;
   telegramId?: string;
   role: {
     name: string;
     id: number;
     description: string;
-  };
-  avatar?: {
-    name: string;
   };
 }
 
@@ -39,7 +35,6 @@ export interface IUserState {
   isFetching: boolean;
   isLoggedIn: boolean;
   error: IError | null;
-  avatarLink: string;
 }
 
 export interface IUserReqUp {
@@ -50,7 +45,7 @@ export interface IUserReqUp {
   roleId?: number;
   password?: string;
   email?: string;
-  telegramId?: string;
+  telegramId?: string
 }
 
 export interface IUserReqAdd {
@@ -68,25 +63,9 @@ export interface IUsersData {
   list: Array<IUserItem>;
   loading: boolean;
   currentUser: IUserItem | null;
-  rangeUsers: IUsersStatistic | null;
   error: string | null;
-  count: number;
-  totalPages: number;
-  isSearch: boolean;
-  paginationPage: number;
-  searchValue: null | string;
-  paginationPageSearch: number;
-  currentPage: number;
-}
-
-export interface IUsersStatistic {
-  registredUsers: IUserDateRange[];
-  onlineUsers: string;
-}
-
-export interface IUserDateRange {
-  date: string;
-  creatad: string;
+  count: number,
+  totalPages: number,
 }
 
 export interface UserTableData {
@@ -113,19 +92,4 @@ export interface IOrderUser {
 export interface IResponseMessage {
   success?: boolean;
   message: string;
-}
-
-export interface IUsersSearchResponse {
-  data: IUserItem[];
-  count: number;
-  totalPages: number;
-}
-
-export interface UsersTableProps {
-  list: IUserItem[];
-  activeColumns: string[];
-  isSearch: boolean;
-  searchValue: string;
-  count: number;
-  paginationPage: number;
 }

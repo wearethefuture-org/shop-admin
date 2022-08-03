@@ -89,16 +89,11 @@ export const getValue = (char: ICharResponse, productValues: IProductCharRespons
       if (jsonValue) {
         return (
           <>
-            {Object.entries(jsonValue).length ? (
-              <div>
-                {Object.entries(jsonValue).map((item) => {
-                  return (
-                    <div className={styles.jsonValue} key={item[0]}>
-                      <span>{item[0]}</span>
-                      <span>{item[1].join(' / ')}</span>
-                    </div>
-                  );
-                })}
+            {Object.values(jsonValue).length ? (
+              <div className={styles['char-values']}>
+                <p className={styles.jsonValue}>
+                  <span>{Object.values(jsonValue).join(' / ')}</span>
+                </p>
               </div>
             ) : (
               <div className={styles['char-values-empty']}>-</div>

@@ -23,12 +23,13 @@ enum cols {
   status = 'Статус',
   notcall = 'Не передзвонювати',
   deliveryMethod = 'Спосіб доставки',
+  liqpayPaymentStatus = 'Спосіб оплати',
   courierDeliveryAddress = "Адреса для кур'єрської доставки",
 }
 
 const OrdersPage: React.FC = () => {
-  const { loading, searchValue } = useSelector((state: RootState) => state.orders);
-  const { list } = useOrders(searchValue);
+  const { list } = useOrders();
+  const loading = useSelector((state: RootState) => state.orders.loading);
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [activeColumns, setActiveColumns] = useState<string[]>([
@@ -45,8 +46,14 @@ const OrdersPage: React.FC = () => {
     cols.status,
     cols.notcall,
     cols.deliveryMethod,
+    cols.liqpayPaymentStatus,
     cols.courierDeliveryAddress,
   ]);
+
+  let currentPage = 1;
+  if (sessionStorage.getItem('ordersCurrentPage')) {
+    currentPage = Number(sessionStorage.getItem('ordersCurrentPage'));
+  }
 
   const handleColumns = (column: string) =>
     activeColumns.includes(column)
@@ -74,7 +81,9 @@ const OrdersPage: React.FC = () => {
       <div className="content-wrapper">
         <AddCategoryModal openAddModal={openAddModal} setOpenAddModal={setOpenAddModal} />
 
-        {list ? <OrdersTable list={list} activeColumns={activeColumns} /> : null}
+        {list ? (
+          <OrdersTable list={list} activeColumns={activeColumns} currentPage={currentPage} />
+        ) : null}
       </div>
     </>
   );

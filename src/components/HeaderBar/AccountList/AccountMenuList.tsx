@@ -8,9 +8,12 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import PieChartIcon from '@material-ui/icons/PieChart';
 import { makeStyles } from '@material-ui/core/styles';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { useHistory } from 'react-router-dom';
 
 import LogoutDialog from '../../Modals/LogoutDialog/LogoutDialog';
+import UserDialog from '../../Modals/UserDialog/UserDialog';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { IUserItem } from '../../../interfaces/IUsers';
 
 interface AccountListProps {
   accountAnchorEl: null | Element,
@@ -29,12 +32,16 @@ const useStyles = makeStyles({
 
 const AccountList: React.FC<AccountListProps> = ({ accountAnchorEl, onAccountListClose }) => {
   const [ logoutModalOpen, setLogoutModalOpen ] = useState(false);
-  const history = useHistory();
+  const [ userDialogIsOpen, setUserDialogIsOpen ] = useState(false);
+
+  const user = useSelector<RootState, IUserItem | null>((state) => state.user.user);
 
   const classes = useStyles();
-
-  const openProfilePage = () => {
-    history.push('/profile')
+  const userDialogClose = () => {
+    setUserDialogIsOpen(false);
+  };
+  const openDialogUser = () => {
+    setUserDialogIsOpen(true);
   };
 
   const openLogoutDialog = () => {
@@ -54,7 +61,7 @@ const AccountList: React.FC<AccountListProps> = ({ accountAnchorEl, onAccountLis
       open={ !!accountAnchorEl }
       onClose={ onAccountListClose }
     >
-      <MenuItem className={ classes.menuItem } onClick={ openProfilePage }>
+      <MenuItem className={ classes.menuItem } onClick={ openDialogUser }>
         <ListItemIcon className={ classes.iconItem }>
           <PersonIcon fontSize="small" />
         </ListItemIcon>
@@ -80,6 +87,7 @@ const AccountList: React.FC<AccountListProps> = ({ accountAnchorEl, onAccountLis
         Вийти
       </MenuItem>
       { logoutModalOpen && <LogoutDialog closeModal={ closeLogoutModal } /> }
+      { userDialogIsOpen && <UserDialog isNew={ false } user={ user } closeModal={ userDialogClose } /> }
     </AccountListMenu>
   );
 };

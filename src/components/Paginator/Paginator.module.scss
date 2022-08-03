@@ -1,5 +1,11 @@
 .paginator {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+@media (max-width: 420px) {
+  .paginator {
+    justify-content: left;
   }
+}

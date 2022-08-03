@@ -27,17 +27,7 @@
       border-radius: 60px;
       box-shadow: 0px 0px 2px #888;
       padding: 0.5em 0.5em;
-      color: #26bd62;
-      font-size: 18px;
-      margin-right: 10px;
-    }
-
-    .forkIconDark {
-      display: inline-block;
-      border-radius: 60px;
-      box-shadow: 0px 0px 2px #888;
-      padding: 0.5em 0.5em;
-      color: #4A7C56;
+      color: rgb(1, 196, 57);
       font-size: 18px;
       margin-right: 10px;
     }
@@ -61,9 +51,6 @@
 .children {
   display: flex;
   justify-content: center;
-  & > div {
-    width: 100%;
-  }
 }
 
 .expandBlock-dark {

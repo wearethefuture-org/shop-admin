@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -10,7 +10,11 @@ import { AppDispatch, RootState } from '../../../../store/store';
 import { root } from '../../../../api/config';
 import { updateProductRequest } from '../../../../store/actions/products.actions';
 import { productValidationShema } from '../ProductForm/productFormHelpers';
-import { IGetTreeCategoriesResponse, ICharResponse } from '../../../../interfaces/ITreeCategory';
+import {
+  ITreeCategory,
+  IGetTreeCategoriesResponse,
+  ICharResponse,
+} from '../../../../interfaces/ITreeCategory';
 import { getEditCharValuesObject } from './getEditCharValuesObject';
 
 interface ILocation {
@@ -22,6 +26,25 @@ const EditProduct: React.FC = () => {
   const history = useHistory();
   const location = useLocation<ILocation>();
   const { data: categories } = useTreeCategories();
+
+  const getChildCategories = (categories: ITreeCategory[]) => {
+    const childCategories: ITreeCategory[] = [];
+
+    (function buildRecursive(categories: ITreeCategory[], parent?: string) {
+      for (const category of categories) {
+        const { children, ...baseFields } = category;
+        baseFields.name = parent ? parent.concat(` -> ${baseFields.name}`) : baseFields.name;
+
+        if (!children?.length) {
+          childCategories.push({ ...baseFields });
+        } else {
+          buildRecursive(children, baseFields.name);
+        }
+      }
+    })(categories);
+
+    return childCategories;
+  };
 
   const category: IGetTreeCategoriesResponse = useSelector(
     (state: RootState) => state.treeCategories.currentTreeCategory
@@ -42,8 +65,7 @@ const EditProduct: React.FC = () => {
     name: product ? product.name : '',
     price: product.price ? product.price : '',
     description: product ? product.description : '',
-    categoryName: product ? product.category.name : '',
-    categoryId: product ? product.category?.id : '',
+    categoryID: product ? product.category?.id : '',
     files: product ? product.files : {},
     key: product ? product.key : '',
     subForm: {},
@@ -120,7 +142,7 @@ const EditProduct: React.FC = () => {
       editMode={true}
       formik={formik}
       handleGoBack={handleGoBack}
-      categories={categories}
+      categories={useMemo(() => getChildCategories(categories), [categories])}
       handleImageChange={handleImageChange}
       imagesPreview={imagesPreview}
       handleDeleteImg={handleDeleteImg}

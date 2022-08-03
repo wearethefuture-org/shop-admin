@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import useSnackBar from '../../../hooks/useSnackbar';
 
 import { AppDispatch } from '../../../store/store';
-import CashbackFrom from './CashbackSettings/Cashback-form';
 import ParserForm from './ParserSettings/Parser-form';
 import WidgetForm from './WidgetsSettings/Widget-form';
 
@@ -29,15 +28,6 @@ const SettingsForms: React.FC<SettingsFormProps> = ({ name, parameters }) => {
     case 'parser':
       return (
         <ParserForm
-          name={name}
-          parameters={parameters}
-          dispatch={dispath}
-          handleClick={handleClick}
-        />
-      );
-    case 'cashback':
-      return (
-        <CashbackFrom
           name={name}
           parameters={parameters}
           dispatch={dispath}

@@ -33,6 +33,7 @@ export const getEditCharValuesObject = (
           const value = characteristicId && formik.values.subForm && formik.values.subForm[name];
 
           const basicValues = { name, characteristicId };
+
           if (!productChar && value) {
             switch (type) {
               case Type.enum:
@@ -42,19 +43,19 @@ export const getEditCharValuesObject = (
                 break;
 
               case Type.json:
-                const { newEntry } = value;
-                let colorSizeObject = {};
+                const entries: [string, string][] = Object.entries(value);
 
-                if (newEntry?.key) {
-                  const newValue = newEntry.value.split(',').map((val) => val.trim());
-                  colorSizeObject = { ...colorSizeObject, [newEntry.key.trim()]: newValue };
-                }
+                if (value && entries.length) {
+                  const filteredValue = entries.filter(([key, value]) => key && value.trim());
 
-                if (colorSizeObject && Object.values(colorSizeObject).length) {
-                  acc.push({
-                    ...basicValues,
-                    jsonValue: colorSizeObject,
-                  });
+                  const resultObject: object = Object.fromEntries(filteredValue);
+
+                  if (resultObject && Object.values(resultObject).length) {
+                    acc.push({
+                      ...basicValues,
+                      jsonValue: resultObject,
+                    });
+                  }
                 }
                 break;
 
@@ -75,11 +76,7 @@ export const getEditCharValuesObject = (
                 break;
 
               default:
-                value.trim() &&
-                  acc.push({
-                    ...basicValues,
-                    numberValue: Number(value.trim()),
-                  });
+                value.trim() && acc.push({ ...basicValues, numberValue: Number(value.trim()) });
                 break;
             }
           }
@@ -104,13 +101,10 @@ export const getEditCharValuesObject = (
 
           const value =
             characteristicId && formik.values.subForm && formik.values.subForm[characteristicName];
+
           if (productChar && value) {
             const { id } = productChar;
-            const basicValues = {
-              id,
-              name: characteristicName,
-              characteristicId,
-            };
+            const basicValues = { id, name: characteristicName, characteristicId };
 
             switch (type) {
               case Type.enum:
@@ -120,30 +114,17 @@ export const getEditCharValuesObject = (
                 break;
 
               case Type.json:
-                let { newEntry, ...rest } = value;
+                const entries: [string, string][] = Object.entries(value);
 
-                if (newEntry?.key) {
-                  const newValue = newEntry.value.split(',').map((val) => val.trim());
-                  rest = { ...rest, [newEntry.key.trim()]: newValue };
-                }
+                const filteredValue = entries.filter(([key, value]) => key && value.trim());
 
-                const entries: [string, string | string[]][] = Object.entries(rest);
-
-                const formattedValues = entries.map((item) => {
-                  if (!Array.isArray(item[1])) {
-                    item[1] = item[1].split(',').map((val) => val.trim());
-                    return item;
-                  }
-                  return item;
-                });
-
-                const resultObject: object = Object.fromEntries(formattedValues);
+                const resultObject: object = Object.fromEntries(filteredValue);
 
                 const valuesEqual =
                   arrayEquals(Object.keys(initialValue), Object.keys(resultObject)) &&
                   arrayEquals(Object.values(initialValue), Object.values(resultObject));
 
-                if (!valuesEqual && resultObject) {
+                if (!valuesEqual && resultObject && Object.values(resultObject).length) {
                   acc.push({
                     ...basicValues,
                     jsonValue: resultObject,
@@ -152,7 +133,7 @@ export const getEditCharValuesObject = (
                 break;
 
               case Type.string:
-                if (initialValue !== value) {
+                if (initialValue !== value && value.trim()) {
                   acc.push({ ...basicValues, stringValue: value });
                 }
                 break;
@@ -198,7 +179,7 @@ export const getEditCharValuesObject = (
               acc.push(productChar.id);
             } else if (productChar.jsonValue) {
               const values: string[] = Object.values(value);
-              const filteredValues: string[] = values.filter((value) => value);
+              const filteredValues: string[] = values.filter((value) => value.trim());
 
               !filteredValues.length && acc.push(productChar.id);
             } else if (!value) {

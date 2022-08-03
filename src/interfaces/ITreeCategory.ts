@@ -7,7 +7,6 @@ export interface ITreeCategory extends Common {
   mpath?: string;
   parent?: IParent | null;
   children?: IChildren[];
-  disabledByAdmin: boolean;
 }
 
 export interface IChildren extends Common {
@@ -17,7 +16,6 @@ export interface IChildren extends Common {
   mpath?: string;
   parent?: IParent | null;
   children?: IChildren[];
-  disabledByAdmin: boolean;
 }
 
 export interface IParent extends Common {
@@ -61,9 +59,4 @@ export interface ICharToAdd {
   defaultVal?: string;
   defaultValues: null | { values: string[] };
   categoryId?: number;
-}
-
-export interface IDisableEnableCategory {
-  id: number;
-  disable: boolean;
 }

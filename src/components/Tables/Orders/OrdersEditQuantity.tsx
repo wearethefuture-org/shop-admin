@@ -7,9 +7,8 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { AppDispatch, RootState } from '../../../store/store';
 import { updateOrderRequest } from '../../../store/actions/orders.actions';
 import styles from './OrdersTable.module.scss';
-import { COLORS } from '../../../values/colors';
 
-const OrdersEditQuantity = ({ row, orderId, darkMode }) => {
+const OrdersEditQuantity = ({ row, orderId }) => {
   const [editable, setEditable] = useState(false);
   const [value, setValue] = useState(row.quantity);
   const dispatch: AppDispatch = useDispatch();
@@ -17,7 +16,7 @@ const OrdersEditQuantity = ({ row, orderId, darkMode }) => {
 
   const handleChange = (e) => {
     e.stopPropagation();
-    !isNaN(+e.target.value) && e.target.value > 0 ? setValue(+e.target.value) : setValue(1);
+    if (!isNaN(+e.target.value)) setValue(+e.target.value);
   };
 
   const onQuantityChanged = (e, orderId, productId) => {
@@ -41,23 +40,13 @@ const OrdersEditQuantity = ({ row, orderId, darkMode }) => {
   let cell = !editable ? (
     <div className={styles.quantity}>
       {row.quantity}
-      <EditIcon
-        onClick={isEditable}
-        style={darkMode ? { color: COLORS.darkBlue } : { color: COLORS.primaryBlue }}
-        fontSize="small"
-      />
+      <EditIcon onClick={isEditable} color={loading ? 'disabled' : 'primary'} fontSize="small" />
     </div>
   ) : (
     <div className={styles.edit_quantity}>
       <input type="text" value={value} onChange={handleChange} />
-      <DoneIcon
-        style={darkMode ? { color: COLORS.darkGreen } : { color: COLORS.primaryGreen }}
-        onClick={(e) => onQuantityChanged(e, orderId, row.product.id)}
-      />
-      <CancelIcon
-        style={darkMode ? { color: COLORS.darkGray } : { color: COLORS.primaryGray }}
-        onClick={onQuantityChangedCancel}
-      />
+      <DoneIcon color="primary" onClick={(e) => onQuantityChanged(e, orderId, row.product.id)} />
+      <CancelIcon color="secondary" onClick={onQuantityChangedCancel} />
     </div>
   );
 

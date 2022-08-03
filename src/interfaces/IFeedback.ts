@@ -41,4 +41,5 @@ export interface FeedbacksTableProps {
   limit: number;
   setLimit: Dispatch<SetStateAction<number>>;
   paginationServer: boolean;
+  currentPage: number;
 }
