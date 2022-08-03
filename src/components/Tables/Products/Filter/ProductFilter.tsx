@@ -22,6 +22,7 @@ const useStyles = makeStyles({
   btn: {
     borderRadius: '30px',
     color: COLORS.primaryLight,
+    marginLeft:'auto'
   },
   btnLight: {
     'backgroundColor': COLORS.primaryBlue,
@@ -159,62 +160,6 @@ const ProductFilter: React.FC = () => {
                       }
                       name="selectPrice"
                     />
-                  </div>
-                  <div className={style.sliderContainer}>
-                    <Typography
-                      className={style.inputSlider}
-                      style={
-                        values.selectPrice
-                          ? { color: 'rgba(0, 0, 0, 0.54)' }
-                          : { color: 'rgba(0, 0, 0, 0.38)' }
-                      }
-                    >
-                      Ціна:
-                    </Typography>
-                    <Slider
-                      min={findPrice[0]}
-                      max={findPrice[1]}
-                      value={values.selectPrice ? price : findPrice}
-                      onChange={changeValue}
-                      valueLabelDisplay="auto"
-                      name="price"
-                      marks={marks}
-                      classes={{
-                        root: style.root,
-                        rail: style.rail,
-                        track: style.track,
-                        thumb: style.thumb,
-                        markLabel: style.markLabel,
-                      }}
-                      disabled={!values.selectPrice}
-                    />
-                  </div>
-                  <div className={style.box}>
-                    <Field
-                      className={style.checkbox}
-                      onClick={() => values.selectCategory && setFieldValue('category', '')}
-                      type="checkbox"
-                      name="selectCategory"
-                    />
-                    <Field
-                      fullWidth
-                      validate={values.selectCategory ? validateString : false}
-                      component={TextField}
-                      type="text"
-                      label="Категорія"
-                      name="category"
-                      disabled={!values.selectCategory}
-                    />
-                  </div>
-                  <div className={style.box}>
-                    <Field
-                      className={style.checkboxSlider}
-                      type="checkbox"
-                      onClick={() =>
-                        isPriceChecked ? setPriceChecked(false) : setPriceChecked(true)
-                      }
-                      name="selectPrice"
-                    />
                     <div className={style.sliderContainer}>
                       <Typography
                         className={style.inputSlider}
@@ -244,82 +189,8 @@ const ProductFilter: React.FC = () => {
                         disabled={!values.selectPrice}
                       />
                     </div>
-                    <div className={style.box}>
-                      <Field
-                        className={style.checkbox}
-                        onClick={() => values.selectName && setFieldValue('name', '')}
-                        type="checkbox"
-                        name="selectName"
-                      />
-                      <Field
-                        fullWidth
-                        validate={values.selectName ? validateString : false}
-                        component={TextField}
-                        type="text"
-                        label="Назва містить:"
-                        name="name"
-                        disabled={!values.selectName}
-                      />
-                    </div>
-                    <div className={style.box}>
-                      <Field
-                        className={style.checkbox}
-                        onClick={() => values.selectCategory && setFieldValue('category', '')}
-                        type="checkbox"
-                        name="selectCategory"
-                      />
-                      <Field
-                        fullWidth
-                        validate={values.selectCategory ? validateString : false}
-                        component={TextField}
-                        type="text"
-                        label="Категорія"
-                        name="category"
-                        disabled={!values.selectCategory}
-                      />
-                    </div>
-                    <div className={style.box}>
-                      <Field
-                        className={style.checkboxSlider}
-                        type="checkbox"
-                        onClick={() =>
-                          isPriceChecked ? setPriceChecked(false) : setPriceChecked(true)
-                        }
-                        name="selectPrice"
-                      />
-                      <div className={style.sliderContainer}>
-                        <Typography
-                          className={style.inputSlider}
-                          style={
-                            darkMode
-                              ? { color: '#7d7d7d' }
-                              : values.selectPrice
-                              ? { color: 'rgba(0, 0, 0, 0.54)' }
-                              : { color: 'rgba(0, 0, 0, 0.38)' }
-                          }
-                        >
-                          Ціна:
-                        </Typography>
-                        <Slider
-                          min={findPrice[0]}
-                          max={findPrice[1]}
-                          value={values.selectPrice ? price : findPrice}
-                          onChange={changeValue}
-                          valueLabelDisplay="auto"
-                          name="price"
-                          marks={marks}
-                          style={darkMode ? { color: '#7d7d7d' } : {}}
-                          classes={{
-                            root: style.root,
-                            rail: style.rail,
-                            track: style.track,
-                            thumb: style.thumb,
-                            markLabel: style.markLabel,
-                          }}
-                          disabled={!values.selectPrice}
-                        />
-                      </div>
-                    </div>
+                  </div>
+                  <div className={style.box}>
                     <Button
                       variant="contained"
                       type="submit"
