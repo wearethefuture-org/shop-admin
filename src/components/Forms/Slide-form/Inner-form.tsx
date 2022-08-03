@@ -1,58 +1,21 @@
 import React from 'react';
 import { Button, DialogActions, LinearProgress } from '@material-ui/core';
-import { ErrorMessage, Field, Form, FormikProps } from 'formik';
+import { Field, Form, FormikProps } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { makeStyles } from '@material-ui/core/styles';
 import { ISlideFormValues, InnerSlideFormProps } from '../../../interfaces/ISlides';
 import FileUpload from './FileUpload';
-import { COLORS } from '../../../values/colors';
-import TextFieldWrapped from '../../../hocs/TextFieldHOC';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
-import classNames from 'classnames';
 
 const useStyles = makeStyles({
+  customBtn: {
+    marginTop: '15px',
+  },
   linkField: {
     display: 'flex',
     flexDirection: 'row',
   },
   progress: {
-    color: COLORS.secondaryGray,
-  },
-  input: {
-    marginBottom: '20px',
-  },
-  errorMy: {
-    color: 'red',
-  },
-  btn: {
-    marginTop: '15px',
-    borderRadius: '30px',
-    color: COLORS.primaryLight,
-  },
-  saveBtn: {
-    'backgroundColor': COLORS.primaryGreen,
-    '&:hover': {
-      backgroundColor: COLORS.secondaryGreen,
-    },
-  },
-  saveBtnDark: {
-    'backgroundColor': COLORS.darkGreen,
-    '&:hover': {
-      backgroundColor: COLORS.secondaryDarkGreen,
-    },
-  },
-  cancelBtn: {
-    'backgroundColor': COLORS.primaryGray,
-    '&:hover': {
-      backgroundColor: COLORS.secondaryGray,
-    },
-  },
-  cancelBtnDark: {
-    'backgroundColor': COLORS.darkGray,
-    '&:hover': {
-      backgroundColor: COLORS.secondaryDarkGray,
-    },
+    color: 'green',
   },
 });
 
@@ -65,7 +28,6 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
   ...props
 }) => {
   const classes = useStyles();
-  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const dragOverHandler = (event: React.DragEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -87,23 +49,8 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
 
   return (
     <Form onDrop={dropHandler} onDragOver={dragOverHandler}>
-      <Field
-        className={classes.input}
-        fullWidth
-        component={TextField}
-        type="name"
-        label="Назва"
-        name="name"
-      />
-      <Field
-        className={classes.input}
-        fullWidth
-        multiline
-        component={TextField}
-        type="text"
-        label="Опис"
-        name="text"
-      />
+      <Field fullWidth component={TextField} type="name" label="Name" name="name" />
+      <Field fullWidth multiline component={TextField} type="text" label="Text" name="text" />
       <Field
         fullWidth
         multiline
@@ -111,10 +58,9 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
         type="file"
         label="Image"
         name="image"
-        caption="Картинка для комп'ютера. Дозволені формати: jpg, png, gif. Максимальний розмір: 9 МБ. Оптимальне співвідношення сторін: 3,5 (наприклад, 1920x548 тощо)"
+        caption="An image for desktop. Allowed formats: jpg, png, gif. Max size: 9 MB. Optimal aspect ratio: 3.5 (e.g., 1920x548 etc.)"
         fieldId="file"
       />
-      <ErrorMessage name="image" component="div" className={classes.errorMy} />
       <Field
         fullWidth
         multiline
@@ -122,32 +68,27 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
         type="file"
         label="ImageMobile"
         name="imageMobile"
-        caption="Картинка для мобільного. Дозволені формати: jpg, png, gif. Максимальний розмір: 1 Мб. Оптимальне співвідношення сторін: 3,5 (наприклад, 382x109 або 330x94 тощо)."
+        caption="An image for mobile. Allowed formats: jpg, png, gif. Max size: 1 MB. Optimal aspect ratio: 3.5 (e.g., 382x109 or 330x94  etc.)"
         fieldId="fileMobile"
       />
-      <ErrorMessage name="imageMobile" component="div" className={classes.errorMy} />
       <div className={classes.linkField}>
         <Field
           fullWidth
           multiline
-          component={TextFieldWrapped}
+          component={TextField}
           type="href"
-          label="Посилання"
+          label="Href"
           name="href"
           value={values.href}
-          makegreen={true}
-          className={classes.input}
         />
       </div>
       <Field
         fullWidth
         multiline
-        component={TextFieldWrapped}
+        component={TextField}
         type="priority"
-        label="Пріоритет"
+        label="Priority"
         name="priority"
-        makegreen={true}
-        className={classes.input}
       />
       {isSubmitting && <LinearProgress />}
       <DialogActions>
@@ -155,12 +96,12 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           onClick={handleClose}
           color="primary"
           variant="contained"
-          className={classNames(classes.btn, darkMode ? classes.cancelBtnDark : classes.cancelBtn)}
+          className={classes.customBtn}
         >
           Cancel
         </Button>
         <Button
-          className={classNames(classes.btn, darkMode ? classes.saveBtnDark : classes.saveBtn)}
+          className={classes.customBtn}
           variant="contained"
           color="secondary"
           disabled={isSubmitting}
@@ -173,4 +114,3 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
   );
 };
 export default InnerForm;
-

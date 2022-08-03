@@ -12,15 +12,6 @@ import {
   UPDATE_ORDER_STATUS_REQUEST,
   UPDATE_ORDER_STATUS_SUCCESS,
   UPDATE_ORDER_STATUS_ERROR,
-  GER_ORDERS_BY_PARAMS_REQUEST,
-  GER_ORDERS_BY_PARAMS_SUCCESS,
-  GER_ORDERS_BY_PARAMS_ERROR,
-  UPDATE_PRODUCT_IN_ORDER_REQUEST,
-  UPDATE_PRODUCT_IN_ORDER_SUCCESS,
-  UPDATE_PRODUCT_IN_ORDER_ERROR,
-  GET_ORDERS_BY_RANGE_REQUEST,
-  GET_ORDERS_BY_RANGE_SUCCESS,
-  GET_ORDERS_BY_RANGE_ERROR,
 } from '../types';
 import { IOrdersData } from '../../interfaces/IOrders';
 
@@ -28,11 +19,9 @@ const initialState: IOrdersData = {
   loading: false,
   list: [],
   currentOrder: null,
-  rangeOrders: null,
   error: null,
   count: 0,
   totalPages: 0,
-  searchValue: null,
 };
 
 const orders = (state = initialState, { type, data }: IActions) => {
@@ -42,7 +31,6 @@ const orders = (state = initialState, { type, data }: IActions) => {
         ...state,
         loading: true,
         error: null,
-        searchValue: null,
       };
     }
 
@@ -89,31 +77,6 @@ const orders = (state = initialState, { type, data }: IActions) => {
       };
     }
 
-    case GET_ORDERS_BY_RANGE_REQUEST: {
-      return {
-        ...state,
-        rangeOrders: null,
-        loading: true,
-        error: null,
-      };
-    }
-
-    case GET_ORDERS_BY_RANGE_SUCCESS: {
-      return {
-        ...state,
-        rangeOrders: data,
-        loading: false,
-      };
-    }
-
-    case GET_ORDERS_BY_RANGE_ERROR: {
-      return {
-        ...state,
-        loading: false,
-        error: data,
-      };
-    }
-
     case UPDATE_ORDER_STATUS_REQUEST: {
       return {
         ...state,
@@ -123,6 +86,7 @@ const orders = (state = initialState, { type, data }: IActions) => {
     }
 
     case UPDATE_ORDER_STATUS_SUCCESS: {
+      const idx = state.list.findIndex((item) => item.id === data.id);
       return {
         ...state,
         list: [
@@ -166,62 +130,9 @@ const orders = (state = initialState, { type, data }: IActions) => {
           },
         };
       }
-      return state;
     }
 
     case UPDATE_ORDER_ERROR: {
-      return {
-        ...state,
-        loading: false,
-        error: data,
-      };
-    }
-
-    case GER_ORDERS_BY_PARAMS_REQUEST: {
-      return {
-        ...state,
-        loading: true,
-        error: null,
-        searchValue: data.searchValue,
-      };
-    }
-
-    case GER_ORDERS_BY_PARAMS_SUCCESS: {
-      return {
-        ...state,
-        list: data.data,
-        count: data.count,
-        totalPages: data.totalPages,
-        loading: false,
-      };
-    }
-
-    case GER_ORDERS_BY_PARAMS_ERROR: {
-      return {
-        ...state,
-        loading: false,
-        error: data,
-      };
-    }
-
-    case UPDATE_PRODUCT_IN_ORDER_REQUEST: {
-      return {
-        ...state,
-        loading: true,
-        error: null,
-        searchValue: data.searchValue,
-      };
-    }
-
-    case UPDATE_PRODUCT_IN_ORDER_SUCCESS: {
-      return {
-        ...state,
-        currentOrder: data,
-        loading: false,
-      };
-    }
-
-    case UPDATE_PRODUCT_IN_ORDER_ERROR: {
       return {
         ...state,
         loading: false,

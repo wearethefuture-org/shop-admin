@@ -13,7 +13,6 @@ export interface IBasicProduct extends Common {
   price: number;
   availability: boolean;
   disabled: boolean;
-  characteristicValue: ICharResponse[];
 }
 
 export interface GeneralProductInfo {
@@ -21,7 +20,6 @@ export interface GeneralProductInfo {
   description: string;
   price: number | string;
   categoryName: string;
-  categoryId: number | string;
   key: string;
 }
 
@@ -89,14 +87,6 @@ export interface IProductsData {
   count: number;
   totalPages: number;
   isSearch: boolean;
-  paginationPage: number;
-  paginationLimit: number;
-  searchValue: null | string;
-  paginationPageSearch: number;
-  sort: string;
-  sortDirect: string;
-  findPrice: number[];
-  filter: IProductsFilter;
 }
 
 export interface CharValues {
@@ -157,14 +147,6 @@ export enum Type {
   boolean = 'boolean',
   range = 'range',
   date = 'date',
-}
-
-export interface IProductsFilter {
-  id?: null | number
-  name?: string
-  shop?: string
-  price: number[]
-  category?: string
 }
 
 export interface ProductsTableProps {

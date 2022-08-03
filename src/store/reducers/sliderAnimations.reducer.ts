@@ -32,16 +32,16 @@ const sliderAnimations = (state = initialState, action: IActions) => {
     case CHANGE_ACTIVE_SLIDER_ANIMATION: {
       const newAnims = state.animations.map((a) => {
         a.active = a.id === action.data.id ? (action.data.isActive ? true : false) : a.active;
+
         return a;
       });
-      if (action.data.isActive)
-        return {
-          ...state,
-          id: action.data.id,
-          animation: state.animations.find((a) => a.id === action.data.id).animation,
-          active: action.data.isActive ? true : false,
-          animations: newAnims,
-        };
+      return {
+        ...state,
+        id: action.data.id,
+        animation: state.animations.find((a) => a.id === action.data.id).animation,
+        active: action.data.isActive ? true : false,
+        animations: newAnims,
+      };
     }
     default:
       return state;

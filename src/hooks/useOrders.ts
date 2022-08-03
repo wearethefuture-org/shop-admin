@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store';
-import { getOrdersRequest, getOrdersByParamsRequest } from '../store/actions/orders.actions';
+import { getOrdersRequest } from '../store/actions/orders.actions';
 
-const useOrders = (searchValue: string) => {
+const useOrders = () => {
   const dispatch: AppDispatch = useDispatch();
+
   useEffect(() => {
     let page = 1;
     if (sessionStorage.getItem('ordersCurrentPage')) {

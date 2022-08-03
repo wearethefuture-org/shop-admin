@@ -5,9 +5,6 @@ import {
   DELETE_COMMENT_ERROR,
   DELETE_COMMENT_REQUEST,
   DELETE_COMMENT_SUCCESS,
-  GET_COMMENTS_BY_RANGE_REQUEST,
-  GET_COMMENTS_BY_RANGE_SUCCESS,
-  GET_COMMENTS_BY_RANGE_ERROR,
   GET_COMMENTS_ERROR,
   GET_COMMENTS_REQUEST,
   GET_COMMENTS_SUCCESS,
@@ -26,22 +23,6 @@ export const getCommentsSuccess = (products: IComment[]): IActions => ({
 
 export const getCommentsError = (message: string): IActions => ({
   type: GET_COMMENTS_ERROR,
-  data: message,
-});
-
-// get comments by date range
-export const getCommentsByRangeRequest = (datesArray: string[]): IActions => ({
-  type: GET_COMMENTS_BY_RANGE_REQUEST,
-  data: datesArray,
-});
-
-export const getCommentsByRangeSuccess = (comments: any): IActions => ({
-  type: GET_COMMENTS_BY_RANGE_SUCCESS,
-  data: comments,
-});
-
-export const getCommentsByRangeError = (message: string): IActions => ({
-  type: GET_COMMENTS_BY_RANGE_ERROR,
   data: message,
 });
 

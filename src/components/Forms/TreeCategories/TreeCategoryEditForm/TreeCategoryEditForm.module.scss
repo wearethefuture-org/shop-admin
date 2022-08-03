@@ -1,8 +1,162 @@
-.block-wrapper-main {
-  padding: 2rem;
+.category-form-container {
+  margin: 2rem;
+
+  .go-back-btn {
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    margin-bottom: 2rem;
+  }
+
+  h4 {
+    margin: 0;
+  }
+
+  .block-wrapper {
+    margin: 1rem;
+  }
+
+  .block-wrapper-main {
+    padding: 2rem;
+    padding-bottom: 3rem;
+  }
+
   .edit-field {
     &:not(:first-child) {
       margin-top: 1rem;
+    }
+
+    &:last-child {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .customBtn {
+    margin-top: 1rem;
+  }
+
+  .formControl {
+    margin-bottom: 2rem;
+  }
+
+  .addImgTitle {
+    margin-top: 1rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    color: #858585;
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  .labelHolder {
+    max-width: 100%;
+    min-height: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .dropzone {
+    height: 100px;
+    width: 100px;
+    margin: 10px;
+    background-color: #eee;
+    border-radius: 4px;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    border: 2px dashed #ccc;
+
+    p {
+      margin-bottom: 0;
+      margin-top: 0.5rem;
+      font-size: 0.7rem;
+    }
+  }
+
+  .dropzone-active {
+    @extend .dropzone;
+    position: relative;
+    border: 2px dashed transparent;
+
+    .dropzone-border {
+      position: absolute;
+      width: 99px;
+      height: 99px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #ccc 50%, transparent 50%),
+        linear-gradient(0deg, #ccc 50%, transparent 50%),
+        linear-gradient(90deg, #ccc 50%, transparent 50%),
+        linear-gradient(0deg, #ccc 50%, transparent 50%);
+      background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
+      background-size: 8px 1.5px, 1.5px 8px, 8px 1.5px, 1.5px 8px;
+      background-position: left top, right top, left bottom, left top;
+      animation: border-dance 4s infinite linear;
+    }
+
+    .dropzone-border-reject {
+      @extend .dropzone-border;
+      background: linear-gradient(90deg, red 50%, transparent 50%),
+        linear-gradient(0deg, red 50%, transparent 50%),
+        linear-gradient(90deg, red 50%, transparent 50%),
+        linear-gradient(0deg, red 50%, transparent 50%);
+      background-repeat: repeat-x, repeat-y, repeat-x, repeat-y;
+      background-size: 8px 1.5px, 1.5px 8px, 8px 1.5px, 1.5px 8px;
+      background-position: left top, right top, left bottom, left top;
+    }
+
+    @keyframes border-dance {
+      0% {
+        background-position: left top, right top, right bottom, left bottom;
+      }
+      100% {
+        background-position: right top, right bottom, left bottom, left top;
+      }
+    }
+  }
+
+  .img-wrapper {
+    position: relative;
+    padding: 0.5rem;
+
+    .delete-img {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      top: 0px;
+      right: 0px;
+      color: red;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      z-index: 10;
+      border: none;
+      outline: none;
+      visibility: hidden;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    &:hover .delete-img {
+      visibility: visible;
+    }
+
+    .image {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
     }
   }
 }

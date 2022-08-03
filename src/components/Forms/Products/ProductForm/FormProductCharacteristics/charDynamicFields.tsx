@@ -15,6 +15,8 @@ import { Type } from '../../../../../interfaces/IProducts';
 import styles from './FormProductCharacteristics.module.scss';
 
 export const charDynamicFields = (char, formik, product) => {
+  console.log(formik.values.subForm);
+
   const changeEnum = (e) => {
     const { value, checked } = e.target;
 
@@ -42,6 +44,10 @@ export const charDynamicFields = (char, formik, product) => {
   switch (type) {
     case Type.enum:
       formik.initialValues.subForm[name] = '';
+      break;
+
+    case Type.json:
+      formik.initialValues.subForm[name] = { 'value-1': '' };
       break;
 
     case Type.string:
@@ -327,113 +333,30 @@ export const charDynamicFields = (char, formik, product) => {
       return (
         <>
           {formik.values.subForm[name] &&
-            Object.entries(formik.values.subForm[name]).map(([key]) => {
-              return key !== 'newEntry' ? (
-                <div className={styles['field-wrapper']} key={key}>
-                  <IconButton
-                    type="button"
-                    aria-label="delete"
-                    color="secondary"
-                    title="Видалити значення"
-                    disabled={
-                      formik.values?.subForm[char.name] &&
-                      !Object.keys(formik.values?.subForm[char.name]).length
-                    }
-                    onClick={() => {
-                      const { [key]: color, ...rest } = formik.values.subForm[name];
-                      formik.setValues({
-                        ...formik.values,
-                        subForm: {
-                          ...formik.values.subForm,
-                          [name]: rest,
-                        },
-                      });
-                    }}
-                  >
-                    <ClearIcon />
-                  </IconButton>
-                  <Field key={key}>
-                    {({ field, form, meta }) => (
-                      <TextFieldWrapped
-                        label={key}
-                        fullWidth
-                        field={{
-                          ...field,
-                          name,
-                          value: formik.values.subForm[name][key],
-                          onChange: (e) => {
-                            formik.setValues({
-                              ...formik.values,
-                              subForm: {
-                                ...formik.values.subForm,
-                                [name]: { ...formik.values.subForm[name], [key]: e.target.value },
-                              },
-                            });
-                          },
-                        }}
-                        form={{ ...form, ...subFormObj }}
-                        meta={meta}
-                      />
-                    )}
-                  </Field>
-                </div>
-              ) : (
-                <Field key={key}>
+            Object.entries(formik.values.subForm[name]).map(([key], idx) => {
+              return (
+                <Field key={idx}>
                   {({ field, form, meta }) => (
-                    <>
-                      <TextFieldWrapped
-                        label="Колір"
-                        className={styles['json-input']}
-                        field={{
-                          ...field,
-                          name,
-                          value: formik.values.subForm[name]['newEntry'].key,
-                          onChange: (e) => {
-                            formik.setValues({
-                              ...formik.values,
-                              subForm: {
-                                ...formik.values.subForm,
-                                [name]: {
-                                  ...formik.values.subForm[name],
-                                  newEntry: {
-                                    ...formik.values.subForm[name].newEntry,
-                                    key: e.target.value,
-                                  },
-                                },
-                              },
-                            });
-                          },
-                        }}
-                        form={{ ...form, ...subFormObj }}
-                        meta={meta}
-                      />
-                      <TextFieldWrapped
-                        label="Розмір"
-                        className={styles['json-input']}
-                        field={{
-                          ...field,
-                          name,
-                          value: formik.values.subForm[name]['newEntry'].value,
-                          onChange: (e) => {
-                            formik.setValues({
-                              ...formik.values,
-                              subForm: {
-                                ...formik.values.subForm,
-                                [name]: {
-                                  ...formik.values.subForm[name],
-                                  newEntry: {
-                                    ...formik.values.subForm[name].newEntry,
-                                    value: e.target.value,
-                                  },
-                                },
-                              },
-                            });
-                          },
-                        }}
-                        form={{ ...form, ...subFormObj }}
-                        meta={meta}
-                      />
-                    </>
+                    <TextFieldWrapped
+                      label="Значення"
+                      fullWidth
+                      field={{
+                        ...field,
+                        name,
+                        value: formik.values.subForm[name][key],
+                        onChange: (e) => {
+                          formik.setValues({
+                            ...formik.values,
+                            subForm: {
+                              ...formik.values.subForm,
+                              [name]: { ...formik.values.subForm[name], [key]: e.target.value },
+                            },
+                          });
+                        },
+                      }}
+                      form={{ ...form, ...subFormObj }}
+                      meta={meta}
+                    />
                   )}
                 </Field>
               );
@@ -473,12 +396,12 @@ export const charDynamicFields = (char, formik, product) => {
             color="secondary"
             title="Видалити значення"
             disabled={!formik.values?.subForm[name]}
-            onClick={() => {
+            onClick={() =>
               formik.setValues({
                 ...formik.values,
                 subForm: { ...formik.values?.subForm, [name]: '' },
-              });
-            }}
+              })
+            }
           >
             <ClearIcon />
           </IconButton>

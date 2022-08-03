@@ -4,7 +4,7 @@ import React, { ChangeEvent, useState } from 'react';
 
 import { updateOrderStatusRequest } from '../../../store/actions/orders.actions';
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
-import { getOrdersRequest, getOrdersByParamsRequest } from '../../../store/actions/orders.actions';
+import { getOrdersRequest } from '../../../store/actions/orders.actions';
 import { Status as enumStatus } from '../../../enums/orderStatus';
 import { AppDispatch, RootState } from '../../../store/store';
 import { IGetOrders } from '../../../interfaces/IOrders';
@@ -21,7 +21,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns, currentP
   const history = useHistory();
   const [page, setPage] = useState(currentPage);
   const [limit, setLimit] = useState(10);
-  const { count, searchValue } = useSelector((state: RootState) => state.orders);
+  const count = useSelector((state: RootState) => state.orders.count);
 
   const loading = useSelector((state: RootState) => state.orders.loading);
 
@@ -37,11 +37,6 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns, currentP
   };
 
   const onChangeLimit = (limit) => {
-    if (searchValue) {
-      dispatch(getOrdersByParamsRequest(page, limit, searchValue));
-      return;
-    }
-
     setLimit(limit);
     dispatch(getOrdersRequest(page, limit));
   };
@@ -94,8 +89,7 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns, currentP
     },
     {
       name: 'Телефон',
-      selector: (row) =>
-        row.additionalNumber ? row.additionalNumber : row.user ? row.user.phoneNumber : '',
+      selector: (row) => (row.additionalNumber ? row.additionalNumber : row.user.phoneNumber),
       sortable: true,
       maxWidth: '140px',
       omit: !activeColumns.includes('Телефон'),
@@ -103,22 +97,21 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns, currentP
     {
       name: 'Email',
       maxWidth: '250px',
-      selector: (row) =>
-        row.additionalEmail ? row.additionalEmail : row.user ? row.user.email : '',
+      selector: (row) => (row.additionalEmail ? row.additionalEmail : row.user.email),
       omit: !activeColumns.includes('Email'),
     },
     {
       name: "Ім'я",
       maxWidth: '150px',
       selector: (row) =>
-        `${row.additionalFirstName ? row.additionalFirstName : row.user ? row.user.firstName : ''} 
-         ${row.additionalLastName ? row.additionalLastName : row.user ? row.user.lastName : ''}`,
+        `${row.additionalFirstName ? row.additionalFirstName : row.user.firstName} 
+         ${row.additionalLastName ? row.additionalLastName : row.user.lastName}`,
       sortable: true,
       omit: !activeColumns.includes("Ім'я"),
     },
     {
       name: 'Відділення',
-      selector: (row) => (row.delivery ? row.delivery.streetName : '-'),
+      selector: (row) => row.delivery.streetName,
       maxWidth: '700px',
       sortable: true,
       omit: !activeColumns.includes('Відділення'),
@@ -139,14 +132,15 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ list, activeColumns, currentP
     },
     {
       name: 'Спосіб доставки',
-      selector: (row) => (row.delivery ? row.delivery.deliveryMethod : '-'),
+      selector: (row) => row.delivery.deliveryMethod,
       maxWidth: '300px',
       sortable: true,
       omit: !activeColumns.includes('Спосіб доставки'),
     },
     {
       name: 'Адреса для доставки',
-      selector: (row) => (row.delivery ? row.delivery.courierDeliveryAddress : '-'),
+      selector: (row) =>
+        row.delivery.courierDeliveryAddress ? row.delivery.courierDeliveryAddress : '-',
       maxWidth: '400px',
       sortable: true,
       omit: !activeColumns.includes("Адреса для кур'єрської доставки"),

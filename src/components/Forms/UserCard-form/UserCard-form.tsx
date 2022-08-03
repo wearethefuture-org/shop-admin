@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import { Button, TextField, Select, MenuItem } from '@material-ui/core';
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 import InputMask from 'react-input-mask';
 
-import { AppDispatch, RootState } from '../../../store/store';
+import { AppDispatch } from '../../../store/store';
 import { addUserRequest, updateUserRequest } from '../../../store/actions/users.actions';
 import { IUserItem } from '../../../interfaces/IUsers';
 import { failSnackBar } from '../../../store/actions/snackbar.actions';
 import useRoles from '../../../hooks/useRoles';
-import styles from './UserCard-form.module.scss';
+import styles from './UserCard-form.module.scss'
 import { NavLink } from 'react-router-dom';
-import { COLORS } from '../../../values/colors';
-import classNames from 'classnames';
 
 // todo
 // how to avoid code duplication in input and inputError fields?
@@ -23,49 +21,36 @@ const useStyles = makeStyles({
   input: {
     width: '270px',
     height: '44px',
+    border: '1px solid #e2e6e7',
+    boxSizing: 'border-box',
+    borderRadius: ' 60px',
     padding: '11px',
-    marginBottom: '15px',
-  },
-  inputNoError: {
-    '& label.Mui-focused': {
-      color: COLORS.frenchPlum,
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: COLORS.frenchPlum,
-    },
+    outline: 'none',
+    margin: '10px',
   },
   inputError: {
-    '& label.Mui-focused': {
-      color: 'red',
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'red',
-    },
+    width: '270px',
+    height: '44px',
+    border: '1px solid #ff0000',
+    boxSizing: 'border-box',
+    borderRadius: ' 60px',
+    padding: '11px',
+    outline: 'none',
+    margin: '10px',
   },
   row: {
     margin: '10px',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   submit: {
-    borderRadius: ' 30px',
-    color: COLORS.primaryLight,
-    border: ' none',
-    width: '270px',
-    height: '44px',
-    marginBottom: '15px',
-  },
-  submitLight: {
-    'background': COLORS.primaryGreen,
+    'background': '#424D52',
+    'borderRadius': ' 60px',
+    'color': ' #fff',
+    'border': ' none',
+    'width': '270px',
+    'height': '44px',
+    'margin': '10px',
     '&:hover': {
-      backgroundColor: COLORS.secondaryGreen,
-    },
-  },
-  submitDark: {
-    'background': COLORS.darkGreen,
-    '&:hover': {
-      backgroundColor: COLORS.secondaryDarkGreen,
+      backgroundColor: '#424d52cc',
     },
   },
   formDiv: {
@@ -76,28 +61,14 @@ const useStyles = makeStyles({
   inputSelect: {
     width: '270px',
     height: '50px',
-    marginBottom: '15px',
-    textAlign: 'start',
-  },
-  inputSelectLight: {
-    '&:hover': {
-      backgroundColor: COLORS.primaryOttoman,
-    },
-  },
-  inputSelectDark: {
-    '&:hover': {
-      backgroundColor: COLORS.darkGray,
-    },
-  },
-  menuItem: {
-    '&:hover': {
-      backgroundColor: COLORS.primaryOttoman,
-    },
-  },
-  menuItemDark: {
-    '&:hover': {
-      backgroundColor: COLORS.darkGray,
-    },
+    border: '1px solid #e2e6e7',
+    boxSizing: 'border-box',
+    borderRadius: '60px',
+    outline: 'none',
+    backgroundSize: 'calc(.75em + .375rem) calc(.75em + .375rem)',
+    backgroundPosition: '10px 10px',
+    backgroundRepeat: 'no-repeat',
+    padding: '12px 20px 15px 40px',
   },
 });
 
@@ -111,24 +82,8 @@ const phoneRegExp =
   /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
 const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) => {
-  const [showCurrentPassword, setShowCurrentPassword] = React.useState<boolean>(false);
-  const [showNewPassword, setShowNewPassword] = React.useState<boolean>(false);
-  const [showConfirmNewPassword, setShowConfirmNewPassword] = React.useState<boolean>(false);
   const classes = useStyles();
   const { data: roles } = useRoles();
-  const { darkMode } = useSelector((state: RootState) => state.theme);
-
-  const onToggleShowCurrentPassword = () => {
-    setShowCurrentPassword(!showCurrentPassword);
-  };
-
-  const onToggleShowNewPassword = () => {
-    setShowNewPassword(!showNewPassword);
-  };
-
-  const onToggleShowConfirmNewPassword = () => {
-    setShowConfirmNewPassword(!showConfirmNewPassword);
-  };
 
   const baseScheme = {
     firstName: Yup.string()
@@ -153,6 +108,14 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
     email: Yup.string().email('Неправильна адреса!').required('Це поле не повинно бути пустим!'),
     telegramId: Yup.string().notRequired().nullable(),
     roleId: Yup.string().required('Це поле не повинно бути пустим!'),
+    newPassword: Yup.string()
+      .min(6, 'Пароль занадто короткий!')
+      .required('Це поле не повинно бути пустим!')
+      .matches(
+        /^(?=.*[A-ZА-Я])(?=.*\d).*$/,
+        'Пароль має бути не менше 6 символів, містити цифри та великі літери'
+      ),
+    confirmNewPassword: Yup.string().oneOf([Yup.ref('newPassword')], 'Пароль не співпадає'),
   };
 
   const newScheme = {
@@ -174,15 +137,14 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
 
   const [isEdit, setIsEdit] = useState(true);
   const dispatch: AppDispatch = useDispatch();
-  const currentPage = useSelector((state: any) => state.users.currentPage);
   const initialValues = {
     firstName: isNew ? '' : user?.firstName,
     lastName: isNew ? '' : user?.lastName,
     phoneNumber: isNew ? '' : user?.phoneNumber,
     email: isNew ? '' : user?.email,
-    roleId: isNew ? 0 : user?.role.id,
+    roleId: isNew ? 1 : user?.role.id,
     telegramId: isNew ? '' : user?.telegramId,
-    currentPassword: isNew ? '' : user?.password ? user?.password : '',
+    currentPassword: '',
     newPassword: '',
     confirmNewPassword: '',
   };
@@ -219,7 +181,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
         }
         sendData['roleId'] = _values['roleId'];
         if (Object.keys(sendData).length > 1) {
-          dispatch(updateUserRequest(user.id, sendData, currentPage));
+          dispatch(updateUserRequest(user.id, sendData));
         } else {
           dispatch(failSnackBar('Ви нічого не змінили'));
         }
@@ -230,10 +192,9 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
 
   const getInputClass = (fieldName): string => {
     return formik.touched[fieldName] && Boolean(formik.errors[fieldName])
-      ? classNames(classes.input, classes.inputError)
-      : classNames(classes.input, classes.inputNoError);
+      ? classes.inputError
+      : classes.input;
   };
-
   return (
     <form
       onSubmit={formik.handleSubmit}
@@ -243,7 +204,6 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
       <div className={classes.row}>
         <TextField
           className={getInputClass('firstName')}
-          style={{ width: '290px' }}
           value={formik.values.firstName}
           disabled={!isEdit}
           type="text"
@@ -254,12 +214,13 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.firstName && Boolean(formik.errors.firstName)}
           helperText={formik.touched.firstName && formik.errors.firstName}
+          InputProps={{ disableUnderline: true }}
+          margin="dense"
         />
       </div>
       <div className={classes.row}>
         <TextField
           className={getInputClass('lastName')}
-          style={{ width: '290px' }}
           value={formik.values.lastName}
           disabled={!isEdit}
           type="text"
@@ -270,12 +231,13 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.lastName && Boolean(formik.errors.lastName)}
           helperText={formik.touched.lastName && formik.errors.lastName}
+          InputProps={{ disableUnderline: true }}
+          margin="dense"
         />
       </div>
       <div className={classes.row}>
         <InputMask
           className={getInputClass('phoneNumber')}
-          style={{ width: '290px' }}
           value={formik.values.phoneNumber}
           disabled={!isEdit}
           type="tel"
@@ -287,14 +249,13 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)}
           helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-        >
-          {(inputProps) => <TextField {...inputProps} />}
-        </InputMask>
+          InputProps={{ disableUnderline: true }}
+          margin="dense"
+        />
       </div>
       <div className={classes.row}>
         <TextField
           className={getInputClass('email')}
-          style={{ width: '290px' }}
           value={formik.values.email}
           disabled={!isEdit}
           type="email"
@@ -305,11 +266,12 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.email && Boolean(formik.errors.email)}
           helperText={formik.touched.email && formik.errors.email}
+          InputProps={{ disableUnderline: true }}
+          margin="dense"
         />
       </div>
       <div className={classes.row}>
         <TextField
-          style={{ width: '290px' }}
           className={getInputClass('telegramId')}
           value={formik.values.telegramId}
           disabled={!isEdit}
@@ -321,52 +283,41 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           onBlur={formik.handleBlur}
           error={formik.touched.telegramId && Boolean(formik.errors.telegramId)}
           helperText={formik.touched.telegramId && formik.errors.telegramId}
+          InputProps={{ disableUnderline: true }}
+          margin="dense"
         />
       </div>
       <div className={classes.row}>
         <Select
           value={formik.values.roleId}
-          className={classNames(
-            classes.inputSelect,
-            darkMode ? classes.inputSelectDark : classes.inputSelectLight
-          )}
+          className={classes.inputSelect}
           disabled={!isEdit}
           type="select"
           name="roleId"
           id={'role_id-field'}
+          placeholder={'роль'}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          renderValue={(value) => (value !== 0 ? value : 'Вибрати роль')}
+          disableUnderline
         >
-          {roles.map((role) => (
-            <MenuItem
-              className={darkMode ? classes.menuItemDark : classes.menuItem}
-              key={'option' + role.id}
-              value={role.id}
-            >
-              {role.name}
-            </MenuItem>
-          ))}
+          {roles.map((role) => {
+            return (
+              <MenuItem key={'option' + role.id} value={role.id}>
+                {role.name}
+              </MenuItem>
+            );
+          })}
         </Select>
       </div>
-
-      {!isNew && (
-        <NavLink to={'/password'} key={'/password'}>
-          <div className={styles.form__resetPassword}>
+   
+      <NavLink to={'/password'} key={'/password'}>
+        <div className={styles.form__resetPassword}>
             <span>Змінити пароль</span>
-          </div>
-        </NavLink>
-      )}
+        </div>
+      </NavLink>
 
       <div className={classes.row}>
-        <Button
-          className={classNames(
-            classes.submit,
-            darkMode ? classes.submitDark : classes.submitLight
-          )}
-          type="submit"
-          disabled={formik.isSubmitting}
-        >
+        <Button className={classes.submit} type="submit" disabled={formik.isSubmitting}>
           {isNew ? 'Створити' : isEdit ? 'Змінити' : 'Редагувати'}
         </Button>
       </div>

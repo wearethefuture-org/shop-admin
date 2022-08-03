@@ -5,11 +5,6 @@ export async function apiGetComments(page: number, limit: number) {
   return comments.data;
 }
 
-export async function apiGetByRangeComments(datesArray: string[]) {
-  const comments = await api.comments.getByDatesRange(datesArray);
-  return comments.data;
-}
-
 export async function apiDeleteComment(id: number) {
   await api.comments.delete(id);
   return id;

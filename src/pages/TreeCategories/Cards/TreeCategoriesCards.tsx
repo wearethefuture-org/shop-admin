@@ -143,7 +143,7 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
               </div>
             </ExpandableBlock>
             <hr />
-            <div className={darkMode ? styles.iconsDark : styles.icons}>
+            <div className={styles.icons}>
               <InfoIcon onClick={() => openCategoryModal(l, Type.INFO)} />
               <EditIcon onClick={() => openCategoryModal(l, Type.EDIT)} />
               <DeleteIcon

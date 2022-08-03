@@ -1,11 +1,10 @@
 
-import { Button } from "reactstrap";
+import { Button } from "@material-ui/core";
 import { ErrorMessage, Field, Form, FormikProvider, useFormik } from "formik"
 import React, { useEffect, useState} from "react"
 import { useHistory} from "react-router-dom";
 import * as Yup from 'yup';
 import { api } from "../../../api/api";
-import { ResendMessageButton } from "../../buttons/resend-message-btn";
 import GoBackBtn from "../../GoBackBtn/GoBackBtn";
 import styles from './ResetPasswordForm.module.scss'
 
@@ -17,8 +16,6 @@ const validationSchema = Yup.object().shape({
 const ResetPasswordForm:React.FC = () => {
     const [successSendPassword, setSuccessSendPassword] = useState(false)
     const [invalidEmail, setInvalidEmail] = useState('')
-    const [isVisibleResend, setVisibleResend] = useState(false);
-    const [isTimer, setIsTimer] = useState(false);
 
     const history = useHistory();
     const handleGoBack = () => {
@@ -30,20 +27,13 @@ const ResetPasswordForm:React.FC = () => {
             email: '',
           },
           validationSchema,
-            onSubmit: async (values , { resetForm }) => {
+            onSubmit: async values => {
             try{
-              if (isVisibleResend) {
-                setIsTimer(true);
-              }
                 setSuccessSendPassword(true)
                 const res = await api.user.requestPasswordInstall(values)
                 if(!res){
                   throw new SyntaxError("Помилка в даних");
                 }
-
-                resetForm()
-                setVisibleResend(true)
-                
             }catch(e){
                 throw e
             }
@@ -63,7 +53,7 @@ const ResetPasswordForm:React.FC = () => {
             відновлення паролю:
           </h5>
             <div className={styles.reset_password__inp} >
-               <Field type="email" name="email" placeholder="Введіть пошту" 
+               <Field type="email" name="email" placeholder="Write email" 
                className={`${styles.reset_password__field} ${styles[invalidEmail]}`}/>
                {successSendPassword ? 
                <h6 className={styles.reset_password__succes}>
@@ -71,15 +61,7 @@ const ResetPasswordForm:React.FC = () => {
                     відправлено на пошту!</h6> : 
                <ErrorMessage name="email">{msg => <div className={styles.error}>{msg}</div>}</ErrorMessage>}
                </div>
-               {isVisibleResend ?  <ResendMessageButton
-               isTimer={isTimer}
-               title="Надіслати лист ще раз"
-               action={() => setIsTimer(false)}
-               submit={formik.handleSubmit}
-               type="submit"
-               spinnerColor="light"
-             /> : <Button type="submit" color="primary" variant="contained">Відправити</Button>
-            }
+               <Button type="submit" color="primary" variant="contained">Відправити</Button>
            </Form>
        </FormikProvider>
     </div>
