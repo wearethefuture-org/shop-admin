@@ -17,7 +17,6 @@ const initialValues: IAddProduct = {
   price: '',
   description: '',
   categoryName: '',
-  categoryId: '',
   files: [] || FormData,
   key: '',
   subForm: {},

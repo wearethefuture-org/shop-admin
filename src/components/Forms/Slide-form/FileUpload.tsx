@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import grey from '@material-ui/core/colors/grey';
+
 import { root } from '../../../api/config';
 import { SimpleFileUploadProps } from '../../../interfaces/SimpleFileUploadProps';
 
@@ -13,6 +14,7 @@ const FileUpload = ({
   fieldId,
 }: SimpleFileUploadProps) => {
   const image = field.value;
+
   const [imageSrc, setImageSrc] = useState(image);
   if (typeof image !== 'string') {
     if (image?.size > 100) {
@@ -24,12 +26,6 @@ const FileUpload = ({
     }
   } else if (!imageSrc.includes(root) && image.length > 2) {
     setImageSrc(`${root}/static/uploads/${image}`);
-  }
-
-  const onUpload = async (event: React.ChangeEvent<any>) => {
-    if (!event.target.files) return;
-    const file = event.currentTarget.files[0];
-    setFieldValue(field.name, file);
   }
 
   // @ts-ignore
@@ -72,11 +68,14 @@ const FileUpload = ({
               id: fieldId,
               type: 'file',
               name: field.name,
+              onChange: (event: React.ChangeEvent<any>) => {
+                const file = event.currentTarget.files[0];
+                setFieldValue(field.name, file);
+              },
             }}
-            onChange={onUpload}
             {...inputProps}
             className={classes.inputCss}
-            />
+          />
           <img className={classes.image} src={imageSrc} alt={imageSrc} />
         </label>
       </div>

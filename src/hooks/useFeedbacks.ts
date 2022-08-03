@@ -8,7 +8,11 @@ const useFeedbacks = (currentPage: number, limit: number) => {
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getFeedbacksRequest(currentPage, limit));
+    let page = 1;
+    if (sessionStorage.getItem('feedbacksCurrentPage')) {
+      page = Number(sessionStorage.getItem('feedbacksCurrentPage'));
+    }
+    dispatch(getFeedbacksRequest(page, limit));
   }, [dispatch, currentPage, limit]);
 
   const { list, count, page, totalPages, loading, error }: IFeedbacksState = useSelector(

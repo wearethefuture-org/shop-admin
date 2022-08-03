@@ -27,8 +27,6 @@ import FeedbacksPage from '../../pages/Feedbacks/FeedbacksPage';
 import Search from '../../pages/Search/Search';
 import WithAxios from '../../api/withAxios';
 import ResetPassword from '../../pages/ResetPassword/ResetPassward';
-import Invoices from '../../pages/Invoices/Invoices';
-import Profile from '../../pages/Profile/Profile';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -57,7 +55,6 @@ const Router: React.FC = () => {
                 <PrivateRoute path="/tree-categories" exact={true} component={TreeCategories} />
                 <PrivateRoute path="/products/" exact={true} component={Products} />
                 <PrivateRoute path="/statistic" component={Statistic} />
-                <PrivateRoute path="/invoices" component={Invoices} />
                 <PrivateRoute path="/users" component={Users} />
                 <PrivateRoute path="/slides" component={Slides} />
                 <PrivateRoute path="/comments" component={CommentsPage} />
@@ -69,8 +66,7 @@ const Router: React.FC = () => {
                 <PrivateRoute component={TreeCategoryRouter} path="/tree-category/:id" />
                 <PrivateRoute component={Search} path="/search" />
                 <PrivateRoute component={OrderRouter} path="/order/:id" />
-                <PrivateRoute component={Profile} path="/profile" />
-                <PrivateRoute path="/password" component={ResetPassword} />
+                <Route path="/password" component={ResetPassword} />
                 <Route path="/home" component={Home} />
               </Switch>
             </Content>

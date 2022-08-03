@@ -7,7 +7,7 @@ import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
 import CustomConfirm from '../../components/CustomConfirm/CustomConfirm';
 import CommentsTable from '../../components/Tables/Comments/CommentsTable';
 import useComments from '../../hooks/useComments';
-import { deleteCommentRequest, getCommentsRequest } from '../../store/actions/comments.actions';
+import { deleteCommentRequest } from '../../store/actions/comments.actions';
 import { AppDispatch } from '../../store/store';
 import styles from './CommentsPage.module.scss';
 
@@ -27,12 +27,6 @@ export default function CommentsPage() {
   const [limit, setLimit] = useState<number>(10);
 
   const { list, count, loading } = useComments(currentPage, limit);
-
-  React.useEffect(() => {
-    if (!list.length && count){
-      dispatch(getCommentsRequest(currentPage, limit));
-    }
-  }, [list]);
 
   // ACTIVE COLUMNS
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
@@ -99,6 +93,7 @@ export default function CommentsPage() {
               limit={limit}
               setLimit={setLimit}
               paginationServer={true}
+              currentPage={currentPage}
             />
           )}
         </div>

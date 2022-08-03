@@ -1,5 +1,5 @@
 import { api } from '../../../api/api';
-import { IAddTreeCategory, IDisableEnableCategory } from '../../../interfaces/ITreeCategory';
+import { IAddTreeCategory } from '../../../interfaces/ITreeCategory';
 import { TreeCategory } from '../../../pages/TreeCategories/TreeCategoryInfo/treeCategoryReducer';
 
 export async function fetchedTreeCategories() {
@@ -25,8 +25,4 @@ export async function apiUpdateTreeCategory(data: TreeCategory) {
 export async function apiGetTreeCategoriesById(id: number) {
   const treeCategories = await api.treeCategories.getById(id);
   return treeCategories.data;
-}
-
-export async function disableEnableCategory(data: IDisableEnableCategory) {
-  const categories = await api.treeCategories.disableEnable(data);
 }

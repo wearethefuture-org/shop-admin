@@ -14,12 +14,6 @@ export interface IBasicOrder extends Common {
   delivery: IDelivery;
 }
 
-export interface IStatisticOrders extends Common {
-  date: string;
-  paid: string;
-  notpaid: string;
-}
-
 export interface IProductToOrder extends Common {
   quantity: number;
   amount: number;
@@ -49,17 +43,9 @@ export interface IOrdersData {
   list: Array<IGetOrders>;
   loading: boolean;
   currentOrder: ICurrentOrder | null;
-  rangeOrders: IOrdersRange | null;
   error: string | null;
   count: number;
   totalPages: number;
-  searchValue: null | string;
-}
-
-interface IOrdersRange {
-  date: string;
-  paid: string;
-  notpaid: string;
 }
 
 export interface ICurrentOrder extends Common {
@@ -73,5 +59,4 @@ export interface ICurrentOrder extends Common {
   additionalNumber?: string;
   comment?: string;
   delivery: IDelivery;
-  notcall: boolean;
 }

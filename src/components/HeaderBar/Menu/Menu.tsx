@@ -81,12 +81,12 @@ const AppBarMenu: React.FC<HeaderBarProps> = (props) => {
           <Brightness2Icon className={classes.nightMode} />
         </IconButton>
         <IconButton color="inherit" onClick={onMailListOpen}>
-          <Badge overlap="rectangular" color="primary">
+          <Badge color="primary">
             <MailIcon />
           </Badge>
         </IconButton>
         <IconButton color="inherit" onClick={onNotificationListOpen}>
-          <Badge overlap="rectangular" color="primary">
+          <Badge color="primary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -126,7 +126,7 @@ const AppBarMenu: React.FC<HeaderBarProps> = (props) => {
         {mobileMenuList.map(({ ariaName, nmb, icon, msg, onClick }) => (
           <MenuItem key={msg} onClick={onClick}>
             <IconButton aria-label={`show ${nmb} new ${ariaName}`} color="inherit">
-              <Badge overlap="rectangular" badgeContent={nmb} color="secondary">
+              <Badge badgeContent={nmb} color="secondary">
                 {icon}
               </Badge>
             </IconButton>

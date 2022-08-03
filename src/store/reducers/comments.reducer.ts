@@ -4,9 +4,6 @@ import {
   DELETE_COMMENT_ERROR,
   DELETE_COMMENT_REQUEST,
   DELETE_COMMENT_SUCCESS,
-  GET_COMMENTS_BY_RANGE_REQUEST,
-  GET_COMMENTS_BY_RANGE_SUCCESS,
-  GET_COMMENTS_BY_RANGE_ERROR,
   GET_COMMENTS_ERROR,
   GET_COMMENTS_REQUEST,
   GET_COMMENTS_SUCCESS,
@@ -15,7 +12,6 @@ import {
 const initialState: ICommentsState = {
   loading: false,
   list: [],
-  rangeComments: null,
   count: 0,
   page: 1,
   totalPages: 0,
@@ -54,31 +50,6 @@ const comments = (state = initialState, { type, data }: IActions) => {
       return {
         ...state,
         loading: true,
-      };
-    }
-
-    case GET_COMMENTS_BY_RANGE_REQUEST: {
-      return {
-        ...state,
-        rangeComments: null,
-        loading: true,
-        error: null,
-      };
-    }
-
-    case GET_COMMENTS_BY_RANGE_SUCCESS: {
-      return {
-        ...state,
-        rangeComments: data,
-        loading: false,
-      };
-    }
-
-    case GET_COMMENTS_BY_RANGE_ERROR: {
-      return {
-        ...state,
-        loading: false,
-        error: data,
       };
     }
 

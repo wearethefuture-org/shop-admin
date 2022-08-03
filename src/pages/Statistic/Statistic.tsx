@@ -1,9 +1,10 @@
 import React from 'react';
 
-import StatisticsSection from '../../components/Statistics/StatisticsSection';
 
 const Statistic = () => {
-  return <StatisticsSection />;
-};
+   return (
+     <div>Statistic</div>
+   )
+}
 
 export default Statistic;

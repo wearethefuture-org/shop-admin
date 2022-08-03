@@ -6,7 +6,6 @@ import { customStylesDataTable } from './CustomStylesDataTable';
 import CustomTablePaginator from '../Paginator/Paginator';
 
 import { RootState } from '../../store/store';
-import { COLORS } from '../../values/colors';
 
 interface DataTableProps {
   columns: any[];
@@ -20,7 +19,7 @@ interface DataTableProps {
   setPage?: Dispatch<SetStateAction<number>>;
   defaultSortFieldId?: string;
   customStyles?: any;
-  paginationPage?: number;
+  currentPage?: number;
 }
 
 const AppDataTable: React.FC<DataTableProps> = ({
@@ -34,22 +33,10 @@ const AppDataTable: React.FC<DataTableProps> = ({
   setLimit = () => {},
   paginationServer = false,
   defaultSortFieldId = '',
-  paginationPage,
   customStyles = customStylesDataTable,
+  currentPage,
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
-
-  const conditionalRowStyles = [
-    {
-      when: (row) => row.id,
-      style: {
-        'minHeight': '70px',
-        '&:hover': {
-          backgroundColor: darkMode ? COLORS.secondaryDarkGray : COLORS.primaryOttoman,
-        },
-      },
-    },
-  ];
 
   return (
     <Card>
@@ -62,10 +49,10 @@ const AppDataTable: React.FC<DataTableProps> = ({
         onRowClicked={onRowClicked}
         pointerOnHover={true}
         pagination
-        paginationDefaultPage={paginationPage}
         paginationComponent={CustomTablePaginator}
+        paginationDefaultPage={currentPage}
         defaultSortAsc={false}
-        defaultSortFieldId={defaultSortFieldId ? null : defaultSortFieldId}
+        defaultSortFieldId={defaultSortFieldId}
         fixedHeader={true}
         fixedHeaderScrollHeight={'60vh'}
         paginationTotalRows={count}
@@ -75,7 +62,6 @@ const AppDataTable: React.FC<DataTableProps> = ({
         onChangePage={(p) => setPage(p)}
         onChangeRowsPerPage={(l) => setLimit(l)}
         customStyles={customStyles}
-        conditionalRowStyles={conditionalRowStyles}
       />
     </Card>
   );

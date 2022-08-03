@@ -28,16 +28,10 @@ export interface ICommentResponse {
 export interface ICommentsState {
   loading: boolean;
   list: IComment[];
-  rangeComments: ICommentsDateRange[] | null;
   count: number;
   page: number;
   totalPages: number;
   error: string | null;
-}
-
-export interface ICommentsDateRange {
-  date: string;
-  creatad: string;
 }
 
 export interface CommentsTableProps {
@@ -50,4 +44,5 @@ export interface CommentsTableProps {
   limit: number;
   setLimit: Dispatch<SetStateAction<number>>;
   paginationServer: boolean;
+  currentPage: number;
 }

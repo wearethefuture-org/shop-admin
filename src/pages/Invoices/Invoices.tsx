@@ -1,9 +1,8 @@
 import { createStyles, makeStyles, Theme, ThemeOptions } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InvoicesTable from '../../components/Tables/Invoices/InvoicesTable';
 import useInvoices from '../../hooks/useInvoices';
-import { RootState } from '../../store/store';
 
 const useStyles = makeStyles(
   (theme: Theme): ThemeOptions =>
@@ -18,12 +17,23 @@ const Invoices = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { invoiceList } = useInvoices();
+  const invoiceData = useSelector((state: RootState) => state.invoice);
   const darkMode = useSelector((state: RootState) => state.theme.darkMode);
+
+  async function fetchData() {
+    await dispatch(fetchInvoicesList());
+  }
+
+  useEffect(() => {
+    if (invoiceData.invoicesList.length === 0) {
+      fetchData();
+    }
+  }, [invoiceData.invoicesList]);
 
   return (
     <div className={classes.tableWrapper}>
       <InvoicesTable
-        data={invoiceList.map((i) => {
+        data={invoiceData.invoicesList.map((i) => {
           return {
             id: i.id,
             createdAt: i.createdAt,

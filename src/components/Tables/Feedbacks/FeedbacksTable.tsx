@@ -1,36 +1,10 @@
 import React, { useState } from 'react';
-import { createStyles, IconButton, makeStyles, ThemeOptions } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { FeedbacksTableProps } from '../../../interfaces/IFeedback';
 import AppDataTable from '../../AppDataTable/AppDataTable';
 import DateMoment from '../../Common/Date-moment';
 import styles from './FeedbacksTable.module.scss';
-import { useSelector } from 'react-redux';
-import { COLORS } from '../../../values/colors';
-import { RootState } from '../../../store/store';
-import classNames from 'classnames';
-
-const useStyles = makeStyles(
-  (): ThemeOptions =>
-    createStyles({
-      icon: {
-        cursor: 'pointer',
-        transition: '0.3s all',
-      },
-      iconLight: {
-        'color': COLORS.primaryRed,
-        '&:hover': {
-          color: COLORS.secondaryRed,
-        },
-      },
-      iconDark: {
-        'color': COLORS.darkRed,
-        '&:hover': {
-          color: COLORS.secondaryDarkRed,
-        },
-      },
-    })
-);
 
 const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
   list,
@@ -43,10 +17,6 @@ const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
   paginationServer,
   setPage,
 }) => {
-  const classes = useStyles();
-
-  const { darkMode } = useSelector((state: RootState) => state.theme);
-
   const [expandedFeedbacks, setExpandedFeedbacks] = useState<number[]>([]);
 
   const handleExpandedFeedbacks = (id) => {
@@ -127,7 +97,7 @@ const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
         <IconButton
           aria-label="delete"
           type="button"
-          className={classNames(classes.icon, darkMode ? classes.iconDark : classes.iconLight)}
+          color="secondary"
           onClick={() => {
             setOpenDeleteFeedbackDialog(true);
             setFeedbackToDelete(row.id);
@@ -150,7 +120,15 @@ const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
           limit={limit}
           setLimit={setLimit}
           paginationServer={paginationServer}
-          setPage={setPage}
+          setPage={(e) => {
+            sessionStorage.setItem('feedbacksCurrentPage', String(e));
+            setPage(e);
+          }}
+          currentPage={
+            sessionStorage.getItem('feedbacksCurrentPage')
+              ? Number(sessionStorage.getItem('feedbacksCurrentPage'))
+              : 1
+          }
         />
       ) : null}
     </>
