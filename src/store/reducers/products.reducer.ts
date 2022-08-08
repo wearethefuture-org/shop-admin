@@ -49,6 +49,7 @@ const initialState: IProductsData = {
     id: null,
     name: '',
     category: '',
+    shop: '',
     price: [0,10000]
   }
 };
@@ -68,7 +69,10 @@ const products = (state = initialState, { type, data }: IActions) => {
         paginationLimit: data.limit,
         sort: data.sort,
         sortDirect: data.sortDirect,
-        filter: {...data.filter}
+        filter: {
+          ...state.filter,
+          ...data.filter
+        }
       };
     }
 

@@ -2,7 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import ArrowIcon from '@material-ui/icons/ArrowBackIos';
-import { Card, Switch } from '@material-ui/core';
+import {
+  alpha,
+  Card,
+  createStyles,
+  makeStyles,
+  Switch,
+  Theme,
+  ThemeOptions,
+} from '@material-ui/core';
 
 import {
   deleteProductRequest,
@@ -20,8 +28,40 @@ import ProductCharGroups from './ProductCharacteristics/ProductCharGroups';
 import { IGetProductById } from '../../../interfaces/IProducts';
 import CustomConfirm from '../../../components/CustomConfirm/CustomConfirm';
 import styles from './ProductItem.module.scss';
+import { COLORS } from '../../../values/colors';
+
+const useStyles = makeStyles(
+  (theme: Theme): ThemeOptions =>
+    createStyles({
+      switch: {
+        '& .MuiSwitch-switchBase.Mui-checked': {
+          'color': COLORS.primaryGreen,
+          '&:hover': {
+            backgroundColor: alpha(COLORS.primaryGreen, theme.palette.action.hoverOpacity),
+          },
+        },
+        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+          backgroundColor: COLORS.primaryGreen,
+        },
+        'margin': 'left',
+      },
+      switchDark: {
+        '& .MuiSwitch-switchBase.Mui-checked': {
+          'color': COLORS.darkGreen,
+          '&:hover': {
+            backgroundColor: alpha(COLORS.darkGreen, theme.palette.action.hoverOpacity),
+          },
+        },
+        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+          backgroundColor: COLORS.darkGreen,
+        },
+        'margin': 'left',
+      },
+    })
+);
 
 const ProductItem: React.FC = () => {
+  const classes = useStyles();
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
   const match = useRouteMatch();
@@ -142,6 +182,7 @@ const ProductItem: React.FC = () => {
         <div className={styles.switch}>
           <span>Наявність</span>
           <Switch
+            className={darkMode ? classes.switchDark : classes.switch}
             checked={productStatus.availability}
             onChange={handleUpdateAvailability}
             name="isWidgetActiveNewArrivals"
@@ -150,6 +191,7 @@ const ProductItem: React.FC = () => {
         <div>
           <span>Disabled</span>
           <Switch
+            className={classes.switch}
             checked={productStatus.disabled}
             onChange={handleDisableProduct}
             name="isWidgetActiveNewArrivals"

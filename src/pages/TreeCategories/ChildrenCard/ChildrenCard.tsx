@@ -10,6 +10,7 @@ import styles from './ChildrenCard.module.scss';
 import AddIcon from '@material-ui/icons/Add';
 
 import AddTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/AddTreeCategoryModal/AddTreeCategoryModal';
+import { COLORS } from '../../../values/colors';
 
 interface ISearchProps {
   targetId: number;
@@ -130,7 +131,11 @@ const ChildrenCard: FC<ChildrenCategoriesDataProps> = ({
                   >
                     {nodes.name}
                   </span>{' '}
-                  <span onClick={() => showAddCategoryModal(nodes)} className={styles.addIcon}>
+                  <span
+                    onClick={() => showAddCategoryModal(nodes)}
+                    style={darkMode ? { color: COLORS.darkGreen } : {}}
+                    className={styles.addIcon}
+                  >
                     <AddIcon />
                   </span>
                 </div>

@@ -11,6 +11,9 @@ import AppBarMenu from './Menu/Menu';
 import AccountList from './AccountList/AccountMenuList';
 import MailList from './MailList/MailList';
 import NotificationList from './NotificationList/NotificationList';
+import { COLORS } from '../../values/colors';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 interface HeaderBarProps {
   onSidebarToggle: () => void;
@@ -25,13 +28,13 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   appBar: {
-    backgroundColor: 'darkgreen',
+    backgroundColor: COLORS.primaryGreen,
     paddingLeft: 0,
     zIndex: 3,
     transition: `all 0.3s ease-in-out`,
   },
   appBarShrinked: {
-    backgroundColor: 'darkgreen',
+    backgroundColor: COLORS.primaryGreen,
     paddingLeft: '240px',
     zIndex: 3,
     transition: `all 0.3s ease-in-out`,
@@ -59,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 const HeaderBar: React.FC<HeaderBarProps> = (props) => {
   const { onSidebarToggle, isShrink } = props;
   const classes = useStyles(props);
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const [mailAnchorEl, setMailAnchorEl] = React.useState(null);
   const [noticeAnchorEl, setNoticeAnchorEl] = React.useState(null);
@@ -94,7 +98,11 @@ const HeaderBar: React.FC<HeaderBarProps> = (props) => {
         [classes.appBarShift]: !isShrink,
       })}
     >
-      <AppBar position="fixed" className={isShrink ? classes.appBarShrinked : classes.appBar}>
+      <AppBar
+        style={darkMode ? { backgroundColor: COLORS.darkGreen } : {}}
+        position="fixed"
+        className={isShrink ? classes.appBarShrinked : classes.appBar}
+      >
         <Toolbar>
           <IconButton
             edge="start"

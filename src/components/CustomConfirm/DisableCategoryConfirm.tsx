@@ -1,14 +1,18 @@
 import React, { FC } from 'react';
 import {
   Button,
+  createStyles,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  makeStyles,
+  ThemeOptions,
 } from '@material-ui/core';
-
-import styles from './CustomConfirm.module.scss';
+import { COLORS } from '../../values/colors';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 interface ConfirmProps {
   openDisableDialog: boolean;
@@ -18,6 +22,44 @@ interface ConfirmProps {
   dialogTitle: string;
 }
 
+const useStyles = makeStyles(
+  (): ThemeOptions =>
+    createStyles({
+      declineButton: {
+        'borderRadius': '30px',
+        'color': COLORS.primaryLight,
+        'backgroundColor': COLORS.primaryGray,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGray,
+        },
+      },
+      declineButtonDark: {
+        'borderRadius': '30px',
+        'color': COLORS.primaryLight,
+        'backgroundColor': COLORS.darkGray,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryDarkGray,
+        },
+      },
+      confirmButton: {
+        'borderRadius': '30px',
+        'color': COLORS.primaryLight,
+        'backgroundColor': COLORS.primaryRed,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryRed,
+        },
+      },
+      confirmButtonDark: {
+        'borderRadius': '30px',
+        'color': COLORS.primaryLight,
+        'backgroundColor': COLORS.darkRed,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryDarkRed,
+        },
+      },
+    })
+);
+
 const DisableCategoryConfirm: FC<ConfirmProps> = ({
   openDisableDialog,
   closeDisableDialog,
@@ -25,6 +67,8 @@ const DisableCategoryConfirm: FC<ConfirmProps> = ({
   handleDisable,
   dialogTitle,
 }) => {
+  const { darkMode } = useSelector((state: RootState) => state.theme);
+  const classes = useStyles();
   return (
     <Dialog
       open={openDisableDialog}
@@ -37,14 +81,15 @@ const DisableCategoryConfirm: FC<ConfirmProps> = ({
         <DialogContentText id="alert-dialog-description">{warning}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeDisableDialog} color="primary" className={styles['decline-btn']}>
+        <Button
+          onClick={closeDisableDialog}
+          className={darkMode ? classes.declineButtonDark : classes.declineButton}
+        >
           Ні
         </Button>
         <Button
           onClick={handleDisable}
-          color="secondary"
-          className={styles['confirm-btn']}
-          autoFocus
+          className={darkMode ? classes.confirmButtonDark : classes.confirmButton}
         >
           Так
         </Button>

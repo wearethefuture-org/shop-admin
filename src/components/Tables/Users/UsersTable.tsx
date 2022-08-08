@@ -1,26 +1,75 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
-
+import React, { useState } from 'react';
+import { Box, Button, createStyles, makeStyles, Theme, ThemeOptions } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import UserDialog from '../../Modals/UserDialog/UserDialog';
 import UserRemoveDialog from '../../Modals/UserRemoveDialog/UserRemoveDialog';
-import { AppDispatch } from '../../../store/store';
-import { useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '../../../store/store';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUsersByQueryRequest, getUsersRequest } from '../../../store/actions/users.actions';
 import { UsersTableProps } from '../../../interfaces/IUsers';
+import { COLORS } from '../../../values/colors';
+import AddBtn from '../../AddBtn/AddBtn';
+import classNames from 'classnames';
 
-const UsersTable: React.FC<UsersTableProps> = ({ 
+const useStyles = makeStyles(
+  (theme: Theme): ThemeOptions =>
+    createStyles({
+      wrapper: {
+        padding: theme.spacing(2),
+      },
+      button: {
+        'background': 'transparent',
+        'border': 'none',
+        '&:hover': {
+          backgroundColor: 'transparent',
+        },
+      },
+      icon: {
+        cursor: 'pointer',
+        transition: '0.3s all',
+      },
+      editIcon: {
+        'color': COLORS.primaryBlue,
+        '&:hover': {
+          color: COLORS.secondaryBlue,
+        },
+      },
+      editIconDark: {
+        'color': COLORS.darkBlue,
+        '&:hover': {
+          color: COLORS.secondaryDarkBlue,
+        },
+      },
+      deleteIcon: {
+        'color': COLORS.primaryRed,
+        '&:hover': {
+          color: 'rgb(216, 0, 0)',
+        },
+      },
+      deleteIconDark: {
+        'color': COLORS.darkRed,
+        '&:hover': {
+          color: COLORS.secondaryDarkRed,
+        },
+      },
+    })
+);
+
+const UsersTable: React.FC<UsersTableProps> = ({
   list,
   activeColumns,
   isSearch,
   searchValue,
   count,
-  paginationPage
+  paginationPage,
 }) => {
+  const classes = useStyles();
   const dispatch: AppDispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const onChangePage = (page) => {
     setPage(page);
@@ -80,15 +129,8 @@ const UsersTable: React.FC<UsersTableProps> = ({
 
   const addUserBtn = (
     <Box>
-      <Button
-        onClick={openDialogNewUser}
-        variant="contained"
-        color="primary"
-        startIcon={<AddIcon />}
-      >
-        Створити
-      </Button>
-      {userDialogIsOpen && <UserDialog {...modalParams} />}
+      <AddBtn title="Створити" handleAdd={openDialogNewUser} />
+      {userDialogIsOpen && <UserDialog {...modalParams} darkMode />}
       {confirmRemoveUserIsOpen && <UserRemoveDialog {...modalRemoveParams} />}
     </Box>
   );
@@ -149,22 +191,22 @@ const UsersTable: React.FC<UsersTableProps> = ({
       cell: (row) => {
         return (
           <Box display="flex">
-            <Box>
-              <Button variant="contained" size="small" value={row.id} onClick={openDialogUserCard}>
-                Редагувати
-              </Button>
-            </Box>
-            <Box pl={1}>
-              <Button
-                variant="contained"
-                size="small"
-                color="secondary"
-                value={row.id}
-                onClick={openDialogRemoveUser}
-              >
-                Видалити
-              </Button>
-            </Box>
+            <Button className={classes.button} value={row.id} onClick={openDialogUserCard}>
+              <EditIcon
+                className={classNames(
+                  classes.icon,
+                  darkMode ? classes.editIconDark : classes.editIcon
+                )}
+              />
+            </Button>
+            <Button className={classes.button} value={row.id} onClick={openDialogRemoveUser}>
+              <DeleteIcon
+                className={classNames(
+                  classes.icon,
+                  darkMode ? classes.deleteIconDark : classes.deleteIcon
+                )}
+              />
+            </Button>
           </Box>
         );
       },
@@ -172,7 +214,7 @@ const UsersTable: React.FC<UsersTableProps> = ({
   ];
 
   return (
-    <React.Fragment>
+    <div className={classes.wrapper}>
       <AppDataTable
         data={list}
         columns={userColumns}
@@ -189,7 +231,7 @@ const UsersTable: React.FC<UsersTableProps> = ({
           },
         }}
       />
-    </React.Fragment>
+    </div>
   );
 };
 

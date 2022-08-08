@@ -24,12 +24,23 @@
     position: absolute;
     top: 0;
     left: 30%;
+    cursor: pointer;
+
+    transition: all .2s;
+
+    &:hover{
+        fill: grey;
+    }
 }
 
 .cancelSave{
     position: absolute;
     top: 0;
     right: 0;
+
+    button{
+        margin: 0px 0px 0px 7px;
+    }
 }
 
 .rightSide{
@@ -75,14 +86,37 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
+     
+    .avatarOverlay {
+        width: 150px;
+        height: 150px;
 
-.img{
-    width: 100px;
-    height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-    border-radius: 50%;
-    background-color: #a6a6a6;
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 50%;
+        top: 23px;
+        opacity: 0;
+        pointer-events: none;
+        transition: all ease 0.25s;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    &:hover,
+    &:focus {
+      .avatarOverlay {
+        pointer-events: initial;
+        opacity: 1;
+      }
+    }
+
+    input {
+        display: none;
+    }
 }
 
 .possibleImgParams{
@@ -98,6 +132,11 @@
     position: absolute;
     top:0;
     right: 0;
+    cursor: pointer;
+
+    &:hover{
+        fill: rgba(255, 0, 0, 1);
+    }
 }
 
 @media (max-width: 1000px) {

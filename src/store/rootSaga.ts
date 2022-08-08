@@ -50,6 +50,11 @@ import {
   GET_USERS_BY_QUERY_REQUEST,
   UPDATE_PROFILE_USER_REQUEST,
   GER_ORDERS_BY_PARAMS_REQUEST,
+  GET_ORDERS_BY_RANGE_REQUEST,
+  GET_COMMENTS_BY_RANGE_REQUEST,
+  GET_USERS_DATE_RANGE_REQUEST,
+  DELETE_AVATAR_REQUEST,
+  ADD_AVATAR_REQUEST,
 } from './types';
 
 import {
@@ -87,8 +92,13 @@ import {
   updateOrderStatusWorker,
   getOrdersByParamsWorker,
   updateProductInOrderWorker,
+  getOrdersByDateRangeWorker,
 } from './sagas/orders.saga';
-import { deleteCommentWorker, getCommentsWorker } from './sagas/comments.saga';
+import {
+  deleteCommentWorker,
+  getCommentsByDateRangeWorker,
+  getCommentsWorker,
+} from './sagas/comments.saga';
 import { deleteFeedbackWorker, getFeedbacksWorker } from './sagas/feedbacks.saga';
 import {
   addUserWorker,
@@ -96,8 +106,16 @@ import {
   getUsersByQueryWorker,
   getUsersWorker,
   updateUserWorker,
+  getUsersDateRangeWorker,
 } from './sagas/users.saga';
-import { fetchUser, sigInUser, signOutUser, updateProfileUserWorker } from './sagas/user.saga';
+import {
+  fetchUser,
+  sigInUser,
+  signOutUser,
+  updateProfileUserWorker,
+  deleteAvatarWorker,
+  addAvatarWorker,
+} from './sagas/user.saga';
 import { getRolesWorker } from './sagas/roles.saga';
 import { getSearchItemsWorker } from './sagas/search.saga';
 import {
@@ -150,6 +168,7 @@ function* sagaSlidesWatcher(): SagaIterator {
 // Comments
 export function* sagaCommentsWatcher(): SagaIterator {
   yield takeEvery(GET_COMMENTS_REQUEST, getCommentsWorker);
+  yield takeEvery(GET_COMMENTS_BY_RANGE_REQUEST, getCommentsByDateRangeWorker);
   yield takeEvery(DELETE_COMMENT_REQUEST, deleteCommentWorker);
 }
 
@@ -167,6 +186,7 @@ function* sagaOrdersWatcher(): SagaIterator {
   yield takeEvery(UPDATE_ORDER_STATUS_REQUEST, updateOrderStatusWorker);
   yield takeEvery(GER_ORDERS_BY_PARAMS_REQUEST, getOrdersByParamsWorker);
   yield takeEvery(UPDATE_PRODUCT_IN_ORDER_REQUEST, updateProductInOrderWorker);
+  yield takeEvery(GET_ORDERS_BY_RANGE_REQUEST, getOrdersByDateRangeWorker);
 }
 
 export function* sagaUsersWatcher(): SagaIterator {
@@ -175,6 +195,7 @@ export function* sagaUsersWatcher(): SagaIterator {
   yield takeEvery(ADD_USER_REQUEST, addUserWorker);
   yield takeEvery(UPDATE_USER_REQUEST, updateUserWorker);
   yield takeEvery(DELETE_USER_REQUEST, deleteUserWorker);
+  yield takeEvery(GET_USERS_DATE_RANGE_REQUEST, getUsersDateRangeWorker);
 }
 
 export function* sagaUserWatcher(): SagaIterator {
@@ -182,6 +203,8 @@ export function* sagaUserWatcher(): SagaIterator {
   yield takeEvery(USER_SIGN_OUT, signOutUser);
   yield takeEvery(USER_FETCH_REQUEST, fetchUser);
   yield takeEvery(UPDATE_PROFILE_USER_REQUEST, updateProfileUserWorker);
+  yield takeEvery(ADD_AVATAR_REQUEST, addAvatarWorker);
+  yield takeEvery(DELETE_AVATAR_REQUEST, deleteAvatarWorker);
 }
 
 // Roles

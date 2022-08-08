@@ -43,7 +43,7 @@ input[type='number'] {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: darkgreen;
+  background: #ced4da;
   border-radius: 10px;
 }
 
@@ -106,7 +106,7 @@ input[type='number'] {
 .image-gallery-thumbnail.active,
 .image-gallery-thumbnail:hover,
 .image-gallery-thumbnail:focus {
-  border: 3px solid darkgreen !important;
+  border: 3px solid #26bd62 !important;
 }
 
 .image-gallery-bullets .image-gallery-bullet {
@@ -121,7 +121,7 @@ input[type='number'] {
 }
 
 .image-gallery-bullets .image-gallery-bullet.active {
-  background: darkgreen !important;
+  background: #26bd62 !important;
 }
 
 // Tables Styles

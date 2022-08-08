@@ -10,6 +10,11 @@ export async function apiGetOrderById(id: number) {
   return order.data;
 }
 
+export async function apiGetOrderByRange(datesArray: string[]) {
+  const order = await api.orders.getByDatesRange(datesArray);
+  return order.data;
+}
+
 export async function apiUpdateOrder(orderId: number, productId: number, data) {
   const order = await api.orders.update(orderId, productId, data);
   return order.data;

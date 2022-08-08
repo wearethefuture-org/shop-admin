@@ -162,6 +162,7 @@ export enum Type {
 export interface IProductsFilter {
   id?: null | number
   name?: string
+  shop?: string
   price: number[]
   category?: string
 }
