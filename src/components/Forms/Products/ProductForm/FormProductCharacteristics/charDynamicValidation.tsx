@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 
 import { Type } from '../../../../../interfaces/IProducts';
 
-const dataTypeValidation = ({ type, minValue, maxValue }, validationRule) => {
+const dataTypeValidation = ({ type, minValue, maxValue, value }, validationRule) => {
   let typeValidation = validationRule;
 
   switch (type) {
@@ -23,11 +23,36 @@ const dataTypeValidation = ({ type, minValue, maxValue }, validationRule) => {
       break;
 
     case Type.json:
-      typeValidation = Yup.object().shape({});
-      break;
+      const shapes = {};
 
-    default:
-      typeValidation = Yup.string();
+      const data_object = Object.entries(value);
+
+      data_object.forEach((item) => {
+        if (item && typeof item[1] === 'string') {
+          shapes[item[0]] = Yup.string()
+            .trim()
+            .matches(
+              /(^[0-9-,]+$)/,
+              'Використовуйте цифри (0-9), знак тире (-), кома(,), без пробілів'
+            );
+        } else if (value['newEntry']) {
+          const newEntrySchema = Yup.object().shape({
+            key: Yup.string()
+              .trim()
+              .matches(
+                /(^[АБВГДЕЄЖІЇЗИЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгдежзийклмнопрстуфхцчшщьюяіїє+/-]+$)/,
+                'Може містити українські літери, знаки(- + /)'
+              )
+              .required('Обов`язкове поле'),
+            value: Yup.string()
+              .trim()
+              .matches(/(^[0-9-,]+$)/, 'Використовуйте цифри (0-9), знак тире (-), кома(,)'),
+          });
+          shapes['newEntry'] = newEntrySchema;
+        }
+      });
+
+      typeValidation = Yup.object().shape(shapes);
       break;
   }
 
@@ -42,7 +67,9 @@ const requiredValidation = (charRequired, validationRule) => {
 const getValidationRule = (char) => {
   let fieldValidationRule = null;
   fieldValidationRule = dataTypeValidation(char, fieldValidationRule);
+
   fieldValidationRule = requiredValidation(char.required, fieldValidationRule);
+
   return fieldValidationRule;
 };
 
