@@ -16,6 +16,8 @@ import AddBtn from '../../../AddBtn/AddBtn';
 import { makeStyles } from '@material-ui/core';
 import { COLORS } from '../../../../values/colors';
 import classNames from 'classnames';
+import FileSaver from 'file-saver';
+import { api } from '../../../../api/api';
 
 interface TableBodyProps {
   rows: IInvoiceFile[];
@@ -105,6 +107,12 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
     window.location.reload();
   };
 
+  const downloadExcelFile = async (fileName: string) => {
+    const res = await api.invoice.getInvoiceFile(fileName);
+    const blob = new Blob([res.data]);
+    FileSaver.saveAs(blob, fileName);
+  };
+
   return (
     <TableBody>
       {(rowsPerPage > 0
@@ -135,14 +143,13 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
             <TableCell align="left">{row.fileSize} КБ</TableCell>
             <TableCell align="right">
               <Button className={classes.button}>
-                <a href={row.url} download>
-                  <DownloadIcon
-                    className={classNames(
-                      classes.icon,
-                      darkMode ? classes.downloadIconDark : classes.downloadIcon
-                    )}
-                  />
-                </a>
+                <DownloadIcon
+                  className={classNames(
+                    classes.icon,
+                    darkMode ? classes.downloadIconDark : classes.downloadIcon
+                  )}
+                  onClick={() => downloadExcelFile(row.name)}
+                />
               </Button>
             </TableCell>
             <TableCell align="left">
