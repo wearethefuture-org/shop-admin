@@ -116,7 +116,7 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
       >
         <SliderAnimations />
         <AddBtn
-          style={{ margin: '10px' }}
+          style={{ margin: '10px', height: '50px' }}
           title="Додати слайд"
           handleAdd={handleClickOpen}
         ></AddBtn>

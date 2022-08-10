@@ -49,6 +49,7 @@ const useStyles = makeStyles(
       },
       checked: {},
       btn: {
+        height: '50px',
         borderRadius: '30px',
         padding: '6px 15px 6px 15px',
         color: COLORS.primaryLight,
