@@ -16,6 +16,7 @@ import {
 } from './../../../store/actions/orders.actions';
 import { getUsersByQueryRequest } from '../../../store/actions/users.actions';
 import { failSnackBar } from './../../../store/actions/snackbar.actions';
+import { COLORS } from '../../../values/colors';
 
 interface SearchProps {}
 
@@ -68,10 +69,26 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'rgb(188, 188, 188, 0.5)',
     alignSelf: 'center',
     marginLeft: '40px',
+    '&:hover': {
+      backgroundColor: COLORS.secondaryGreen,
+    },
   },
   crossIcon: {
     color: 'white',
     transition: '0.5s ease',
+  },
+  menuItem: {
+    '&:hover': {
+      backgroundColor: COLORS.primaryOttoman,
+    },
+    '&.Mui-selected': {
+      backgroundColor: COLORS.secondaryOttoman,
+    },
+  },
+  selectRoot: {
+    '&:focus': {
+      backgroundColor: 'transparent',
+    },
   },
 }));
 
@@ -86,6 +103,7 @@ const Search: React.FC<SearchProps> = (props) => {
   const { paginationLimit, sort, sortDirect, filter, findPrice } = useSelector(
     (state: RootState) => state.products
   );
+  const { darkMode } = useSelector((state: RootState) => state.theme);
   const classes = useStyles(props);
   const history = useHistory();
   const dispatch: AppDispatch = useDispatch();
@@ -102,9 +120,9 @@ const Search: React.FC<SearchProps> = (props) => {
       setSubmitting(true);
       if (values.searchOption === 'products') {
         if (!isNaN(Number(values.searchValue))) {
-          filter.id = Number(values.searchValue)
+          filter.id = Number(values.searchValue);
         } else {
-          filter.name = values.searchValue
+          filter.name = values.searchValue;
         }
         dispatch(getProductsRequest(1, paginationLimit, sort, sortDirect, filter));
         history.push({
@@ -150,7 +168,7 @@ const Search: React.FC<SearchProps> = (props) => {
   }
 
   if (searchOption === 'products' && !!filter.name) {
-    formik.values.searchValue = filter.name
+    formik.values.searchValue = filter.name;
   }
 
   const handleMouseDown = (event) => {
@@ -159,9 +177,9 @@ const Search: React.FC<SearchProps> = (props) => {
 
   const finishSearch = () => {
     if (searchOption === 'products') {
-      filter.id = ''
-      filter.name = ''
-      filter.price = findPrice
+      filter.id = '';
+      filter.name = '';
+      filter.price = findPrice;
       dispatch(getProductsRequest(1, paginationLimit, sort, sortDirect, filter));
     }
     if (searchOption === 'orders') {
@@ -201,6 +219,7 @@ const Search: React.FC<SearchProps> = (props) => {
           id={'option-field'}
           value={formik.values.searchOption}
           className={classes.searchSelect}
+          classes={{ root: classes.selectRoot }}
           onChange={(e) => {
             setSearchOption(e.target.value as string);
             formik.handleChange(e);
@@ -209,7 +228,11 @@ const Search: React.FC<SearchProps> = (props) => {
         >
           {searchOptions.map((option) => {
             return (
-              <MenuItem key={'option' + option.key} value={option.key}>
+              <MenuItem
+                className={darkMode ? '' : classes.menuItem}
+                key={'option' + option.key}
+                value={option.key}
+              >
                 {option.name}
               </MenuItem>
             );
