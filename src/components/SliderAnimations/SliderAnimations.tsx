@@ -49,10 +49,12 @@ const useStyles = makeStyles(
       },
       checked: {},
       btn: {
-        height: '50px',
+        height: '40px',
+        width: '107px',
         borderRadius: '30px',
         padding: '6px 15px 6px 15px',
         color: COLORS.primaryLight,
+        lineHeight: '17px',
       },
       btnSaveLight: {
         'backgroundColor': COLORS.primaryGreen,
