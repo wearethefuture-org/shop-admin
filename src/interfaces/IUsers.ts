@@ -39,7 +39,7 @@ export interface IUserState {
   isFetching: boolean;
   isLoggedIn: boolean;
   error: IError | null;
-  avatarLink: string;
+  avatarLink: string | undefined;
 }
 
 export interface IUserReqUp {

@@ -11,8 +11,8 @@ const useRoles = () => {
     dispatch(getRolesRequest());
   }, [dispatch]);
 
-  const data = useSelector((state: RootState) => state.roles.list);
-  return { data, dispatch };
+  const roles = useSelector((state: RootState) => state.roles.list);
+  return { roles, dispatch };
 };
 
 export default useRoles;
