@@ -19,13 +19,13 @@ const useStyles = makeStyles({
   dialog: {
     'text-align': 'center',
   },
-  logout: {
+  btn: {
     'border-radius': '10px',
     'width': '200px',
     'height': '44px',
     'margin': '10px',
   },
-  logoutLight: {
+  logoutLightBtn: {
     '&:hover': {
       background: COLORS.primaryLight,
       color: COLORS.primaryGreen,
@@ -34,14 +34,28 @@ const useStyles = makeStyles({
     'color': COLORS.primaryLight,
     'border': `2px solid ${COLORS.primaryGreen}`,
   },
-  logoutDark: {
+  logoutDarkBtn: {
     '&:hover': {
-      background: COLORS.secondaryGray,
-      color: COLORS.primaryLight,
+      background: COLORS.secondaryDarkGreen,
     },
     'background': COLORS.darkGreen,
     'color': COLORS.primaryLight,
-    'border': `2px solid ${COLORS.darkGreen}`,
+  },
+  stayLoggedInLightBtn: {
+    '&:hover': {
+      background: COLORS.primaryLight,
+      color: COLORS.primaryGray,
+    },
+    'background': COLORS.primaryGray,
+    'color': COLORS.primaryLight,
+    'border': `2px solid ${COLORS.primaryGray}`,
+  },
+  stayLoggedInDarkBtn: {
+    '&:hover': {
+      background: COLORS.darkGray,
+    },
+    'background': COLORS.secondaryDarkGray,
+    'color': COLORS.primaryLight,
   },
 });
 
@@ -75,8 +89,8 @@ const LogoutDialog: React.FC<LogoutProps> = ({ closeModal }) => {
       <div>
         <Button
           className={classNames(
-            classes.logout,
-            darkMode ? classes.logoutDark : classes.logoutLight
+            classes.btn,
+            darkMode ? classes.stayLoggedInDarkBtn : classes.stayLoggedInLightBtn
           )}
           onClick={handleClose}
         >
@@ -84,8 +98,8 @@ const LogoutDialog: React.FC<LogoutProps> = ({ closeModal }) => {
         </Button>
         <Button
           className={classNames(
-            classes.logout,
-            darkMode ? classes.logoutDark : classes.logoutLight
+            classes.btn,
+            darkMode ? classes.logoutDarkBtn : classes.logoutLightBtn
           )}
           onClick={logoutIvent}
         >
