@@ -145,7 +145,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
         (value: string | null | undefined): boolean => {
           if (typeof value === 'string') {
             const lengthOnlyNumbers = value.replace(/-|_/g, '').length;
-            return lengthOnlyNumbers === 17;
+            return lengthOnlyNumbers === 17 || lengthOnlyNumbers === 12;
           }
           return false;
         }
