@@ -4,7 +4,9 @@ import EditIcon from '@material-ui/icons/Edit';
 import Delete from '@material-ui/icons/Delete';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
 import Avatar from 'react-avatar';
+import * as yup from 'yup';
 import React from 'react';
 
 import {
@@ -13,74 +15,75 @@ import {
   addAvatarRequest,
 } from './../../store/actions/user.action';
 import { failSnackBar } from './../../store/actions/snackbar.actions';
+import { IRole } from './../../interfaces/IRoles';
 import { RootState } from './../../store/store';
+import useRoles from './../../hooks/useRoles';
 import style from './Profile.module.scss';
 import { root } from './../../api/config';
 
 export default function Profile() {
   const dispatch = useDispatch();
+  const { roles } = useRoles();
   const { user, avatarLink } = useSelector((state: RootState) => state.user);
-  const possibleSelectValues = ['admin', 'moderator', 'user'];
-  const [userLastName, setUserLastName] = React.useState<string>('');
-  const [firstName, setFirstName] = React.useState<string>('');
-  const [userPhone, setUserPhone] = React.useState<string>('');
-  const [userEmail, setUserEmail] = React.useState<string>('');
-  const [userRole, setUserRole] = React.useState<string>('');
   const [isBeingEdited, setIsBeingEdited] = React.useState<boolean>(false);
-  const handleUserLastNameChange = (e) => setUserLastName(e.target.value);
-  const handleUserNameChange = (e) => setFirstName(e.target.value);
-  const handleUserPhoneChange = (e) => setUserPhone(e.target.value);
-  const handleUserEmailChange = (e) => setUserEmail(e.target.value);
-  const handleRoleChange = (e) => setUserRole(e.target.value);
-  const handleOnEdited = () => setIsBeingEdited(!isBeingEdited);
-  const identificators = [
+  const phoneRegExp = /\+\d\d\d\s\d\d\s\d\d\d\s\d\d\s\d\d/;
+  const formik = useFormik({
+    initialValues: {
+      id: user!.id,
+      lastName: `${user!.lastName}`,
+      firstName: `${user!.firstName}`,
+      phoneNumber: `${user!.phoneNumber}`,
+      email: `${user!.email}`,
+      roleId: user!.role.id,
+    },
+    validationSchema: yup.object({
+      lastName: yup.string().max(30, 'Не більше 30 символів!').required("Обов'язкове поле!"),
+      firstName: yup.string().max(20, 'Не більше 20 символів!').required("Обов'язкове поле!"),
+      phoneNumber: yup
+        .string()
+        .matches(phoneRegExp, 'Приклад валідного номера телефону: +380 11 222 33 44')
+        .min(17, 'Приклад валідного номера телефону: +380 11 222 33 44')
+        .max(17, 'Приклад валідного номера телефону: +380 11 222 33 44'),
+      email: yup.string().email('Некорректний email!'),
+      roleId: yup.number().required(),
+    }),
+    onSubmit: (values) => onSaveSubmit(values),
+  });
+  const inputs = [
     {
       title: 'Призвіще',
-      value: userLastName,
-      func: handleUserLastNameChange,
+      name: 'lastName',
+      type: 'text',
       fullWidth: false,
     },
     {
       title: "Ім'я",
-      value: firstName,
-      func: handleUserNameChange,
+      name: 'firstName',
+      type: 'text',
       fullWidth: false,
     },
     {
-      title: 'Номер телефону',
-      value: userPhone,
-      func: handleUserPhoneChange,
+      title: 'Номер Телефону',
+      name: 'phoneNumber',
+      type: 'tel',
       fullWidth: false,
     },
     {
-      title: 'Електронна пошла',
-      value: userEmail,
-      func: handleUserEmailChange,
+      title: 'Пошта',
+      name: 'email',
+      type: 'email',
       fullWidth: true,
     },
   ];
 
-  React.useEffect(() => {
-    setFirstName(user!.firstName);
-    setUserLastName(user!.lastName);
-    setUserPhone(user!.phoneNumber);
-    setUserEmail(user!.email);
-    setUserRole(user!.role.name);
-  }, [isBeingEdited, user]);
-
-  const onSaveSubmit = () => {
-    const userData = {
-      id: user!.id,
-      firstName,
-      lastName: userLastName,
-      phoneNumber: userPhone,
-      roleId: getRoleId(userRole),
-      email: userEmail,
-    };
-    dispatch(updateProfileUserReq(userData));
+  const handleOnEdited = () => {
+    setIsBeingEdited(!isBeingEdited);
+    if (isBeingEdited) formik.resetForm();
+  };
+  const onSaveSubmit = (formikValues) => {
+    dispatch(updateProfileUserReq(formikValues));
     setIsBeingEdited(false);
   };
-
   const onChangeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
     const availableFormats = ['png', 'jpg', 'jpeg', 'gif'];
     const imageFormat = e.target.files![0].type.replace(/image[/]/, '');
@@ -93,13 +96,10 @@ export default function Profile() {
       dispatch(failSnackBar('Розмір зображення не повинен перевищувати 10 Мб'));
       return;
     }
-
     const imageFD = new FormData();
     imageFD.append('image', e.target.files![0]);
-
     dispatch(addAvatarRequest(imageFD));
   };
-
   const onDeleteAvatar = () => {
     if (!avatarLink) {
       dispatch(failSnackBar('Ви не маете аватара.'));
@@ -112,58 +112,54 @@ export default function Profile() {
     <div className={style.page}>
       <div className={style.leftSide}>
         {isBeingEdited ? (
-          <>
+          <form onSubmit={formik.handleSubmit}>
             <div className={style.cancelSave}>
-              <Button onClick={onSaveSubmit} variant="contained" color="primary" size="small">
+              <Button type="submit" variant="contained" color="primary" size="small">
                 Зберегти
               </Button>
               <Button onClick={handleOnEdited} variant="contained" color="secondary" size="small">
                 Скасувати
               </Button>
             </div>
-            {identificators.map((identificator, index) => {
-              return (
-                <div className={style.wrapper} key={`${identificator.title}_${index}`}>
-                  <div className={style.greayWords}>{identificator.title}</div>
-                  <TextField
-                    value={identificator.value}
-                    onChange={identificator.func}
-                    size="small"
-                    variant="standard"
-                    fullWidth={identificator.fullWidth}
-                  />
-                </div>
-              );
-            })}
+            {inputs.map((input, index) => (
+              <div className={style.wrapper} key={`${input.title}_${index}`}>
+                <div className={style.greayWords}>{input.title}</div>
+                <TextField
+                  size="small"
+                  variant="standard"
+                  type={input.type}
+                  {...formik.getFieldProps(input.name)}
+                  error={formik.touched[input.name] && Boolean(formik.errors[input.name])}
+                  helperText={formik.touched[input.name] && formik.errors[input.name]}
+                  fullWidth={input.fullWidth}
+                />
+              </div>
+            ))}
             <div className={style.wrapper}>
               <div className={style.greayWords}>Роль</div>
               <FormControl>
-                <Select value={userRole} onChange={handleRoleChange}>
-                  {possibleSelectValues.map((item, index) => {
-                    return (
-                      <MenuItem key={`${item}_${index}`} value={item}>
-                        {item}
-                      </MenuItem>
-                    );
-                  })}
+                <Select name="roleId" value={formik.values.roleId} onChange={formik.handleChange}>
+                  {roles.map((role: IRole, index: number) => (
+                    <MenuItem key={`${role.name}_${index}`} value={role.id}>
+                      {role.name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </div>
-          </>
+          </form>
         ) : (
           <>
             <EditIcon onClick={handleOnEdited} className={style.editIcon} />
-            {identificators.map((identificator, index) => {
-              return (
-                <div className={style.wrapper} key={`${identificator.title}_${index}`}>
-                  <div className={style.greayWords}>{identificator.title}</div>
-                  <div className={style.normalWords}>{identificator.value}</div>
-                </div>
-              );
-            })}
+            {inputs.map((input, index) => (
+              <div className={style.wrapper} key={`${input.title}_${index}`}>
+                <div className={style.greayWords}>{input.title}</div>
+                <div className={style.normalWords}>{formik.values[input.name]}</div>
+              </div>
+            ))}
             <div className={style.wrapper}>
               <div className={style.greayWords}>Роль</div>
-              <div className={style.normalWords}>{userRole}</div>
+              <div className={style.normalWords}>{user!.role.name}</div>
             </div>
           </>
         )}
@@ -179,29 +175,28 @@ export default function Profile() {
               </span>
               <input id="avatar" type="file" onChange={onChangeAvatar} />
             </label>
-            <Avatar
-              size="150"
-              name={`${user?.lastName} ${user?.firstName}`}
-              round={true}
-              src={user!.avatar ? `${root}/users/avatar/${avatarLink}` : ''}
-            />
+            {avatarLink ? (
+              <Avatar
+                size="150"
+                name={`${user?.lastName} ${user?.firstName}`}
+                round={true}
+                src={`${root}/users/avatar/${avatarLink}`}
+              />
+            ) : (
+              <Avatar
+                size="150"
+                name={`${user?.lastName} ${user?.firstName}`}
+                round={true}
+                // src={user!.avatar ? `${root}/users/avatar/${avatarLink}` : undefined}
+              />
+            )}
           </div>
           <div className={style.possibleImgParams}>
-            <div className={style.possibleImgParamsText}>
-              *Розмір фото не має перевищувати 10 Мб
-            </div>
-            <div className={style.possibleImgParamsText}>
-              *Підтримувані формати фото: png, jpg, jpeg, gif
-            </div>
+            <div className={style.possibleImgParamsText}>*Розмір фото не має перевищувати 10 Мб</div>
+            <div className={style.possibleImgParamsText}>*Підтримувані формати фото: png, jpg, jpeg, gif</div>
           </div>
         </div>
       </div>
     </div>
   );
-}
-
-function getRoleId(roleName: string): number {
-  if (roleName === 'user') return 3;
-  if (roleName === 'moderator') return 2;
-  return 1;
 }

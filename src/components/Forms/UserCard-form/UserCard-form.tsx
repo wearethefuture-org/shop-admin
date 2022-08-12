@@ -115,7 +115,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
   const [showNewPassword, setShowNewPassword] = React.useState<boolean>(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = React.useState<boolean>(false);
   const classes = useStyles();
-  const { data: roles } = useRoles();
+  const { roles } = useRoles();
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
   const onToggleShowCurrentPassword = () => {

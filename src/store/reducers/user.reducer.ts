@@ -19,7 +19,7 @@ const initialState: IUserState = {
   isFetching: true,
   isLoggedIn: !!getUser(),
   error: null,
-  avatarLink: '',
+  avatarLink: undefined,
 };
 
 const user = (state = initialState, { type, data }: IActions): IUserState => {
@@ -82,7 +82,7 @@ const user = (state = initialState, { type, data }: IActions): IUserState => {
     case DELETE_AVATAR_SUCCESS:
       return {
         ...state,
-        avatarLink: '',
+        avatarLink: undefined,
       };
     case UPDATE_PROFILE_USER_SUCCESS:
       return {
