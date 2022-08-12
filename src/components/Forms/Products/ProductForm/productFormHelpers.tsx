@@ -18,7 +18,6 @@ export const productValidationShema = Yup.object().shape({
       'Може містити латинські літери в нижньому регістрі (a-z), цифри (0-9), знак тире (-)'
     )
     .required('Обов`язкове поле'),
-  subForm: Yup.object(),
 });
 
 export const formatKey = (string: string) =>

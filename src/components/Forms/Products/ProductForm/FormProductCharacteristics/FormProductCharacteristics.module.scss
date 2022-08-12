@@ -140,6 +140,7 @@
 .field-wrapper {
   display: flex;
   align-items: flex-start;
+
   width: 100%;
 
   button {
@@ -156,4 +157,10 @@
 
 .json-input {
   width: 50%;
+}
+
+.newcolorsizeerror {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }

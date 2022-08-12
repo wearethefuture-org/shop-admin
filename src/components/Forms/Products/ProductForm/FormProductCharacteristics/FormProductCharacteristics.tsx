@@ -51,7 +51,6 @@ const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, se
   }, [category]);
 
   const [charArray, setCharArray] = useState<ICharArr[]>([]);
-
   useEffect(() => {
     chars.length &&
       setCharArray(
@@ -145,14 +144,6 @@ const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, se
                                     aria-label="add"
                                     color="primary"
                                     title="Додати значення"
-                                    disabled={
-                                      formik.values.subForm[char.name] &&
-                                      Object.entries(formik.values.subForm[char.name]).length
-                                        ? !!Object.entries(formik.values.subForm[char.name]).some(
-                                            ([key, value]) => key && !value
-                                          )
-                                        : false
-                                    }
                                     onClick={() => {
                                       formik.setValues({
                                         ...formik.values,
