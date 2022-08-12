@@ -130,7 +130,11 @@ const HeaderBar: React.FC<HeaderBarProps> = (props) => {
 
       <NotificationList noticeAnchorEl={noticeAnchorEl} onNoticeListClose={allDropdownsClose} />
 
-      <AccountList accountAnchorEl={accountAnchorEl} onAccountListClose={allDropdownsClose} />
+      <AccountList
+        accountAnchorEl={accountAnchorEl}
+        onAccountListClose={allDropdownsClose}
+        darkMode={darkMode}
+      />
     </div>
   );
 };

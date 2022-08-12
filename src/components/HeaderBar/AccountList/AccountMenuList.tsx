@@ -12,15 +12,19 @@ import { useHistory } from 'react-router-dom';
 
 import LogoutDialog from '../../Modals/LogoutDialog/LogoutDialog';
 import { COLORS } from '../../../values/colors';
+import classnames from 'classnames';
 
 interface AccountListProps {
   accountAnchorEl: null | Element;
   onAccountListClose: () => void;
+  darkMode: boolean;
 }
 
 const useStyles = makeStyles({
   menuItem: {
-    'fontSize': '15px',
+    fontSize: '15px',
+  },
+  menuItemDark: {
     '&:hover': {
       backgroundColor: COLORS.primaryOttoman,
     },
@@ -34,7 +38,11 @@ const useStyles = makeStyles({
   },
 });
 
-const AccountList: React.FC<AccountListProps> = ({ accountAnchorEl, onAccountListClose }) => {
+const AccountList: React.FC<AccountListProps> = ({
+  accountAnchorEl,
+  onAccountListClose,
+  darkMode,
+}) => {
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
   const history = useHistory();
 
@@ -61,26 +69,38 @@ const AccountList: React.FC<AccountListProps> = ({ accountAnchorEl, onAccountLis
       open={!!accountAnchorEl}
       onClose={onAccountListClose}
     >
-      <MenuItem className={classes.menuItem} onClick={openProfilePage}>
+      <MenuItem
+        className={classnames(classes.menuItem, !darkMode ? classes.menuItemDark : '')}
+        onClick={openProfilePage}
+      >
         <ListItemIcon className={classes.iconItem}>
           <PersonIcon fontSize="small" />
         </ListItemIcon>
         Профіль
       </MenuItem>
-      <MenuItem className={classes.menuItem} onClick={onAccountListClose}>
+      <MenuItem
+        className={classnames(classes.menuItem, !darkMode ? classes.menuItemDark : '')}
+        onClick={onAccountListClose}
+      >
         <ListItemIcon className={classes.iconItem}>
           <QuestionAnswerIcon fontSize="small" />
         </ListItemIcon>
         Контакти
       </MenuItem>
-      <MenuItem className={classes.menuItem} onClick={onAccountListClose}>
+      <MenuItem
+        className={classnames(classes.menuItem, !darkMode ? classes.menuItemDark : '')}
+        onClick={onAccountListClose}
+      >
         <ListItemIcon className={classes.iconItem}>
           <PieChartIcon fontSize="small" />
         </ListItemIcon>
         Аналітика
       </MenuItem>
       <Divider />
-      <MenuItem className={classes.menuItem} onClick={openLogoutDialog}>
+      <MenuItem
+        className={classnames(classes.menuItem, !darkMode ? classes.menuItemDark : '')}
+        onClick={openLogoutDialog}
+      >
         <ListItemIcon className={classes.iconItem}>
           <ExitToAppIcon fontSize="small" />
         </ListItemIcon>
