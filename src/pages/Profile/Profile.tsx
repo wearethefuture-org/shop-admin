@@ -187,7 +187,6 @@ export default function Profile() {
                 size="150"
                 name={`${user?.lastName} ${user?.firstName}`}
                 round={true}
-                // src={user!.avatar ? `${root}/users/avatar/${avatarLink}` : undefined}
               />
             )}
           </div>
