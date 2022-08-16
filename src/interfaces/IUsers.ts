@@ -74,6 +74,9 @@ export interface IUsersData {
   totalPages: number;
   isSearch: boolean;
   paginationPage: number;
+  paginationLimit: number;
+  sort: string;
+  sortDirect: string;
   searchValue: null | string;
   paginationPageSearch: number;
   currentPage: number;
@@ -125,7 +128,5 @@ export interface UsersTableProps {
   list: IUserItem[];
   activeColumns: string[];
   isSearch: boolean;
-  searchValue: string;
-  count: number;
   paginationPage: number;
 }
