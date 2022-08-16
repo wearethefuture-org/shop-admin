@@ -11,13 +11,13 @@ import { IInvoiceFile } from '../../../../interfaces/IInvoice';
 import { Dispatch } from 'redux';
 import { generateInvoiceRequest } from '../../../../store/actions/invoice.actions';
 import InvoiceRemoveDialog from '../../../Modals/InvoiceRemoveDialog.tsx/InvoiceRemoveDialog';
-import DateMoment from '../../../Common/Date-moment';
 import AddBtn from '../../../AddBtn/AddBtn';
 import { makeStyles } from '@material-ui/core';
 import { COLORS } from '../../../../values/colors';
 import classNames from 'classnames';
 import FileSaver from 'file-saver';
 import { api } from '../../../../api/api';
+import { formatDate } from '../../../../utils/formatDate';
 
 interface TableBodyProps {
   rows: IInvoiceFile[];
@@ -115,57 +115,51 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
 
   return (
     <TableBody>
-      {(rowsPerPage > 0
-        ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        : rows
-      ).map((row) => (
-        <TableRow key={row.id}>
-          <>
-            <TableCell classes={{ root: 'row-table-id' }} component="th" scope="row">
-              {row.id}
-            </TableCell>
-            <TableCell align="left">
-              <DescriptionIcon
-                fontSize="small"
-                className={classNames(
-                  classes.icon,
-                  darkMode ? classes.fileIconDark : classes.fileIcon
-                )}
-              />
-              {row.name.slice(0, -5)}
-            </TableCell>
-            <TableCell align="left">
-              <DateMoment date={row.createdAt} />
-            </TableCell>
-            <TableCell align="left">
-              {row.name.indexOf('xlsx') !== -1 ? 'Аркуш Microsoft Excel' : null}
-            </TableCell>
-            <TableCell align="left">{row.fileSize} КБ</TableCell>
-            <TableCell align="right">
-              <Button className={classes.button}>
-                <DownloadIcon
-                  className={classNames(
-                    classes.icon,
-                    darkMode ? classes.downloadIconDark : classes.downloadIcon
-                  )}
-                  onClick={() => downloadExcelFile(row.name)}
+      {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map(
+        (row) => (
+          <TableRow key={row.id}>
+            <>
+              <TableCell classes={{ root: 'row-table-id' }} component="th" scope="row">
+                {row.id}
+              </TableCell>
+              <TableCell align="left">
+                <DescriptionIcon
+                  fontSize="small"
+                  className={classNames(classes.icon, darkMode ? classes.fileIconDark : classes.fileIcon)}
                 />
-              </Button>
-            </TableCell>
-            <TableCell align="left">
-              <Button value={row.name} className={classes.button} onClick={openDialogRemoveInvoice}>
-                <DeleteIcon
-                  className={classNames(
-                    classes.icon,
-                    darkMode ? classes.deleteIconDark : classes.deleteIcon
-                  )}
-                />
-              </Button>
-            </TableCell>
-            {removeInvoiceDialogIsOpen && <InvoiceRemoveDialog {...modalRemoveParams} />}
-          </>
-        </TableRow>
-      ))}
+                {row.name.slice(0, -5)}
+              </TableCell>
+              <TableCell align="left">{formatDate(new Date(row.createdAt))}</TableCell>
+              <TableCell align="left">
+                {row.name.indexOf('xlsx') !== -1 ? 'Аркуш Microsoft Excel' : null}
+              </TableCell>
+              <TableCell align="left">{row.fileSize} КБ</TableCell>
+              <TableCell align="right">
+                <Button className={classes.button}>
+                  <DownloadIcon
+                    className={classNames(
+                      classes.icon,
+                      darkMode ? classes.downloadIconDark : classes.downloadIcon
+                    )}
+                    onClick={() => downloadExcelFile(row.name)}
+                  />
+                </Button>
+              </TableCell>
+              <TableCell align="left">
+                <Button value={row.name} className={classes.button} onClick={openDialogRemoveInvoice}>
+                  <DeleteIcon
+                    className={classNames(
+                      classes.icon,
+                      darkMode ? classes.deleteIconDark : classes.deleteIcon
+                    )}
+                  />
+                </Button>
+              </TableCell>
+              {removeInvoiceDialogIsOpen && <InvoiceRemoveDialog {...modalRemoveParams} />}
+            </>
+          </TableRow>
+        )
+      )}
       {emptyRows > 0 && (
         <TableRow style={{ height: 53 * emptyRows }}>
           <TableCell colSpan={6} />
