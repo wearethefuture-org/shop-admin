@@ -9,6 +9,8 @@ import { IInvoiceFile } from '../../../interfaces/IInvoice';
 import InvoiceTableBody from './Body/TableBody';
 import InvoiceTableFooter from './Footer/TableFooter';
 import InvoiceTableHeader from './Header/TableHeader';
+import useModal from '../../../hooks/useModal';
+import GenerateInvoiceModal from '../../Modals/GenerateInvoiceModal/GenerateInvoiceModal';
 
 interface InvoiceDataProps {
   data: Array<IInvoiceFile>;
@@ -37,6 +39,7 @@ const InvoicesTable: React.FC<InvoiceDataProps> = ({ data, dispatch, darkMode })
   const classes = useTableStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const generateInvoiceModalData = useModal();
 
   const rows: Array<IInvoiceFile> = data.map((invoice: IInvoiceFile) => {
     return createData(
@@ -54,26 +57,30 @@ const InvoicesTable: React.FC<InvoiceDataProps> = ({ data, dispatch, darkMode })
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="custom pagination table">
-        <InvoiceTableHeader />
-        <InvoiceTableBody
-          rows={rows}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          emptyRows={emptyRows}
-          dispatch={dispatch}
-          darkMode={darkMode}
-        />
-        <InvoiceTableFooter
-          rows={rows}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          setPage={setPage}
-          setRowsPerPage={setRowsPerPage}
-        />
-      </Table>
-    </TableContainer>
+    <>
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="custom pagination table">
+          <InvoiceTableHeader />
+          <InvoiceTableBody
+            rows={rows}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            emptyRows={emptyRows}
+            dispatch={dispatch}
+            darkMode={darkMode}
+            modalData={generateInvoiceModalData}
+          />
+          <InvoiceTableFooter
+            rows={rows}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            setPage={setPage}
+            setRowsPerPage={setRowsPerPage}
+          />
+        </Table>
+      </TableContainer>
+      <GenerateInvoiceModal dispatch={dispatch} modalData={generateInvoiceModalData}></GenerateInvoiceModal>
+    </>
   );
 };
 

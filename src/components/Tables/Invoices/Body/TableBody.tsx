@@ -18,6 +18,7 @@ import classNames from 'classnames';
 import FileSaver from 'file-saver';
 import { api } from '../../../../api/api';
 import { formatDate } from '../../../../utils/formatDate';
+import { IGenerateInvoiceModal } from '../../../../interfaces/modals';
 
 interface TableBodyProps {
   rows: IInvoiceFile[];
@@ -26,6 +27,7 @@ interface TableBodyProps {
   emptyRows: number;
   dispatch: Dispatch;
   darkMode: boolean;
+  modalData: IGenerateInvoiceModal;
 }
 
 const useStyles = makeStyles({
@@ -85,10 +87,12 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
   emptyRows,
   dispatch,
   darkMode,
+  modalData,
 }) => {
   const classes = useStyles();
   const [removeInvoiceDialogIsOpen, setRemoveInvoiceDialogIsOpen] = useState<boolean>(false);
   const [modalRemoveParams, setModalRemoveParams] = useState<any>();
+  const { handleClickOpen } = modalData;
 
   const removeUserDialogClose = () => {
     setRemoveInvoiceDialogIsOpen(false);
@@ -103,8 +107,8 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
   };
 
   const generateInvoice = async () => {
-    await dispatch(generateInvoiceRequest());
-    window.location.reload();
+    // await dispatch(generateInvoiceRequest());
+    // window.location.reload();
   };
 
   const downloadExcelFile = async (fileName: string) => {
@@ -167,7 +171,7 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
       )}
       <TableRow>
         <TableCell colSpan={2}>
-          <AddBtn title="Згенерувати інвойс" handleAdd={generateInvoice}></AddBtn>
+          <AddBtn title="Згенерувати інвойс" handleAdd={handleClickOpen}></AddBtn>
         </TableCell>
       </TableRow>
     </TableBody>
