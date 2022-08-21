@@ -28,6 +28,8 @@ import { InvoiceDateRange } from '../../../enums/invoiceDateRange';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import classnames from 'classnames';
+import { generateInvoiceRequest } from '../../../store/actions/invoice.actions';
+import { getInvoiceDateRange } from '../../../utils/getInvoiceDateRange';
 
 interface GenerateInvoiceProps {
   dispatch: Dispatch;
@@ -143,6 +145,18 @@ const FormDialog: React.FC<GenerateInvoiceProps> = ({ dispatch, modalData }) => 
     setDisabledRadio(false);
   };
 
+  const submit = async () => {
+    if (startDate === null && endDate === null && dateRange !== null) {
+      await dispatch(generateInvoiceRequest(getInvoiceDateRange(dateRange)));
+    }
+    if (startDate !== null && endDate !== null && dateRange === null) {
+      await dispatch(generateInvoiceRequest({ startDate, endDate }));
+    }
+    handleClose();
+    reset();
+    window.location.reload();
+  };
+
   return (
     <div>
       <Dialog
@@ -252,6 +266,7 @@ const FormDialog: React.FC<GenerateInvoiceProps> = ({ dispatch, modalData }) => 
                   darkMode ? classes.btnConfirmDark : classes.btnConfirmLight
                 )}
                 variant="contained"
+                onClick={submit}
               >
                 Підтвердити
               </Button>

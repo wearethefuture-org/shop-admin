@@ -6,10 +6,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import DownloadIcon from '@material-ui/icons/GetApp';
 import DescriptionIcon from '@material-ui/icons/Description';
 import Button from '@material-ui/core/Button';
-
 import { IInvoiceFile } from '../../../../interfaces/IInvoice';
 import { Dispatch } from 'redux';
-import { generateInvoiceRequest } from '../../../../store/actions/invoice.actions';
 import InvoiceRemoveDialog from '../../../Modals/InvoiceRemoveDialog.tsx/InvoiceRemoveDialog';
 import AddBtn from '../../../AddBtn/AddBtn';
 import { makeStyles } from '@material-ui/core';
@@ -25,7 +23,6 @@ interface TableBodyProps {
   rowsPerPage: number;
   page: number;
   emptyRows: number;
-  dispatch: Dispatch;
   darkMode: boolean;
   modalData: IGenerateInvoiceModal;
 }
@@ -85,7 +82,6 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
   rowsPerPage,
   page,
   emptyRows,
-  dispatch,
   darkMode,
   modalData,
 }) => {
@@ -104,11 +100,6 @@ const InvoiceTableBody: React.FC<TableBodyProps> = ({
       invoiceName: event.currentTarget.value,
       closeModal: removeUserDialogClose,
     });
-  };
-
-  const generateInvoice = async () => {
-    // await dispatch(generateInvoiceRequest());
-    // window.location.reload();
   };
 
   const downloadExcelFile = async (fileName: string) => {

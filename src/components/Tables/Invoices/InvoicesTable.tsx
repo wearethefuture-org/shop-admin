@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import Paper from '@material-ui/core/Paper';
-
 import TableContainer from '@material-ui/core/TableContainer';
 import { Dispatch } from 'redux';
 import { IInvoiceFile } from '../../../interfaces/IInvoice';
@@ -66,7 +65,6 @@ const InvoicesTable: React.FC<InvoiceDataProps> = ({ data, dispatch, darkMode })
             rowsPerPage={rowsPerPage}
             page={page}
             emptyRows={emptyRows}
-            dispatch={dispatch}
             darkMode={darkMode}
             modalData={generateInvoiceModalData}
           />
