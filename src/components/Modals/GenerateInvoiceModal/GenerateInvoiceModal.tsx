@@ -30,6 +30,7 @@ import { RootState } from '../../../store/store';
 import classnames from 'classnames';
 import { generateInvoiceRequest } from '../../../store/actions/invoice.actions';
 import { getInvoiceDateRange } from '../../../utils/getInvoiceDateRange';
+import { failSnackBar } from '../../../store/actions/snackbar.actions';
 
 interface GenerateInvoiceProps {
   dispatch: Dispatch;
@@ -150,7 +151,19 @@ const FormDialog: React.FC<GenerateInvoiceProps> = ({ dispatch, modalData }) => 
       await dispatch(generateInvoiceRequest(getInvoiceDateRange(dateRange)));
     }
     if (startDate !== null && endDate !== null && dateRange === null) {
+      if (startDate.getTime() > endDate.getTime()) {
+        await dispatch(failSnackBar('Початкова дата має бути давнішою ніж кінцева!'));
+        return;
+      }
       await dispatch(generateInvoiceRequest({ startDate, endDate }));
+    }
+    if (startDate === null && endDate === null && dateRange === null) {
+      await dispatch(failSnackBar('Виберіть діапазон між датами!'));
+      return;
+    }
+    if ((startDate === null && endDate !== null) || (startDate !== null && endDate === null)) {
+      await dispatch(failSnackBar('Виберіть діапазон між датами!'));
+      return;
     }
     handleClose();
     reset();
@@ -184,10 +197,11 @@ const FormDialog: React.FC<GenerateInvoiceProps> = ({ dispatch, modalData }) => 
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
                   }}
+                  invalidDateMessage="Неправильний формат дати!"
                 />
                 <KeyboardDatePicker
                   disableToolbar
-                  disablePast
+                  disableFuture
                   disabled={isDisabledDatePicker}
                   format="MM/dd/yyyy"
                   margin="normal"
@@ -198,6 +212,7 @@ const FormDialog: React.FC<GenerateInvoiceProps> = ({ dispatch, modalData }) => 
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
                   }}
+                  invalidDateMessage="Неправильний формат дати!"
                 />
               </MuiPickersUtilsProvider>
             </Grid>
