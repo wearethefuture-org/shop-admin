@@ -7,7 +7,6 @@ import DownloadIcon from '@material-ui/icons/GetApp';
 import DescriptionIcon from '@material-ui/icons/Description';
 import Button from '@material-ui/core/Button';
 import { IInvoiceFile } from '../../../../interfaces/IInvoice';
-import { Dispatch } from 'redux';
 import InvoiceRemoveDialog from '../../../Modals/InvoiceRemoveDialog.tsx/InvoiceRemoveDialog';
 import AddBtn from '../../../AddBtn/AddBtn';
 import { makeStyles } from '@material-ui/core';
