@@ -161,9 +161,12 @@ const FormDialog: React.FC<GenerateInvoiceProps> = ({ dispatch, modalData }) => 
       await dispatch(failSnackBar('Виберіть діапазон між датами!'));
       return;
     }
-    if ((startDate === null && endDate !== null) || (startDate !== null && endDate === null)) {
+    if (startDate === null && endDate !== null) {
       await dispatch(failSnackBar('Виберіть діапазон між датами!'));
       return;
+    }
+    if (startDate !== null && endDate === null) {
+      await dispatch(generateInvoiceRequest({ startDate, endDate: startDate }));
     }
     handleClose();
     reset();
