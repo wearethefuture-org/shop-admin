@@ -29,6 +29,7 @@ import WithAxios from '../../api/withAxios';
 import ResetPassword from '../../pages/ResetPassword/ResetPassward';
 import Invoices from '../../pages/Invoices/Invoices';
 import Profile from '../../pages/Profile/Profile';
+import ConfirmEmail from './../../pages/ConfirmEmail/ConfirmEmail';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -71,6 +72,7 @@ const Router: React.FC = () => {
                 <PrivateRoute component={OrderRouter} path="/order/:id" />
                 <PrivateRoute component={Profile} path="/profile" />
                 <PrivateRoute path="/password" component={ResetPassword} />
+                <PrivateRoute path="/account/email/change" component={ConfirmEmail} />
                 <Route path="/home" component={Home} />
               </Switch>
             </Content>

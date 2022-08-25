@@ -38,6 +38,7 @@ import {
   IUserCreeds,
   IUserItem,
   IUsersData,
+  IuserConfirmEmail,
 } from '../interfaces/IUsers';
 import instance from './axios-interceptors';
 import { Status } from '../enums/orderStatus';
@@ -69,18 +70,13 @@ type ApiFetchedDataType = {
     add: (product: IAddProduct) => FetchedDataType<IGetProductById>;
     update: (product: IUpdateProduct) => FetchedDataType<IGetProductById>;
     updateImg: (data: FormData) => FetchedDataType<IAddImgResponse>;
-    updateMainImg: (data: {
-      productId: number;
-      imgName: string;
-    }) => FetchedDataType<IGetProductById>;
+    updateMainImg: (data: { productId: number; imgName: string }) => FetchedDataType<IGetProductById>;
     deleteImg: (imgName: string) => FetchedDataType<IGetProductById>;
     deleteProduct: (id: number) => FetchedDataType<JSON>;
     addProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     deleteProductCharValues: (data: IDeleteProductChars) => FetchedDataType<JSON>;
-    updateAvailabilityProduct: (
-      data: IUpdateAvailabilityProduct
-    ) => FetchedDataType<IAddCharResponse>;
+    updateAvailabilityProduct: (data: IUpdateAvailabilityProduct) => FetchedDataType<IAddCharResponse>;
     disableProduct: (data: IDisableProduct) => FetchedDataType<IAddCharResponse>;
   };
 
@@ -136,6 +132,7 @@ type ApiFetchedDataType = {
     updateUserData: (userData: IUserReqUp) => FetchedDataType<IUserReqUp>;
     deleteAvatar: () => FetchedDataType<IResponseMessage>;
     addAvatar: (data) => FetchedDataType<IResponseMessage>;
+    confirmEmail: (data: IuserConfirmEmail) => FetchedDataType<JSON>;
   };
   roles: {
     get: () => FetchedDataType<IRole[]>;
@@ -146,10 +143,7 @@ type ApiFetchedDataType = {
   sliderAnimations: {
     getSliderAnimations: () => FetchedDataType<ISliderAnimations>;
     getActiveSliderAnimation: () => FetchedDataType<ISliderAnimation>;
-    changeActiveSliderAnimation: (
-      id: number,
-      isActive: boolean
-    ) => FetchedDataType<ISliderAnimation>;
+    changeActiveSliderAnimation: (id: number, isActive: boolean) => FetchedDataType<ISliderAnimation>;
   };
 
   invoice: {
@@ -188,8 +182,7 @@ export const api: ApiFetchedDataType = {
 
     updateAvailabilityProduct: ({ productId, ...product }) =>
       instance.patch(`${root}/product/${productId}`, product),
-    disableProduct: ({ productId, ...product }) =>
-      instance.patch(`${root}/product/${productId}`, product),
+    disableProduct: ({ productId, ...product }) => instance.patch(`${root}/product/${productId}`, product),
   },
 
   slides: {
@@ -210,23 +203,18 @@ export const api: ApiFetchedDataType = {
     get: (page, limit) => instance.get(`${root}/orders?page=${page}&limit=${limit}`),
     getById: (id) => instance.get(`${root}/orders/${id}`),
     updateStatus: (id, status) => instance.patch(`${root}/orders/status/${id}`, status),
-    update: (orderId, productId, data) =>
-      instance.put(`${root}/orders/${orderId}/${productId}`, data),
+    update: (orderId, productId, data) => instance.put(`${root}/orders/${orderId}/${productId}`, data),
     getByParams: (page, limit, searchValue) =>
       instance.get(`${root}/orders/params?page=${page}&limit=${limit}&searchValue=${searchValue}`),
     getByDatesRange: (datesArray: string[]) =>
-      instance.get(
-        `${root}/orders/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`
-      ),
+      instance.get(`${root}/orders/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`),
     updateProductInOrder: (data) => instance.put(`${root}/orders/product/`, data),
   },
 
   users: {
     get: (page, limit) => instance.get(`${root}/users?page=${page}&limit=${limit}`),
     getByDatesRange: (datesArray: string[]) =>
-      instance.get(
-        `${root}/users/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`
-      ),
+      instance.get(`${root}/users/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`),
   },
 
   user: {
@@ -239,13 +227,12 @@ export const api: ApiFetchedDataType = {
     updateUserData: (userData) => instance.patch(`${root}/users/update`, userData),
     deleteAvatar: () => instance.delete('users/avatar'),
     addAvatar: (data) => instance.post('users/avatar', data),
+    confirmEmail: (data) => instance.post('users/changeEmail', data),
   },
   comments: {
     get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),
     getByDatesRange: (datesArray: string[]) =>
-      instance.get(
-        `${root}/comments/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`
-      ),
+      instance.get(`${root}/comments/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`),
     delete: (id) => instance.delete(`${root}/comments/admin/${id}`),
   },
   feedbacks: {

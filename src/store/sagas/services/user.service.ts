@@ -1,5 +1,5 @@
 import { api } from '../../../api/api';
-import { IUserCreeds } from '../../../interfaces/IUsers';
+import { IUserCreeds, IuserConfirmEmail } from '../../../interfaces/IUsers';
 
 export async function apiSignIn(data: IUserCreeds) {
   const user = await api.user.auth(data);
@@ -23,5 +23,10 @@ export async function addAvatar(data) {
 
 export async function deleteAvatar() {
   const message = await api.user.deleteAvatar();
+  return message.data;
+}
+
+export async function confirmEmail(data: IuserConfirmEmail) {
+  const message = await api.user.confirmEmail(data);
   return message.data;
 }
