@@ -32,7 +32,7 @@ export default function CommentsPage() {
     if (!list.length && count){
       dispatch(getCommentsRequest(currentPage, limit));
     }
-  }, [list]);
+  }, [count, currentPage, dispatch, limit, list]);
 
   // ACTIVE COLUMNS
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
