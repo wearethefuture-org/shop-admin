@@ -1,19 +1,14 @@
 
 import { Alert, Button, Popover, PopoverBody } from "reactstrap";
 import { ErrorMessage, Field, Form, FormikProvider, useFormik } from "formik"
-import React, { useContext, useEffect, useState} from "react"
+import React, { useEffect, useState} from "react"
 import { useHistory } from "react-router-dom";
 import * as Yup from 'yup';
 import { api } from "../../../api/api";
 import { ResendMessageButton } from "../../buttons/resend-message-btn";
 import GoBackBtn from "../../GoBackBtn/GoBackBtn";
 import styles from './ResetPasswordForm.module.scss'
-import { IUserItem } from '../../../interfaces/IUsers'
 
-interface IUserContext {
-  user: IUserItem | null;
-  setGlobalUser: React.Dispatch<any>;
-}
   
 const validationSchema = Yup.object().shape({
     email: Yup.string().email('Неправильна адреса!').required('Це поле не повинно бути пустим!'),
@@ -25,9 +20,7 @@ const ResetPasswordForm: React.FC = () => {
   const [isVisibleResend, setVisibleResend] = useState(false);
   const [isTimer, setIsTimer] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const [popoverState, setPopoverState] = useState(
-    'Користувач з такою електронною поштою не зареєстрований!'
-  );
+  const [popoverState, setPopoverState] = useState<string>('');
 
   const onShow = () => setVisible(true);
   const togglePop = () => setPopoverOpen(!popoverOpen);
@@ -54,7 +47,7 @@ const ResetPasswordForm: React.FC = () => {
         togglePop();
         setTimeout(() => {
           setPopoverOpen(false);
-        }, 10000);
+        }, 5000);
         return;
       }
 
@@ -63,21 +56,6 @@ const ResetPasswordForm: React.FC = () => {
       setVisibleResend(true);
     }
   });
-
-  const UserContext = React.createContext<IUserContext>({
-    user: null,
-    setGlobalUser: () => { },
-  });
-
-  const { user } = useContext(UserContext);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (user) {
-      router.push('/');
-    }
-  }, [user]);
-
 
   useEffect(() => {
     formik.errors.email ? setInvalidEmail('reset_password__invalid') : setInvalidEmail('reset_password__valid')
