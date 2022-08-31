@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, createStyles, makeStyles, Theme, ThemeOptions } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -70,6 +70,14 @@ const UsersTable: React.FC<UsersTableProps> = ({
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const { darkMode } = useSelector((state: RootState) => state.theme);
+
+  useEffect(() => {
+    if (isSearch) {
+      dispatch(getUsersByQueryRequest(searchValue, page, limit));
+      return;
+    }
+    dispatch(getUsersRequest(page, limit));
+  }, [count]);
 
   const onChangePage = (page) => {
     setPage(page);
@@ -193,18 +201,12 @@ const UsersTable: React.FC<UsersTableProps> = ({
           <Box display="flex">
             <Button className={classes.button} value={row.id} onClick={openDialogUserCard}>
               <EditIcon
-                className={classNames(
-                  classes.icon,
-                  darkMode ? classes.editIconDark : classes.editIcon
-                )}
+                className={classNames(classes.icon, darkMode ? classes.editIconDark : classes.editIcon)}
               />
             </Button>
             <Button className={classes.button} value={row.id} onClick={openDialogRemoveUser}>
               <DeleteIcon
-                className={classNames(
-                  classes.icon,
-                  darkMode ? classes.deleteIconDark : classes.deleteIcon
-                )}
+                className={classNames(classes.icon, darkMode ? classes.deleteIconDark : classes.deleteIcon)}
               />
             </Button>
           </Box>

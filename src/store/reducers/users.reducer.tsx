@@ -183,6 +183,7 @@ const users = (state = initialState, { type, data }: IActions) => {
         ...state,
         list: state.list.filter((USER) => USER.id !== data),
         loading: false,
+        count: state.count - 1,
       };
     }
 
