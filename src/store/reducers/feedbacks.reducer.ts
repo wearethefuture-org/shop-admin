@@ -6,7 +6,7 @@ import {
   GET_FEEDBACKS_SUCCESS,
   DELETE_FEEDBACK_ERROR,
   DELETE_FEEDBACK_REQUEST,
-  DELETE_FEEDBACK_SUCCESS
+  DELETE_FEEDBACK_SUCCESS,
 } from '../types';
 
 const initialState: IFeedbacksState = {
@@ -58,6 +58,7 @@ const feedbacks = (state = initialState, { type, data }: IActions) => {
         ...state,
         loading: false,
         list: state.list.filter((feedback) => feedback.id !== data),
+        count: state.count - 1,
       };
     }
 
