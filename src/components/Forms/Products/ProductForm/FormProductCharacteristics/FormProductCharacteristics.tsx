@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ArrowIcon from '@material-ui/icons/ArrowBackIos';
-import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
-import { IconButton } from '@material-ui/core';
+import { Button, IconButton } from '@material-ui/core';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 import { AppDispatch, RootState } from '../../../../../store/store';
@@ -15,6 +14,7 @@ import { productValidationShema } from '../productFormHelpers';
 import { getIcon } from '../../../../Modals/TreeCategoryCharModal/treeCategoryCharModalHelpers';
 import { Type } from '../../../../../interfaces/IProducts';
 import styles from './FormProductCharacteristics.module.scss';
+import { useLocation, Link } from 'react-router-dom';
 
 interface IProductChar {
   categoryId: number;
@@ -32,9 +32,9 @@ interface ICharArr {
 const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, setValidation }) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const { list, currentTreeCategory: category } = useSelector(
-    (state: RootState) => state.treeCategories
-  );
+  const location = useLocation();
+
+  const { list, currentTreeCategory: category } = useSelector((state: RootState) => state.treeCategories);
   const { currentProduct: product } = useSelector((state: RootState) => state.products);
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
@@ -43,11 +43,7 @@ const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, se
 
   useEffect(() => {
     category &&
-      setChars(
-        category.characteristicGroup
-          .map((group) => group.characteristic.map((char) => char))
-          .flat(1)
-      );
+      setChars(category.characteristicGroup.map((group) => group.characteristic.map((char) => char)).flat(1));
   }, [category]);
 
   const [charArray, setCharArray] = useState<ICharArr[]>([]);
@@ -103,16 +99,28 @@ const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, se
               <PriorityHighIcon style={{ color: 'red' }} />
               <span>Є обов`язковою характеристикою</span>
             </>
-          ) : null}
+          ) : (
+            <div>
+              <p>Відсутні характеристики для даної категорії</p>
+              <Link
+                to={{
+                  pathname: `/tree-category/${category.id}`,
+                  state: { from: `${location.pathname}` },
+                }}
+              >
+                <Button variant="contained" color="primary" startIcon={<AddIcon />} type="button">
+                  Додати характеристики
+                </Button>
+              </Link>
+            </div>
+          )}
 
           <div className={darkMode ? styles['additional-info-block-dark'] : ''}>
             {category?.characteristicGroup.map((group) => (
               <div key={group.id}>
                 <div className={darkMode ? styles['group-wrapper-dark'] : styles['group-wrapper']}>
                   <span
-                    className={
-                      expandedGroups.includes(group.id) ? styles['hide-btn'] : styles['expand-btn']
-                    }
+                    className={expandedGroups.includes(group.id) ? styles['hide-btn'] : styles['expand-btn']}
                     onClick={() => handleExpandedGroups(group.id)}
                   >
                     <ArrowIcon />
