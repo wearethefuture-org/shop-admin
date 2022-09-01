@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import ArrowIcon from '@material-ui/icons/ArrowBackIos';
-import { Button, IconButton } from '@material-ui/core';
+import { Button, createStyles, IconButton, makeStyles, ThemeOptions } from '@material-ui/core';
 
 import { RootState } from '../../../../store/store';
 import CharBlock from './CharBlock/CharBlock';
@@ -16,6 +16,8 @@ import {
 import { TreeCategoryAction, TreeCategoryActionTypes, Char } from '../treeCategoryReducer';
 import CustomConfirm from '../../../../components/CustomConfirm/CustomConfirm';
 import styles from './CharGroup.module.scss';
+import classNames from 'classnames';
+import { COLORS } from '../../../../values/colors';
 
 interface IGroupProps {
   group: GroupToDisplay;
@@ -27,6 +29,28 @@ interface IGroupProps {
   treeCategoryDisplayDispatch: Dispatch<TreeCategoryToDispalayAction>;
 }
 
+const useStyles = makeStyles(
+  (): ThemeOptions =>
+    createStyles({
+      btn: {
+        borderRadius: '30px',
+        color: COLORS.primaryLight,
+      },
+      btnAddCharLight: {
+        'backgroundColor': COLORS.primaryGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGreen,
+        },
+      },
+      btnAddCharDark: {
+        'backgroundColor': COLORS.darkGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryDarkGreen,
+        },
+      },
+    })
+);
+
 const CharGroup: React.FC<IGroupProps> = ({
   group,
   expandedGroups,
@@ -37,6 +61,8 @@ const CharGroup: React.FC<IGroupProps> = ({
   treeCategoryDisplayDispatch,
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
+
+  const classes = useStyles();
 
   // EDIT GROUP
   const handleEditGroup = () => {
@@ -116,12 +142,7 @@ const CharGroup: React.FC<IGroupProps> = ({
             </div>
             <div className={styles['group-btn-wrapper']}>
               <div className={styles['hidden-btns']}>
-                <IconButton
-                  aria-label="edit"
-                  color="default"
-                  type="button"
-                  onClick={() => handleEditGroup()}
-                >
+                <IconButton aria-label="edit" color="default" type="button" onClick={() => handleEditGroup()}>
                   <EditIcon />
                 </IconButton>
                 <IconButton
@@ -135,7 +156,10 @@ const CharGroup: React.FC<IGroupProps> = ({
               </div>
               <Button
                 variant="contained"
-                className={styles['add-char-btn']}
+                className={classNames(
+                  classes.btn,
+                  darkMode ? classes.btnAddCharDark : classes.btnAddCharLight
+                )}
                 type="button"
                 onClick={() => setOpenCharModal(true)}
               >
@@ -144,9 +168,7 @@ const CharGroup: React.FC<IGroupProps> = ({
             </div>
           </div>
 
-          <div
-            className={group.name && expandedGroups.includes(group.name) ? 'expanded' : 'shrinked'}
-          >
+          <div className={group.name && expandedGroups.includes(group.name) ? 'expanded' : 'shrinked'}>
             <CharBlock
               group={group}
               setOpenCharModal={setOpenCharModal}

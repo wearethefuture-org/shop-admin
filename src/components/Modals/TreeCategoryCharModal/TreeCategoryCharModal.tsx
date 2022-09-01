@@ -5,7 +5,7 @@ import { IGetTreeCategoriesResponse, ICharToAdd } from '../../../interfaces/ITre
 import { RootState } from '../../../store/store';
 import { Type } from '../../../interfaces/IProducts';
 
-import { Button, Dialog, MenuItem } from '@material-ui/core';
+import { Button, createStyles, Dialog, makeStyles, MenuItem, ThemeOptions } from '@material-ui/core';
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import { charTypes, charValidationSchema, getIcon } from './treeCategoryCharModalHelpers';
 import {
@@ -19,6 +19,8 @@ import {
   GroupToDisplay,
 } from '../../../pages/TreeCategories/TreeCategoryInfo/treeCategoryToDisplayReducer';
 import styles from './TreeCategoryCharModal.module.scss';
+import classNames from 'classnames';
+import { COLORS } from '../../../values/colors';
 
 interface IModalProps {
   openCharModal: boolean;
@@ -30,6 +32,28 @@ interface IModalProps {
   treeCategoryDisplayDispatch: Dispatch<TreeCategoryToDispalayAction>;
 }
 
+const useStyles = makeStyles(
+  (): ThemeOptions =>
+    createStyles({
+      btn: {
+        borderRadius: '30px',
+        color: COLORS.primaryLight,
+      },
+      btnAddCharLight: {
+        'backgroundColor': COLORS.primaryGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGreen,
+        },
+      },
+      btnAddCharDark: {
+        'backgroundColor': COLORS.darkGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryDarkGreen,
+        },
+      },
+    })
+);
+
 const TreeCategoryCharModal: React.FC<IModalProps> = ({
   openCharModal,
   setOpenCharModal,
@@ -39,6 +63,10 @@ const TreeCategoryCharModal: React.FC<IModalProps> = ({
   treeCategoryDispatch,
   treeCategoryDisplayDispatch,
 }) => {
+  const { darkMode } = useSelector((state: RootState) => state.theme);
+
+  const classes = useStyles();
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     value === 'true' ? (formik.values.required = true) : (formik.values.required = false);
@@ -48,9 +76,7 @@ const TreeCategoryCharModal: React.FC<IModalProps> = ({
     (state: RootState) => state.treeCategories.currentTreeCategory
   );
 
-  const characteristics = treeCategory.characteristicGroup
-    ?.map((group) => group.characteristic)
-    .flat(1);
+  const characteristics = treeCategory.characteristicGroup?.map((group) => group.characteristic).flat(1);
 
   const initialValues: ICharToAdd = {
     name: char && char.name ? char.name : '',
@@ -112,11 +138,7 @@ const TreeCategoryCharModal: React.FC<IModalProps> = ({
             editedChar: finalValues,
           });
         } else {
-          if (
-            characteristics?.find(
-              (char) => char.name?.toLowerCase() === charValues.name?.toLowerCase()
-            )
-          ) {
+          if (characteristics?.find((char) => char.name?.toLowerCase() === charValues.name?.toLowerCase())) {
             formik.setFieldError('name', 'Характеристика з такою назвою вже існує');
             formik.setSubmitting(false);
             return;
@@ -146,13 +168,7 @@ const TreeCategoryCharModal: React.FC<IModalProps> = ({
         <h5>{char ? 'Редагувати ' : 'Додати '}характеристику</h5>
         <FormikProvider value={formik}>
           <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
-            <Field
-              fullWidth
-              component={TextFieldWrapped}
-              label="Назва *"
-              name="name"
-              makegreen="true"
-            />
+            <Field fullWidth component={TextFieldWrapped} label="Назва *" name="name" makegreen="true" />
 
             <Field
               fullWidth
@@ -203,9 +219,7 @@ const TreeCategoryCharModal: React.FC<IModalProps> = ({
                 fullWidth
                 component={TextFieldWrapped}
                 label={
-                  formik.values.type === Type.enum
-                    ? 'Значення (через кому) *'
-                    : 'Значення за замовченням'
+                  formik.values.type === Type.enum ? 'Значення (через кому) *' : 'Значення за замовченням'
                 }
                 name="defaultVal"
                 makegreen="true"
@@ -231,7 +245,11 @@ const TreeCategoryCharModal: React.FC<IModalProps> = ({
               </>
             )}
 
-            <Button variant="contained" color="primary" type="submit">
+            <Button
+              className={classNames(classes.btn, darkMode ? classes.btnAddCharDark : classes.btnAddCharLight)}
+              variant="contained"
+              type="submit"
+            >
               Зберегти
             </Button>
           </Form>
