@@ -311,14 +311,25 @@ const ProductForm: React.FC<IProductFormProps> = ({
           </div>
           <DialogActions>
             <Tooltip
-              title={!formik.isValid || formik.values.categoryId === '' ? <h6>Заповність усі поля!</h6> : ''}
+              title={
+                !formik.isValid || formik.values.categoryId === '' || imagesPreview.length === 0 ? (
+                  <h6>Заповність усі поля і завантажте зображення!</h6>
+                ) : (
+                  ''
+                )
+              }
             >
               <span>
                 <Button
                   className={classNames(classes.btn, darkMode ? classes.saveBtnDark : classes.saveBtn)}
                   variant="contained"
                   color="primary"
-                  disabled={formik.isSubmitting || !formik.isValid || formik.values.categoryId === ''}
+                  disabled={
+                    formik.isSubmitting ||
+                    !formik.isValid ||
+                    formik.values.categoryId === '' ||
+                    imagesPreview.length === 0
+                  }
                   type="submit"
                   onClick={() => setExpandedBlocks(['main', 'additional'])}
                 >
