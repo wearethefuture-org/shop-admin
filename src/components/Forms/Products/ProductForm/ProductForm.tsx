@@ -11,6 +11,7 @@ import {
   FormControl,
   makeStyles,
   ThemeOptions,
+  Tooltip,
 } from '@material-ui/core';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -309,16 +310,22 @@ const ProductForm: React.FC<IProductFormProps> = ({
             />
           </div>
           <DialogActions>
-            <Button
-              className={classNames(classes.btn, darkMode ? classes.saveBtnDark : classes.saveBtn)}
-              variant="contained"
-              color="primary"
-              disabled={formik.isSubmitting || !formik.isValid || formik.values.categoryId === ''}
-              type="submit"
-              onClick={() => setExpandedBlocks(['main', 'additional'])}
+            <Tooltip
+              title={!formik.isValid || formik.values.categoryId === '' ? <h6>Заповність усі поля!</h6> : ''}
             >
-              {editMode ? 'Зберегти' : 'Додати'}
-            </Button>
+              <span>
+                <Button
+                  className={classNames(classes.btn, darkMode ? classes.saveBtnDark : classes.saveBtn)}
+                  variant="contained"
+                  color="primary"
+                  disabled={formik.isSubmitting || !formik.isValid || formik.values.categoryId === ''}
+                  type="submit"
+                  onClick={() => setExpandedBlocks(['main', 'additional'])}
+                >
+                  {editMode ? 'Зберегти' : 'Додати'}
+                </Button>
+              </span>
+            </Tooltip>
             <Button
               onClick={handleGoBack}
               color="secondary"
