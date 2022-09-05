@@ -13,8 +13,11 @@ import {
   ADD_AVATAR_SUCCESS,
   DELETE_AVATAR_REQUEST,
   DELETE_AVATAR_SUCCESS,
+  CONFIRM_CHANGE_EMAIL_REQUEST,
+  CONFIRM_CHANGE_EMAIL_SUCCES,
+  CONFIRM_CHANGE_EMAIL_ERROR,
 } from '../types';
-import { IUserCreeds, IUserItem, IUserReqUp } from '../../interfaces/IUsers';
+import { IUserCreeds, IUserItem, ProfileUserUpI } from '../../interfaces/IUsers';
 
 export const signInUserRequest = (creeds: IUserCreeds): IActions => {
   return {
@@ -53,7 +56,7 @@ export const fetchUserError = (message: string): IActions => ({
   data: message,
 });
 
-export const updateProfileUserReq = (userData: IUserReqUp): IActions => ({
+export const updateProfileUserReq = (userData: ProfileUserUpI): IActions => ({
   type: UPDATE_PROFILE_USER_REQUEST,
   data: userData,
 });
@@ -82,3 +85,18 @@ export const deleteAvatarSuccess = () => {
     type: DELETE_AVATAR_SUCCESS,
   };
 };
+
+export const confirmChangeEmail = (token: string, email: string, userId: number) => ({
+  type: CONFIRM_CHANGE_EMAIL_REQUEST,
+  data: { token, email, userId },
+});
+
+export const setConfirmedEmail = (email: string) => ({
+  type: CONFIRM_CHANGE_EMAIL_SUCCES,
+  data: email,
+});
+
+export const confirmEmailErorr = (message: string) => ({
+  type: CONFIRM_CHANGE_EMAIL_ERROR,
+  data: message,
+});

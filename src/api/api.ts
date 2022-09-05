@@ -39,6 +39,7 @@ import {
   IUserCreeds,
   IUserItem,
   IUsersData,
+  IuserConfirmEmail,
 } from '../interfaces/IUsers';
 import instance from './axios-interceptors';
 import { Status } from '../enums/orderStatus';
@@ -132,6 +133,7 @@ type ApiFetchedDataType = {
     updateUserData: (userData: IUserReqUp) => FetchedDataType<IUserReqUp>;
     deleteAvatar: () => FetchedDataType<IResponseMessage>;
     addAvatar: (data) => FetchedDataType<IResponseMessage>;
+    confirmEmail: (data: IuserConfirmEmail) => FetchedDataType<JSON>;
   };
   roles: {
     get: () => FetchedDataType<IRole[]>;
@@ -226,6 +228,7 @@ export const api: ApiFetchedDataType = {
     updateUserData: (userData) => instance.patch(`${root}/users/update`, userData),
     deleteAvatar: () => instance.delete('users/avatar'),
     addAvatar: (data) => instance.post('users/avatar', data),
+    confirmEmail: (data) => instance.post('users/changeEmail', data),
   },
   comments: {
     get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),

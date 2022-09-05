@@ -9,6 +9,8 @@ import {
   UPDATE_PROFILE_USER_SUCCESS,
   DELETE_AVATAR_SUCCESS,
   ADD_AVATAR_SUCCESS,
+  CONFIRM_CHANGE_EMAIL_SUCCES,
+  CONFIRM_CHANGE_EMAIL_ERROR,
 } from '../types';
 import { IActions } from '../../interfaces/actions';
 import { IUserState, IUserItem } from '../../interfaces/IUsers';
@@ -20,6 +22,7 @@ const initialState: IUserState = {
   isLoggedIn: !!getUser(),
   error: null,
   avatarLink: undefined,
+  emailСhanged: false,
 };
 
 const user = (state = initialState, { type, data }: IActions): IUserState => {
@@ -88,6 +91,17 @@ const user = (state = initialState, { type, data }: IActions): IUserState => {
       return {
         ...state,
         user: data,
+      };
+    case CONFIRM_CHANGE_EMAIL_SUCCES:
+      return {
+        ...state,
+        user: { ...(state.user as IUserItem), email: data },
+        emailСhanged: true,
+      };
+    case CONFIRM_CHANGE_EMAIL_ERROR:
+      return {
+        ...state,
+        error: data,
       };
     default:
       return state;

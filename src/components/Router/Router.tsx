@@ -29,6 +29,7 @@ import WithAxios from '../../api/withAxios';
 import ResetPassword from '../../pages/ResetPassword/ResetPassward';
 import Invoices from '../../pages/Invoices/Invoices';
 import Profile from '../../pages/Profile/Profile';
+import ConfirmEmail from './../../pages/ConfirmEmail/ConfirmEmail';
 
 const Router: React.FC = () => {
   const [isOpenSidebar, setOpenSidebar] = React.useState(true);
@@ -53,25 +54,26 @@ const Router: React.FC = () => {
             <HeaderBar onSidebarToggle={toggleSidebar} isShrink={isOpenSidebar} />
             <Content>
               <Switch>
-                <PrivateRoute path="/dashboard"         component={Dashboard} />
-                <PrivateRoute path="/tree-categories"   component={TreeCategories} exact={true} />
-                <PrivateRoute path="/products/"         component={Products} exact={true} />
-                <PrivateRoute path="/statistic"         component={Statistic} />
-                <PrivateRoute path="/invoices"          component={Invoices} />
-                <PrivateRoute path="/users"             component={Users} />
-                <PrivateRoute path="/slides"            component={Slides} />
-                <PrivateRoute path="/comments"          component={CommentsPage} />
-                <PrivateRoute path="/feedbacks"         component={FeedbacksPage} />
-                <PrivateRoute path="/settings"          component={Settings} />
-                <PrivateRoute path="/product/add"       component={AddProduct} exact={true} />
-                <PrivateRoute path="/orders"            component={OrdersPage} />
-                <PrivateRoute path="/product/:id"       component={ViewProduct} />
-                <PrivateRoute path="/tree-category/:id" component={TreeCategoryRouter} />
-                <PrivateRoute path="/search"            component={Search} />
-                <PrivateRoute path="/order/:id"         component={OrderRouter} />
-                <PrivateRoute path="/profile"           component={Profile} />
-                <PrivateRoute path="/password"          component={ResetPassword} />
-                <Route        path="/login"             component={Login} />
+                <PrivateRoute path="/dashboard" component={Dashboard} />
+                <PrivateRoute path="/tree-categories" exact={true} component={TreeCategories} />
+                <PrivateRoute path="/products/" exact={true} component={Products} />
+                <PrivateRoute path="/statistic" component={Statistic} />
+                <PrivateRoute path="/invoices" component={Invoices} />
+                <PrivateRoute path="/users" component={Users} />
+                <PrivateRoute path="/slides" component={Slides} />
+                <PrivateRoute path="/comments" component={CommentsPage} />
+                <PrivateRoute path="/feedbacks" component={FeedbacksPage} />
+                <PrivateRoute path="/settings" component={Settings} />
+                <PrivateRoute path="/product/add" exact={true} component={AddProduct} />
+                <PrivateRoute path="/orders" component={OrdersPage} />
+                <PrivateRoute component={ViewProduct} path="/product/:id" />
+                <PrivateRoute component={TreeCategoryRouter} path="/tree-category/:id" />
+                <PrivateRoute component={Search} path="/search" />
+                <PrivateRoute component={OrderRouter} path="/order/:id" />
+                <PrivateRoute component={Profile} path="/profile" />
+                <PrivateRoute path="/password" component={ResetPassword} />
+                <PrivateRoute path="/account/email/change" component={ConfirmEmail} />
+                <Route path="/home" component={Home} />
               </Switch>
             </Content>
           </div>

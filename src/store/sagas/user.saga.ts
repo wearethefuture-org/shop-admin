@@ -11,8 +11,17 @@ import {
   updateUserProfileSuccess,
   addAvatarSuccess,
   deleteAvatarSuccess,
+  setConfirmedEmail,
+  confirmEmailErorr,
 } from '../actions/user.action';
-import { apiSignIn, userFetch, updateProfileUser, deleteAvatar, addAvatar } from './services/user.service';
+import {
+  apiSignIn,
+  userFetch,
+  updateProfileUser,
+  deleteAvatar,
+  addAvatar,
+  confirmEmail,
+} from './services/user.service';
 import { clearStorage, setToken, setUser } from '../../services/local-storage-controller';
 
 export function* sigInUser(userValues: IActions): SagaIterator {
@@ -81,6 +90,18 @@ export function* deleteAvatarWorker(): SagaIterator {
     yield put(deleteAvatarSuccess());
     yield put(successSnackBar());
   } catch (error) {
+    yield put(failSnackBar(error.message));
+  }
+}
+
+export function* confirmEmailChangeWorker(action): SagaIterator {
+  try {
+    const { user, token } = yield call(confirmEmail, action.data);
+    setToken(token);
+    yield put(setConfirmedEmail(user.email));
+    yield put(successSnackBar());
+  } catch (error) {
+    yield put(confirmEmailErorr(error.message));
     yield put(failSnackBar(error.message));
   }
 }
