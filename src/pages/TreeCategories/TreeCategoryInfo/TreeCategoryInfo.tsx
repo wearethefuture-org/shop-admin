@@ -84,6 +84,7 @@ const useStyles = makeStyles(
         },
       },
       btn: {
+        width: '117px',
         borderRadius: '30px',
         padding: '6px 15px 6px 15px',
         color: COLORS.primaryLight,
@@ -390,6 +391,7 @@ const TreeCategoryInfo: React.FC = () => {
                         handleAdd={() => {
                           setOpenGroupModal(true);
                         }}
+                        style={{ width: '117px', lineHeight: '17px' }}
                       />
                     </div>
                     {charGroup &&

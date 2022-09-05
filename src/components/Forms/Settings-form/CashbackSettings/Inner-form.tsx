@@ -36,9 +36,6 @@ const useStyles = makeStyles(
       input: {
         width: '150px',
       },
-      switch: {
-        marginLeft: 'auto',
-      },
       secondaryHeading: {
         flexGrow: 1,
         marginLeft: '30px',

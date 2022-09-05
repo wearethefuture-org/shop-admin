@@ -15,7 +15,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         user ? (
           <Component {...props} />
         ) : (
-          !isFetching && <Redirect to={{ pathname: '/home', state: { from: props.location } }} />
+          !isFetching && <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
         )
       }
     />

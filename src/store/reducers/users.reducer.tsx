@@ -31,23 +31,29 @@ const initialState: IUsersData = {
   count: 0,
   totalPages: 0,
   paginationPage: 1,
+  paginationLimit: 10,
+  sort: 'id',
+  sortDirect: 'asc',
   searchValue: null,
   paginationPageSearch: 1,
   currentPage: 1,
 };
 
-const users = (state = initialState, { type, data }: IActions) => {
+const users = (state = initialState, { type, data }: IActions): IUsersData => {
   switch (type) {
     // GET ALL
     case GET_USERS_REQUEST: {
       return {
         ...state,
-        currentUSER: null,
+        currentUser: null,
         loading: true,
         error: null,
         isSearch: false,
         searchValue: null,
         paginationPage: data.page,
+        paginationLimit: data.limit,
+        sort: data.sort,
+        sortDirect: data.sortDirect,
       };
     }
 
@@ -158,7 +164,7 @@ const users = (state = initialState, { type, data }: IActions) => {
     case UPDATE_USER_SUCCESS: {
       return {
         ...state,
-        currentUSER: data,
+        currentUser: data,
         loading: false,
       };
     }
@@ -183,6 +189,7 @@ const users = (state = initialState, { type, data }: IActions) => {
         ...state,
         list: state.list.filter((USER) => USER.id !== data),
         loading: false,
+        count: state.count - 1,
       };
     }
 

@@ -6,7 +6,7 @@ import { AppDispatch } from '../../store/store';
 
 import { useDispatch } from 'react-redux';
 import { signInUserRequest } from '../../store/actions/user.action';
-import styles from './Home.module.scss';
+import styles from './Login.module.scss';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email('Неправальна адреса!').required('Це поле не повинно бути пустим!'),
@@ -15,7 +15,7 @@ const validationSchema = Yup.object().shape({
     .required('Це поле не повинно бути пустим!'),
 });
 
-const Home: React.FC = () => {
+const Login: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const formik = useFormik({
@@ -78,4 +78,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Login;

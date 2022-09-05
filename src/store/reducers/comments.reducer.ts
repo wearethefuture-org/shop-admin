@@ -50,13 +50,6 @@ const comments = (state = initialState, { type, data }: IActions) => {
       };
     }
 
-    case DELETE_COMMENT_REQUEST: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
-
     case GET_COMMENTS_BY_RANGE_REQUEST: {
       return {
         ...state,
@@ -82,11 +75,19 @@ const comments = (state = initialState, { type, data }: IActions) => {
       };
     }
 
+    case DELETE_COMMENT_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
     case DELETE_COMMENT_SUCCESS: {
       return {
         ...state,
         loading: false,
         list: state.list.filter((comment) => comment.id !== data),
+        count: state.count - 1,
       };
     }
 

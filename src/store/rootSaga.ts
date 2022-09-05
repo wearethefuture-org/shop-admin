@@ -55,6 +55,7 @@ import {
   GET_USERS_DATE_RANGE_REQUEST,
   DELETE_AVATAR_REQUEST,
   ADD_AVATAR_REQUEST,
+  CONFIRM_CHANGE_EMAIL_REQUEST,
 } from './types';
 
 import {
@@ -94,11 +95,7 @@ import {
   updateProductInOrderWorker,
   getOrdersByDateRangeWorker,
 } from './sagas/orders.saga';
-import {
-  deleteCommentWorker,
-  getCommentsByDateRangeWorker,
-  getCommentsWorker,
-} from './sagas/comments.saga';
+import { deleteCommentWorker, getCommentsByDateRangeWorker, getCommentsWorker } from './sagas/comments.saga';
 import { deleteFeedbackWorker, getFeedbacksWorker } from './sagas/feedbacks.saga';
 import {
   addUserWorker,
@@ -115,6 +112,7 @@ import {
   updateProfileUserWorker,
   deleteAvatarWorker,
   addAvatarWorker,
+  confirmEmailChangeWorker,
 } from './sagas/user.saga';
 import { getRolesWorker } from './sagas/roles.saga';
 import { getSearchItemsWorker } from './sagas/search.saga';
@@ -123,11 +121,7 @@ import {
   getActiveSliderAnimationWorker,
   getSliderAnimationsWorker,
 } from './sagas/sliderAnimations.saga';
-import {
-  generateInvoiceWorker,
-  getInvoicesListWorker,
-  removeInvoiceWorker,
-} from './sagas/invoice.saga';
+import { generateInvoiceWorker, getInvoicesListWorker, removeInvoiceWorker } from './sagas/invoice.saga';
 
 export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(GET_TREE_CATEGORIES_REQUEST, fetchTreeCategoryWorker);
@@ -205,6 +199,7 @@ export function* sagaUserWatcher(): SagaIterator {
   yield takeEvery(UPDATE_PROFILE_USER_REQUEST, updateProfileUserWorker);
   yield takeEvery(ADD_AVATAR_REQUEST, addAvatarWorker);
   yield takeEvery(DELETE_AVATAR_REQUEST, deleteAvatarWorker);
+  yield takeEvery(CONFIRM_CHANGE_EMAIL_REQUEST, confirmEmailChangeWorker);
 }
 
 // Roles

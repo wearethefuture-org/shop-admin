@@ -13,27 +13,9 @@ import {
 import { TextField } from 'formik-material-ui';
 import { IFormParserValues } from './Parser-form';
 import { COLORS } from '../../../../values/colors';
-import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
-
-const SaveBtn = styled(Button)`
-  background-color: ${COLORS.primaryBlue};
-  border-radius: 30px;
-  color: ${COLORS.primaryLight};
-  &:hover {
-    background-color: ${COLORS.secondaryBlue};
-  }
-`;
-
-const SaveBtnDark = styled(Button)`
-  background-color: ${COLORS.darkBlue};
-  border-radius: 30px;
-  color: ${COLORS.primaryLight};
-  &:hover {
-    background-color: ${COLORS.secondaryDarkBlue};
-  }
-`;
+import classNames from 'classnames';
 
 const useStyles = makeStyles(
   (theme: Theme): ThemeOptions =>
@@ -103,15 +85,32 @@ const useStyles = makeStyles(
       errorMessage: {
         color: 'red',
       },
+      btn: {
+        padding: '6px 15px 6px 15px',
+        borderRadius: '30px',
+        color: COLORS.primaryLight,
+      },
+      btnLight: {
+        'backgroundColor': COLORS.primaryGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGreen,
+        },
+      },
+      btnDark: {
+        'backgroundColor': COLORS.darkGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryDarkGreen,
+        },
+      },
     })
 );
 
 enum ParserSettingsDescription {
-  updatePhoto = "Оновлювати фото",
-  createNewProducts = "Створювати новий продукт",
-  updateOldProducts = "Оновлювати старий продукт",
-  parserLimit = "Відсоток для парсигу",
-  updateOldCharacteristics = "Оновлювати характеристики існуючих товарів",
+  updatePhoto = 'Оновлювати фото',
+  createNewProducts = 'Створювати новий продукт',
+  updateOldProducts = 'Оновлювати старий продукт',
+  parserLimit = 'Відсоток для парсигу',
+  updateOldCharacteristics = 'Оновлювати характеристики існуючих товарів',
 }
 
 const InnerForm: React.FC<FormikProps<IFormParserValues>> = (props) => {
@@ -208,15 +207,14 @@ const InnerForm: React.FC<FormikProps<IFormParserValues>> = (props) => {
     <Form className={classes.form}>
       {mappedElements}
       <DialogActions>
-        {darkMode ? (
-          <SaveBtnDark type="submit" disabled={!props.isValid}>
-            Зберегти
-          </SaveBtnDark>
-        ) : (
-          <SaveBtn type="submit" disabled={!props.isValid}>
-            Зберегти
-          </SaveBtn>
-        )}
+        <Button
+          className={classNames(classes.btn, darkMode ? classes.btnDark : classes.btnLight)}
+          variant="contained"
+          type="submit"
+          disabled={!props.isValid}
+        >
+          Зберегти
+        </Button>
       </DialogActions>
     </Form>
   );

@@ -2,9 +2,9 @@ import React, { Dispatch, SetStateAction, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 import DataTable from 'react-data-table-component';
 import Card from '@material-ui/core/Card';
+
 import { customStylesDataTable } from './CustomStylesDataTable';
 import CustomTablePaginator from '../Paginator/Paginator';
-
 import { RootState } from '../../store/store';
 import { COLORS } from '../../values/colors';
 
@@ -18,9 +18,10 @@ interface DataTableProps {
   setLimit?: Dispatch<SetStateAction<number>>;
   paginationServer?: boolean;
   setPage?: Dispatch<SetStateAction<number>>;
-  defaultSortFieldId?: string;
+  defaultSortFieldId?: string | number | null;
   customStyles?: any;
   paginationPage?: number;
+  setSortColumn?: (column: any, direction: 'asc' | 'desc') => void;
 }
 
 const AppDataTable: React.FC<DataTableProps> = ({
@@ -36,6 +37,7 @@ const AppDataTable: React.FC<DataTableProps> = ({
   defaultSortFieldId = '',
   paginationPage,
   customStyles = customStylesDataTable,
+  setSortColumn = () => {},
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
@@ -76,6 +78,7 @@ const AppDataTable: React.FC<DataTableProps> = ({
         onChangeRowsPerPage={(l) => setLimit(l)}
         customStyles={customStyles}
         conditionalRowStyles={conditionalRowStyles}
+        onSort={(column, direction) => setSortColumn(column, direction)}
       />
     </Card>
   );

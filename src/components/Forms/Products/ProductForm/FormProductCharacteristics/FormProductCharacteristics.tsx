@@ -184,13 +184,24 @@ const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, se
                                     color="primary"
                                     title="Додати значення"
                                     onClick={() => {
+                                      const newEntry = formik.values?.subForm?.[char.name].newEntry;
+                                      let lastIndex;
+                                      if (newEntry) {
+                                        lastIndex = Object.keys(newEntry).length;
+                                      }
+
                                       formik.setValues({
                                         ...formik.values,
                                         subForm: {
                                           ...formik.values?.subForm,
                                           [char.name]: {
                                             ...formik.values?.subForm[char.name],
-                                            newEntry: { key: '', value: '' },
+                                            newEntry: !newEntry
+                                              ? { newEntry1: { key: '', value: '' } }
+                                              : {
+                                                  ...newEntry,
+                                                  [`newEntry${lastIndex + 1}`]: { key: '', value: '' },
+                                                },
                                           },
                                         },
                                       });
