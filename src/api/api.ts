@@ -1,6 +1,7 @@
+import { AxiosResponse } from 'axios';
+
 import { IResponseMessage, IUsersStatistic } from './../interfaces/IUsers';
 import { root } from './config';
-import { AxiosResponse } from 'axios';
 
 import {
   IGetTreeCategoriesResponse,
@@ -123,7 +124,7 @@ type ApiFetchedDataType = {
   };
 
   users: {
-    get: (page: number, limit: number) => FetchedDataType<IUsersData>;
+    get: (page: number, limit: number, sort: string, sortDirect: string) => FetchedDataType<IUsersData>;
     getByDatesRange: (datesArray: string[]) => FetchedDataType<IUsersStatistic>;
   };
   user: {
@@ -222,7 +223,7 @@ export const api: ApiFetchedDataType = {
   },
 
   users: {
-    get: (page, limit) => instance.get(`${root}/users?page=${page}&limit=${limit}`),
+    get: (page, limit, sort, sortDirect) => instance.get(`${root}/users?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}`),
     getByDatesRange: (datesArray: string[]) =>
       instance.get(
         `${root}/users/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`
