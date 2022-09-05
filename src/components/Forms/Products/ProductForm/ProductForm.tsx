@@ -11,6 +11,7 @@ import {
   FormControl,
   makeStyles,
   ThemeOptions,
+  Tooltip,
 } from '@material-ui/core';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -113,9 +114,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
     accept: 'image/png, image/jpeg, image/jpg, image/gif',
   });
 
-  const [categoryValue, setCategoryValue] = useState<string>(
-    editMode ? formik.values.categoryName : ''
-  );
+  const [categoryValue, setCategoryValue] = useState<string>(editMode ? formik.values.categoryName : '');
   const [expandedNodes, setExpandedNodes] = useState<string[]>(['']);
 
   const parentObject = { id: 'root', name: 'Виберіть категорію товару', children: categories };
@@ -285,9 +284,7 @@ const ProductForm: React.FC<IProductFormProps> = ({
                     >
                       <div
                         className={
-                          isDragReject
-                            ? styles['dropzone-border-reject']
-                            : styles['dropzone-border']
+                          isDragReject ? styles['dropzone-border-reject'] : styles['dropzone-border']
                         }
                       ></div>
                       <AddAPhotoIcon />
@@ -313,25 +310,28 @@ const ProductForm: React.FC<IProductFormProps> = ({
             />
           </div>
           <DialogActions>
-            <Button
-              className={classNames(classes.btn, darkMode ? classes.saveBtnDark : classes.saveBtn)}
-              variant="contained"
-              color="primary"
-              disabled={formik.isSubmitting}
-              type="submit"
-              onClick={() => setExpandedBlocks(['main', 'additional'])}
+            <Tooltip
+              title={!formik.isValid || formik.values.categoryId === '' ? <h6>Заповність усі поля!</h6> : ''}
             >
-              {editMode ? 'Зберегти' : 'Додати'}
-            </Button>
+              <span>
+                <Button
+                  className={classNames(classes.btn, darkMode ? classes.saveBtnDark : classes.saveBtn)}
+                  variant="contained"
+                  color="primary"
+                  disabled={formik.isSubmitting || !formik.isValid || formik.values.categoryId === ''}
+                  type="submit"
+                  onClick={() => setExpandedBlocks(['main', 'additional'])}
+                >
+                  {editMode ? 'Зберегти' : 'Додати'}
+                </Button>
+              </span>
+            </Tooltip>
             <Button
               onClick={handleGoBack}
               color="secondary"
               variant="contained"
               type="button"
-              className={classNames(
-                classes.btn,
-                darkMode ? classes.cancelBtnDark : classes.cancelBtn
-              )}
+              className={classNames(classes.btn, darkMode ? classes.cancelBtnDark : classes.cancelBtn)}
             >
               Закрити
             </Button>
