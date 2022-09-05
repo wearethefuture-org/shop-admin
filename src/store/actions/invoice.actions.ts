@@ -1,5 +1,5 @@
 import { IActions } from '../../interfaces/actions';
-import { IInvoice } from '../../interfaces/IInvoice';
+import { IInvoice, IInvoiceDateRange } from '../../interfaces/IInvoice';
 import {
   GENERATE_INVOICE,
   GENERATE_INVOICE_REQUEST,
@@ -26,10 +26,12 @@ export const removeInvoice = (invoiceName: string): IActions => ({
   data: { invoiceName },
 });
 
-export const generateInvoiceRequest = (): IActions => ({
+export const generateInvoiceRequest = (invoiceDateRange: IInvoiceDateRange): IActions => ({
   type: GENERATE_INVOICE_REQUEST,
+  data: { invoiceDateRange },
 });
 
-export const generateInvoice = (): IActions => ({
+export const generateInvoice = (invoiceDateRange: IInvoiceDateRange): IActions => ({
   type: GENERATE_INVOICE,
+  data: { invoiceDateRange },
 });

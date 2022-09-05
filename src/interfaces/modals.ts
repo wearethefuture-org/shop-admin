@@ -14,3 +14,9 @@ export interface ISlidesModal {
   handleClose: () => void;
   isOpened: boolean;
 }
+
+export interface IGenerateInvoiceModal {
+  handleClickOpen: () => void;
+  handleClose: () => void;
+  isOpened: boolean;
+}
