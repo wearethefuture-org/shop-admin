@@ -3,11 +3,13 @@ import { TooltipProps } from 'recharts';
 import { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { COLORS } from '../../values/colors';
+
 const useStyles = makeStyles({
   tooltip: {
     borderRadius: '4px',
-    backgroundColor: '#006400',
-    color: '#ffffff',
+    backgroundColor: COLORS.primaryGreen,
+    color: COLORS.primaryLight,
     padding: '16px',
     boxShadow: '15px 30px 40px 5px rgba(0, 0, 0, 0.5)',
     textAlign: 'center',
@@ -29,14 +31,35 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<ValueType, NameT
   if (active && payload) {
     return (
       <div className={styles.tooltip}>
-        <h4>{label}</h4>
-        <p>
-          {payload[0].value} {textMessage[0]}
-        </p>
-        {payload[1] && (
+        <h4>{`${label.split('-')[2]}.${label.split('-')[1]}.${label.split('-')[0]}`}</h4>
+        {!payload[1] && (
           <p>
-            {payload[1].value} {textMessage[1]}
+            {payload[0].value} {textMessage[0]}
           </p>
+        )}
+        {payload[1] && !payload[1].payload.sumValueSecond && (
+          <>
+            <p>
+              {payload[0].value} {textMessage[0]}
+            </p>
+
+            <p>
+              {payload[1].value} {textMessage[1]}
+            </p>
+          </>
+        )}
+        {payload[1] && payload[1].payload.sumValueSecond && (
+          <>
+            <p>
+              {payload[0].value} {textMessage[0]}
+            </p>
+            <p>на суму {payload[0].payload.sumValue} грн</p>
+
+            <p>
+              {payload[1].value} {textMessage[1]}
+            </p>
+            <p>на суму {payload[1].payload.sumValueSecond} грн</p>
+          </>
         )}
       </div>
     );

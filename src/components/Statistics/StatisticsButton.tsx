@@ -1,6 +1,6 @@
 import React, { forwardRef, useState } from 'react';
 import { Button, makeStyles } from '@material-ui/core';
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale } from 'react-datepicker';
 import { useDispatch } from 'react-redux';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -11,6 +11,10 @@ import { AppDispatch } from '../../store/store';
 import { getOrderByRangeRequest } from '../../store/actions/orders.actions';
 import { getCommentsByRangeRequest } from '../../store/actions/comments.actions';
 import { getUsersDateRangeRequest } from '../../store/actions/users.actions';
+import { COLORS } from '../../values/colors';
+
+import uk from 'date-fns/locale/uk';
+registerLocale('uk', uk);
 
 enum datePosition {
   start = 'start',
@@ -47,23 +51,33 @@ const useStyles = makeStyles({
     margin: '30px auto 0 auto',
     padding: '0',
   },
-  button: {
+  buttonItem: {
     marginRight: '15px',
   },
+  button: {
+    'backgroundColor': COLORS.primaryBlue,
+    'borderRadius': '30px',
+    '&:hover': {
+      backgroundColor: COLORS.secondaryBlue,
+    },
+  },
   selectSection: {
-    outline: '1px solid #3f51b5',
-    backgroundColor: '#3f51b5',
-    border: 'none',
-    borderRadius: '4px',
-    fontSize: '0.875rem',
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    fontWeight: 500,
-    lineHeight: '1.75',
-    letterSpacing: '0.02857em',
-    padding: '6px 16px',
-    color: '#ffffff',
-    boxShadow:
+    'outline': `1px solid ${COLORS.primaryBlue}`,
+    'backgroundColor': COLORS.primaryBlue,
+    'border': 'none',
+    'borderRadius': '30px',
+    'fontSize': '0.875rem',
+    'fontFamily': '"Roboto", "Helvetica", "Arial", sans-serif',
+    'fontWeight': 500,
+    'lineHeight': '1.75',
+    'letterSpacing': '0.02857em',
+    'padding': '6px 16px',
+    'color': COLORS.primaryLight,
+    'boxShadow':
       '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)',
+    '&:hover': {
+      backgroundColor: COLORS.secondaryBlue,
+    },
   },
 });
 
@@ -107,6 +121,7 @@ const StatisticsButtons: React.FC = () => {
     <div className={styles.dateSections}>
       <div className={styles.datePickers}>
         <DatePicker
+          locale="uk"
           selected={startDate}
           onChange={(date) => onDateChangeHandler(date, datePosition.start)}
           customInput={<ExampleCustomInput value={undefined} onClick={undefined} />}
@@ -114,6 +129,7 @@ const StatisticsButtons: React.FC = () => {
           maxDate={new Date() || endDate}
         />
         <DatePicker
+          locale="uk"
           selected={endDate}
           onChange={(date) => onDateChangeHandler(date, datePosition.stop)}
           customInput={<ExampleCustomInput value={undefined} onClick={undefined} />}
@@ -124,8 +140,9 @@ const StatisticsButtons: React.FC = () => {
       </div>
       <div className={styles.buttonsSection}>
         <ul className={styles.buttonsList}>
-          <li className={styles.button}>
+          <li className={styles.buttonItem}>
             <Button
+              className={styles.button}
               id="order"
               variant="contained"
               color="primary"
@@ -135,8 +152,9 @@ const StatisticsButtons: React.FC = () => {
               замовлення
             </Button>
           </li>
-          <li className={styles.button}>
+          <li className={styles.buttonItem}>
             <Button
+              className={styles.button}
               id="users"
               variant="contained"
               color="primary"
@@ -148,6 +166,7 @@ const StatisticsButtons: React.FC = () => {
           </li>
           <li>
             <Button
+              className={styles.button}
               id="comments"
               variant="contained"
               color="primary"

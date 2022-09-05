@@ -60,9 +60,9 @@ const FormDialog: React.FC<FormDialogProps> = ({ dispatch, modalData, row, darkM
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle id="form-dialog-title">Edit slide</DialogTitle>
+        <DialogTitle id="form-dialog-title">Редагувати слайд</DialogTitle>
         <DialogContent dividers>
-          <DialogContentText>Change name of slide</DialogContentText>
+          <DialogContentText>Змінити ім'я слайду</DialogContentText>
           <SlideForm
             initialId={row.id}
             initialName={row.name}

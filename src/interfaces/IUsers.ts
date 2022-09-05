@@ -40,6 +40,7 @@ export interface IUserState {
   isLoggedIn: boolean;
   error: IError | null;
   avatarLink: string | undefined;
+  emailСhanged: boolean;
 }
 
 export interface IUserReqUp {
@@ -51,6 +52,24 @@ export interface IUserReqUp {
   password?: string;
   email?: string;
   telegramId?: string;
+}
+
+export interface ProfileUserUpI {
+  id: number;
+  firstName?: string;
+  lastName?: string;
+  phoneNumber?: string;
+  roleId?: number;
+  password?: string;
+  email?: string;
+  currenEmail: string;
+  telegramId?: string;
+}
+
+export interface IuserConfirmEmail {
+  userId: number;
+  token: string;
+  email: string;
 }
 
 export interface IUserReqAdd {
@@ -74,6 +93,9 @@ export interface IUsersData {
   totalPages: number;
   isSearch: boolean;
   paginationPage: number;
+  paginationLimit: number;
+  sort: string;
+  sortDirect: string;
   searchValue: null | string;
   paginationPageSearch: number;
   currentPage: number;
@@ -125,7 +147,5 @@ export interface UsersTableProps {
   list: IUserItem[];
   activeColumns: string[];
   isSearch: boolean;
-  searchValue: string;
-  count: number;
   paginationPage: number;
 }

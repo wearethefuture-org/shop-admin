@@ -32,7 +32,7 @@ export default function CommentsPage() {
     if (!list.length && count) {
       dispatch(getCommentsRequest(currentPage, limit));
     }
-  }, [list]);
+  }, [count, currentPage, dispatch, limit, list]);
 
   React.useEffect(() => {
     dispatch(getCommentsRequest(currentPage, limit));

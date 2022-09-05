@@ -32,9 +32,7 @@ interface ICharArr {
 const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, setValidation }) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const { list, currentTreeCategory: category } = useSelector(
-    (state: RootState) => state.treeCategories
-  );
+  const { list, currentTreeCategory: category } = useSelector((state: RootState) => state.treeCategories);
   const { currentProduct: product } = useSelector((state: RootState) => state.products);
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
@@ -43,11 +41,7 @@ const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, se
 
   useEffect(() => {
     category &&
-      setChars(
-        category.characteristicGroup
-          .map((group) => group.characteristic.map((char) => char))
-          .flat(1)
-      );
+      setChars(category.characteristicGroup.map((group) => group.characteristic.map((char) => char)).flat(1));
   }, [category]);
 
   const [charArray, setCharArray] = useState<ICharArr[]>([]);
@@ -110,9 +104,7 @@ const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, se
               <div key={group.id}>
                 <div className={darkMode ? styles['group-wrapper-dark'] : styles['group-wrapper']}>
                   <span
-                    className={
-                      expandedGroups.includes(group.id) ? styles['hide-btn'] : styles['expand-btn']
-                    }
+                    className={expandedGroups.includes(group.id) ? styles['hide-btn'] : styles['expand-btn']}
                     onClick={() => handleExpandedGroups(group.id)}
                   >
                     <ArrowIcon />
@@ -145,13 +137,24 @@ const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, se
                                     color="primary"
                                     title="Додати значення"
                                     onClick={() => {
+                                      const newEntry = formik.values?.subForm?.[char.name].newEntry;
+                                      let lastIndex;
+                                      if (newEntry) {
+                                        lastIndex = Object.keys(newEntry).length;
+                                      }
+
                                       formik.setValues({
                                         ...formik.values,
                                         subForm: {
                                           ...formik.values?.subForm,
                                           [char.name]: {
                                             ...formik.values?.subForm[char.name],
-                                            newEntry: { key: '', value: '' },
+                                            newEntry: !newEntry
+                                              ? { newEntry1: { key: '', value: '' } }
+                                              : {
+                                                  ...newEntry,
+                                                  [`newEntry${lastIndex + 1}`]: { key: '', value: '' },
+                                                },
                                           },
                                         },
                                       });

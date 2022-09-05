@@ -26,9 +26,11 @@ import {
 } from '../actions/users.actions';
 import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 
-export function* getUsersWorker({ data: { page, limit } }: IActions): SagaIterator {
+export function* getUsersWorker({
+  data: { page, limit, sort, sortDirect },
+}: IActions): SagaIterator {
   try {
-    const user = yield call(apiGetUsers, page, limit);
+    const user = yield call(apiGetUsers, page, limit, sort, sortDirect);
     yield put(getUsersSuccess(user));
   } catch (error) {
     yield put(failSnackBar(error.message));

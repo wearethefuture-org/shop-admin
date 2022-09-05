@@ -107,8 +107,7 @@ interface FormDialogProps {
   closeModal: () => void;
 }
 
-const phoneRegExp =
-  /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
+const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
 const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) => {
   const [showCurrentPassword, setShowCurrentPassword] = React.useState<boolean>(false);
@@ -131,25 +130,17 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
   };
 
   const baseScheme = {
-    firstName: Yup.string()
-      .min(3, "Введіть коректне ім'я")
-      .required('Це поле не повинно бути пустим!'),
-    lastName: Yup.string()
-      .min(2, 'Введіть коректне прізвище')
-      .required('Це поле не повинно бути пустим!'),
+    firstName: Yup.string().min(3, "Введіть коректне ім'я").required('Це поле не повинно бути пустим!'),
+    lastName: Yup.string().min(2, 'Введіть коректне прізвище').required('Це поле не повинно бути пустим!'),
     phoneNumber: Yup.string()
       .required('Це поле не повинно бути пустим!')
-      .test(
-        'length',
-        'Неправильний номер телефону',
-        (value: string | null | undefined): boolean => {
-          if (typeof value === 'string') {
-            const lengthOnlyNumbers = value.replace(/-|_/g, '').length;
-            return lengthOnlyNumbers === 17 || lengthOnlyNumbers === 12;
-          }
-          return false;
+      .test('length', 'Неправильний номер телефону', (value: string | null | undefined): boolean => {
+        if (typeof value === 'string') {
+          const lengthOnlyNumbers = value.replace(/-|_/g, '').length;
+          return lengthOnlyNumbers === 17 || lengthOnlyNumbers === 12;
         }
-      ),
+        return false;
+      }),
     email: Yup.string().email('Неправильна адреса!').required('Це поле не повинно бути пустим!'),
     telegramId: Yup.string().notRequired().nullable(),
     roleId: Yup.string().required('Це поле не повинно бути пустим!'),
@@ -202,7 +193,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
           addUserRequest({
             firstName: _values.firstName ? _values.firstName : '',
             lastName: _values.lastName ? _values.lastName : '',
-            phoneNumber: _values.phoneNumber ? _values.phoneNumber : '',
+            phoneNumber: _values.phoneNumber ? _values.phoneNumber.slice(1).split(' ').join('') : '',
             roleId: _values.roleId ? _values.roleId : 1,
             password: _values.newPassword ? _values.newPassword : '',
             confirmPassword: _values.confirmNewPassword ? _values.confirmNewPassword : '',
@@ -217,6 +208,8 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
             sendData[key] = _values[key];
           }
         }
+        if (sendData['phoneNumber'])
+          sendData['phoneNumber'] = sendData['phoneNumber'].slice(1).split(' ').join('');
         sendData['roleId'] = _values['roleId'];
         if (Object.keys(sendData).length > 1) {
           dispatch(updateUserRequest(user.id, sendData, currentPage));
@@ -235,11 +228,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
   };
 
   return (
-    <form
-      onSubmit={formik.handleSubmit}
-      className={classes.formDiv}
-      onClick={(e) => e.stopPropagation()}
-    >
+    <form onSubmit={formik.handleSubmit} className={classes.formDiv} onClick={(e) => e.stopPropagation()}>
       <div className={classes.row}>
         <TextField
           className={getInputClass('firstName')}
@@ -360,10 +349,7 @@ const UserCardForm: React.FC<FormDialogProps> = ({ isNew, user, closeModal }) =>
 
       <div className={classes.row}>
         <Button
-          className={classNames(
-            classes.submit,
-            darkMode ? classes.submitDark : classes.submitLight
-          )}
+          className={classNames(classes.submit, darkMode ? classes.submitDark : classes.submitLight)}
           type="submit"
           disabled={formik.isSubmitting}
         >
