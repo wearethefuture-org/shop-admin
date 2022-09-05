@@ -15,6 +15,8 @@ import { getUsersByQueryRequest, getUsersRequest } from '../../../store/actions/
 import { UsersTableProps } from '../../../interfaces/IUsers';
 import { COLORS } from '../../../values/colors';
 import AddBtn from '../../AddBtn/AddBtn';
+import classNames from 'classnames';
+import { phoneNumberFormatter } from '../../../utils/phoneNumberFormatter';
 import Preloader from '../../Preloader/Preloader';
 import { cols } from '../../Containers/Users-container';
 
@@ -207,7 +209,7 @@ const UsersTable: React.FC<UsersTableProps> = ({
     },
     {
       name: 'Телефон',
-      selector: (row) => row.phoneNumber,
+      selector: (row) => phoneNumberFormatter(row.phoneNumber),
       sortable: true,
       omit: !activeColumns.includes('Телефон'),
     },
@@ -240,18 +242,12 @@ const UsersTable: React.FC<UsersTableProps> = ({
           <Box display="flex">
             <Button className={classes.button} value={row.id} onClick={openDialogUserCard}>
               <EditIcon
-                className={classNames(
-                  classes.icon,
-                  darkMode ? classes.editIconDark : classes.editIcon
-                )}
+                className={classNames(classes.icon, darkMode ? classes.editIconDark : classes.editIcon)}
               />
             </Button>
             <Button className={classes.button} value={row.id} onClick={openDialogRemoveUser}>
               <DeleteIcon
-                className={classNames(
-                  classes.icon,
-                  darkMode ? classes.deleteIconDark : classes.deleteIcon
-                )}
+                className={classNames(classes.icon, darkMode ? classes.deleteIconDark : classes.deleteIcon)}
               />
             </Button>
           </Box>
