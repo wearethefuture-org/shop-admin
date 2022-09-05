@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { Field, Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { Button, Dialog } from '@material-ui/core';
+import { Button, createStyles, Dialog, makeStyles, ThemeOptions } from '@material-ui/core';
 import TextFieldWrapped from '../../../hocs/TextFieldHOC';
 import {
   TreeCategoryToDispalayAction,
@@ -14,6 +14,10 @@ import {
   TreeCategoryActionTypes,
 } from '../../../pages/TreeCategories/TreeCategoryInfo/treeCategoryReducer';
 import styles from './TreeCategoryGroupModal.module.scss';
+import classNames from 'classnames';
+import { COLORS } from '../../../values/colors';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
 
 interface IModalProps {
   openGroupModal: boolean;
@@ -29,6 +33,28 @@ interface IGroupValues {
   groupName: string;
 }
 
+const useStyles = makeStyles(
+  (): ThemeOptions =>
+    createStyles({
+      btn: {
+        borderRadius: '30px',
+        color: COLORS.primaryLight,
+      },
+      btnSubmitLight: {
+        'backgroundColor': COLORS.primaryGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryGreen,
+        },
+      },
+      btnSubmitDark: {
+        'backgroundColor': COLORS.darkGreen,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryDarkGreen,
+        },
+      },
+    })
+);
+
 const TreeCategoryGroupModal: React.FC<IModalProps> = ({
   openGroupModal,
   setOpenGroupModal,
@@ -38,6 +64,10 @@ const TreeCategoryGroupModal: React.FC<IModalProps> = ({
   groupToEdit,
   setGroupToEdit,
 }) => {
+  const classes = useStyles();
+
+  const { darkMode } = useSelector((state: RootState) => state.theme);
+
   const formik = useFormik({
     initialValues: {
       groupName: (groupToEdit && groupToEdit.name) || '',
@@ -54,9 +84,7 @@ const TreeCategoryGroupModal: React.FC<IModalProps> = ({
     onSubmit: ({ groupName }: IGroupValues): void => {
       if (groupToEdit && groupToEdit.name) {
         const existingGroup = charGroup
-          .filter(
-            (group) => group.name?.toLowerCase().trim() !== groupToEdit.name?.toLowerCase().trim()
-          )
+          .filter((group) => group.name?.toLowerCase().trim() !== groupToEdit.name?.toLowerCase().trim())
           .find((group) => group.name?.toLowerCase().trim() === groupName?.toLowerCase().trim());
 
         if (existingGroup) {
@@ -110,15 +138,13 @@ const TreeCategoryGroupModal: React.FC<IModalProps> = ({
         <h5>{groupToEdit ? 'Редагувати ' : 'Додати '}групу</h5>
         <FormikProvider value={formik}>
           <Form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
-            <Field
-              fullWidth
-              component={TextFieldWrapped}
-              label="Група *"
-              name="groupName"
-              makegreen="true"
-            />
+            <Field fullWidth component={TextFieldWrapped} label="Група *" name="groupName" makegreen="true" />
 
-            <Button variant="contained" color="primary" type="submit">
+            <Button
+              className={classNames(classes.btn, darkMode ? classes.btnSubmitDark : classes.btnSubmitLight)}
+              variant="contained"
+              type="submit"
+            >
               Зберегти
             </Button>
           </Form>

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ArrowIcon from '@material-ui/icons/ArrowBackIos';
-import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
-import { IconButton } from '@material-ui/core';
+import { Button, createStyles, IconButton, makeStyles, ThemeOptions } from '@material-ui/core';
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 
 import { AppDispatch, RootState } from '../../../../../store/store';
@@ -15,6 +14,9 @@ import { productValidationShema } from '../productFormHelpers';
 import { getIcon } from '../../../../Modals/TreeCategoryCharModal/treeCategoryCharModalHelpers';
 import { Type } from '../../../../../interfaces/IProducts';
 import styles from './FormProductCharacteristics.module.scss';
+import { useLocation, Link } from 'react-router-dom';
+import { COLORS } from '../../../../../values/colors';
+import classNames from 'classnames';
 
 interface IProductChar {
   categoryId: number;
@@ -29,8 +31,34 @@ interface ICharArr {
   type: string;
 }
 
+const useStyles = makeStyles(
+  (): ThemeOptions =>
+    createStyles({
+      btn: {
+        borderRadius: '30px',
+        color: COLORS.primaryLight,
+      },
+      addCharBtn: {
+        'backgroundColor': COLORS.primaryBlue,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryBlue,
+        },
+      },
+      addCharBtnDark: {
+        'backgroundColor': COLORS.darkBlue,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryDarkBlue,
+        },
+      },
+    })
+);
+
 const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, setValidation }) => {
   const dispatch: AppDispatch = useDispatch();
+
+  const location = useLocation();
+
+  const classes = useStyles();
 
   const { list, currentTreeCategory: category } = useSelector((state: RootState) => state.treeCategories);
   const { currentProduct: product } = useSelector((state: RootState) => state.products);
@@ -97,7 +125,26 @@ const ProductCharacteristics: React.FC<IProductChar> = ({ categoryId, formik, se
               <PriorityHighIcon style={{ color: 'red' }} />
               <span>Є обов`язковою характеристикою</span>
             </>
-          ) : null}
+          ) : (
+            <div>
+              <p>Відсутні характеристики для даної категорії</p>
+              <Link
+                to={{
+                  pathname: `/tree-category/${category.id}`,
+                  state: { from: `${location.pathname}` },
+                }}
+              >
+                <Button
+                  className={classNames(classes.btn, darkMode ? classes.addCharBtnDark : classes.addCharBtn)}
+                  variant="contained"
+                  startIcon={<AddIcon />}
+                  type="button"
+                >
+                  Додати характеристики
+                </Button>
+              </Link>
+            </div>
+          )}
 
           <div className={darkMode ? styles['additional-info-block-dark'] : ''}>
             {category?.characteristicGroup.map((group) => (
