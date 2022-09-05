@@ -11,13 +11,7 @@ interface IColumnsProps {
   handleColumns: () => void;
 }
 
-const ColumnsMenu = ({
-  allColumns,
-  activeColumns,
-  showColumnsMenu,
-  setShowColumnsMenu,
-  handleColumns,
-}) => {
+const ColumnsMenu = ({ allColumns, activeColumns, showColumnsMenu, setShowColumnsMenu, handleColumns }) => {
   const columnsKeys = Object.keys(allColumns);
 
   return (
@@ -28,9 +22,7 @@ const ColumnsMenu = ({
     >
       <DialogTitle id="simple-dialog-title">Активні колонки</DialogTitle>
       <List className={styles.list}>
-        {columnsKeys
-          .filter((colunm) => { return colunm !== 'notcall' })
-          .map((column) => (
+        {columnsKeys.map((column) => (
           <ListItem key={column}>
             <Checkbox
               color="primary"

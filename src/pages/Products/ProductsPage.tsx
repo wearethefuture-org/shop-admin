@@ -25,7 +25,6 @@ export enum cols {
   shopKey = 'Магазин',
   createdAt = 'Створено',
   updatedAt = 'Оновлено',
-  notcall = 'Не передзвонювати',
 }
 
 let initialActiveColums: string[] = [
@@ -76,9 +75,9 @@ const Products: React.FC = () => {
       price: [
         parsed.filterPriceMin ? parsed.filterPriceMin : filter.price[0],
         parsed.filterPriceMax ? parsed.filterPriceMax : filter.price[1],
-      ]
+      ],
     };
-  
+
     dispatch(getProductsRequest(actualPage, actualLimit, actualSort, actualSortDirect, actualFilter));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -93,8 +92,10 @@ const Products: React.FC = () => {
     if (!!filter.name && filter.name !== '') querySearch.filterName = filter.name;
     if (!!filter.shop && filter.shop !== '') querySearch.filterShop = filter.shop;
     if (!!filter.category && filter.category !== '') querySearch.filterCategory = filter.category;
-    if (!!filter.price && filter.price[0] !== findPrice[0] && filter.price[0] !== filter.price[1]) querySearch.filterPriceMin = filter.price[0];
-    if (!!filter.price && filter.price[1] !== findPrice[1] && filter.price[0] !== filter.price[1]) querySearch.filterPriceMax = filter.price[1];
+    if (!!filter.price && filter.price[0] !== findPrice[0] && filter.price[0] !== filter.price[1])
+      querySearch.filterPriceMin = filter.price[0];
+    if (!!filter.price && filter.price[1] !== findPrice[1] && filter.price[0] !== filter.price[1])
+      querySearch.filterPriceMax = filter.price[1];
 
     history.push({
       pathname: '/products',
@@ -134,7 +135,7 @@ const Products: React.FC = () => {
               state: { from: `${location.pathname}` },
             }}
           >
-            <AddBtn title='Додати' handleAdd={undefined} />
+            <AddBtn title="Додати" handleAdd={undefined} />
           </Link>
           <ColumnsBtn handleClick={() => setShowColumnsMenu(true)} />
         </div>
