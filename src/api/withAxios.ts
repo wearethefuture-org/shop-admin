@@ -22,7 +22,7 @@ const WithAxios: FC<WithAxiosProps> = ({ children }) => {
       if (err.response && err.response.data) {
 
         if(err.response.status === 401) {
-         history.push('/home');
+         history.push('/login');
           dispatch(signOutUser());
           clearStorage();
     }

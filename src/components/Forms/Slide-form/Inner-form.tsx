@@ -157,7 +157,7 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           variant="contained"
           className={classNames(classes.btn, darkMode ? classes.cancelBtnDark : classes.cancelBtn)}
         >
-          Cancel
+          Скасувати
         </Button>
         <Button
           className={classNames(classes.btn, darkMode ? classes.saveBtnDark : classes.saveBtn)}
@@ -166,11 +166,10 @@ const InnerForm: React.FC<InnerSlideFormProps & FormikProps<ISlideFormValues>> =
           disabled={isSubmitting}
           onClick={submitForm}
         >
-          Save
+          Зберегти
         </Button>
       </DialogActions>
     </Form>
   );
 };
 export default InnerForm;
-
