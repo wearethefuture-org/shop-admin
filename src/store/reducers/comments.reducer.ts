@@ -87,7 +87,7 @@ const comments = (state = initialState, { type, data }: IActions) => {
         ...state,
         loading: false,
         list: state.list.filter((comment) => comment.id !== data),
-        count: data.count,
+        count: state.count - 1,
       };
     }
 

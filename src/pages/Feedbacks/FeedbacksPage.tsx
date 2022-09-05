@@ -29,10 +29,14 @@ export default function FeedbacksPage() {
   const { list, count, loading } = useFeedbacks(currentPage, limit);
 
   React.useEffect(() => {
-    if (!list.length && count){
+    if (!list.length && count) {
       dispatch(getFeedbacksRequest(currentPage, limit));
     }
   }, [list]);
+
+  React.useEffect(() => {
+    dispatch(getFeedbacksRequest(currentPage, limit));
+  }, [count]);
 
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [activeColumns, setActiveColumns] = useState<string[]>([

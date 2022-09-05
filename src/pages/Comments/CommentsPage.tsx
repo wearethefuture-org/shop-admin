@@ -29,10 +29,14 @@ export default function CommentsPage() {
   const { list, count, loading } = useComments(currentPage, limit);
 
   React.useEffect(() => {
-    if (!list.length && count){
+    if (!list.length && count) {
       dispatch(getCommentsRequest(currentPage, limit));
     }
   }, [count, currentPage, dispatch, limit, list]);
+
+  React.useEffect(() => {
+    dispatch(getCommentsRequest(currentPage, limit));
+  }, [count]);
 
   // ACTIVE COLUMNS
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
