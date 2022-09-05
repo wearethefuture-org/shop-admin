@@ -90,7 +90,7 @@ type ApiFetchedDataType = {
   };
 
   slides: {
-    get: () => FetchedDataType<ISlideItem>;
+    get: (page: number, limit: number, sort: string, sortDirect: string) => FetchedDataType<ISlideItem>;
     add: (slide: FormData) => FetchedDataType<ISlideItem>;
     update: (slide: ISlideUpdateValues) => FetchedDataType<ISlideItem>;
     updateVisibility: (slide: ISlideVisibility) => FetchedDataType<ISlideItem>;
@@ -193,7 +193,7 @@ export const api: ApiFetchedDataType = {
   },
 
   slides: {
-    get: () => instance.get(`${root}/slide`),
+    get: (page, limit, sort, sortDirect) => instance.get(`${root}/slide?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}`),
     add: (slide) => instance.post(`${root}/slide`, slide),
     update: (slide) => instance.patch(`${root}/slide/${slide.id}`, slide.body),
     updateVisibility: (slide) =>

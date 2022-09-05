@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
-import { Dispatch } from 'redux';
-import {
-  Switch,
-  Box,
-  makeStyles,
-  Theme,
-  createStyles,
-  ThemeOptions,
-  alpha,
-} from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { Switch, Box, makeStyles, Theme, createStyles, ThemeOptions, alpha } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { TableColumn } from 'react-data-table-component';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
+import classNames from 'classnames';
+import queryString from 'query-string';
+
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import { ISlideItem } from '../../../interfaces/ISlides';
 import { ISlidesModal } from '../../../interfaces/modals';
@@ -18,20 +14,26 @@ import { root } from '../../../api/config';
 import FormDialog from '../../Modals/Slide-modal-edit';
 import {
   fetchDeleteSlides,
+  fetchSlides,
   fetchUpdateSlideVisibility,
 } from '../../../store/actions/slides.actions';
 import { COLORS } from '../../../values/colors';
 import AddBtn from '../../AddBtn/AddBtn';
-import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
-import classNames from 'classnames';
 import SliderAnimations from '../../SliderAnimations/SliderAnimations';
+import Preloader from '../../Preloader/Preloader';
+import { cols } from '../../Containers/Slides-container';
 
 interface SlideDataProps {
-  data: Array<ISlideItem>;
-  dispatch: Dispatch;
   modalData: ISlidesModal;
 }
+
+type QueryTypes = {
+  page?: string;
+  limit?: string;
+  sort?: string;
+  sortDirect?: string;
+};
 
 const useStyles = makeStyles(
   (theme: Theme): ThemeOptions =>
@@ -79,7 +81,61 @@ const useStyles = makeStyles(
     })
 );
 
-const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) => {
+const SlidesTable: React.FC<SlideDataProps> = ({  modalData }) => {
+  const {
+    list: data,
+    count,
+    paginationLimit,
+    paginationPage,
+    sort,
+    sortDirect,
+    loading,
+  } = useSelector((state: RootState) => state.slides);
+  const defaultSortFieldId = Object.keys(cols).indexOf(sort as string) + 1;
+  const history = useHistory();
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const parsed = queryString.parse(location.search) as QueryTypes;
+    let actualPage = paginationPage;
+    if (parsed.page) actualPage = Number(parsed.page);
+    let actualLimit = paginationLimit;
+    if (parsed.limit) actualLimit = Number(parsed.limit);
+    let actualSort = sort;
+    if (parsed.sort) actualSort = parsed.sort;
+    let actualSortDirect = sortDirect;
+    if (parsed.sortDirect) actualSortDirect = parsed.sortDirect;
+    dispatch(fetchSlides(actualPage, actualLimit, actualSort, actualSortDirect));
+  }, []);
+
+  useEffect(() => {
+    const querySearch = {} as QueryTypes;
+    if (!!paginationPage && paginationPage !== 1) querySearch.page = String(paginationPage);
+    if (!!paginationLimit && paginationLimit !== 10) querySearch.limit = String(paginationLimit);
+    if (!!sort && sort !== 'id') querySearch.sort = sort;
+    if (!!sortDirect && sortDirect !== 'asc') querySearch.sortDirect = sortDirect;
+    history.push({
+      pathname: '/slides',
+      search: queryString.stringify(querySearch),
+      state: { update: true },
+    });
+  }, [paginationPage, paginationLimit, sort, sortDirect]);
+
+  const onChangeLimit = (limit) => {
+    const newPage = Math.ceil(((paginationPage - 1) * paginationLimit + 1) / limit);
+    dispatch(fetchSlides(newPage, limit, sort, sortDirect));
+  };
+
+  const onChangePage = (page) => {
+    if (paginationPage !== page) dispatch(fetchSlides(page, paginationLimit, sort, sortDirect));
+  };
+
+  const setSortColumn = (column: any, direction: any) => {
+    const fieldName = Object.keys(cols)[Object.values(cols).indexOf(column.name)];
+    dispatch(fetchSlides(paginationPage, paginationLimit, fieldName, direction));
+  };
+
   const classes = useStyles();
   const { handleClickOpen } = modalData;
   const [selected, setSelected] = useState(null);
@@ -115,19 +171,16 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
         }}
       >
         <SliderAnimations />
-        <AddBtn
-          style={{ margin: '10px' }}
-          title="Додати слайд"
-          handleAdd={handleClickOpen}
-        ></AddBtn>
+        <AddBtn style={{ margin: '10px' }} title="Додати слайд" handleAdd={handleClickOpen}></AddBtn>
       </Box>
     </div>
   );
 
   const slideColumns: TableColumn<ISlideItem>[] = [
     {
-      name: 'IД',
+      name: 'ID',
       selector: (row) => row.id,
+      sortable: true,
       width: '10%',
     },
     {
@@ -207,18 +260,31 @@ const SlidesTable: React.FC<SlideDataProps> = ({ data, dispatch, modalData }) =>
   ];
 
   return (
-    <React.Fragment>
-      <AppDataTable
-        data={data}
-        title={title}
-        columns={slideColumns}
-        customStyles={{
-          cells: {
-            style: { cursor: 'default' },
-          },
-        }}
-      />
-    </React.Fragment>
+    <>
+      {loading ? (
+        <Preloader />
+      ) : (
+        <AppDataTable
+          data={data}
+          columns={slideColumns}
+          title={title}
+          count={count}
+          limit={paginationLimit}
+          setLimit={(e) => onChangeLimit(e)}
+          setPage={(e) => onChangePage(e)}
+          setSortColumn={(column, direction) => setSortColumn(column, direction)}
+          paginationServer={true}
+          paginationPage={paginationPage}
+          defaultSortFieldId={defaultSortFieldId}
+          sortDirect={sortDirect}
+          customStyles={{
+            cells: {
+              style: { cursor: 'default' },
+            },
+          }}
+        />
+      )}
+    </>
   );
 };
 

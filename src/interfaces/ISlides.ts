@@ -9,7 +9,7 @@ export interface ISlideFormValues {
   priority: number;
 }
 
-export interface  ISlideUpdateValues {
+export interface ISlideUpdateValues {
   id: number;
   body: FormData;
 }
@@ -18,9 +18,9 @@ export interface InnerSlideFormProps {
   handleClose: () => void;
 }
 
-export interface ISlideVisibility{
-  id:number
-  isShown: boolean
+export interface ISlideVisibility {
+  id: number;
+  isShown: boolean;
 }
 
 export interface ISlideItem {
@@ -29,15 +29,23 @@ export interface ISlideItem {
   createdAt: string;
   updatedAt: string;
   text: string;
-  image: string|File|null;
-  imageMobile: string|File|null;
+  image: string | File | null;
+  imageMobile: string | File | null;
   href: string;
   isShown: boolean;
   priority: number;
 }
 
 export interface ISlidesData {
-  list: Array<ISlideItem>
+  list: Array<ISlideItem>;
+  loading: boolean;
+  error: string | null;
+  count: number;
+  totalPages: number;
+  paginationPage: number;
+  paginationLimit: number;
+  sort: string | undefined;
+  sortDirect: string | undefined;
 }
 
 export interface SlideTableData {
@@ -46,8 +54,8 @@ export interface SlideTableData {
   createdAt: string;
   updatedAt: string;
   text: string;
-  image: string|File|null;
-  imageMobile: string|File|null;
+  image: string | File | null;
+  imageMobile: string | File | null;
   href: string;
   isShown: boolean;
   priority: number;
