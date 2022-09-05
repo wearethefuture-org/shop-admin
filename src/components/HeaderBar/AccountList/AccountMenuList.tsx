@@ -11,15 +11,26 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { useHistory } from 'react-router-dom';
 
 import LogoutDialog from '../../Modals/LogoutDialog/LogoutDialog';
+import { COLORS } from '../../../values/colors';
+import classnames from 'classnames';
 
 interface AccountListProps {
-  accountAnchorEl: null | Element,
-  onAccountListClose: () => void,
+  accountAnchorEl: null | Element;
+  onAccountListClose: () => void;
+  darkMode: boolean;
 }
 
 const useStyles = makeStyles({
   menuItem: {
     fontSize: '15px',
+  },
+  menuItemDark: {
+    '&:hover': {
+      backgroundColor: COLORS.primaryOttoman,
+    },
+    '&.Mui-selected': {
+      backgroundColor: COLORS.secondaryOttoman,
+    },
   },
   iconItem: {
     marginRight: '0.5rem',
@@ -27,14 +38,18 @@ const useStyles = makeStyles({
   },
 });
 
-const AccountList: React.FC<AccountListProps> = ({ accountAnchorEl, onAccountListClose }) => {
-  const [ logoutModalOpen, setLogoutModalOpen ] = useState(false);
+const AccountList: React.FC<AccountListProps> = ({
+  accountAnchorEl,
+  onAccountListClose,
+  darkMode,
+}) => {
+  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
   const history = useHistory();
 
   const classes = useStyles();
 
   const openProfilePage = () => {
-    history.push('/profile')
+    history.push('/profile');
   };
 
   const openLogoutDialog = () => {
@@ -47,39 +62,51 @@ const AccountList: React.FC<AccountListProps> = ({ accountAnchorEl, onAccountLis
 
   return (
     <AccountListMenu
-      anchorEl={ accountAnchorEl }
-      anchorOrigin={ { vertical: 'top', horizontal: 'right' } }
+      anchorEl={accountAnchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       keepMounted
-      transformOrigin={ { vertical: 'top', horizontal: 'right' } }
-      open={ !!accountAnchorEl }
-      onClose={ onAccountListClose }
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={!!accountAnchorEl}
+      onClose={onAccountListClose}
     >
-      <MenuItem className={ classes.menuItem } onClick={ openProfilePage }>
-        <ListItemIcon className={ classes.iconItem }>
+      <MenuItem
+        className={classnames(classes.menuItem, !darkMode ? classes.menuItemDark : '')}
+        onClick={openProfilePage}
+      >
+        <ListItemIcon className={classes.iconItem}>
           <PersonIcon fontSize="small" />
         </ListItemIcon>
         Профіль
       </MenuItem>
-      <MenuItem className={ classes.menuItem } onClick={ onAccountListClose }>
-        <ListItemIcon className={ classes.iconItem }>
+      <MenuItem
+        className={classnames(classes.menuItem, !darkMode ? classes.menuItemDark : '')}
+        onClick={onAccountListClose}
+      >
+        <ListItemIcon className={classes.iconItem}>
           <QuestionAnswerIcon fontSize="small" />
         </ListItemIcon>
         Контакти
       </MenuItem>
-      <MenuItem className={ classes.menuItem } onClick={ onAccountListClose }>
-        <ListItemIcon className={ classes.iconItem }>
+      <MenuItem
+        className={classnames(classes.menuItem, !darkMode ? classes.menuItemDark : '')}
+        onClick={onAccountListClose}
+      >
+        <ListItemIcon className={classes.iconItem}>
           <PieChartIcon fontSize="small" />
         </ListItemIcon>
         Аналітика
       </MenuItem>
       <Divider />
-      <MenuItem className={ classes.menuItem } onClick={ openLogoutDialog }>
-        <ListItemIcon className={ classes.iconItem }>
+      <MenuItem
+        className={classnames(classes.menuItem, !darkMode ? classes.menuItemDark : '')}
+        onClick={openLogoutDialog}
+      >
+        <ListItemIcon className={classes.iconItem}>
           <ExitToAppIcon fontSize="small" />
         </ListItemIcon>
         Вийти
       </MenuItem>
-      { logoutModalOpen && <LogoutDialog closeModal={ closeLogoutModal } /> }
+      {logoutModalOpen && <LogoutDialog closeModal={closeLogoutModal} />}
     </AccountListMenu>
   );
 };
