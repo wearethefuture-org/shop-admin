@@ -14,6 +14,7 @@ import CustomTooltip from './ToolTipBlock';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { IUserDateRange } from '../../interfaces/IUsers';
+import { COLORS } from '../../values/colors';
 
 interface IDataChart {
   date: string;
@@ -55,18 +56,47 @@ const StatisticsBlock: React.FC = () => {
       const dataArr = reqData.registredUsers.map((user: IUserDateRange) => {
         return { date: user.date, value: user.creatad };
       });
+      if (dataArr.length === 1) {
+        const mockData = dataArr[0];
+        dataArr.unshift(mockData);
+        dataArr.push(mockData);
+      }
       return setChartData(dataArr);
     }
     if (reqData[0] && reqData[0].paid) {
-      const dataArr = reqData.map((user: { date: string; paid: string; notpaid: string }) => {
-        return { date: user.date, value: user.paid, valueSecond: user.notpaid };
-      });
+      const dataArr = reqData.map(
+        (user: {
+          date: string;
+          paid: string;
+          notpaid: string;
+          paidSum: string;
+          notPaidSum: string;
+        }) => {
+          return {
+            date: user.date,
+            value: user.paid,
+            valueSecond: user.notpaid,
+            sumValue: user.paidSum,
+            sumValueSecond: user.notPaidSum,
+          };
+        }
+      );
+      if (dataArr.length === 1) {
+        const mockData = dataArr[0];
+        dataArr.unshift(mockData);
+        dataArr.push(mockData);
+      }
       return setChartData(dataArr);
     }
     if (reqData.length) {
       const dataArr = reqData.map((user: { date: string; creatad: string }) => {
         return { date: user.date, value: user.creatad };
       });
+      if (dataArr.length === 1) {
+        const mockData = dataArr[0];
+        dataArr.unshift(mockData);
+        dataArr.push(mockData);
+      }
       return setChartData(dataArr);
     }
   };
@@ -97,23 +127,32 @@ const StatisticsBlock: React.FC = () => {
           <AreaChart data={chartData}>
             <defs>
               <linearGradient id="color1" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#006400" stopOpacity={0.4} />
-                <stop offset="75%" stopColor="#006400" stopOpacity={0.05} />
+                <stop offset="0%" stopColor={COLORS.primaryGreen} stopOpacity={0.4} />
+                <stop offset="75%" stopColor={COLORS.primaryGreen} stopOpacity={0.05} />
               </linearGradient>
               {chartData[0].valueSecond && (
                 <linearGradient id="color2" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#303F9F" stopOpacity={0.4} />
-                  <stop offset="75%" stopColor="#303F9F" stopOpacity={0.05} />
+                  <stop offset="0%" stopColor={COLORS.primaryBlue} stopOpacity={0.4} />
+                  <stop offset="75%" stopColor={COLORS.primaryBlue} stopOpacity={0.05} />
                 </linearGradient>
               )}
             </defs>
 
-            <Area dataKey="value" stroke="#006400" fill="url(#color1)" />
+            <Area dataKey="value" stroke={COLORS.primaryGreen} fill="url(#color1)" />
             {chartData[0].valueSecond && (
-              <Area dataKey="valueSecond" stroke="#303F9F" fill="url(#color2)" />
+              <Area dataKey="valueSecond" stroke={COLORS.primaryBlue} fill="url(#color2)" />
             )}
 
-            <XAxis dataKey="date" axisLine={false} tickLine={false} />
+            <XAxis
+              dataKey={(data) => {
+                if (data.date)
+                  return `${data.date.split('-')[2]}.${data.date.split('-')[1]}.${
+                    data.date.split('-')[0]
+                  }`;
+              }}
+              axisLine={false}
+              tickLine={false}
+            />
 
             <YAxis
               dataKey={(data) => {

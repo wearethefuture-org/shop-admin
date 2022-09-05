@@ -19,7 +19,7 @@ import TreeCategoryRouter from '../../pages/TreeCategories/TreeCategoryRouter';
 import OrdersPage from '../../pages/Orders/OrdersPage';
 import OrderRouter from '../../pages/Orders/OrderRouter';
 import TreeCategories from '../../pages/TreeCategories/TreeCategories';
-import Home from '../../pages/Home/Home';
+import Login from '../../pages/Login/Login';
 import PrivateRoute from './PrivateRoute';
 import { RootState } from '../../store/store';
 import CommentsPage from '../../pages/Comments/CommentsPage';
@@ -41,9 +41,9 @@ const Router: React.FC = () => {
     <BrowserRouter>
       <WithAxios>
         <Route exact path="/">
-          {user ? <Redirect to="/dashboard" /> : <Redirect to="/home" />}
+          {user ? <Redirect to="/dashboard" /> : <Redirect to="/login" />}
         </Route>
-        <Route exact path="/home">
+        <Route exact path="/login">
           {user ? <Redirect to="/dashboard" /> : null}
         </Route>
         <div className={styles.container}>

@@ -40,9 +40,14 @@ export const getUsersByQueryError = (message: string): IActions => ({
   data: message,
 });
 
-export const getUsersRequest = (page: number, limit: number): IActions => ({
+export const getUsersRequest = (
+  page = 1,
+  limit = 10,
+  sort = 'id',
+  sortDirect = 'asc'
+): IActions => ({
   type: GET_USERS_REQUEST,
-  data: { page, limit },
+  data: { page, limit, sort, sortDirect },
 });
 
 export const getUsersSuccess = (users: IUserItem[]): IActions => ({

@@ -44,7 +44,7 @@ export function* signOutUser(): SagaIterator {
   try {
     clearStorage();
     const urlArr = window.location.href.split('/');
-    if (urlArr[3] !== 'home') {
+    if (urlArr[3] !== 'login') {
       yield put(successSnackBar());
     }
   } catch (error) {}
@@ -57,7 +57,7 @@ export function* fetchUser(): SagaIterator {
     yield put(fetchUserSuccess(user));
   } catch (error) {
     const urlArr = window.location.href.split('/');
-    if (urlArr[3] !== 'home') {
+    if (urlArr[3] !== 'login') {
       yield put(failSnackBar(error.message));
     }
     yield put(fetchUserError(error.message));
