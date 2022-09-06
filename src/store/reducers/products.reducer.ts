@@ -168,6 +168,7 @@ const products = (state = initialState, { type, data }: IActions) => {
       return {
         ...state,
         list: [...state.list, data],
+        currentProduct: data,
         loading: false,
       };
     }

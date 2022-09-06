@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from '../../../../store/store';
 import { productValidationShema } from '../ProductForm/productFormHelpers';
 import { getAddCharValuesObject } from './getAddCharValuesObject';
 import { IGetTreeCategoriesResponse, ICharResponse } from '../../../../interfaces/ITreeCategory';
-import { IAddProduct } from '../../../../interfaces/IProducts';
+import { IAddProduct, IGetProductById } from '../../../../interfaces/IProducts';
 
 const initialValues: IAddProduct = {
   name: '',
@@ -36,6 +36,14 @@ const AddProductForm: React.FC = () => {
     (state: RootState) => state.treeCategories.currentTreeCategory
   );
 
+  const product: IGetProductById = useSelector(
+    (state: RootState) => state.products.currentProduct
+  )
+
+  function productNewPage() {
+    return (product && history.push(`/product/${product.id}`))
+  }
+
   const handleGoBack = () => {
     history.push(location?.state?.from || '/products');
   };
@@ -54,7 +62,6 @@ const AddProductForm: React.FC = () => {
         category && category.characteristicGroup.map((group) => group.characteristic).flat(1);
 
       dispatch(addProductRequest(productValues, getAddCharValuesObject(subForm, chars)));
-      handleGoBack();
     },
   });
 
@@ -86,16 +93,19 @@ const AddProductForm: React.FC = () => {
   };
 
   return (
-    <ProductForm
-      editMode={false}
-      formik={formik}
-      handleGoBack={handleGoBack}
-      categories={categories}
-      handleImageChange={handleImageChange}
-      imagesPreview={imagesPreview}
-      handleDeleteImg={handleDeleteImg}
-      setValidation={setValidation}
-    />
+    <>
+      {productNewPage()}
+      <ProductForm
+        editMode={false}
+        formik={formik}
+        handleGoBack={handleGoBack}
+        categories={categories}
+        handleImageChange={handleImageChange}
+        imagesPreview={imagesPreview}
+        handleDeleteImg={handleDeleteImg}
+        setValidation={setValidation}
+        />
+    </>
   );
 };
 
