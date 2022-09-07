@@ -73,7 +73,7 @@ const Router: React.FC = () => {
                 <PrivateRoute component={Profile} path="/profile" />
                 <PrivateRoute path="/password" component={ResetPassword} />
                 <PrivateRoute path="/account/email/change" component={ConfirmEmail} />
-                <Route path="/home" component={Home} />
+                <Route path="/login" component={Login} />
               </Switch>
             </Content>
           </div>
