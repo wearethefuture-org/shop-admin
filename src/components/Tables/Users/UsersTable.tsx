@@ -3,7 +3,6 @@ import { Box, Button, createStyles, makeStyles, Theme, ThemeOptions } from '@mat
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useDispatch, useSelector } from 'react-redux';
-import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 
@@ -71,12 +70,7 @@ type QueryTypes = {
   sortDirect?: string;
 };
 
-const UsersTable: React.FC<UsersTableProps> = ({
-  list,
-  activeColumns,
-  isSearch,
-  paginationPage,
-}) => {
+const UsersTable: React.FC<UsersTableProps> = ({ list, activeColumns, isSearch, paginationPage }) => {
   const classes = useStyles();
   const dispatch: AppDispatch = useDispatch();
   const history = useHistory();
