@@ -8,6 +8,7 @@ import { COLORS } from '../../../../values/colors';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store/store';
 import classNames from 'classnames';
+import IconUpload from './IconUpload';
 
 const useStyles = makeStyles({
   customBtn: {
@@ -61,8 +62,25 @@ const InnerForm: React.FC<InnerTreeCategoryFormProps & FormikProps<IAddTreeCateg
 
   const { darkMode } = useSelector((state: RootState) => state.theme);
 
+  const dragOverHandler = (event: React.DragEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
+  const dropHandler = (event: React.DragEvent<HTMLElement>) => {
+    event.preventDefault();
+    if (event.dataTransfer.items) {
+      let file = event.dataTransfer.items[0].getAsFile();
+      const domNode = event.target as HTMLElement;
+      const labelElement = domNode.closest('label') as HTMLElement;
+      const inputElement = labelElement.querySelector('input') as HTMLInputElement;
+      if (inputElement != null) {
+        props.setFieldValue(inputElement.name, file);
+      }
+    }
+  };
+
   return (
-    <Form>
+    <Form onDrop={dropHandler} onDragOver={dragOverHandler}>
       <Field
         fullWidth
         component={TextFieldWrapped}
@@ -90,6 +108,20 @@ const InnerForm: React.FC<InnerTreeCategoryFormProps & FormikProps<IAddTreeCateg
         label="Опис *"
         name="description"
         makegreen="true"
+      />
+
+      <Field
+        fullWidth
+        multiline
+        rowsMax={6}
+        component={IconUpload}
+        className={classes.input}
+        label="icon"
+        name="icon"
+        type="file"
+        caption="*Розмір фото не має перевищувати 10 МБ *Підтримувані формати фото: .svg"
+        makegreen="true"
+        fieldId="icon"
       />
 
       <DialogActions>

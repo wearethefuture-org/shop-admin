@@ -47,6 +47,7 @@ export interface IAddTreeCategory {
   name: string;
   description?: string;
   key: string;
+  icon: string | File;
   parentId?: number | null;
   children?: IChildren[];
 }
