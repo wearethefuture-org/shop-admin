@@ -20,4 +20,12 @@ export const treeCategoryValidationShema = Yup.object().shape({
     .min(2, 'Мінімальна довжина 2 символа')
     .max(360, 'Максимальна довжина 360 символів')
     .required('Обов`язкове поле'),
+  icon: Yup.mixed()
+    .required('Потрібно додати зображення')
+    .test('fileSize', 'Занадто великий файл', (value) => {
+      return value && (typeof value === 'string' || value.size <= 10000000);
+    })
+    .test('fileFormat', 'Формат не підтримується', (value) => {
+      return value && (typeof value === 'string' || 'image/svg+xml'.includes(value.type));
+    }),
 });
