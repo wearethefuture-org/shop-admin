@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createStyles, IconButton, makeStyles, ThemeOptions } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import queryString from 'query-string';
+import { useHistory, useLocation } from 'react-router-dom';
+import classNames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { CommentsTableProps } from '../../../interfaces/IComment';
 import AppDataTable from '../../AppDataTable/AppDataTable';
 import DateMoment from '../../Common/Date-moment';
 import styles from './CommentsTable.module.scss';
 import { COLORS } from '../../../values/colors';
-import { useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
-import classNames from 'classnames';
+import { getCommentsRequest } from '../../../store/actions/comments.actions';
+import Preloader from '../../Preloader/Preloader';
+import { cols } from '../../../pages/Comments/CommentsPage';
 
 const useStyles = makeStyles(
   (): ThemeOptions =>
@@ -33,20 +38,71 @@ const useStyles = makeStyles(
     })
 );
 
+type QueryTypes = {
+  page?: string;
+  limit?: string;
+  sort?: string;
+  sortDirect?: string;
+};
+
 const CommentsTable: React.FC<CommentsTableProps> = ({
-  list,
   activeColumns,
   setOpenDeleteCommentDialog,
   setCommentToDelete,
-  count,
-  limit,
-  setLimit,
-  paginationServer,
-  setPage,
 }) => {
   const classes = useStyles();
   const [expandedComments, setExpandedComments] = useState<number[]>([]);
   const { darkMode } = useSelector((state: RootState) => state.theme);
+
+  const { list, loading, count, paginationPage, paginationLimit, sort, sortDirect } = useSelector(
+    (state: RootState) => state.comments
+  );
+  const defaultSortFieldId = Object.keys(cols).indexOf(sort as string) + 1;
+  const history = useHistory();
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const parsed = queryString.parse(location.search) as QueryTypes;
+    console.log(parsed);
+    
+    let actualPage = paginationPage;
+    if (parsed.page) actualPage = Number(parsed.page);
+    let actualLimit = paginationLimit;
+    if (parsed.limit) actualLimit = Number(parsed.limit);
+    let actualSort = sort;
+    if (parsed.sort) actualSort = parsed.sort;
+    let actualSortDirect = sortDirect;
+    if (parsed.sortDirect) actualSortDirect = parsed.sortDirect;
+    dispatch(getCommentsRequest(actualPage, actualLimit, actualSort, actualSortDirect));
+  }, []);
+
+  useEffect(() => {
+    const querySearch = {} as QueryTypes;
+    if (!!paginationPage && paginationPage !== 1) querySearch.page = String(paginationPage);
+    if (!!paginationLimit && paginationLimit !== 10) querySearch.limit = String(paginationLimit);
+    if (!!sort && sort !== 'id') querySearch.sort = sort;
+    if (!!sortDirect && sortDirect !== 'asc') querySearch.sortDirect = sortDirect;
+    history.push({
+      pathname: '/comments',
+      search: queryString.stringify(querySearch),
+      state: { update: true },
+    });
+  }, [paginationPage, paginationLimit, sort, sortDirect]);
+
+  const onChangeLimit = (limit) => {
+    const newPage = Math.ceil(((paginationPage - 1) * paginationLimit + 1) / limit);
+    dispatch(getCommentsRequest(newPage, limit, sort, sortDirect));
+  };
+
+  const onChangePage = (page) => {
+    if (paginationPage !== page) dispatch(getCommentsRequest(page, paginationLimit, sort, sortDirect));
+  };
+
+  const setSortColumn = (column: any, direction: any) => {
+    const fieldName = Object.keys(cols)[Object.values(cols).indexOf(column.name)];
+    dispatch(getCommentsRequest(paginationPage, paginationLimit, fieldName, direction));
+  };
 
   const handleExpandedComments = (id) => {
     expandedComments.includes(id)
@@ -127,9 +183,7 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
             setCommentToDelete(row.id);
           }}
         >
-          <DeleteIcon
-            className={classNames(classes.icon, darkMode ? classes.iconDark : classes.iconLight)}
-          />
+          <DeleteIcon className={classNames(classes.icon, darkMode ? classes.iconDark : classes.iconLight)} />
         </IconButton>
       ),
     },
@@ -137,18 +191,24 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
 
   return (
     <>
-      {list.length ? (
+      {loading ? (
+        <Preloader />
+      ) : (
         <AppDataTable
           data={list}
           columns={commentsColumns}
           title="Коментарі"
           count={count}
-          limit={limit}
-          setLimit={setLimit}
-          paginationServer={paginationServer}
-          setPage={setPage}
+          limit={paginationLimit}
+          setLimit={(e) => onChangeLimit(e)}
+          setPage={(e) => onChangePage(e)}
+          setSortColumn={(column, direction) => setSortColumn(column, direction)}
+          paginationServer={true}
+          paginationPage={paginationPage}
+          defaultSortFieldId={defaultSortFieldId}
+          sortDirect={sortDirect}
         />
-      ) : null}
+      )}
     </>
   );
 };

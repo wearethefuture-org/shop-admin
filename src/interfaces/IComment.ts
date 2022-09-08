@@ -26,13 +26,16 @@ export interface ICommentResponse {
 }
 
 export interface ICommentsState {
-  loading: boolean;
   list: IComment[];
-  rangeComments: ICommentsDateRange[] | null;
-  count: number;
-  page: number;
-  totalPages: number;
+  loading: boolean;
   error: string | null;
+  count: number;
+  totalPages: number;
+  rangeComments: ICommentsDateRange[] | null;
+  paginationPage: number;
+  paginationLimit: number;
+  sort: string;
+  sortDirect: string;
 }
 
 export interface ICommentsDateRange {
@@ -41,13 +44,7 @@ export interface ICommentsDateRange {
 }
 
 export interface CommentsTableProps {
-  list: IComment[];
   activeColumns: string[];
   setOpenDeleteCommentDialog: Dispatch<SetStateAction<boolean>>;
   setCommentToDelete: Dispatch<SetStateAction<number>>;
-  count: number;
-  setPage: Dispatch<SetStateAction<number>>;
-  limit: number;
-  setLimit: Dispatch<SetStateAction<number>>;
-  paginationServer: boolean;
 }

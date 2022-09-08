@@ -14,9 +14,9 @@ import {
 } from '../types';
 
 // get all
-export const getCommentsRequest = (page: number, limit: number): IActions => ({
+export const getCommentsRequest = (page = 1, limit = 10, sort = 'id', sortDirect = 'asc'): IActions => ({
   type: GET_COMMENTS_REQUEST,
-  data: { page, limit },
+  data: { page, limit, sort, sortDirect },
 });
 
 export const getCommentsSuccess = (products: IComment[]): IActions => ({

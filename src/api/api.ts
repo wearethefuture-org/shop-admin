@@ -112,7 +112,7 @@ type ApiFetchedDataType = {
   };
 
   comments: {
-    get: (page: number, limit: number) => FetchedDataType<ICommentResponse>;
+    get: (page: number, limit: number,sort: string, sortDirect: string) => FetchedDataType<ICommentResponse>;
     getByDatesRange: (datesArray: string[]) => FetchedDataType<ICommentsDateRange[]>;
     delete: (id: number) => FetchedDataType<JSON>;
   };
@@ -241,7 +241,8 @@ export const api: ApiFetchedDataType = {
     addAvatar: (data) => instance.post('users/avatar', data),
   },
   comments: {
-    get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),
+    get: (page, limit, sort, sortDirect) =>
+      instance.get(`${root}/comments?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}`),
     getByDatesRange: (datesArray: string[]) =>
       instance.get(
         `${root}/comments/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`

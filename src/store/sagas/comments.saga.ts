@@ -11,15 +11,11 @@ import {
   getCommentsSuccess,
 } from '../actions/comments.actions';
 import { failSnackBar } from '../actions/snackbar.actions';
-import {
-  apiDeleteComment,
-  apiGetByRangeComments,
-  apiGetComments,
-} from './services/comments.service';
+import { apiDeleteComment, apiGetByRangeComments, apiGetComments } from './services/comments.service';
 
-export function* getCommentsWorker({ data: { page, limit } }: IActions): SagaIterator {
+export function* getCommentsWorker({ data: { page, limit, sort, sortDirect } }: IActions): SagaIterator {
   try {
-    const comments = yield call(apiGetComments, page, limit);
+    const comments = yield call(apiGetComments, page, limit, sort, sortDirect);
     yield put(getCommentsSuccess(comments));
   } catch (error) {
     yield put(failSnackBar(error.message));
