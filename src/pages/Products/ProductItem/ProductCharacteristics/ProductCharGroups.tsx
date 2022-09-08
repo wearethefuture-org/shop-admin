@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import { Button } from '@material-ui/core';
+import { Button, createStyles, makeStyles, ThemeOptions } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 
 import ProductChar from './ProductChar/ProductChar';
@@ -10,14 +10,41 @@ import { getTreeCategoryByIdRequest } from '../../../../store/actions/treeCatego
 import { IGetTreeCategoriesResponse } from '../../../../interfaces/ITreeCategory';
 import useTreeCategories from '../../../../hooks/useTreeCategories';
 import styles from './ProductCharGroups.module.scss';
+import classNames from 'classnames';
+import { COLORS } from '../../../../values/colors';
 
 interface IProductChar {
   categoryId: number;
 }
 
+const useStyles = makeStyles(
+  (): ThemeOptions =>
+    createStyles({
+      btn: {
+        borderRadius: '30px',
+        color: COLORS.primaryLight,
+      },
+      addCharBtn: {
+        'backgroundColor': COLORS.primaryBlue,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryBlue,
+        },
+      },
+      addCharBtnDark: {
+        'backgroundColor': COLORS.darkBlue,
+        '&:hover': {
+          backgroundColor: COLORS.secondaryDarkBlue,
+        },
+      },
+    })
+);
+
 const ProductCharGroups: React.FC<IProductChar> = ({ categoryId }) => {
   const dispatch: AppDispatch = useDispatch();
   const location = useLocation();
+
+  const { darkMode } = useSelector((state: RootState) => state.theme);
+  const classes = useStyles();
 
   const { data: categories } = useTreeCategories();
 
@@ -43,7 +70,12 @@ const ProductCharGroups: React.FC<IProductChar> = ({ categoryId }) => {
                   state: { from: `${location.pathname}` },
                 }}
               >
-                <Button variant="contained" color="primary" startIcon={<AddIcon />} type="button">
+                <Button
+                  className={classNames(classes.btn, darkMode ? classes.addCharBtnDark : classes.addCharBtn)}
+                  variant="contained"
+                  startIcon={<AddIcon />}
+                  type="button"
+                >
                   Додати характеристики
                 </Button>
               </Link>

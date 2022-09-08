@@ -6,47 +6,48 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { LinearProgress } from '@material-ui/core';
 
-enum cols {
+export enum cols {
   id = 'ID',
   createdAt = 'Створено',
-  phone = 'Телефон',
+  phoneNumber = 'Телефон',
   email = 'Email',
   telegramId = 'Телеграм',
-  name = `Ім'я`,
+  firstName = `Ім'я`,
   role = 'Роль',
 }
 
 let initialActiveColumns: string[] = [
   cols.id,
   cols.createdAt,
-  cols.phone,
+  cols.phoneNumber,
   cols.email,
   cols.telegramId,
-  cols.name,
+  cols.firstName,
   cols.role,
-]
+];
 
 const UsersContainer: React.FC = () => {
+  const { paginationPage, paginationPageSearch, list, loading, isSearch } = useSelector(
+    (state: RootState) => state.users
+  );
 
-  const { paginationPage, paginationPageSearch, count, searchValue } = useSelector((state: RootState) => state.users);
+  // const { list, loading, isSearch } = useUsers(paginationPage, paginationPageSearch, searchValue);
 
-  const { list, loading, isSearch } = useUsers(paginationPage, paginationPageSearch, searchValue);
+  const [activeColumns, setActiveColumns] = useState<string[]>(initialActiveColumns);
 
-    const [activeColumns, setActiveColumns] = useState<string[]>(initialActiveColumns);
-  
   return (
     <div>
       {loading && <LinearProgress />}
-      {list && <UsersTable
-        list={list}
-        activeColumns={activeColumns}
-        isSearch={isSearch}
-        searchValue={searchValue}
-        count={count}
-        paginationPage={isSearch ? paginationPageSearch : paginationPage}
-      />}
-  </div>
-  )
+      {list && (
+        <UsersTable
+          list={list}
+          activeColumns={activeColumns}
+          isSearch={isSearch}
+          paginationPage={isSearch ? paginationPageSearch : paginationPage}
+        />
+      )}
+    </div>
+  );
 };
 
 export default UsersContainer;

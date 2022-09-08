@@ -82,6 +82,7 @@ const AppDataTable: React.FC<DataTableProps> = ({
         onChangeRowsPerPage={(l) => setLimit(l)}
         customStyles={customStyles}
         conditionalRowStyles={conditionalRowStyles}
+        onSort={(column, direction) => setSortColumn(column, direction)}
       />
     </Card>
   );

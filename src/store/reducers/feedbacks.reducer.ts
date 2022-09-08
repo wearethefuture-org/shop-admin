@@ -65,6 +65,7 @@ const feedbacks = (state = initialState, { type, data }: IActions): IFeedbacksSt
         ...state,
         loading: false,
         list: state.list.filter((feedback) => feedback.id !== data),
+        count: state.count - 1,
       };
     }
 

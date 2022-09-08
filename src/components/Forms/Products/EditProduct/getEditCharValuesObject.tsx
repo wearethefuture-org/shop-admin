@@ -11,10 +11,7 @@ import {
 
 const arrayEquals = (a: string[], b: string[]) => {
   return (
-    Array.isArray(a) &&
-    Array.isArray(b) &&
-    a.length === b.length &&
-    a.every((val, index) => val === b[index])
+    Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index])
   );
 };
 
@@ -93,9 +90,7 @@ export const getEditCharValuesObject = (
       ? chars.reduce((acc: ICharValue[], char) => {
           const { id: characteristicId, type, name: characteristicName } = char;
 
-          const productChar = product.characteristicValue.find(
-            ({ name }) => name === characteristicName
-          );
+          const productChar = product.characteristicValue.find(({ name }) => name === characteristicName);
 
           const initialValue =
             characteristicId &&
@@ -104,6 +99,7 @@ export const getEditCharValuesObject = (
 
           const value =
             characteristicId && formik.values.subForm && formik.values.subForm[characteristicName];
+
           if (productChar && value) {
             const { id } = productChar;
             const basicValues = {
@@ -121,10 +117,13 @@ export const getEditCharValuesObject = (
 
               case Type.json:
                 let { newEntry, ...rest } = value;
+                if (newEntry) {
+                  const formattedNewEntry = {};
+                  Object.entries(newEntry).forEach((item: any) => {
+                    formattedNewEntry[item[1].key.trim()] = item[1].value.split(',').map((val) => val.trim());
+                  });
 
-                if (newEntry?.key) {
-                  const newValue = newEntry.value.split(',').map((val) => val.trim());
-                  rest = { ...rest, [newEntry.key.trim()]: newValue };
+                  rest = { ...rest, ...formattedNewEntry };
                 }
 
                 const entries: [string, string | string[]][] = Object.entries(rest);
@@ -190,8 +189,7 @@ export const getEditCharValuesObject = (
           const productChar: IProductCharResponse | undefined = product.characteristicValue.find(
             ({ name }) => name === char.name
           );
-          const value =
-            productChar && formik.values.subForm && formik.values.subForm[productChar.name];
+          const value = productChar && formik.values.subForm && formik.values.subForm[productChar.name];
 
           if (productChar) {
             if (productChar.enumValue && !value.length) {

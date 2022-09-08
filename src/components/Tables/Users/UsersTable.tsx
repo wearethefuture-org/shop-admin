@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, createStyles, makeStyles, Theme, ThemeOptions } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+
 import AppDataTable from '../../../components/AppDataTable/AppDataTable';
 import UserDialog from '../../Modals/UserDialog/UserDialog';
 import UserRemoveDialog from '../../Modals/UserRemoveDialog/UserRemoveDialog';
 import { AppDispatch, RootState } from '../../../store/store';
-import { useDispatch, useSelector } from 'react-redux';
 import { getUsersByQueryRequest, getUsersRequest } from '../../../store/actions/users.actions';
 import { UsersTableProps } from '../../../interfaces/IUsers';
 import { COLORS } from '../../../values/colors';
 import AddBtn from '../../AddBtn/AddBtn';
 import classNames from 'classnames';
+import { phoneNumberFormatter } from '../../../utils/phoneNumberFormatter';
+import Preloader from '../../Preloader/Preloader';
+import { cols } from '../../Containers/Users-container';
 
 const useStyles = makeStyles(
   (theme: Theme): ThemeOptions =>
@@ -57,38 +63,83 @@ const useStyles = makeStyles(
     })
 );
 
-const UsersTable: React.FC<UsersTableProps> = ({
-  list,
-  activeColumns,
-  isSearch,
-  searchValue,
-  count,
-  paginationPage,
-}) => {
+type QueryTypes = {
+  page?: string;
+  limit?: string;
+  sort?: string;
+  sortDirect?: string;
+};
+
+const UsersTable: React.FC<UsersTableProps> = ({ list, activeColumns, isSearch, paginationPage }) => {
   const classes = useStyles();
   const dispatch: AppDispatch = useDispatch();
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const history = useHistory();
+  const location = useLocation();
   const { darkMode } = useSelector((state: RootState) => state.theme);
+  const { paginationLimit, sort, sortDirect, count, searchValue, loading } = useSelector(
+    (state: RootState) => state.users
+  );
+  const defaultSortFieldId = Object.keys(cols).indexOf(sort) + 1;
 
-  const onChangePage = (page) => {
-    setPage(page);
+  useEffect(() => {
+    const parsed = queryString.parse(location.search) as QueryTypes;
 
+    let actualPage = paginationPage;
+    if (parsed.page) actualPage = Number(parsed.page);
+    let actualLimit = paginationLimit;
+    if (parsed.limit) actualLimit = Number(parsed.limit);
+    let actualSort = sort;
+    if (parsed.sort) actualSort = parsed.sort;
+    let actualSortDirect = sortDirect;
+    if (parsed.sortDirect) actualSortDirect = parsed.sortDirect;
+
+    dispatch(getUsersRequest(actualPage, actualLimit, actualSort, actualSortDirect));
+  }, []);
+
+  useEffect(() => {
+    const querySearch = {} as QueryTypes;
+
+    if (!!paginationPage && paginationPage !== 1) querySearch.page = String(paginationPage);
+    if (!!paginationLimit && paginationLimit !== 10) querySearch.limit = String(paginationLimit);
+    if (!!sort && sort !== 'id') querySearch.sort = sort;
+    if (!!sortDirect && sortDirect !== 'asc') querySearch.sortDirect = sortDirect;
+
+    history.push({
+      pathname: '/users',
+      search: queryString.stringify(querySearch),
+      state: { update: true },
+    });
+  }, [paginationPage, paginationLimit, sort, sortDirect]);
+
+  useEffect(() => {
     if (isSearch) {
       dispatch(getUsersByQueryRequest(searchValue, page, limit));
       return;
     }
     dispatch(getUsersRequest(page, limit));
+  }, [count]);
+
+  const onChangePage = (page) => {
+    if (isSearch) {
+      dispatch(getUsersByQueryRequest(searchValue!, page, paginationLimit));
+      return;
+    }
+    if (paginationPage !== page) dispatch(getUsersRequest(page, paginationLimit, sort, sortDirect));
   };
 
   const onChangeLimit = (limit) => {
-    setLimit(limit);
+    const newPage = Math.ceil(((paginationPage - 1) * paginationLimit + 1) / limit);
 
     if (isSearch) {
-      dispatch(getUsersByQueryRequest(searchValue, page, limit));
+      dispatch(getUsersByQueryRequest(searchValue!, paginationPage, limit));
       return;
     }
-    dispatch(getUsersRequest(page, limit));
+    dispatch(getUsersRequest(newPage, limit, sort, sortDirect));
+  };
+
+  const setSortColumn = (column: any, direction: any) => {
+    const fieldName = Object.keys(cols)[Object.values(cols).indexOf(column.name)];
+    dispatch(getUsersRequest(paginationPage, paginationLimit, fieldName, direction));
   };
 
   const [userDialogIsOpen, setUserDialogIsOpen] = useState(false);
@@ -160,7 +211,7 @@ const UsersTable: React.FC<UsersTableProps> = ({
     },
     {
       name: 'Телефон',
-      selector: (row) => row.phoneNumber,
+      selector: (row) => phoneNumberFormatter(row.phoneNumber),
       sortable: true,
       omit: !activeColumns.includes('Телефон'),
     },
@@ -193,18 +244,12 @@ const UsersTable: React.FC<UsersTableProps> = ({
           <Box display="flex">
             <Button className={classes.button} value={row.id} onClick={openDialogUserCard}>
               <EditIcon
-                className={classNames(
-                  classes.icon,
-                  darkMode ? classes.editIconDark : classes.editIcon
-                )}
+                className={classNames(classes.icon, darkMode ? classes.editIconDark : classes.editIcon)}
               />
             </Button>
             <Button className={classes.button} value={row.id} onClick={openDialogRemoveUser}>
               <DeleteIcon
-                className={classNames(
-                  classes.icon,
-                  darkMode ? classes.deleteIconDark : classes.deleteIcon
-                )}
+                className={classNames(classes.icon, darkMode ? classes.deleteIconDark : classes.deleteIcon)}
               />
             </Button>
           </Box>
@@ -215,22 +260,28 @@ const UsersTable: React.FC<UsersTableProps> = ({
 
   return (
     <div className={classes.wrapper}>
-      <AppDataTable
-        data={list}
-        columns={userColumns}
-        title={addUserBtn}
-        count={count}
-        setLimit={(e) => onChangeLimit(e)}
-        setPage={(e) => onChangePage(e)}
-        paginationServer={true}
-        paginationPage={paginationPage}
-        defaultSortFieldId={'created'}
-        customStyles={{
-          cells: {
-            style: { cursor: 'default' },
-          },
-        }}
-      />
+      {loading ? (
+        <Preloader />
+      ) : (
+        <AppDataTable
+          data={list}
+          columns={userColumns}
+          title={addUserBtn}
+          count={count}
+          limit={paginationLimit}
+          setLimit={(e) => onChangeLimit(e)}
+          setPage={(e) => onChangePage(e)}
+          setSortColumn={(column, direction) => setSortColumn(column, direction)}
+          paginationServer={true}
+          paginationPage={paginationPage}
+          defaultSortFieldId={defaultSortFieldId}
+          customStyles={{
+            cells: {
+              style: { cursor: 'default' },
+            },
+          }}
+        />
+      )}
     </div>
   );
 };

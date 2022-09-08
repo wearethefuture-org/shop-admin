@@ -84,6 +84,7 @@ const useStyles = makeStyles(
         },
       },
       btn: {
+        width: '117px',
         borderRadius: '30px',
         padding: '6px 15px 6px 15px',
         color: COLORS.primaryLight,
@@ -147,10 +148,7 @@ const TreeCategoryInfo: React.FC = () => {
     (state: RootState) => state.treeCategories.currentTreeCategory
   );
 
-  const [treeCategoryState, treeCategoryDispatch] = useReducer(
-    treeCategoryReducer,
-    {} as TreeCategory
-  );
+  const [treeCategoryState, treeCategoryDispatch] = useReducer(treeCategoryReducer, {} as TreeCategory);
 
   const [treeCategoryDisplayState, treeCategoryDisplayDispatch] = useReducer(
     treeCategoryDisplayReducer,
@@ -224,10 +222,7 @@ const TreeCategoryInfo: React.FC = () => {
         return;
       }
 
-      const validation = await categoryValidation(
-        dispatch,
-        parentId ? parentId : treeCategory?.parent?.id
-      );
+      const validation = await categoryValidation(dispatch, parentId ? parentId : treeCategory?.parent?.id);
 
       if (!validation) {
         return false;
@@ -263,9 +258,7 @@ const TreeCategoryInfo: React.FC = () => {
 
   useEffect(() => {
     const groupNames =
-      charGroup &&
-      charGroup.length &&
-      charGroup.map((group) => (group && group.name ? group.name : ''));
+      charGroup && charGroup.length && charGroup.map((group) => (group && group.name ? group.name : ''));
 
     groupNames ? setExpandedGroups(groupNames) : setExpandedGroups([]);
   }, [charGroup]);
@@ -338,11 +331,7 @@ const TreeCategoryInfo: React.FC = () => {
             }
           />
           <h1>
-            {treeCategoryDisplayState
-              ? treeCategoryDisplayState.name
-              : treeCategory
-              ? treeCategory.name
-              : ''}
+            {treeCategoryDisplayState ? treeCategoryDisplayState.name : treeCategory ? treeCategory.name : ''}
           </h1>
 
           <FormikProvider value={formik}>
@@ -370,9 +359,7 @@ const TreeCategoryInfo: React.FC = () => {
                     type="button"
                     onClick={() => setOpenDeleteDialog(true)}
                   >
-                    <DeleteIcon
-                      className={darkMode ? classes.deleteButtonDark : classes.deleteButton}
-                    />
+                    <DeleteIcon className={darkMode ? classes.deleteButtonDark : classes.deleteButton} />
                   </IconButton>
                   <div>
                     <span>Disable</span>
@@ -387,7 +374,7 @@ const TreeCategoryInfo: React.FC = () => {
               <div className={expandedBlocks.includes('main') ? 'expanded' : 'shrinked'}>
                 {editBasicInfo ? <TreeCategoryEditForm /> : <TreeCategoryBasicInfo />}
               </div>
-              {!treeCategory.children.length && (
+              {
                 <>
                   <ExpandBtn
                     expandBlock={expandedBlocks.includes('characteristics')}
@@ -397,21 +384,18 @@ const TreeCategoryInfo: React.FC = () => {
                     <h4>Характеристики</h4>
                   </ExpandBtn>
 
-                  <div
-                    className={expandedBlocks.includes('characteristics') ? 'expanded' : 'shrinked'}
-                  >
+                  <div className={expandedBlocks.includes('characteristics') ? 'expanded' : 'shrinked'}>
                     <div className={styles['add-btn-wrapper']}>
                       <AddBtn
                         title="Додати групу"
                         handleAdd={() => {
                           setOpenGroupModal(true);
                         }}
+                        style={{ width: '117px', lineHeight: '17px' }}
                       />
                     </div>
                     {charGroup &&
-                    charGroup.some(
-                      (group) => group.characteristic && group.characteristic.length
-                    ) ? (
+                    charGroup.some((group) => group.characteristic && group.characteristic.length) ? (
                       <>
                         <PriorityHighIcon style={{ color: 'red' }} />
                         <span>Є обов`язковою характеристикою</span>
@@ -437,13 +421,10 @@ const TreeCategoryInfo: React.FC = () => {
                       : null}
                   </div>
                 </>
-              )}
+              }
               <div className={styles['form-btn-wrapper']}>
                 <Button
-                  className={classNames(
-                    classes.btn,
-                    darkMode ? classes.saveButtonDark : classes.saveButton
-                  )}
+                  className={classNames(classes.btn, darkMode ? classes.saveButtonDark : classes.saveButton)}
                   disabled={formik.isSubmitting}
                   type="submit"
                 >

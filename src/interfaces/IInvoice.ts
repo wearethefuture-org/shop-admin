@@ -20,3 +20,8 @@ export interface IInvoiceData {
   invoiceFile?: IInvoiceFile;
   invoicesList?: IInvoice[];
 }
+
+export interface IInvoiceDateRange {
+  startDate: Date;
+  endDate: Date;
+}
