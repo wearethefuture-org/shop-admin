@@ -64,7 +64,7 @@
     "start": "react-scripts --openssl-legacy-provider start",
     "start:pm2": "pm2 start --name shop-admin npm -- start",
     "stop:pm2": "pm2 delete shop-admin",
-    "build": "react-scripts build",
+    "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
