@@ -69,18 +69,13 @@ type ApiFetchedDataType = {
     add: (product: IAddProduct) => FetchedDataType<IGetProductById>;
     update: (product: IUpdateProduct) => FetchedDataType<IGetProductById>;
     updateImg: (data: FormData) => FetchedDataType<IAddImgResponse>;
-    updateMainImg: (data: {
-      productId: number;
-      imgName: string;
-    }) => FetchedDataType<IGetProductById>;
+    updateMainImg: (data: { productId: number; imgName: string }) => FetchedDataType<IGetProductById>;
     deleteImg: (imgName: string) => FetchedDataType<IGetProductById>;
     deleteProduct: (id: number) => FetchedDataType<JSON>;
     addProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     updateProductCharValues: (data: IProductCharRequest) => FetchedDataType<IAddCharResponse>;
     deleteProductCharValues: (data: IDeleteProductChars) => FetchedDataType<JSON>;
-    updateAvailabilityProduct: (
-      data: IUpdateAvailabilityProduct
-    ) => FetchedDataType<IAddCharResponse>;
+    updateAvailabilityProduct: (data: IUpdateAvailabilityProduct) => FetchedDataType<IAddCharResponse>;
     disableProduct: (data: IDisableProduct) => FetchedDataType<IAddCharResponse>;
   };
 
@@ -112,13 +107,18 @@ type ApiFetchedDataType = {
   };
 
   comments: {
-    get: (page: number, limit: number,sort: string, sortDirect: string) => FetchedDataType<ICommentResponse>;
+    get: (page: number, limit: number, sort: string, sortDirect: string) => FetchedDataType<ICommentResponse>;
     getByDatesRange: (datesArray: string[]) => FetchedDataType<ICommentsDateRange[]>;
     delete: (id: number) => FetchedDataType<JSON>;
   };
 
   feedbacks: {
-    get: (page: number, limit: number) => FetchedDataType<IFeedbackResponse>;
+    get: (
+      page: number,
+      limit: number,
+      sort: string,
+      sortDirect: string
+    ) => FetchedDataType<IFeedbackResponse>;
     delete: (id: number) => FetchedDataType<JSON>;
   };
 
@@ -146,10 +146,7 @@ type ApiFetchedDataType = {
   sliderAnimations: {
     getSliderAnimations: () => FetchedDataType<ISliderAnimations>;
     getActiveSliderAnimation: () => FetchedDataType<ISliderAnimation>;
-    changeActiveSliderAnimation: (
-      id: number,
-      isActive: boolean
-    ) => FetchedDataType<ISliderAnimation>;
+    changeActiveSliderAnimation: (id: number, isActive: boolean) => FetchedDataType<ISliderAnimation>;
   };
 
   invoice: {
@@ -188,12 +185,12 @@ export const api: ApiFetchedDataType = {
 
     updateAvailabilityProduct: ({ productId, ...product }) =>
       instance.patch(`${root}/product/${productId}`, product),
-    disableProduct: ({ productId, ...product }) =>
-      instance.patch(`${root}/product/${productId}`, product),
+    disableProduct: ({ productId, ...product }) => instance.patch(`${root}/product/${productId}`, product),
   },
 
   slides: {
-    get: (page, limit, sort, sortDirect) => instance.get(`${root}/slide?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}`),
+    get: (page, limit, sort, sortDirect) =>
+      instance.get(`${root}/slide?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}`),
     add: (slide) => instance.post(`${root}/slide`, slide),
     update: (slide) => instance.patch(`${root}/slide/${slide.id}`, slide.body),
     updateVisibility: (slide) =>
@@ -210,23 +207,18 @@ export const api: ApiFetchedDataType = {
     get: (page, limit) => instance.get(`${root}/orders?page=${page}&limit=${limit}`),
     getById: (id) => instance.get(`${root}/orders/${id}`),
     updateStatus: (id, status) => instance.patch(`${root}/orders/status/${id}`, status),
-    update: (orderId, productId, data) =>
-      instance.put(`${root}/orders/${orderId}/${productId}`, data),
+    update: (orderId, productId, data) => instance.put(`${root}/orders/${orderId}/${productId}`, data),
     getByParams: (page, limit, searchValue) =>
       instance.get(`${root}/orders/params?page=${page}&limit=${limit}&searchValue=${searchValue}`),
     getByDatesRange: (datesArray: string[]) =>
-      instance.get(
-        `${root}/orders/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`
-      ),
+      instance.get(`${root}/orders/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`),
     updateProductInOrder: (data) => instance.put(`${root}/orders/product/`, data),
   },
 
   users: {
     get: (page, limit) => instance.get(`${root}/users?page=${page}&limit=${limit}`),
     getByDatesRange: (datesArray: string[]) =>
-      instance.get(
-        `${root}/users/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`
-      ),
+      instance.get(`${root}/users/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`),
   },
 
   user: {
@@ -244,13 +236,12 @@ export const api: ApiFetchedDataType = {
     get: (page, limit, sort, sortDirect) =>
       instance.get(`${root}/comments?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}`),
     getByDatesRange: (datesArray: string[]) =>
-      instance.get(
-        `${root}/comments/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`
-      ),
+      instance.get(`${root}/comments/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`),
     delete: (id) => instance.delete(`${root}/comments/admin/${id}`),
   },
   feedbacks: {
-    get: (page, limit) => instance.get(`${root}/feedbacks?page=${page}&limit=${limit}`),
+    get: (page, limit, sort, sortDirect) =>
+      instance.get(`${root}/feedbacks?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}`),
     delete: (id) => instance.delete(`${root}/feedbacks/admin/${id}`),
   },
   roles: {

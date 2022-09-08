@@ -64,8 +64,6 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
 
   useEffect(() => {
     const parsed = queryString.parse(location.search) as QueryTypes;
-    console.log(parsed);
-    
     let actualPage = paginationPage;
     if (parsed.page) actualPage = Number(parsed.page);
     let actualLimit = paginationLimit;

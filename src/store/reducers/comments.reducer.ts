@@ -25,7 +25,7 @@ const initialState: ICommentsState = {
   sortDirect: 'asc',
 };
 
-const comments = (state = initialState, { type, data }: IActions) => {
+const comments = (state = initialState, { type, data }: IActions): ICommentsState => {
   switch (type) {
     case GET_COMMENTS_REQUEST: {
       return {

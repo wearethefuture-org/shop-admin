@@ -1,17 +1,16 @@
 import { LinearProgress } from '@material-ui/core';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
 import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
 import CustomConfirm from '../../components/CustomConfirm/CustomConfirm';
 import FeedbacksTable from '../../components/Tables/Feedbacks/FeedbacksTable';
-import useFeedbacks from '../../hooks/useFeedbacks';
 import { deleteFeedbackRequest, getFeedbacksRequest } from '../../store/actions/feedbacks.actions';
-import { AppDispatch } from '../../store/store';
+import { AppDispatch, RootState } from '../../store/store';
 import styles from './FeedbacksPage.module.scss';
 
-enum feedbacksColumns {
+export enum cols {
   id = 'ID',
   authorIP = 'IP-адреса',
   text = 'Відгук',
@@ -22,26 +21,15 @@ enum feedbacksColumns {
 
 export default function FeedbacksPage() {
   const dispatch: AppDispatch = useDispatch();
-
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
-
-  const { list, count, loading } = useFeedbacks(currentPage, limit);
-
-  React.useEffect(() => {
-    if (!list.length && count){
-      dispatch(getFeedbacksRequest(currentPage, limit));
-    }
-  }, [list]);
-
+  const { list, loading } = useSelector((state: RootState) => state.feedbacks);
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [activeColumns, setActiveColumns] = useState<string[]>([
-    feedbacksColumns.id,
-    feedbacksColumns.authorIP,
-    feedbacksColumns.text,
-    feedbacksColumns.author,
-    feedbacksColumns.createdAt,
-    feedbacksColumns.updatedAt,
+    cols.id,
+    cols.authorIP,
+    cols.text,
+    cols.author,
+    cols.createdAt,
+    cols.updatedAt,
   ]);
 
   const handleColumns = (column: string) =>
@@ -74,7 +62,7 @@ export default function FeedbacksPage() {
       <div className={styles.container}>
         {showColumnsMenu && (
           <ColumnsMenu
-            allColumns={feedbacksColumns}
+            allColumns={cols}
             activeColumns={activeColumns}
             showColumnsMenu={showColumnsMenu}
             setShowColumnsMenu={setShowColumnsMenu}
@@ -88,15 +76,9 @@ export default function FeedbacksPage() {
         <div className={styles['table-wrapper']}>
           {list && (
             <FeedbacksTable
-              list={list}
               activeColumns={activeColumns}
               setOpenDeleteFeedbackDialog={setOpenDeleteFeedbackDialog}
               setFeedbackToDelete={setFeedbackToDelete}
-              count={count}
-              setPage={setCurrentPage}
-              limit={limit}
-              setLimit={setLimit}
-              paginationServer={true}
             />
           )}
         </div>
