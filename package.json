@@ -61,7 +61,7 @@
     "yup": "^0.30.0"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
+    "start": "react-scripts start",
     "start:pm2": "pm2 start --name shop-admin npm -- start",
     "stop:pm2": "pm2 delete shop-admin",
     "build": "CI=false && react-scripts --openssl-legacy-provider build",
