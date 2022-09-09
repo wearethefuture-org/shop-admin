@@ -3,7 +3,9 @@ import { IGetTreeCategoriesResponse } from '../../interfaces/ITreeCategory';
 import {
   GET_TREE_CATEGORIES_REQUEST,
   GET_TREE_CATEGORIES_SUCCESS,
-  ADD_TREE_CATEGORY,
+  ADD_TREE_CATEGORY_REQUEST,
+  ADD_TREE_CATEGORY_SUCCESS,
+  ADD_TREE_CATEGORY_ERROR,
   UPDATE_TREE_CATEGORY_REQUEST,
   UPDATE_TREE_CATEGORY_SUCCESS,
   UPDATE_TREE_CATEGORY_ERROR,
@@ -52,11 +54,27 @@ const treeCategories = (state = initialState, { type, data }: IActions) => {
 
     // add
 
-    case ADD_TREE_CATEGORY: {
+    case ADD_TREE_CATEGORY_REQUEST: {
       return {
         ...state,
         loading: true,
         error: null,
+      };
+    }
+      
+    case ADD_TREE_CATEGORY_SUCCESS: {
+      return {
+        ...state,
+        list: [...state.list, data],
+        loading: false,
+      };
+    }
+
+    case ADD_TREE_CATEGORY_ERROR: {
+      return {
+        ...state,
+        loading: false,
+        error: data,
       };
     }
 

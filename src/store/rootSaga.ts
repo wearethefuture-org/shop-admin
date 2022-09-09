@@ -8,7 +8,7 @@ import {
   GET_PRODUCTS_BY_QUERY_REQUEST,
   GET_PRODUCTS_REQUEST,
   GET_TREE_CATEGORIES_REQUEST,
-  ADD_TREE_CATEGORY,
+  ADD_TREE_CATEGORY_REQUEST,
   DELETE_TREE_CATEGORY,
   UPDATE_TREE_CATEGORY_REQUEST,
   GET_TREE_CATEGORIES_BY_ID_REQUEST,
@@ -125,7 +125,7 @@ import { generateInvoiceWorker, getInvoicesListWorker, removeInvoiceWorker } fro
 
 export function* sagaTreeCategoriesWatcher(): SagaIterator {
   yield takeEvery(GET_TREE_CATEGORIES_REQUEST, fetchTreeCategoryWorker);
-  yield takeEvery(ADD_TREE_CATEGORY, addTreeCategoryWorker);
+  yield takeEvery(ADD_TREE_CATEGORY_REQUEST, addTreeCategoryWorker);
   yield takeEvery(DELETE_TREE_CATEGORY, deleteTreeCategoryWorker);
   yield takeEvery(UPDATE_TREE_CATEGORY_REQUEST, updateTreeCategoryWorker);
   yield takeEvery(DISABLE_ENABLE_CATEGORY_REQUEST, disableEnableCategoryWorker);

@@ -5,7 +5,7 @@ import {
   GET_TREE_CATEGORIES_REQUEST,
   GET_TREE_CATEGORIES_SUCCESS,
   GET_TREE_CATEGORIES_ERROR,
-  ADD_TREE_CATEGORY,
+  ADD_TREE_CATEGORY_REQUEST,
   DELETE_TREE_CATEGORY,
   UPDATE_TREE_CATEGORY_REQUEST,
   UPDATE_TREE_CATEGORY_SUCCESS,
@@ -16,6 +16,8 @@ import {
   DISABLE_ENABLE_CATEGORY_REQUEST,
   DISABLE_ENABLE_CATEGORY_SUCCESS,
   DISABLE_ENABLE_CATEGORY_ERROR,
+  ADD_TREE_CATEGORY_ERROR,
+  ADD_TREE_CATEGORY_SUCCESS,
 } from '../types';
 
 export const getTreeCategoriesRequest = (): IActions => ({
@@ -36,9 +38,19 @@ export const getTreeCategoriesError = (message: string): IActions => ({
 
 // add
 
-export const addTreeCategory = (data: IAddTreeCategory): IActions => ({
-  type: ADD_TREE_CATEGORY,
+export const addTreeCategoryRequest = (data: IAddTreeCategory): IActions => ({
+  type: ADD_TREE_CATEGORY_REQUEST,
   data,
+});
+
+export const addTreeCategorySuccess = (category: IAddTreeCategory): IActions => ({
+  type: ADD_TREE_CATEGORY_SUCCESS,
+  data: category,
+});
+
+export const addTreeCategoryError = (message: string): IActions => ({
+  type: ADD_TREE_CATEGORY_ERROR,
+  data: message,
 });
 
 //delete
