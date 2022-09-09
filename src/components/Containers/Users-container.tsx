@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { LinearProgress } from '@material-ui/core';
 
 import UsersTable from '../Tables/Users/UsersTable';
-import useUsers from '../../hooks/useUsers';
-import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { LinearProgress } from '@material-ui/core';
 
 export enum cols {
   id = 'ID',
