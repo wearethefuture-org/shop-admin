@@ -30,9 +30,6 @@ const UsersContainer: React.FC = () => {
   const { paginationPage, paginationPageSearch, list, loading, isSearch } = useSelector(
     (state: RootState) => state.users
   );
-
-  // const { list, loading, isSearch } = useUsers(paginationPage, paginationPageSearch, searchValue);
-
   const [activeColumns, setActiveColumns] = useState<string[]>(initialActiveColumns);
 
   return (
