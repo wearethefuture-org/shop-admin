@@ -1,7 +1,7 @@
 import { withFormik } from 'formik';
 import { Dispatch } from 'redux';
 
-import { addTreeCategory } from '../../../../store/actions/treeCategories.actions';
+import { addTreeCategoryRequest } from '../../../../store/actions/treeCategories.actions';
 import InnerForm from './InnerForm';
 import { IAddTreeCategory } from '../../../../interfaces/ITreeCategory';
 import { treeCategoryValidationShema } from '../../../../pages/TreeCategories/TreeCategoryInfo/treeCategoryValidationShema';
@@ -18,9 +18,16 @@ const AddTreeCategoryForm = withFormik<TreeCategoryFormProps, IAddTreeCategory>(
     setSubmitting(false);
 
     const { closeModal, parentId, dispatch } = props;
-    const { name, key, description } = values;
+    const { name, key, description, icon } = values;
 
-    dispatch(addTreeCategory({ name, key, description, parentId }));
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('key', key);
+    formData.append('description', description);
+    formData.append('parent', parentId);
+    formData.append('icon', icon);
+
+    dispatch(addTreeCategoryRequest(formData));
     closeModal();
   },
 })(InnerForm);
