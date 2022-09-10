@@ -4,6 +4,7 @@ export interface ITreeCategory extends Common {
   key: string;
   name: string;
   description?: string;
+  icon: {name: string};
   mpath?: string;
   parent?: IParent | null;
   children?: IChildren[];

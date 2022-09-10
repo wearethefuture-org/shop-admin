@@ -18,6 +18,7 @@ import ChildrenCard from '../ChildrenCard/ChildrenCard';
 import MainTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/MainTreeCategoryModal/MainTreeCategoryModal';
 import DeleteTreeCategoryModal from '../../../components/Modals/TreeCategoryModal/DeleteTreeCategoryModal/DeleteTreeCategoryModal';
 import { useHistory } from 'react-router';
+import { root } from '../../../api/config';
 
 interface TreeCategoriesDataProps {
   dispatch: Dispatch;
@@ -36,9 +37,7 @@ enum Type {
 
 const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) => {
   const history = useHistory();
-  const searchProps = (({ id: targetId, mpath }) => ({ targetId, mpath }))(
-    Object(history.location.state)
-  );
+  const searchProps = (({ id: targetId, mpath }) => ({ targetId, mpath }))(Object(history.location.state));
   const [openSections, setOpenSections] = useState<string[]>(
     searchProps.mpath ? searchProps.mpath : getExpandedTrees()
   );
@@ -121,6 +120,15 @@ const TreeCategoriesCards: FC<TreeCategoriesDataProps> = ({ dispatch, list }) =>
                 handleClose={closeDeleteModal}
                 categoryInfo={{ id: l.id, name: l.name }}
               />
+            )}
+            {l.icon?.name ? (
+              <img
+                style={{ width: '50px' }}
+                src={`${root}/static/uploads/icons/${l.icon?.name}`}
+                alt={l.name}
+              />
+            ) : (
+              <img style={{ width: '50px' }} src={`${root}/static/uploads/icons/${l.key}.svg`} alt={l.name} />
             )}
             <ExpandableBlock
               darkMode={darkMode}
