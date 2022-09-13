@@ -44,7 +44,7 @@ export interface CommentsTableProps {
   list: IComment[];
   activeColumns: string[];
   setOpenDeleteCommentDialog: Dispatch<SetStateAction<boolean>>;
-  setCommentToDelete: (Dispatch<SetStateAction<number>>);
+  setCommentToDelete: Dispatch<SetStateAction<number>>;
   count: number;
   setPage: Dispatch<SetStateAction<number>>;
   limit: number;

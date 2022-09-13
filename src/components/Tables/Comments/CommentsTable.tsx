@@ -137,18 +137,16 @@ const CommentsTable: React.FC<CommentsTableProps> = ({
 
   return (
     <>
-      {list.length ? (
-        <AppDataTable
-          data={list}
-          columns={commentsColumns}
-          title="Коментарі"
-          count={count}
-          limit={limit}
-          setLimit={setLimit}
-          paginationServer={paginationServer}
-          setPage={setPage}
-        />
-      ) : null}
+      <AppDataTable
+        data={list}
+        columns={commentsColumns}
+        title="Коментарі"
+        count={count}
+        limit={limit}
+        setLimit={setLimit}
+        paginationServer={paginationServer}
+        setPage={setPage}
+      />
     </>
   );
 };
