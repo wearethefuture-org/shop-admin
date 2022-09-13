@@ -1,7 +1,6 @@
 import { AxiosResponse } from 'axios';
 
 import { IResponseMessage, IUsersStatistic } from './../interfaces/IUsers';
-import { root } from './config';
 
 import {
   IGetTreeCategoriesResponse,
@@ -157,112 +156,107 @@ type ApiFetchedDataType = {
 
 export const api: ApiFetchedDataType = {
   treeCategories: {
-    get: () => instance.get(`${root}/category/tree`),
-    getById: (id) => instance.get(`${root}/category/tree/${id}`),
-    add: (category) => instance.post(`${root}/category/tree`, category),
-    delete: (id) => instance.delete(`${root}/category/tree/${id}`),
-    update: (data) => instance.patch(`${root}/category/tree`, data),
-    disableEnable: (data) => instance.patch(`${root}/category/tree/disablecategories`, data),
+    get: () => instance.get('/category/tree'),
+    getById: (id) => instance.get(`/category/tree/${id}`),
+    add: (category) => instance.post('/category/tree', category),
+    update: (data) => instance.patch('/category/tree', data),
+    disableEnable: (data) => instance.patch('/category/tree/disablecategories', data),
+    delete: (id) => instance.delete(`/category/tree/${id}`),
   },
 
   products: {
     get: (page, limit, sort, sortDirect, filter) =>
       instance.get(
-        `${root}/product/admin?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}&filterId=${filter.id}&filterName=${filter.name}&filterCategory=${filter.category}&filterPrice=${filter.price}&filterShop=${filter.shop}`
+        `/product/admin?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}&filterId=${filter.id}&filterName=${filter.name}&filterCategory=${filter.category}&filterPrice=${filter.price}&filterShop=${filter.shop}`
       ),
-    add: (product) => instance.post(`${root}/product`, product),
-    getById: (id) => instance.get(`${root}/product/${id}`),
-    update: ({ id, ...product }) => instance.patch(`${root}/product/${id}`, product),
-    updateImg: (data) => instance.post(`${root}/product/multipleimages`, data),
-    updateMainImg: (data) => instance.patch(`${root}/product/img/preview`, data),
-    deleteImg: (imgName) => instance.delete(`${root}/product/img/${imgName}`),
-    deleteProduct: (id) => instance.delete(`${root}/product/${id}`),
-    addProductCharValues: (data) => instance.post(`${root}/characteristics-values`, data),
-    updateProductCharValues: (data) => instance.patch(`${root}/characteristics-values`, data),
-    deleteProductCharValues: (data) => instance.delete(`${root}/characteristics-values`, { data }),
-
+    getById: (id) => instance.get(`/product/${id}`),
+    add: (product) => instance.post('/product', product),
+    updateImg: (data) => instance.post('/product/multipleimages', data),
+    addProductCharValues: (data) => instance.post('/characteristics-values', data),
+    update: ({ id, ...product }) => instance.patch(`/product/${id}`, product),
+    updateMainImg: (data) => instance.patch('/product/img/preview', data),
+    updateProductCharValues: (data) => instance.patch('/characteristics-values', data),
     updateAvailabilityProduct: ({ productId, ...product }) =>
-      instance.patch(`${root}/product/${productId}`, product),
-    disableProduct: ({ productId, ...product }) => instance.patch(`${root}/product/${productId}`, product),
+      instance.patch(`/product/${productId}`, product),
+    disableProduct: ({ productId, ...product }) => instance.patch(`/product/${productId}`, product),
+    deleteProductCharValues: (data) => instance.delete('/characteristics-values', { data }),
+    deleteImg: (imgName) => instance.delete(`/product/img/${imgName}`),
+    deleteProduct: (id) => instance.delete(`/product/${id}`),
   },
 
   slides: {
-    get: () => instance.get(`${root}/slide`),
-    add: (slide) => instance.post(`${root}/slide`, slide),
-    update: (slide) => instance.patch(`${root}/slide/${slide.id}`, slide.body),
-    updateVisibility: (slide) =>
-      instance.patch(`${root}/slide/visibility/${slide.id}`, { isShown: slide.isShown }),
-    delete: (slide) => instance.delete(`${root}/slide/${slide.id}`),
+    get: () => instance.get('/slide'),
+    add: (slide) => instance.post('/slide', slide),
+    update: (slide) => instance.patch(`/slide/${slide.id}`, slide.body),
+    updateVisibility: (slide) => instance.patch(`/slide/visibility/${slide.id}`, { isShown: slide.isShown }),
+    delete: (slide) => instance.delete(`/slide/${slide.id}`),
   },
 
   settings: {
-    get: () => instance.get(`${root}/parameters`),
-    put: (settings) => instance.put(`${root}/parameters`, settings),
+    get: () => instance.get('/parameters'),
+    put: (settings) => instance.put('/parameters', settings),
   },
 
   orders: {
-    get: (page, limit) => instance.get(`${root}/orders?page=${page}&limit=${limit}`),
-    getById: (id) => instance.get(`${root}/orders/${id}`),
-    updateStatus: (id, status) => instance.patch(`${root}/orders/status/${id}`, status),
-    update: (orderId, productId, data) => instance.put(`${root}/orders/${orderId}/${productId}`, data),
+    get: (page, limit) => instance.get(`/orders?page=${page}&limit=${limit}`),
+    getById: (id) => instance.get(`/orders/${id}`),
     getByParams: (page, limit, searchValue) =>
-      instance.get(`${root}/orders/params?page=${page}&limit=${limit}&searchValue=${searchValue}`),
+      instance.get(`/orders/params?page=${page}&limit=${limit}&searchValue=${searchValue}`),
     getByDatesRange: (datesArray: string[]) =>
-      instance.get(`${root}/orders/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`),
-    updateProductInOrder: (data) => instance.put(`${root}/orders/product/`, data),
+      instance.get(`/orders/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`),
+    updateStatus: (id, status) => instance.patch(`/orders/status/${id}`, status),
+    update: (orderId, productId, data) => instance.put(`/orders/${orderId}/${productId}`, data),
+    updateProductInOrder: (data) => instance.put('/orders/product/', data),
   },
 
   users: {
-    get: (page, limit, sort, sortDirect) => instance.get(`${root}/users?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}`),
+    get: (page, limit, sort, sortDirect) =>
+      instance.get(`/users?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}`),
     getByDatesRange: (datesArray: string[]) =>
-      instance.get(`${root}/users/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`),
+      instance.get(`/users/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`),
   },
 
   user: {
-    auth: (user) => instance.post(`${root}/auth/admin/login`, user),
-    get: () => instance.get(`${root}/users/profile`),
-    update: ({ id, ...user }) => instance.put(`${root}/users/${id}`, user),
-    delete: (id) => instance.delete(`${root}/users/${id}`),
-    add: (user) => instance.post(`${root}/auth/register-through-admin`, user),
-    requestPasswordInstall: (email) => instance.post(`${root}/users/password/reset`, email),
-    updateUserData: (userData) => instance.patch(`${root}/users/update`, userData),
-    deleteAvatar: () => instance.delete('users/avatar'),
+    get: () => instance.get('/users/profile'),
+    auth: (user) => instance.post('/auth/admin/login', user),
+    add: (user) => instance.post('/auth/register-through-admin', user),
     addAvatar: (data) => instance.post('users/avatar', data),
     confirmEmail: (data) => instance.post('users/changeEmail', data),
+    requestPasswordInstall: (email) => instance.post('/users/password/reset', email),
+    updateUserData: (userData) => instance.patch('/users/update', userData),
+    update: ({ id, ...user }) => instance.put(`/users/${id}`, user),
+    delete: (id) => instance.delete(`/users/${id}`),
+    deleteAvatar: () => instance.delete('users/avatar'),
   },
   comments: {
-    get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),
+    get: (page, limit) => instance.get(`/comments?page=${page}&limit=${limit}`),
     getByDatesRange: (datesArray: string[]) =>
-      instance.get(`${root}/comments/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`),
-    delete: (id) => instance.delete(`${root}/comments/admin/${id}`),
+      instance.get(`/comments/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`),
+    delete: (id) => instance.delete(`/comments/admin/${id}`),
   },
   feedbacks: {
-    get: (page, limit) => instance.get(`${root}/feedbacks?page=${page}&limit=${limit}`),
-    delete: (id) => instance.delete(`${root}/feedbacks/admin/${id}`),
+    get: (page, limit) => instance.get(`/feedbacks?page=${page}&limit=${limit}`),
+    delete: (id) => instance.delete(`/feedbacks/admin/${id}`),
   },
   roles: {
-    get: () => instance.get(`${root}/roles`),
+    get: () => instance.get('/roles'),
   },
   search: {
     getSearchItems: (fields) =>
       instance.get(
-        `${root}/search/admin?${fields.option}=${fields.query}&page=${fields.page}&limit=${fields.limit}`
+        `/search/admin?${fields.option}=${fields.query}&page=${fields.page}&limit=${fields.limit}`
       ),
   },
   sliderAnimations: {
-    getSliderAnimations: () => instance.get(`${root}/slider-animations`),
-    getActiveSliderAnimation: () => instance.get(`${root}/slider-animations/active`),
+    getSliderAnimations: () => instance.get('/slider-animations'),
+    getActiveSliderAnimation: () => instance.get('/slider-animations/active'),
     changeActiveSliderAnimation: (id: number, isActive: boolean) =>
-      instance.patch(`${root}/slider-animations/change-active/${id}/${isActive}`),
+      instance.patch(`/slider-animations/change-active/${id}/${isActive}`),
   },
   invoice: {
-    getInvoicesList: () => instance.get(`${root}/invoice/all`),
-    removeInvoice: (name: string) => instance.delete(`${root}/invoice/${name}`),
-    generateInvoice: (invoiceDateRange: IInvoiceDateRange) =>
-      instance.post(`${root}/invoice`, invoiceDateRange),
-    getInvoiceFile: (name: string) =>
-      instance.get(`${root}/invoice/${name}`, {
-        responseType: 'blob',
-      }),
+    getInvoicesList: () => instance.get('/invoice/all'),
+    getInvoiceFile: (name: string) => instance.get(`/invoice/${name}`, { responseType: 'blob' }),
+    generateInvoice: (invoiceDateRange: IInvoiceDateRange) => instance.post('/invoice', invoiceDateRange),
+    removeInvoice: (name: string) => instance.delete(`/invoice/${name}`),
   },
 };
