@@ -111,14 +111,6 @@ const UsersTable: React.FC<UsersTableProps> = ({ list, activeColumns, isSearch, 
     });
   }, [paginationPage, paginationLimit, sort, sortDirect]);
 
-  useEffect(() => {
-    if (isSearch) {
-      dispatch(getUsersByQueryRequest(searchValue, page, limit));
-      return;
-    }
-    dispatch(getUsersRequest(page, limit));
-  }, [count]);
-
   const onChangePage = (page) => {
     if (isSearch) {
       dispatch(getUsersByQueryRequest(searchValue!, page, paginationLimit));
@@ -275,6 +267,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ list, activeColumns, isSearch, 
           paginationServer={true}
           paginationPage={paginationPage}
           defaultSortFieldId={defaultSortFieldId}
+          sortDirect={sortDirect}
           customStyles={{
             cells: {
               style: { cursor: 'default' },
