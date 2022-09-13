@@ -31,6 +31,10 @@ const EditProduct: React.FC = () => {
   const handleGoBack = () => {
     history.push(location?.state?.from || '/products');
   };
+  
+  const returnProduct = () => {
+    history.push(`/product/${product.id}`);
+  };
 
   const [validation, setValidation] = useState(productValidationShema);
 
@@ -67,7 +71,7 @@ const EditProduct: React.FC = () => {
         )
       );
 
-      handleGoBack();
+      returnProduct();
     },
   });
 
