@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createStyles, IconButton, makeStyles, ThemeOptions } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import classNames from 'classnames';
+
 import { FeedbacksTableProps } from '../../../interfaces/IFeedback';
 import AppDataTable from '../../AppDataTable/AppDataTable';
 import DateMoment from '../../Common/Date-moment';
 import styles from './FeedbacksTable.module.scss';
-import { useSelector } from 'react-redux';
 import { COLORS } from '../../../values/colors';
 import { RootState } from '../../../store/store';
-import classNames from 'classnames';
+import { cols } from '../../../pages/Feedbacks/FeedbacksPage';
+import { getFeedbacksRequest } from '../../../store/actions/feedbacks.actions';
+import Preloader from '../../Preloader/Preloader';
 
 const useStyles = makeStyles(
   (): ThemeOptions =>
@@ -32,22 +38,68 @@ const useStyles = makeStyles(
     })
 );
 
+type QueryTypes = {
+  page?: string;
+  limit?: string;
+  sort?: string;
+  sortDirect?: string;
+};
+
 const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
-  list,
   activeColumns,
   setOpenDeleteFeedbackDialog,
   setFeedbackToDelete,
-  count,
-  limit,
-  setLimit,
-  paginationServer,
-  setPage,
 }) => {
   const classes = useStyles();
-
   const { darkMode } = useSelector((state: RootState) => state.theme);
-
   const [expandedFeedbacks, setExpandedFeedbacks] = useState<number[]>([]);
+  const { list, loading, count, paginationPage, paginationLimit, sort, sortDirect } = useSelector(
+    (state: RootState) => state.feedbacks
+  );
+  const defaultSortFieldId = Object.keys(cols).indexOf(sort as string) + 1;
+  const history = useHistory();
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const parsed = queryString.parse(location.search) as QueryTypes;
+    let actualPage = paginationPage;
+    if (parsed.page) actualPage = Number(parsed.page);
+    let actualLimit = paginationLimit;
+    if (parsed.limit) actualLimit = Number(parsed.limit);
+    let actualSort = sort;
+    if (parsed.sort) actualSort = parsed.sort;
+    let actualSortDirect = sortDirect;
+    if (parsed.sortDirect) actualSortDirect = parsed.sortDirect;
+    dispatch(getFeedbacksRequest(actualPage, actualLimit, actualSort, actualSortDirect));
+  }, []);
+
+  useEffect(() => {
+    const querySearch = {} as QueryTypes;
+    if (!!paginationPage && paginationPage !== 1) querySearch.page = String(paginationPage);
+    if (!!paginationLimit && paginationLimit !== 10) querySearch.limit = String(paginationLimit);
+    if (!!sort && sort !== 'id') querySearch.sort = sort;
+    if (!!sortDirect && sortDirect !== 'asc') querySearch.sortDirect = sortDirect;
+    history.push({
+      pathname: '/feedbacks',
+      search: queryString.stringify(querySearch),
+      state: { update: true },
+    });
+  }, [paginationPage, paginationLimit, sort, sortDirect]);
+
+  const onChangeLimit = (limit) => {
+    const newPage = Math.ceil(((paginationPage - 1) * paginationLimit + 1) / limit);
+    dispatch(getFeedbacksRequest(newPage, limit, sort, sortDirect));
+  };
+
+  const onChangePage = (page) => {
+    if (paginationPage !== page) dispatch(getFeedbacksRequest(page, paginationLimit, sort, sortDirect));
+  };
+
+  const setSortColumn = (column: any, direction: any) => {
+    const fieldName = Object.keys(cols)[Object.values(cols).indexOf(column.name)];
+    dispatch(getFeedbacksRequest(paginationPage, paginationLimit, fieldName, direction));
+  };
 
   const handleExpandedFeedbacks = (id) => {
     expandedFeedbacks.includes(id)
@@ -141,18 +193,24 @@ const FeedbacksTable: React.FC<FeedbacksTableProps> = ({
 
   return (
     <>
-      {list.length ? (
+      {loading ? (
+        <Preloader />
+      ) : (
         <AppDataTable
           data={list}
           columns={feedbacksColumns}
           title="Відгуки"
           count={count}
-          limit={limit}
-          setLimit={setLimit}
-          paginationServer={paginationServer}
-          setPage={setPage}
+          limit={paginationLimit}
+          setLimit={(e) => onChangeLimit(e)}
+          setPage={(e) => onChangePage(e)}
+          setSortColumn={(column, direction) => setSortColumn(column, direction)}
+          paginationServer={true}
+          paginationPage={paginationPage}
+          defaultSortFieldId={defaultSortFieldId}
+          sortDirect={sortDirect}
         />
-      ) : null}
+      )}
     </>
   );
 };

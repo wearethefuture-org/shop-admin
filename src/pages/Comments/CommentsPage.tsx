@@ -1,17 +1,16 @@
 import { LinearProgress } from '@material-ui/core';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ColumnsBtn from '../../components/ColumnsBtn/ColumnsBtn';
 import ColumnsMenu from '../../components/ColumnsMenu/ColumnsMenu';
 import CustomConfirm from '../../components/CustomConfirm/CustomConfirm';
 import CommentsTable from '../../components/Tables/Comments/CommentsTable';
-import useComments from '../../hooks/useComments';
 import { deleteCommentRequest, getCommentsRequest } from '../../store/actions/comments.actions';
-import { AppDispatch } from '../../store/store';
+import { AppDispatch, RootState } from '../../store/store';
 import styles from './CommentsPage.module.scss';
 
-enum commentsColumns {
+export enum cols {
   id = 'ID',
   text = 'Відгук',
   author = 'Автор',
@@ -23,30 +22,17 @@ enum commentsColumns {
 export default function CommentsPage() {
   const dispatch: AppDispatch = useDispatch();
 
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(10);
-
-  const { list, count, loading } = useComments(currentPage, limit);
-
-  React.useEffect(() => {
-    if (!list.length && count) {
-      dispatch(getCommentsRequest(currentPage, limit));
-    }
-  }, [count, currentPage, dispatch, limit, list]);
-
-  React.useEffect(() => {
-    dispatch(getCommentsRequest(currentPage, limit));
-  }, [count]);
+  const { list, loading } = useSelector((state: RootState) => state.comments);
 
   // ACTIVE COLUMNS
   const [showColumnsMenu, setShowColumnsMenu] = useState<boolean>(false);
   const [activeColumns, setActiveColumns] = useState<string[]>([
-    commentsColumns.id,
-    commentsColumns.text,
-    commentsColumns.author,
-    commentsColumns.productId,
-    commentsColumns.createdAt,
-    commentsColumns.updatedAt,
+    cols.id,
+    cols.text,
+    cols.author,
+    cols.productId,
+    cols.createdAt,
+    cols.updatedAt,
   ]);
 
   const handleColumns = (column: string) =>
@@ -80,7 +66,7 @@ export default function CommentsPage() {
       <div className={styles.container}>
         {showColumnsMenu && (
           <ColumnsMenu
-            allColumns={commentsColumns}
+            allColumns={cols}
             activeColumns={activeColumns}
             showColumnsMenu={showColumnsMenu}
             setShowColumnsMenu={setShowColumnsMenu}
@@ -94,15 +80,9 @@ export default function CommentsPage() {
         <div className={styles['table-wrapper']}>
           {list && (
             <CommentsTable
-              list={list}
               activeColumns={activeColumns}
               setOpenDeleteCommentDialog={setOpenDeleteCommentDialog}
               setCommentToDelete={setCommentToDelete}
-              count={count}
-              setPage={setCurrentPage}
-              limit={limit}
-              setLimit={setLimit}
-              paginationServer={true}
             />
           )}
         </div>

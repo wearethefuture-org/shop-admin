@@ -87,7 +87,7 @@ type ApiFetchedDataType = {
   };
 
   slides: {
-    get: () => FetchedDataType<ISlideItem>;
+    get: (page: number, limit: number, sort: string, sortDirect: string) => FetchedDataType<ISlideItem>;
     add: (slide: FormData) => FetchedDataType<ISlideItem>;
     update: (slide: ISlideUpdateValues) => FetchedDataType<ISlideItem>;
     updateVisibility: (slide: ISlideVisibility) => FetchedDataType<ISlideItem>;
@@ -109,13 +109,18 @@ type ApiFetchedDataType = {
   };
 
   comments: {
-    get: (page: number, limit: number) => FetchedDataType<ICommentResponse>;
+    get: (page: number, limit: number, sort: string, sortDirect: string) => FetchedDataType<ICommentResponse>;
     getByDatesRange: (datesArray: string[]) => FetchedDataType<ICommentsDateRange[]>;
     delete: (id: number) => FetchedDataType<JSON>;
   };
 
   feedbacks: {
-    get: (page: number, limit: number) => FetchedDataType<IFeedbackResponse>;
+    get: (
+      page: number,
+      limit: number,
+      sort: string,
+      sortDirect: string
+    ) => FetchedDataType<IFeedbackResponse>;
     delete: (id: number) => FetchedDataType<JSON>;
   };
 
@@ -187,7 +192,8 @@ export const api: ApiFetchedDataType = {
   },
 
   slides: {
-    get: () => instance.get(`${root}/slide`),
+    get: (page, limit, sort, sortDirect) =>
+      instance.get(`${root}/slide?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}`),
     add: (slide) => instance.post(`${root}/slide`, slide),
     update: (slide) => instance.patch(`${root}/slide/${slide.id}`, slide.body),
     updateVisibility: (slide) =>
@@ -231,13 +237,15 @@ export const api: ApiFetchedDataType = {
     confirmEmail: (data) => instance.post('users/changeEmail', data),
   },
   comments: {
-    get: (page, limit) => instance.get(`${root}/comments?page=${page}&limit=${limit}`),
+    get: (page, limit, sort, sortDirect) =>
+      instance.get(`${root}/comments?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}`),
     getByDatesRange: (datesArray: string[]) =>
       instance.get(`${root}/comments/statistic?dateRange[0]=${datesArray[0]}&dateRange[1]=${datesArray[1]}`),
     delete: (id) => instance.delete(`${root}/comments/admin/${id}`),
   },
   feedbacks: {
-    get: (page, limit) => instance.get(`${root}/feedbacks?page=${page}&limit=${limit}`),
+    get: (page, limit, sort, sortDirect) =>
+      instance.get(`${root}/feedbacks?page=${page}&limit=${limit}&sort=${sort}&sortDirect=${sortDirect}`),
     delete: (id) => instance.delete(`${root}/feedbacks/admin/${id}`),
   },
   roles: {

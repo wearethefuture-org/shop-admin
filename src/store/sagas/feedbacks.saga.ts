@@ -11,9 +11,9 @@ import {
 import { failSnackBar, successSnackBar } from '../actions/snackbar.actions';
 import { apiDeleteFeedback, apiGetFeedbacks } from './services/feedbacks.service';
 
-export function* getFeedbacksWorker({ data: { page, limit } }: IActions): SagaIterator {
+export function* getFeedbacksWorker({ data: { page, limit, sort, sortDirect } }: IActions): SagaIterator {
   try {
-    const feedbacks = yield call(apiGetFeedbacks, page, limit);
+    const feedbacks = yield call(apiGetFeedbacks, page, limit, sort, sortDirect);
     yield put(getFeedbacksSuccess(feedbacks));
   } catch (error) {
     yield put(failSnackBar(error.message));

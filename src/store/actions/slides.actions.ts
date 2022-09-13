@@ -10,10 +10,15 @@ import {
   REQUEST_DELETE_SLIDES,
   DELETE_SLIDE,
   REQUEST_UPDATE_SLIDE_VISIBILITY,
+  LOAD_SLIDES_ERROR,
 } from '../types';
 
 export const loadSlides = (slides: ISlideItem[]): IActions => ({ type: LOAD_SLIDES, data: slides });
-export const fetchSlides = (): IActions => ({ type: REQUEST_SLIDES });
+export const loadSlidesError = (err): IActions => ({ type: LOAD_SLIDES_ERROR, data: err });
+export const fetchSlides = (page = 1, limit = 10, sort = 'id', sortDirect = 'asc'): IActions => ({
+  type: REQUEST_SLIDES,
+  data: { page, limit, sort, sortDirect },
+});
 
 // add slide
 export const fetchAddSlides = (slide: FormData): IActions => ({

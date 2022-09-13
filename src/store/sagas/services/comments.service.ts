@@ -1,7 +1,7 @@
 import { api } from '../../../api/api';
 
-export async function apiGetComments(page: number, limit: number) {
-  const comments = await api.comments.get(page, limit);
+export async function apiGetComments(page: number, limit: number, sort: string, sortDirect: string) {
+  const comments = await api.comments.get(page, limit, sort, sortDirect);
   return comments.data;
 }
 

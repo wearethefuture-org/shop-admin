@@ -10,20 +10,28 @@ import {
 } from '../types';
 
 const initialState: IFeedbacksState = {
-  loading: false,
   list: [],
-  count: 0,
-  page: 1,
-  totalPages: 0,
+  loading: false,
   error: null,
+  count: 0,
+  totalPages: 0,
+  paginationPage: 1,
+  paginationLimit: 10,
+  sort: 'id',
+  sortDirect: 'asc',
 };
 
-const feedbacks = (state = initialState, { type, data }: IActions) => {
+const feedbacks = (state = initialState, { type, data }: IActions): IFeedbacksState => {
   switch (type) {
     case GET_FEEDBACKS_REQUEST: {
       return {
         ...state,
         loading: true,
+        error: null,
+        paginationPage: data.page,
+        paginationLimit: data.limit,
+        sort: data.sort,
+        sortDirect: data.sortDirect,
       };
     }
 
@@ -33,7 +41,6 @@ const feedbacks = (state = initialState, { type, data }: IActions) => {
         loading: false,
         list: data.data,
         count: data.count,
-        page: data.page,
         totalPages: data.totalPages,
       };
     }

@@ -2,8 +2,8 @@ import { api } from '../../../api/api';
 import { IActionsImage } from '../../../interfaces/actions';
 import { ISlideUpdateValues, ISlideVisibility } from "../../../interfaces/ISlides";
 
-export async function fetchedSlides () {
-    const slides = await api.slides.get();
+export async function fetchedSlides (page: number, limit: number, sort: string, sortDirect: string) {
+    const slides = await api.slides.get(page, limit, sort, sortDirect);
     return slides.data;
 }
 

@@ -22,6 +22,7 @@ interface DataTableProps {
   customStyles?: any;
   paginationPage?: number;
   setSortColumn?: (column: any, direction: 'asc' | 'desc') => void;
+  sortDirect?: string;
 }
 
 const AppDataTable: React.FC<DataTableProps> = ({
@@ -30,16 +31,18 @@ const AppDataTable: React.FC<DataTableProps> = ({
   title,
   onRowClicked = () => {},
   count,
-  setPage = () => {},
   limit,
+  setPage = () => {},
   setLimit = () => {},
+  setSortColumn = () => {},
   paginationServer = false,
   defaultSortFieldId = '',
   paginationPage,
   customStyles = customStylesDataTable,
-  setSortColumn = () => {},
+  sortDirect,
 }) => {
   const { darkMode } = useSelector((state: RootState) => state.theme);
+  const defaultSortAsc = sortDirect === 'asc' ? true : false;
 
   const conditionalRowStyles = [
     {
@@ -66,8 +69,9 @@ const AppDataTable: React.FC<DataTableProps> = ({
         pagination
         paginationDefaultPage={paginationPage}
         paginationComponent={CustomTablePaginator}
-        defaultSortAsc={false}
-        defaultSortFieldId={defaultSortFieldId ? null : defaultSortFieldId}
+        defaultSortAsc={defaultSortAsc}
+        onSort={(column, direction) => setSortColumn(column, direction)}
+        defaultSortFieldId={defaultSortFieldId}
         fixedHeader={true}
         fixedHeaderScrollHeight={'60vh'}
         paginationTotalRows={count}

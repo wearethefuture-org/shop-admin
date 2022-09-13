@@ -10,9 +10,9 @@ import {
   DELETE_FEEDBACK_SUCCESS,
 } from '../types';
 
-export const getFeedbacksRequest = (page: number, limit: number): IActions => ({
+export const getFeedbacksRequest = (page = 1, limit = 10, sort = 'id', sortDirect = 'asc'): IActions => ({
   type: GET_FEEDBACKS_REQUEST,
-  data: { page, limit },
+  data: { page, limit, sort, sortDirect },
 });
 
 export const getFeedbacksSuccess = (feedbacks: IFeedback[]): IActions => ({

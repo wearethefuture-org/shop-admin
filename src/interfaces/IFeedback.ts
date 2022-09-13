@@ -26,19 +26,16 @@ export interface IFeedbacksState {
   loading: boolean;
   list: IFeedback[];
   count: number;
-  page: number;
   totalPages: number;
   error: string | null;
+  paginationPage: number;
+  paginationLimit: number;
+  sort: string;
+  sortDirect: string;
 }
 
 export interface FeedbacksTableProps {
-  list: IFeedback[];
   activeColumns: string[];
   setOpenDeleteFeedbackDialog: Dispatch<SetStateAction<boolean>>;
   setFeedbackToDelete: Dispatch<SetStateAction<number>>;
-  count: number;
-  setPage: Dispatch<SetStateAction<number>>;
-  limit: number;
-  setLimit: Dispatch<SetStateAction<number>>;
-  paginationServer: boolean;
 }
