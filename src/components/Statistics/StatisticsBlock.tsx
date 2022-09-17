@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ResponsiveContainer,
-  AreaChart,
-  XAxis,
-  YAxis,
-  Area,
-  Tooltip,
-  CartesianGrid,
-} from 'recharts';
+import { ResponsiveContainer, AreaChart, XAxis, YAxis, Area, Tooltip, CartesianGrid } from 'recharts';
 import { makeStyles } from '@material-ui/core/styles';
 
 import CustomTooltip from './ToolTipBlock';
@@ -48,9 +40,9 @@ const StatisticsBlock: React.FC = () => {
   const styles = useStyles();
 
   const [chartData, setChartData] = useState<IDataChart[] | null>(null);
-  const [onlineUsers, setOnlineUsers] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState<null | string>(null);
 
-  const dataToChart = (reqData) => {
+  const dataToChart = (reqData: any) => {
     if (reqData.onlineUsers && reqData.registredUsers.length) {
       setOnlineUsers(reqData.onlineUsers);
       const dataArr = reqData.registredUsers.map((user: IUserDateRange) => {
@@ -65,13 +57,7 @@ const StatisticsBlock: React.FC = () => {
     }
     if (reqData[0] && reqData[0].paid) {
       const dataArr = reqData.map(
-        (user: {
-          date: string;
-          paid: string;
-          notpaid: string;
-          paidSum: string;
-          notPaidSum: string;
-        }) => {
+        (user: { date: string; paid: string; notpaid: string; paidSum: string; notPaidSum: string }) => {
           return {
             date: user.date,
             value: user.paid,
@@ -146,9 +132,7 @@ const StatisticsBlock: React.FC = () => {
             <XAxis
               dataKey={(data) => {
                 if (data.date)
-                  return `${data.date.split('-')[2]}.${data.date.split('-')[1]}.${
-                    data.date.split('-')[0]
-                  }`;
+                  return `${data.date.split('-')[2]}.${data.date.split('-')[1]}.${data.date.split('-')[0]}`;
               }}
               axisLine={false}
               tickLine={false}

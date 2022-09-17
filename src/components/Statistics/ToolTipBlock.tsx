@@ -22,7 +22,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<ValueType, NameT
 
   useEffect(() => {
     if (active && payload && payload[1]) {
-      setTextMessage(['сплаченийх замовлень', 'несплачених замовлень']);
+      setTextMessage(['оплаченийх замовлень', 'неоплачених замовлень']);
     } else {
       setTextMessage(['зареєстрованих']);
     }
@@ -31,7 +31,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<ValueType, NameT
   if (active && payload) {
     return (
       <div className={styles.tooltip}>
-        <h4>{`${label.split('-')[2]}.${label.split('-')[1]}.${label.split('-')[0]}`}</h4>
+        <h4>{label.split('-')[0]}</h4>
         {!payload[1] && (
           <p>
             {payload[0].value} {textMessage[0]}
